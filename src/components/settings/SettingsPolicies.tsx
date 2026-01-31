@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useBudget } from '../../context/BudgetContext';
+import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
 
 const SettingsPolicies: React.FC = () => {
     const { settings, updateSettings } = useBudget();
@@ -32,13 +34,13 @@ const SettingsPolicies: React.FC = () => {
                     <h3 className="text-xl font-bold text-gray-900">นโยบายงบประมาณ</h3>
                     <p className="text-gray-500 text-sm mt-1">กำหนดเงื่อนไขและข้อจำกัดในการใช้งบประมาณ</p>
                 </div>
-                <button
+                <Button
                     onClick={handleSave}
-                    className="bg-gradient-to-r from-primary-600 to-indigo-600 text-white px-5 py-2 rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center gap-2 active:scale-95"
+                    className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95"
                 >
-                    <Save size={18} />
+                    <Save size={18} className="mr-2" />
                     บันทึก
-                </button>
+                </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -70,10 +72,10 @@ const SettingsPolicies: React.FC = () => {
                     <div>
                         <h4 className="text-base font-bold text-gray-900 mb-2">วันปิดงบประมาณ</h4>
                         <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2 border border-gray-200 focus-within:ring-2 focus-within:ring-primary-100 focus-within:border-primary-400 transition-all">
-                            <Calendar size={18} className="text-primary-500" />
-                            <input
+                            <Calendar size={18} className="text-primary-500 absolute left-3 top-1/2 -translate-y-1/2 z-10" />
+                            <Input
                                 type="date"
-                                className="text-sm text-gray-700 outline-none border-none focus:ring-0 bg-transparent font-medium w-full"
+                                className="pl-10 border-gray-200 focus:ring-primary-100 focus:border-primary-400 bg-gray-50 h-auto py-2"
                                 value={formData.fiscalYearCutoff}
                                 onChange={(e) => setFormData({ ...formData, fiscalYearCutoff: e.target.value })}
                             />

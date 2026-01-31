@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Building, Calendar, ChevronRight, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useBudget } from '../../context/BudgetContext';
+import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
+import { Select } from '../../components/ui/Select';
+
 
 const SettingsGeneral: React.FC = () => {
     const { settings, updateSettings } = useBudget();
@@ -50,13 +54,14 @@ const SettingsGeneral: React.FC = () => {
                             <h4 className="text-lg font-bold text-gray-900">รายละเอียดทั่วไป</h4>
                             <p className="text-sm text-gray-500">ข้อมูลเหล่านี้จะถูกแสดงในเอกสารและรายงานต่างๆ</p>
                         </div>
-                        <button
+                        <Button
                             onClick={handleSave}
-                            className="bg-gradient-to-r from-primary-600 to-indigo-600 text-white px-6 py-2.5 rounded-xl font-bold hover:shadow-lg hover:shadow-primary-200 transition-all flex items-center gap-2 active:scale-95"
+                            variant="primary"
+                            className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-md hover:shadow-lg hover:shadow-primary-200"
                         >
-                            <Save size={18} />
-                            <span>บันทึกการเปลี่ยนแปลง</span>
-                        </button>
+                            <Save size={18} className="mr-2" />
+                            บันทึกการเปลี่ยนแปลง
+                        </Button>
                     </div>
 
                     <div className="grid grid-cols-1 gap-8">
@@ -66,11 +71,11 @@ const SettingsGeneral: React.FC = () => {
                                 ชื่อหน่วยงาน / องค์กร
                             </label>
                             <div className="relative">
-                                <input
+                                <Input
                                     type="text"
                                     value={formData.orgName}
                                     onChange={(e) => setFormData({ ...formData, orgName: e.target.value })}
-                                    className="w-full rounded-xl border-gray-200 px-5 py-4 text-lg font-medium text-gray-900 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary-500 outline-none transition-all shadow-sm group-hover:bg-white"
+                                    className="h-auto w-full rounded-xl border-gray-200 px-5 py-4 text-lg font-medium text-gray-900 bg-gray-50 focus-visible:bg-white focus-visible:ring-primary-500 shadow-sm group-hover:bg-white"
                                     placeholder="ระบุชื่อหน่วยงาน"
                                 />
                             </div>
@@ -82,16 +87,16 @@ const SettingsGeneral: React.FC = () => {
                                 ปีงบประมาณปัจจุบัน (Fiscal Year)
                             </label>
                             <div className="relative">
-                                <select
+                                <Select
                                     value={formData.fiscalYear}
                                     onChange={(e) => setFormData({ ...formData, fiscalYear: parseInt(e.target.value) })}
-                                    className="w-full rounded-xl border-gray-200 px-5 py-4 text-lg font-medium text-gray-900 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary-500 outline-none transition-all shadow-sm appearance-none cursor-pointer group-hover:bg-white"
+                                    className="h-auto w-full rounded-xl border-gray-200 px-5 py-4 text-lg font-medium text-gray-900 bg-gray-50 focus-visible:bg-white focus-visible:ring-primary-500 shadow-sm cursor-pointer group-hover:bg-white appearance-none"
                                 >
                                     <option value={2568}>2568</option>
                                     <option value={2569}>2569</option>
                                     <option value={2570}>2570</option>
                                     <option value={2571}>2571</option>
-                                </select>
+                                </Select>
                                 <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                                     <ChevronRight size={24} className="rotate-90" />
                                 </div>

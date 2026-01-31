@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { cn } from '../lib/utils';
 import { Plus, Search, Download, Clock, CheckCircle2, XCircle, BarChart, X, Trash2, AlertTriangle, FileText, User, Minimize2, Maximize2, FileCheck2, PieChart, Calculator } from 'lucide-react';
 import { BudgetRequest, ExpenseLineItem } from '../types';
 import { useBudget } from '../context/BudgetContext';
@@ -7,6 +8,12 @@ import { generateBudgetPDF } from '../utils/pdfGenerator';
 import { OfficialMemo } from '../components/OfficialMemo';
 
 import toast from 'react-hot-toast';
+import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
+import { Input } from '../components/ui/Input';
+import { Select } from '../components/ui/Select';
+import { Badge } from '../components/ui/Badge';
+import { Modal } from '../components/ui/Modal';
 
 const Budget: React.FC = () => {
   const { requests, deleteRequest, updateRequestStatus, categories } = useBudget();
@@ -90,66 +97,60 @@ const Budget: React.FC = () => {
 
 
       {/* Summary Cards Row - Clean Metro Style */}
+      {/* Summary Cards Row - Clean Metro Style */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Pending */}
-        <div className="bg-white p-6 rounded-3xl shadow-soft border border-gray-100 hover:shadow-card hover:-translate-y-1 transition-all duration-300 group">
+        <Card interactive className="p-6 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-amber-50 rounded-2xl text-amber-600 border border-amber-100 group-hover:bg-amber-100 transition-colors">
               <Clock size={24} />
             </div>
-            <div className="px-3 py-1 bg-amber-50 rounded-lg border border-amber-100">
-              <span className="text-xs font-bold text-amber-600">รออนุมัติ</span>
-            </div>
+            <Badge variant="warning">รออนุมัติ</Badge>
           </div>
           <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{pendingCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
           <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-amber-600">฿{pendingAmount.toLocaleString()}</span></p>
-        </div>
+        </Card>
 
         {/* Approved */}
-        <div className="bg-white p-6 rounded-3xl shadow-soft border border-gray-100 hover:shadow-card hover:-translate-y-1 transition-all duration-300 group">
+        <Card interactive className="p-6 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600 border border-emerald-100 group-hover:bg-emerald-100 transition-colors">
               <CheckCircle2 size={24} />
             </div>
-            <div className="px-3 py-1 bg-emerald-50 rounded-lg border border-emerald-100">
-              <span className="text-xs font-bold text-emerald-600">อนุมัติแล้ว</span>
-            </div>
+            <Badge variant="success">อนุมัติแล้ว</Badge>
           </div>
           <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{approvedCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
           <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-emerald-600">฿{approvedAmount.toLocaleString()}</span></p>
-        </div>
+        </Card>
 
         {/* Rejected */}
-        <div className="bg-white p-6 rounded-3xl shadow-soft border border-gray-100 hover:shadow-card hover:-translate-y-1 transition-all duration-300 group">
+        <Card interactive className="p-6 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-rose-50 rounded-2xl text-rose-600 border border-rose-100 group-hover:bg-rose-100 transition-colors">
               <XCircle size={24} />
             </div>
-            <div className="px-3 py-1 bg-rose-50 rounded-lg border border-rose-100">
-              <span className="text-xs font-bold text-rose-600">ไม่อนุมัติ</span>
-            </div>
+            <Badge variant="error">ไม่อนุมัติ</Badge>
           </div>
           <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{rejectedCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
           <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-rose-600">฿{rejectedAmount.toLocaleString()}</span></p>
-        </div>
+        </Card>
 
         {/* Total */}
-        <div className="bg-white p-6 rounded-3xl shadow-soft border border-gray-100 hover:shadow-card hover:-translate-y-1 transition-all duration-300 group">
+        <Card interactive className="p-6 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-primary-50 rounded-2xl text-primary-600 border border-primary-100 group-hover:bg-primary-100 transition-colors">
               <BarChart size={24} />
             </div>
-            <div className="px-3 py-1 bg-primary-50 rounded-lg border border-primary-100">
-              <span className="text-xs font-bold text-primary-600">ทั้งหมด</span>
-            </div>
+            <Badge variant="info">ทั้งหมด</Badge>
           </div>
           <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{totalCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
           <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-primary-600">฿{totalAmount.toLocaleString()}</span></p>
-        </div>
+        </Card>
       </div>
 
       {/* Main Content Area - System Design Table */}
-      <div className="bg-white rounded-3xl shadow-card border border-gray-100 p-8 min-h-[600px] animate-in fade-in slide-in-from-bottom-8 duration-700">
+      {/* Main Content Area - System Design Table */}
+      <Card className="p-8 min-h-[600px] animate-in fade-in slide-in-from-bottom-8 duration-700">
         {/* Header & Actions */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
           <div>
@@ -184,10 +185,12 @@ const Budget: React.FC = () => {
               // The sidebar change works because it calls `onNavigate`.
               // `Budget` component is rendered inside `App`.
               // I should update `Budget` component to accept `onNavigate`.
-              className="flex-1 md:flex-none justify-center flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-200 hover:shadow-xl hover:scale-105 transition-all text-shadow-sm pointer-events-none opacity-50 grayscale"
+              className="pointer-events-none opacity-50 grayscale"
               title="กรุณาใช้เมนู 'ขอใช้งบประมาณ' ด้านซ้ายเพื่อสร้างรายการใหม่"
             >
-              <Plus size={20} /> ใช้เมนู "ขอใช้งบประมาณ"
+              <Button variant="primary" disabled className="shadow-lg shadow-blue-200">
+                <Plus size={20} className="mr-2" /> ใช้เมนู "ขอใช้งบประมาณ"
+              </Button>
             </a>
           </div>
         </div>
@@ -195,28 +198,28 @@ const Budget: React.FC = () => {
         {/* Search & Filters */}
         <div className="bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100 mb-8 flex flex-col md:flex-row gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 z-10" />
+            <Input
               type="text"
               placeholder="ค้นหาชื่อโครงการ หรือ รหัสคำขอ..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-white rounded-xl border-none shadow-sm text-sm font-medium focus:ring-2 focus:ring-primary-100 placeholder-gray-400 text-gray-700 transition-all"
+              className="pl-12 h-11"
             />
           </div>
           <div className="w-full md:w-48">
-            <select
-              className="w-full px-4 py-3 bg-white rounded-xl border-none shadow-sm text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary-100 cursor-pointer"
+            <Select
+              className="h-11 font-bold"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
               <option value="all">📁 หมวดหมู่ทั้งหมด</option>
               {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-            </select>
+            </Select>
           </div>
           <div className="w-full md:w-48">
-            <select
-              className="w-full px-4 py-3 bg-white rounded-xl border-none shadow-sm text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary-100 cursor-pointer"
+            <Select
+              className="h-11 font-bold"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -224,7 +227,7 @@ const Budget: React.FC = () => {
               <option value="pending">รออนุมัติ</option>
               <option value="approved">อนุมัติแล้ว</option>
               <option value="rejected">ไม่อนุมัติ</option>
-            </select>
+            </Select>
           </div>
         </div>
 
@@ -424,195 +427,192 @@ const Budget: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
+      </Card>
 
 
 
 
       {/* Details Modal */}
-      {
-        selectedRequest && (
-          <div className="fixed inset-0 bg-gray-900/60 z-50 flex items-center justify-center p-4 backdrop-blur-md">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-fade-in relative border border-white/20">
-              <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 shrink-0">
-                <h3 className="text-lg font-bold text-gray-900">รายละเอียดคำขอ</h3>
-                <button onClick={() => setSelectedRequest(null)} className="text-gray-400 hover:text-gray-600"><X size={20} /></button>
+      {/* Details Modal */}
+      <Modal
+        isOpen={!!selectedRequest && !showOfficialMemo}
+        onClose={() => setSelectedRequest(null)}
+        title="รายละเอียดคำขอ"
+      >
+        {selectedRequest && (
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className={cn("p-3 rounded-full flex-shrink-0",
+                selectedRequest.status === 'approved' ? 'bg-green-100 text-green-600' :
+                  selectedRequest.status === 'pending' ? 'bg-yellow-100 text-yellow-600' : 'bg-red-100 text-red-600'
+              )}>
+                {selectedRequest.status === 'approved' ? <CheckCircle2 size={32} /> :
+                  selectedRequest.status === 'pending' ? <Clock size={32} /> : <XCircle size={32} />}
               </div>
-              <div className="p-6 overflow-y-auto custom-scrollbar">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className={`p-3 rounded-full flex-shrink-0 ${selectedRequest.status === 'approved' ? 'bg-green-100 text-green-600' :
-                    selectedRequest.status === 'pending' ? 'bg-yellow-100 text-yellow-600' : 'bg-red-100 text-red-600'}`}>
-                    {selectedRequest.status === 'approved' ? <CheckCircle2 size={32} /> :
-                      selectedRequest.status === 'pending' ? <Clock size={32} /> : <XCircle size={32} />}
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-gray-900 mb-1">{selectedRequest.project}</h4>
-                    <p className="text-sm text-gray-500">รหัส: {selectedRequest.id} | วันที่: {selectedRequest.date}</p>
-                    {selectedRequest.approvalRef && <p className="text-xs text-blue-500 mt-1">Ref: {selectedRequest.approvalRef}</p>}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="bg-gray-50 p-3 rounded">
-                    <span className="text-xs text-gray-500 block">จำนวนเงิน</span>
-                    <span className="text-lg font-bold text-blue-600">฿{selectedRequest.amount.toLocaleString()}</span>
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded">
-                    <span className="text-xs text-gray-500 block">หมวดหมู่</span>
-                    <span className="text-lg font-bold text-gray-800">{selectedRequest.category}</span>
-                  </div>
-                  {selectedRequest.department && (
-                    <div className="bg-gray-50 p-3 rounded">
-                      <span className="text-xs text-gray-500 block">หน่วยงาน</span>
-                      <span className="text-sm font-bold text-gray-800">{selectedRequest.department}</span>
-                    </div>
-                  )}
-                  {selectedRequest.urgency && (
-                    <div className="bg-gray-50 p-3 rounded">
-                      <span className="text-xs text-gray-500 block">ความเร่งด่วน</span>
-                      <span className={`text-sm font-bold ${selectedRequest.urgency === 'critical' ? 'text-red-600' : selectedRequest.urgency === 'urgent' ? 'text-orange-500' : 'text-gray-800'}`}>
-                        {selectedRequest.urgency === 'critical' ? 'ด่วนที่สุด' : selectedRequest.urgency === 'urgent' ? 'ด่วน' : 'ปกติ'}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {selectedRequest.reason && (
-                  <div className="mb-4">
-                    <h5 className="text-sm font-bold text-gray-700 mb-1">เหตุผลและความจำเป็น</h5>
-                    <p className="text-gray-700 text-sm bg-gray-50 p-3 rounded-lg">{selectedRequest.reason}</p>
-                  </div>
-                )}
-
-                <div className="mb-4">
-                  <h5 className="text-sm font-bold text-gray-700 mb-1">หมายเหตุ</h5>
-                  <p className="text-gray-700 text-sm bg-gray-50 p-3 rounded-lg">{selectedRequest.notes || '-'}</p>
-                </div>
-
-                {/* Expense Items Table */}
-                {selectedRequest.expenseItems && selectedRequest.expenseItems.length > 0 && (
-                  <div className="mb-4">
-                    <h5 className="text-sm font-bold text-gray-700 mb-2">รายละเอียดค่าใช้จ่าย</h5>
-                    <div className="bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
-                      <table className="w-full text-sm text-left">
-                        <thead className="bg-gray-100 text-gray-500 font-semibold text-xs border-b border-gray-200">
-                          <tr>
-                            <th className="px-3 py-2">รายการ</th>
-                            <th className="px-3 py-2 text-center">จำนวน</th>
-                            <th className="px-3 py-2 text-center">หน่วย</th>
-                            <th className="px-3 py-2 text-right">ราคา/หน่วย</th>
-                            <th className="px-3 py-2 text-right">รวม</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200">
-                          {selectedRequest.expenseItems.map((item, idx) => (
-                            <tr key={idx} className="bg-white">
-                              <td className="px-3 py-2">
-                                <span className="font-bold text-gray-700 block text-xs">{item.description}</span>
-                                <span className="text-[10px] text-gray-400">{item.categoryId || item.category}</span>
-                              </td>
-                              <td className="px-3 py-2 text-center text-gray-600">{item.quantity}</td>
-                              <td className="px-3 py-2 text-center text-gray-600">{item.unit}</td>
-                              <td className="px-3 py-2 text-right text-gray-600">{item.unitPrice.toLocaleString()}</td>
-                              <td className="px-3 py-2 text-right font-bold text-gray-800">{item.total.toLocaleString()}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                        <tfoot className="bg-gray-50 border-t border-gray-200">
-                          <tr>
-                            <td colSpan={4} className="px-3 py-2 text-right font-bold text-gray-600 text-xs">รวมทั้งสิ้น</td>
-                            <td className="px-3 py-2 text-right font-extrabold text-blue-600">{selectedRequest.expenseItems.reduce((sum, i) => sum + i.total, 0).toLocaleString()}</td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-                )}
-
-                {/* Status Change Controls */}
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                  <h5 className="text-sm font-bold text-gray-700 mb-3">เปลี่ยนสถานะการอนุมัติ</h5>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => {
-                        updateRequestStatus(selectedRequest.id, 'approved');
-                        setSelectedRequest({ ...selectedRequest, status: 'approved' as const });
-                        toast.success('อนุมัติคำขอสำเร็จ');
-                      }}
-                      className={`flex-1 px-4 py-3 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 ${selectedRequest.status === 'approved'
-                        ? 'bg-emerald-500 text-white'
-                        : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-200'
-                        }`}
-                    >
-                      <CheckCircle2 size={18} />
-                      อนุมัติ
-                    </button>
-                    <button
-                      onClick={() => {
-                        updateRequestStatus(selectedRequest.id, 'pending');
-                        setSelectedRequest({ ...selectedRequest, status: 'pending' as const });
-                        toast.success('เปลี่ยนสถานะเป็นรออนุมัติ');
-                      }}
-                      className={`flex-1 px-4 py-3 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 ${selectedRequest.status === 'pending'
-                        ? 'bg-amber-500 text-white'
-                        : 'bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200'
-                        }`}
-                    >
-                      <Clock size={18} />
-                      รออนุมัติ
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleRejectClick(selectedRequest.id);
-                      }}
-                      className={`flex-1 px-4 py-3 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 ${selectedRequest.status === 'rejected'
-                        ? 'bg-rose-500 text-white'
-                        : 'bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200'
-                        }`}
-                    >
-                      <XCircle size={18} />
-                      ไม่อนุมัติ
-                    </button>
-                  </div>
-                </div>
-
-                {/* Official Memo Button */}
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                  <button
-                    onClick={() => {
-                      setMemoRequest(selectedRequest);
-                      setShowOfficialMemo(true);
-                    }}
-                    className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all flex items-center justify-center gap-2 font-semibold shadow-md"
-                  >
-                    <FileText className="w-5 h-5" />
-                    สร้างบันทึกข้อความ
-                  </button>
-                </div>
+              <div>
+                <h4 className="text-xl font-bold text-gray-900 mb-1">{selectedRequest.project}</h4>
+                <p className="text-sm text-gray-500">รหัส: {selectedRequest.id} | วันที่: {selectedRequest.date}</p>
+                {selectedRequest.approvalRef && <p className="text-xs text-blue-500 mt-1">Ref: {selectedRequest.approvalRef}</p>}
               </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                <span className="text-xs text-gray-500 block">จำนวนเงิน</span>
+                <span className="text-lg font-bold text-blue-600">฿{selectedRequest.amount.toLocaleString()}</span>
+              </div>
+              <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                <span className="text-xs text-gray-500 block">หมวดหมู่</span>
+                <span className="text-lg font-bold text-gray-800">{selectedRequest.category}</span>
+              </div>
+              {selectedRequest.department && (
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                  <span className="text-xs text-gray-500 block">หน่วยงาน</span>
+                  <span className="text-sm font-bold text-gray-800">{selectedRequest.department}</span>
+                </div>
+              )}
+              {selectedRequest.urgency && (
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                  <span className="text-xs text-gray-500 block">ความเร่งด่วน</span>
+                  <Badge variant={selectedRequest.urgency === 'critical' ? 'error' : selectedRequest.urgency === 'urgent' ? 'warning' : 'default'}>
+                    {selectedRequest.urgency === 'critical' ? 'ด่วนที่สุด' : selectedRequest.urgency === 'urgent' ? 'ด่วน' : 'ปกติ'}
+                  </Badge>
+                </div>
+              )}
+            </div>
+
+            {selectedRequest.reason && (
+              <div>
+                <h5 className="text-sm font-bold text-gray-700 mb-1">เหตุผลและความจำเป็น</h5>
+                <p className="text-gray-700 text-sm bg-gray-50 p-3 rounded-lg border border-gray-100">{selectedRequest.reason}</p>
+              </div>
+            )}
+
+            <div>
+              <h5 className="text-sm font-bold text-gray-700 mb-1">หมายเหตุ</h5>
+              <p className="text-gray-700 text-sm bg-gray-50 p-3 rounded-lg border border-gray-100">{selectedRequest.notes || '-'}</p>
+            </div>
+
+            {/* Expense Items Table */}
+            {selectedRequest.expenseItems && selectedRequest.expenseItems.length > 0 && (
+              <div>
+                <h5 className="text-sm font-bold text-gray-700 mb-2">รายละเอียดค่าใช้จ่าย</h5>
+                <div className="bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-gray-100 text-gray-500 font-semibold text-xs border-b border-gray-200">
+                      <tr>
+                        <th className="px-3 py-2">รายการ</th>
+                        <th className="px-3 py-2 text-center">จำนวน</th>
+                        <th className="px-3 py-2 text-center">หน่วย</th>
+                        <th className="px-3 py-2 text-right">ราคา/หน่วย</th>
+                        <th className="px-3 py-2 text-right">รวม</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {selectedRequest.expenseItems.map((item, idx) => (
+                        <tr key={idx} className="bg-white">
+                          <td className="px-3 py-2">
+                            <span className="font-bold text-gray-700 block text-xs">{item.description}</span>
+                            <span className="text-[10px] text-gray-400">{item.categoryId || item.category}</span>
+                          </td>
+                          <td className="px-3 py-2 text-center text-gray-600">{item.quantity}</td>
+                          <td className="px-3 py-2 text-center text-gray-600">{item.unit}</td>
+                          <td className="px-3 py-2 text-right text-gray-600">{item.unitPrice.toLocaleString()}</td>
+                          <td className="px-3 py-2 text-right font-bold text-gray-800">{item.total.toLocaleString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot className="bg-gray-50 border-t border-gray-200">
+                      <tr>
+                        <td colSpan={4} className="px-3 py-2 text-right font-bold text-gray-600 text-xs">รวมทั้งสิ้น</td>
+                        <td className="px-3 py-2 text-right font-extrabold text-blue-600">{selectedRequest.expenseItems.reduce((sum, i) => sum + i.total, 0).toLocaleString()}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Status Change Controls */}
+            <div className="pt-4 border-t border-gray-200">
+              <h5 className="text-sm font-bold text-gray-700 mb-3">เปลี่ยนสถานะการอนุมัติ</h5>
+              <div className="flex gap-3">
+                <Button
+                  variant={selectedRequest.status === 'approved' ? 'primary' : 'outline'}
+                  size="sm"
+                  onClick={() => {
+                    if (selectedRequest) {
+                      updateRequestStatus(selectedRequest.id, 'approved');
+                      setSelectedRequest({ ...selectedRequest, status: 'approved' });
+                      toast.success('อนุมัติคำขอสำเร็จ');
+                    }
+                  }}
+                  className={cn("flex-1", selectedRequest.status === 'approved' ? 'bg-emerald-600 hover:bg-emerald-700 border-emerald-600' : 'text-emerald-600 border-emerald-200 hover:bg-emerald-50')}
+                >
+                  <CheckCircle2 size={18} className="mr-2" /> อนุมัติ
+                </Button>
+                <Button
+                  variant={selectedRequest.status === 'pending' ? 'warning' : 'outline'}
+                  size="sm"
+                  onClick={() => {
+                    if (selectedRequest) {
+                      updateRequestStatus(selectedRequest.id, 'pending');
+                      setSelectedRequest({ ...selectedRequest, status: 'pending' });
+                      toast.success('เปลี่ยนสถานะเป็นรออนุมัติ');
+                    }
+                  }}
+                  className={cn("flex-1", selectedRequest.status === 'pending' ? 'bg-amber-500 hover:bg-amber-600 border-amber-500 text-white' : 'text-amber-600 border-amber-200 hover:bg-amber-50')}
+                >
+                  <Clock size={18} className="mr-2" /> รออนุมัติ
+                </Button>
+                <Button
+                  variant={selectedRequest.status === 'rejected' ? 'danger' : 'outline'}
+                  size="sm"
+                  onClick={() => {
+                    handleRejectClick(selectedRequest.id);
+                  }}
+                  className={cn("flex-1", selectedRequest.status === 'rejected' ? '' : 'text-rose-600 border-rose-200 hover:bg-rose-50')}
+                >
+                  <XCircle size={18} className="mr-2" /> ไม่อนุมัติ
+                </Button>
+              </div>
+            </div>
+
+            {/* Official Memo Button */}
+            <div className="pt-2">
+              <Button
+                variant="primary"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 shadow-md"
+                onClick={() => {
+                  setMemoRequest(selectedRequest);
+                  setShowOfficialMemo(true);
+                }}
+              >
+                <FileText className="w-5 h-5 mr-2" /> สร้างบันทึกข้อความ
+              </Button>
+            </div>
           </div>
-        )
-      }
+        )}
+      </Modal>
 
       {/* Confirmation Dialog */}
-      {
-        confirmDialog.isOpen && (
-          <div className="fixed inset-0 bg-gray-900/60 z-[60] flex items-center justify-center p-4 backdrop-blur-md">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden animate-fade-in border border-white/20">
-              <div className="p-6 text-center">
-                <AlertTriangle size={48} className={`mx-auto mb-4 ${confirmDialog.type === 'delete' ? 'text-red-500' : 'text-orange-500'}`} />
-                <h3 className="text-lg font-bold text-gray-900 mb-2">ยืนยันการทำรายการ</h3>
-                <p className="text-gray-500 text-sm mb-6">คุณแน่ใจหรือไม่ที่จะดำเนินการต่อ?</p>
-                <div className="flex gap-3 justify-center">
-                  <button onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })} className="px-4 py-2 border rounded-lg text-gray-600">ยกเลิก</button>
-                  <button onClick={handleConfirmAction} className={`px-4 py-2 rounded-lg text-white ${confirmDialog.type === 'delete' ? 'bg-red-600' : 'bg-orange-600'}`}>ยืนยัน</button>
-                </div>
-              </div>
-            </div>
+      {/* Confirmation Dialog */}
+      <Modal
+        isOpen={confirmDialog.isOpen}
+        onClose={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
+        title="ยืนยันการทำรายการ"
+        width="max-w-sm"
+      >
+        <div className="p-2 text-center">
+          <AlertTriangle size={48} className={`mx-auto mb-4 ${confirmDialog.type === 'delete' ? 'text-red-500' : 'text-orange-500'}`} />
+          <h3 className="text-lg font-bold text-gray-900 mb-2">ยืนยันการทำรายการ?</h3>
+          <p className="text-gray-500 text-sm mb-6">คุณแน่ใจหรือไม่ที่จะดำเนินการต่อ?</p>
+          <div className="flex gap-3 justify-center">
+            <Button variant="outline" onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>ยกเลิก</Button>
+            <Button variant={confirmDialog.type === 'delete' ? 'danger' : 'warning'} onClick={handleConfirmAction}>ยืนยัน</Button>
           </div>
-        )
-      }
+        </div>
+      </Modal>
 
       {/* Official Memo Modal */}
       {

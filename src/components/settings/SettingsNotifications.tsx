@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Save, Mail, Phone } from 'lucide-react';
+import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
 
 const SettingsNotifications: React.FC = () => {
     // Notification State
@@ -19,10 +21,12 @@ const SettingsNotifications: React.FC = () => {
                     <h3 className="text-xl font-bold text-gray-900">กำหนดการแจ้งเตือน</h3>
                     <p className="text-gray-500 text-sm mt-1">เลือกช่องทางและเหตุการณ์ที่ต้องการรับการแจ้งเตือน</p>
                 </div>
-                <button className="bg-gradient-to-r from-primary-600 to-indigo-600 text-white px-5 py-2 rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center gap-2 active:scale-95">
-                    <Save size={18} />
+                <Button
+                    className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95"
+                >
+                    <Save size={18} className="mr-2" />
                     บันทึก
-                </button>
+                </Button>
             </div>
 
             <div className="space-y-6 max-w-3xl">
@@ -58,10 +62,10 @@ const SettingsNotifications: React.FC = () => {
 
                     {notificationSettings.lineEnabled && (
                         <div className="mt-2 pl-12 animate-in slide-in-from-top-2">
-                            <input
+                            <Input
                                 type="text"
                                 placeholder="LINE Notify Token"
-                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+                                className="border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-green-500 h-auto"
                                 value={notificationSettings.lineToken}
                                 onChange={e => setNotificationSettings({ ...notificationSettings, lineToken: e.target.value })}
                             />

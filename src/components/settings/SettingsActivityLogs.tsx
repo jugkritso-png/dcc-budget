@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Clock, User as UserIcon, Activity, RefreshCw } from 'lucide-react';
+import { Button } from '../../components/ui/Button';
 
 interface ActivityLog {
     id: string;
@@ -65,13 +66,14 @@ const SettingsActivityLogs: React.FC = () => {
                     <h3 className="text-xl font-bold text-gray-900">ประวัติการใช้งานระบบ</h3>
                     <p className="text-gray-500 text-sm mt-1">บันทึกการกระทำต่างๆ ของผู้ใช้งานในระบบ (Audit Logs)</p>
                 </div>
-                <button
+                <Button
+                    variant="ghost"
                     onClick={fetchLogs}
-                    className="p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
+                    className="p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-full"
                     title="Refresh Logs"
                 >
                     <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
-                </button>
+                </Button>
             </div>
 
             <div className="bg-white rounded-3xl border border-gray-100 shadow-card overflow-hidden">

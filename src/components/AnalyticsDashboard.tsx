@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useBudget } from '../context/BudgetContext';
+import { Card } from './ui/Card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { Percent, Wallet, FileText, Calculator } from 'lucide-react';
 
@@ -8,7 +9,6 @@ const AnalyticsDashboard: React.FC = () => {
     const { requests, categories, settings } = useBudget();
 
     // 1. Calculate Monthly Spending (Actual) vs Planned (Avg)
-    // Fiscal Year starts Oct.
     const months = ['ต.ค.', 'พ.ย.', 'ธ.ค.', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.'];
     const monthlyDataMap = new Map<string, { planned: number, actual: number }>();
 
@@ -64,50 +64,58 @@ const AnalyticsDashboard: React.FC = () => {
         <div className="space-y-6">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                <Card interactive className="p-5 group flex flex-col justify-between">
                     <div className="flex justify-between items-start mb-3">
                         <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
                             <Percent size={20} className="text-blue-600" />
                         </div>
                     </div>
-                    <p className="text-2xl font-bold text-gray-800 tracking-tight">{utilizationRate.toFixed(1)}%</p>
-                    <p className="text-xs text-gray-400 font-medium mt-1">อัตราการเบิกจ่ายรวม</p>
-                </div>
+                    <div>
+                        <p className="text-2xl font-bold text-gray-800 tracking-tight">{utilizationRate.toFixed(1)}%</p>
+                        <p className="text-xs text-gray-400 font-medium mt-1">อัตราการเบิกจ่ายรวม</p>
+                    </div>
+                </Card>
 
-                <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                <Card interactive className="p-5 group flex flex-col justify-between">
                     <div className="flex justify-between items-start mb-3">
                         <div className="p-2 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition-colors">
                             <Calculator size={20} className="text-orange-600" />
                         </div>
                     </div>
-                    <p className="text-2xl font-bold text-gray-800 tracking-tight">฿{avgPerRequest > 1000000 ? (avgPerRequest / 1000000).toFixed(2) + 'M' : (avgPerRequest / 1000).toFixed(1) + 'K'}</p>
-                    <p className="text-xs text-gray-400 font-medium mt-1">งบเฉลี่ยต่อโครงการ</p>
-                </div>
+                    <div>
+                        <p className="text-2xl font-bold text-gray-800 tracking-tight">฿{avgPerRequest > 1000000 ? (avgPerRequest / 1000000).toFixed(2) + 'M' : (avgPerRequest / 1000).toFixed(1) + 'K'}</p>
+                        <p className="text-xs text-gray-400 font-medium mt-1">งบเฉลี่ยต่อโครงการ</p>
+                    </div>
+                </Card>
 
-                <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                <Card interactive className="p-5 group flex flex-col justify-between">
                     <div className="flex justify-between items-start mb-3">
                         <div className="p-2 bg-teal-50 rounded-lg group-hover:bg-teal-100 transition-colors">
                             <Wallet size={20} className="text-teal-600" />
                         </div>
                     </div>
-                    <p className="text-2xl font-bold text-teal-600 tracking-tight">฿{totalRemaining > 1000000 ? (totalRemaining / 1000000).toFixed(2) + 'M' : (totalRemaining / 1000).toFixed(0) + 'K'}</p>
-                    <p className="text-xs text-gray-400 font-medium mt-1">งบประมาณคงเหลือ</p>
-                </div>
+                    <div>
+                        <p className="text-2xl font-bold text-teal-600 tracking-tight">฿{totalRemaining > 1000000 ? (totalRemaining / 1000000).toFixed(2) + 'M' : (totalRemaining / 1000).toFixed(0) + 'K'}</p>
+                        <p className="text-xs text-gray-400 font-medium mt-1">งบประมาณคงเหลือ</p>
+                    </div>
+                </Card>
 
-                <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                <Card interactive className="p-5 group flex flex-col justify-between">
                     <div className="flex justify-between items-start mb-3">
                         <div className="p-2 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
                             <FileText size={20} className="text-indigo-600" />
                         </div>
                     </div>
-                    <p className="text-2xl font-bold text-gray-800 tracking-tight">{approvedRequests.length}</p>
-                    <p className="text-xs text-gray-400 font-medium mt-1">จำนวนโครงการอนุมัติ</p>
-                </div>
+                    <div>
+                        <p className="text-2xl font-bold text-gray-800 tracking-tight">{approvedRequests.length}</p>
+                        <p className="text-xs text-gray-400 font-medium mt-1">จำนวนโครงการอนุมัติ</p>
+                    </div>
+                </Card>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Planned vs Actual Chart */}
-                <div className="bg-white p-8 rounded-3xl shadow-card border border-gray-100/60">
+                <Card className="p-8 border-gray-100/60">
                     <div className="mb-6">
                         <h3 className="text-xl font-bold text-gray-800">เปรียบเทียบแผน vs ผลจริง</h3>
                         <p className="text-sm text-gray-400">แสดงการเปรียบเทียบงบเฉลี่ยรายเดือนกับการใช้จริง</p>
@@ -130,15 +138,14 @@ const AnalyticsDashboard: React.FC = () => {
                                 />
                                 <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
                                 <Bar dataKey="planned" name="แผน (Planned)" fill="#93C5FD" radius={[6, 6, 6, 6]} barSize={20} />
-                                <Bar dataKey="actual" name="ผลจริง (Actual)" fill="#003964" radius={[6, 6, 6, 6]} barSize={20}>
-                                </Bar>
+                                <Bar dataKey="actual" name="ผลจริง (Actual)" fill="#003964" radius={[6, 6, 6, 6]} barSize={20} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
-                </div>
+                </Card>
 
                 {/* Trend Line Chart */}
-                <div className="bg-white p-8 rounded-3xl shadow-card border border-gray-100/60">
+                <Card className="p-8 border-gray-100/60">
                     <div className="mb-6">
                         <h3 className="text-xl font-bold text-gray-800">แนวโน้มการใช้จ่ายสะสม</h3>
                         <p className="text-sm text-gray-400">กราฟแสดงยอดการใช้จ่ายสะสมตลอดปีงบประมาณ</p>
@@ -164,11 +171,11 @@ const AnalyticsDashboard: React.FC = () => {
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
-                </div>
+                </Card>
             </div>
 
             {/* Category Breakdown */}
-            <div className="bg-white p-8 rounded-3xl shadow-card border border-gray-100/60">
+            <Card className="p-8 border-gray-100/60">
                 <div className="flex justify-between items-center mb-8">
                     <h3 className="text-xl font-bold text-gray-800">สัดส่วนหมวดหมู่ที่มีการเบิกจ่ายสูงสุด</h3>
                 </div>
@@ -194,7 +201,7 @@ const AnalyticsDashboard: React.FC = () => {
                         <div className="col-span-2 text-center text-gray-400 py-8">ไม่มีข้อมูลการเบิกจ่าย</div>
                     )}
                 </div>
-            </div>
+            </Card>
         </div>
     );
 };

@@ -3,6 +3,10 @@ import { useBudget } from '../context/BudgetContext';
 import { FileText, Save, CheckCircle2, AlertCircle, Calculator, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { SubActivity, BudgetRequest, ExpenseLineItem, Page } from '../types'; // Import Page enum
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Select } from '../components/ui/Select';
+import { CustomSelect } from '../components/ui/CustomSelect';
 
 interface CreateRequestProps {
     onNavigate?: (page: Page) => void;
@@ -169,29 +173,26 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-bold text-gray-700 mb-2">ชื่อโครงการ/กิจกรรม <span className="text-red-500">*</span></label>
-                                <input
+                                <Input
                                     type="text"
                                     placeholder="ระบุชื่อโครงการหรือกิจกรรม"
                                     required
-                                    className="w-full border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-gray-50 focus:bg-white transition-all"
                                     value={formData.project}
                                     onChange={e => setFormData({ ...formData, project: e.target.value })}
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-700">วันที่เริ่มต้น</label>
-                                <input
+                                <label className="block text-sm font-bold text-gray-700 mb-2">วันที่เริ่มต้น</label>
+                                <Input
                                     type="date"
-                                    className="w-full border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-gray-50 focus:bg-white transition-all"
                                     value={formData.startDate}
                                     onChange={e => setFormData({ ...formData, startDate: e.target.value })}
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-700">วันที่สิ้นสุด</label>
-                                <input
+                                <label className="block text-sm font-bold text-gray-700 mb-2">วันที่สิ้นสุด</label>
+                                <Input
                                     type="date"
-                                    className="w-full border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-gray-50 focus:bg-white transition-all"
                                     value={formData.endDate}
                                     onChange={e => setFormData({ ...formData, endDate: e.target.value })}
                                 />
@@ -215,17 +216,19 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">หมวดงบประมาณ <span className="text-red-500">*</span></label>
-                                <select
-                                    required
-                                    className="w-full border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-white"
+                                <CustomSelect
+                                    options={categories.map(c => ({
+                                        value: c.name,
+                                        label: c.name,
+                                        color: c.color // Pass the color class
+                                    }))}
                                     value={formData.category}
-                                    onChange={e => {
-                                        setFormData({ ...formData, category: e.target.value, activity: '' });
+                                    onChange={(value) => {
+                                        setFormData({ ...formData, category: value, activity: '' });
                                     }}
-                                >
-                                    <option value="">เลือกหมวดงบประมาณ</option>
-                                    {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                                </select>
+                                    placeholder="เลือกหมวดงบประมาณ"
+                                    required
+                                />
                                 {selectedCategoryData && (
                                     <div className="mt-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-xs text-blue-700 flex items-center gap-2">
                                         <CheckCircle2 size={14} />
@@ -236,8 +239,8 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">กิจกรรมย่อย</label>
                                 {availableSubActivities.length > 0 ? (
-                                    <select
-                                        className="w-full border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-white"
+                                    <Select
+                                        className="h-12 rounded-xl bg-white border-gray-200"
                                         value={formData.activity}
                                         onChange={e => setFormData({ ...formData, activity: e.target.value })}
                                     >
@@ -246,12 +249,11 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                             <option key={sub.id} value={sub.name}>{sub.name}</option>
                                         ))}
                                         <option value="อื่นๆ">อื่นๆ</option>
-                                    </select>
+                                    </Select>
                                 ) : (
-                                    <input
+                                    <Input
                                         type="text"
                                         placeholder="ระบุกิจกรรมย่อย"
-                                        className="w-full border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-gray-50 focus:bg-white"
                                         value={formData.activity}
                                         onChange={e => setFormData({ ...formData, activity: e.target.value })}
                                     />
@@ -261,11 +263,11 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                 <label className="block text-sm font-bold text-gray-700 mb-2">วงเงินที่ขออนุมัติ (บาท) <span className="text-red-500">*</span></label>
                                 <div className="relative">
                                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold">฿</div>
-                                    <input
+                                    <Input
                                         type="number"
                                         placeholder="0.00"
                                         required
-                                        className="w-full pl-8 border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-gray-50 focus:bg-white font-bold text-gray-900"
+                                        className="pl-8 font-bold text-gray-900"
                                         value={formData.amount || ''}
                                         onChange={e => setFormData({ ...formData, amount: parseFloat(e.target.value) || 0 })}
                                     />
@@ -409,8 +411,9 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                     </div>
 
                     <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
-                        <button
+                        <Button
                             type="button"
+                            variant="ghost"
                             onClick={() => {
                                 if (confirm('คุณต้องการยกเลิกการทำรายการใช่หรือไม่? ข้อมูลที่กรอกจะหายไป')) {
                                     setFormData({
@@ -426,17 +429,18 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                     });
                                 }
                             }}
-                            className="px-6 py-3 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-100 transition-colors"
+                            className="px-6 py-3 h-auto text-gray-600 hover:bg-gray-100"
                         >
                             ยกเลิก
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             type="submit"
-                            className="px-8 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-primary-200 flex items-center gap-2 active:scale-95"
+                            variant="gradient"
+                            className="px-8 py-3 h-auto text-sm font-bold flex items-center gap-2"
                         >
                             <Save size={18} />
                             บันทึกคำขอ
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </form >

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useBudget } from '../../context/BudgetContext';
+import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
 
 const SettingsSecurity: React.FC = () => {
     const { changePassword } = useBudget();
@@ -37,13 +39,13 @@ const SettingsSecurity: React.FC = () => {
                     <h3 className="text-xl font-bold text-gray-900">ความปลอดภัย</h3>
                     <p className="text-gray-500 text-sm mt-1">จัดการรหัสผ่านและการเข้าถึงระบบ (Mock ID: 8820)</p>
                 </div>
-                <button
+                <Button
                     onClick={handleSecuritySave}
-                    className="bg-gradient-to-r from-primary-600 to-indigo-600 text-white px-5 py-2 rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center gap-2 active:scale-95"
+                    className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95"
                 >
-                    <Save size={18} />
+                    <Save size={18} className="mr-2" />
                     บันทึก
-                </button>
+                </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
@@ -54,27 +56,27 @@ const SettingsSecurity: React.FC = () => {
                     <div className="space-y-3">
                         <div>
                             <label className="text-sm font-semibold text-gray-700 mb-1 block">รหัสผ่านบัญชีปัจจุบัน</label>
-                            <input
+                            <Input
                                 type="password"
-                                className="w-full rounded-xl border-gray-200 px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-all"
+                                className="border-gray-200 focus:ring-primary-500"
                                 value={securityForm.currentPassword}
                                 onChange={e => setSecurityForm({ ...securityForm, currentPassword: e.target.value })}
                             />
                         </div>
                         <div>
                             <label className="text-sm font-semibold text-gray-700 mb-1 block">รหัสผ่านใหม่</label>
-                            <input
+                            <Input
                                 type="password"
-                                className="w-full rounded-xl border-gray-200 px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-all"
+                                className="border-gray-200 focus:ring-primary-500"
                                 value={securityForm.newPassword}
                                 onChange={e => setSecurityForm({ ...securityForm, newPassword: e.target.value })}
                             />
                         </div>
                         <div>
                             <label className="text-sm font-semibold text-gray-700 mb-1 block">ยืนยันรหัสผ่านใหม่</label>
-                            <input
+                            <Input
                                 type="password"
-                                className="w-full rounded-xl border-gray-200 px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-all"
+                                className="border-gray-200 focus:ring-primary-500"
                                 value={securityForm.confirmPassword}
                                 onChange={e => setSecurityForm({ ...securityForm, confirmPassword: e.target.value })}
                             />

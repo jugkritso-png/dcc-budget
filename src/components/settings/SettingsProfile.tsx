@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Camera, Edit2, Save, User, Briefcase, Shield, Mail, Phone, Building, Check, Globe, Sun, Moon, Monitor, CreditCard, Wifi } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useBudget } from '../../context/BudgetContext';
+import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
+import { Select } from '../../components/ui/Select';
 
 const SettingsProfile: React.FC = () => {
     const { user, updateUserProfile, departments } = useBudget();
@@ -157,9 +160,9 @@ const SettingsProfile: React.FC = () => {
                                 <h4 className="font-bold text-gray-900 text-sm">รูปโปรไฟล์</h4>
                                 <p className="text-xs text-gray-500 mt-1">อัปโหลดรูปภาพของคุณ<br />(แนะนำขนาด 1:1)</p>
                             </div>
-                            <button className="text-primary-600 hover:text-primary-700 p-2 rounded-lg hover:bg-primary-50 transition-colors">
+                            <Button variant="ghost" className="text-primary-600 hover:text-primary-700 p-2 rounded-lg hover:bg-primary-50 transition-colors">
                                 <Edit2 size={18} />
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -171,13 +174,14 @@ const SettingsProfile: React.FC = () => {
                             <h2 className="text-2xl font-bold text-gray-900">แก้ไขข้อมูลส่วนตัว</h2>
                             <p className="text-gray-500 text-sm">จัดการข้อมูลโปรไฟล์และการตั้งค่าบัญชีของคุณ</p>
                         </div>
-                        <button
+                        <Button
                             onClick={handleProfileSave}
-                            className="bg-gradient-to-r from-primary-600 to-indigo-600 text-white px-6 py-2.5 rounded-xl font-bold hover:shadow-lg hover:shadow-primary-200 transition-all flex items-center gap-2 active:scale-95"
+                            variant="primary"
+                            className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-md hover:shadow-lg hover:shadow-primary-200"
                         >
-                            <Save size={18} />
-                            <span>บันทึก</span>
-                        </button>
+                            <Save size={18} className="mr-2" />
+                            บันทึก
+                        </Button>
                     </div>
 
                     <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-card space-y-6">
@@ -185,12 +189,12 @@ const SettingsProfile: React.FC = () => {
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700">ชื่อ-นามสกุล <span className="text-red-500">*</span></label>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><User size={18} /></div>
-                                    <input
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><User size={18} /></div>
+                                    <Input
                                         type="text"
                                         value={profileForm.name}
                                         onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
-                                        className="w-full pl-10 p-3 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all font-medium"
+                                        className="pl-10 h-auto p-3 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:ring-primary-500 font-medium"
                                         placeholder="ระบุชื่อภาษาไทย"
                                     />
                                 </div>
@@ -198,62 +202,62 @@ const SettingsProfile: React.FC = () => {
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700">รหัสพนักงาน</label>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><CreditCard size={18} /></div>
-                                    <input
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><CreditCard size={18} /></div>
+                                    <Input
                                         type="text"
                                         value={profileForm.employeeId}
                                         disabled
-                                        className="w-full pl-10 p-3 bg-gray-100 border border-transparent rounded-xl text-gray-500 cursor-not-allowed font-medium"
+                                        className="pl-10 h-auto p-3 bg-gray-100 border-transparent rounded-xl text-gray-500 cursor-not-allowed font-medium"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700">ตำแหน่ง</label>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Briefcase size={18} /></div>
-                                    <input
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><Briefcase size={18} /></div>
+                                    <Input
                                         type="text"
                                         value={profileForm.position}
                                         onChange={(e) => setProfileForm({ ...profileForm, position: e.target.value })}
-                                        className="w-full pl-10 p-3 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all font-medium"
+                                        className="pl-10 h-auto p-3 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:ring-primary-500 font-medium"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700">แผนก / สังกัด</label>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Building size={18} /></div>
-                                    <select
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><Building size={18} /></div>
+                                    <Select
                                         value={profileForm.department}
                                         onChange={(e) => setProfileForm({ ...profileForm, department: e.target.value })}
-                                        className="w-full pl-10 p-3 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer font-medium"
+                                        className="pl-10 h-auto p-3 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:ring-primary-500 font-medium appearance-none"
                                     >
                                         <option value="">-- เลือกแผนก --</option>
                                         {departments && departments.map(d => <option key={d.id} value={d.name}>{d.name}</option>)}
-                                    </select>
+                                    </Select>
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700">อีเมล</label>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Mail size={18} /></div>
-                                    <input
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><Mail size={18} /></div>
+                                    <Input
                                         type="email"
                                         value={profileForm.email}
                                         onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
-                                        className="w-full pl-10 p-3 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all font-medium"
+                                        className="pl-10 h-auto p-3 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:ring-primary-500 font-medium"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700">เบอร์โทรศัพท์</label>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Phone size={18} /></div>
-                                    <input
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><Phone size={18} /></div>
+                                    <Input
                                         type="tel"
                                         value={profileForm.phone}
                                         onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                                        className="w-full pl-10 p-3 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all font-medium"
+                                        className="pl-10 h-auto p-3 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:ring-primary-500 font-medium"
                                     />
                                 </div>
                             </div>

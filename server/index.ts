@@ -1,4 +1,4 @@
-
+import 'express-async-errors';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -6,6 +6,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 import prisma from './lib/prisma';
+import { errorHandler } from './middleware/errorHandler';
 
 // Import Routes
 import authRoutes from './routes/authRoutes';
@@ -49,14 +50,12 @@ const seedAdmin = async () => {
 seedAdmin();
 
 // --- API Routes ---
-app.use('/api', authRoutes); // /api/login is in authRoutes, but it was just /api/login in index.ts. 
-// Wait, my authRoutes has router.post('/login'). So app.use('/api', authRoutes) -> /api/login. Correct.
-
+app.use('/api', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/expenses', expenseRoutes);
-app.use('/api', budgetRoutes); // budgetRoutes has /sub-activities, /requests, /budget-plans. So app.use('/api', ...) works.
-app.use('/api', settingRoutes); // settingRoutes has /settings, /departments. So app.use('/api', ...) works.
+app.use('/api', budgetRoutes);
+app.use('/api', settingRoutes);
 app.use('/api/activity-logs', activityLogRoutes);
 
 // --- Static Files (Production) ---
@@ -77,6 +76,9 @@ if (fs.existsSync(distPath)) {
     }
   });
 }
+
+// Global Error Handler
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {

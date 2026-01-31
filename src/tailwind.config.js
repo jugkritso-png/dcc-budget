@@ -7,7 +7,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', 'Prompt', 'sans-serif'],
+                sans: ['Prompt', 'Inter', 'sans-serif'],
             },
             colors: {
                 gray: {

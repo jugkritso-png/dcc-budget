@@ -10,6 +10,7 @@ import SettingsBackup from '../components/settings/SettingsBackup';
 import SettingsSecurity from '../components/settings/SettingsSecurity';
 import SettingsActivityLogs from '../components/settings/SettingsActivityLogs';
 import { Building, User, AlertCircle, Database, Users, Bell, Download, Lock, History } from 'lucide-react';
+import { Card } from '../components/ui/Card';
 
 const Settings: React.FC = () => {
    const { user } = useBudget();
@@ -59,7 +60,7 @@ const Settings: React.FC = () => {
             </div>
          </div>
 
-         <div className="bg-white rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/50 min-h-[600px] overflow-hidden relative">
+         <Card className="shadow-xl shadow-gray-100/50 min-h-[600px] overflow-hidden relative border-gray-100">
             {/* Content Area */}
             <main className="w-full">
                {/* General Tab */}
@@ -89,7 +90,7 @@ const Settings: React.FC = () => {
                {/* Security Tab */}
                {activeTab === 'security' && <SettingsSecurity />}
             </main>
-         </div>
+         </Card>
       </div>
    );
 };

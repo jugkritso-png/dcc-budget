@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CreditCard, Wallet, FileCheck, TrendingDown, ArrowLeftRight, Percent, LayoutGrid, Table as TableIcon, Folder, PieChart as PieChartIcon, BarChart3 } from 'lucide-react';
-import StatCard from '../components/common/StatCard';
+import { Card } from '../components/ui/Card'; // Use new Design System Card
 import { useBudget } from '../context/BudgetContext';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
@@ -58,7 +58,6 @@ const Dashboard: React.FC = () => {
     return colorMap[colorClass] || '#3B82F6'; // Default to blue if not found
   };
 
-  const newLocal = "text-blue-200 font-medium text-sm uppercase tracking-wider group-hover:text-yellow-300 transition-colors";
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -73,8 +72,6 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Hero Card (Blue Summary) */}
-      {/* Hero Card (Blue Summary) */}
       {/* Hero Section with Glassmorphism */}
       <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-primary-900">
         {/* Background Gradients */}
@@ -131,76 +128,88 @@ const Dashboard: React.FC = () => {
       {/* Metrics Row (Small Cards) */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {/* 1. Total Budget */}
-        <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
               <CreditCard size={20} className="text-blue-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalBudget)}</p>
-          <p className="text-xs text-gray-400 font-medium mt-1">งบประมาณรวม</p>
-        </div>
+          <div>
+            <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalBudget)}</p>
+            <p className="text-xs text-gray-400 font-medium mt-1">งบประมาณรวม</p>
+          </div>
+        </Card>
 
         {/* 2. Remaining */}
-        <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-teal-50 rounded-lg group-hover:bg-teal-100 transition-colors">
               <Wallet size={20} className="text-teal-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalRemaining)}</p>
-          <p className="text-xs text-teal-600 font-bold mt-1">คงเหลือใช้ได้</p>
-        </div>
+          <div>
+            <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalRemaining)}</p>
+            <p className="text-xs text-teal-600 font-bold mt-1">คงเหลือใช้ได้</p>
+          </div>
+        </Card>
 
         {/* 3. Pending (Blue for System Processing) */}
-        <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
               <FileCheck size={20} className="text-blue-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalPending)}</p>
-          <p className="text-xs text-gray-400 font-medium mt-1">รอการอนุมัติ</p>
-        </div>
+          <div>
+            <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalPending)}</p>
+            <p className="text-xs text-gray-400 font-medium mt-1">รอการอนุมัติ</p>
+          </div>
+        </Card>
 
         {/* 4. Used (Dark Blue for Actual) */}
-        <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
               <TrendingDown size={20} className="text-blue-900" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalUsed)}</p>
-          <p className="text-xs text-gray-400 font-medium mt-1">ใช้จ่ายจริงแล้ว</p>
-        </div>
+          <div>
+            <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalUsed)}</p>
+            <p className="text-xs text-gray-400 font-medium mt-1">ใช้จ่ายจริงแล้ว</p>
+          </div>
+        </Card>
 
         {/* 5. Refund/Return (Placeholder) */}
-        <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition-colors">
               <ArrowLeftRight size={20} className="text-orange-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-800 tracking-tight">฿0</p>
-          <p className="text-xs text-gray-400 font-medium mt-1">งบรอเรียกคืน</p>
-        </div>
+          <div>
+            <p className="text-2xl font-bold text-gray-800 tracking-tight">฿0</p>
+            <p className="text-xs text-gray-400 font-medium mt-1">งบรอเรียกคืน</p>
+          </div>
+        </Card>
 
         {/* 6. Percentage */}
-        <div className="bg-white p-5 rounded-2xl shadow-card border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
             <div className="p-2 bg-rose-50 rounded-lg group-hover:bg-rose-100 transition-colors">
               <Percent size={20} className="text-rose-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-800 tracking-tight">{stats.usagePercentage.toFixed(1)}%</p>
-          <p className="text-xs text-gray-400 font-medium mt-1">อัตราการเบิกจ่าย</p>
-        </div>
+          <div>
+            <p className="text-2xl font-bold text-gray-800 tracking-tight">{stats.usagePercentage.toFixed(1)}%</p>
+            <p className="text-xs text-gray-400 font-medium mt-1">อัตราการเบิกจ่าย</p>
+          </div>
+        </Card>
       </div>
 
       {/* Budget Proportion Pie Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Pie Chart */}
-        <div className="lg:col-span-1 bg-white rounded-3xl shadow-card border border-gray-100 p-6">
+        <Card className="lg:col-span-1 p-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-indigo-50 p-2 rounded-lg text-indigo-600">
               <PieChartIcon size={20} />
@@ -248,10 +257,10 @@ const Dashboard: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </Card>
 
         {/* Budget Comparison Bar Chart */}
-        <div className="lg:col-span-2 bg-white rounded-3xl shadow-card border border-gray-100 p-6">
+        <Card className="lg:col-span-2 p-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-emerald-50 p-2 rounded-lg text-emerald-600">
               <BarChart3 size={20} />
@@ -317,11 +326,11 @@ const Dashboard: React.FC = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Budget Categories Grid */}
-      <div className="bg-white rounded-3xl shadow-card border border-gray-100/50 p-6 md:p-8">
+      <Card className="p-6 md:p-8">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-3">
             <div className="bg-primary-50 p-2 rounded-lg text-primary-600">
@@ -364,7 +373,7 @@ const Dashboard: React.FC = () => {
               const percent = cat.allocated > 0 ? (catUsed / cat.allocated) * 100 : 0;
 
               return (
-                <div key={cat.id} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-card hover:border-primary-100 transition-all duration-300 relative overflow-hidden group">
+                <Card key={cat.id} interactive className="p-6 relative overflow-hidden group">
                   {/* Decorative top border */}
                   <div className={`absolute top-0 left-0 w-full h-1.5 ${cat.color.replace('bg-', 'bg-')}`}></div>
 
@@ -417,7 +426,7 @@ const Dashboard: React.FC = () => {
                       <div style={{ width: `${percent}%` }} className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500 ${percent > 80 ? 'bg-red-500' : 'bg-primary-500'}`}></div>
                     </div>
                   </div>
-                </div>
+                </Card>
               );
             })}
           </div>
@@ -482,7 +491,7 @@ const Dashboard: React.FC = () => {
             </table>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { BudgetRequest, Category, BudgetContextType, SubActivity, SystemSettings, Department, Expense, User, BudgetPlan, BudgetLog } from '../types';
 import {
   authService,
@@ -13,175 +13,189 @@ import {
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 
 export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [requests, setRequests] = useState<BudgetRequest[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [subActivities, setSubActivities] = useState<SubActivity[]>([]);
-  const [settings, setSettings] = useState<SystemSettings>({
-    orgName: 'DCC Company Ltd.',
-    fiscalYear: 2569,
-    overBudgetAlert: false,
-    fiscalYearCutoff: '2026-09-30'
-  });
+  const queryClient = useQueryClient();
 
-  const [departments, setDepartments] = useState<Department[]>([]);
-  // Initial User (Load from LocalStorage)
+  // --- Client State (Session) ---
   const [user, setUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('dcc_user');
     return saved ? JSON.parse(saved) : null;
   });
 
-  const [users, setUsers] = useState<User[]>([]); // User Management List
-  const [budgetPlans, setBudgetPlans] = useState<BudgetPlan[]>([]); // New
+  // --- Server State (Queries) ---
+  const { data: requests = [] } = useQuery({ queryKey: ['requests'], queryFn: budgetService.getRequests });
+  const { data: categories = [] } = useQuery({ queryKey: ['categories'], queryFn: masterDataService.getCategories });
+  const { data: subActivities = [] } = useQuery({ queryKey: ['subActivities'], queryFn: masterDataService.getSubActivities });
+  const { data: departments = [] } = useQuery({ queryKey: ['departments'], queryFn: systemService.getDepartments });
+  const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: userService.getAll });
+  const { data: budgetPlans = [] } = useQuery({ queryKey: ['budgetPlans'], queryFn: () => budgetService.getPlans() });
 
-  // Fetch initial data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [
-          reqData,
-          catData,
-          subData,
-          setData,
-          userData,
-          planData,
-          deptData
-        ] = await Promise.all([
-          budgetService.getRequests().catch(() => []),
-          masterDataService.getCategories().catch(() => []),
-          masterDataService.getSubActivities().catch(() => []),
-          systemService.getSettings().catch(() => null),
-          userService.getAll().catch(() => []),
-          budgetService.getPlans().catch(() => []),
-          systemService.getDepartments().catch(() => [])
-        ]);
+  const { data: settings = {
+    orgName: 'DCC Company Ltd.',
+    fiscalYear: 2569,
+    overBudgetAlert: false,
+    fiscalYearCutoff: '2026-09-30'
+  } as SystemSettings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: systemService.getSettings,
+    initialData: {
+      orgName: 'DCC Company Ltd.',
+      fiscalYear: 2569,
+      overBudgetAlert: false,
+      fiscalYearCutoff: '2026-09-30'
+    }
+  });
 
-        if (reqData) setRequests(reqData);
-        if (catData) setCategories(catData);
-        if (subData) setSubActivities(subData);
-        if (setData) setSettings(setData);
-        if (userData) setUsers(userData);
-        if (planData) setBudgetPlans(planData);
-        if (deptData) setDepartments(deptData);
+  // --- Mutations (Actions) ---
 
-      } catch (error) {
-        console.error("Failed to fetch initial data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const updateSettings = async (newSettings: SystemSettings) => {
+  // User Actions
+  const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      await systemService.updateSettings(newSettings);
-      setSettings(newSettings);
+      const userData = await authService.login({ username, password });
+      setUser(userData);
+      localStorage.setItem('dcc_user', JSON.stringify(userData));
+      return true;
     } catch (error) {
-      console.error("Error updating settings:", error);
+      console.error("Login error:", error);
+      return false;
     }
   };
 
-  const addDepartment = async (department: Department) => {
-    try {
-      const savedDept = await systemService.createDepartment(department);
-      setDepartments(prev => [...prev, savedDept]);
-    } catch (error) {
-      console.error("Error adding department:", error);
-      alert("Error adding department: " + error);
-    }
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('dcc_user');
+    queryClient.clear(); // Clear cache on logout
   };
 
-  const updateDepartment = async (department: Department) => {
-    try {
-      const updatedDept = await systemService.updateDepartment(department);
-      setDepartments(prev => prev.map(d => d.id === department.id ? updatedDept : d));
-    } catch (error) {
-      console.error("Error updating department:", error);
-      alert("Error updating department: " + error);
+  const updateUserProfileMutation = useMutation({
+    mutationFn: (updatedData: Partial<User>) => {
+      if (!user) throw new Error("No user");
+      return authService.updateProfile(user.id, updatedData);
+    },
+    onSuccess: (updatedUser) => {
+      setUser(updatedUser);
+      localStorage.setItem('dcc_user', JSON.stringify(updatedUser));
     }
-  };
+  });
 
-  const deleteDepartment = async (id: string) => {
-    try {
-      await systemService.deleteDepartment(id);
-      setDepartments(prev => prev.filter(d => d.id !== id));
-    } catch (error) {
-      console.error("Error deleting department:", error);
-      alert("Error deleting department: " + error);
+  const changePasswordMutation = useMutation({
+    mutationFn: ({ current, newPass }: { current: string, newPass: string }) => {
+      if (!user) throw new Error("No user");
+      return authService.changePassword({ userId: user.id, currentPassword: current, newPassword: newPass });
     }
-  };
+  });
 
-  const addRequest = async (request: BudgetRequest) => {
-    try {
-      const savedReq = await budgetService.createRequest(request);
-      setRequests(prev => [savedReq, ...prev]);
-    } catch (error) {
-      console.error("Error adding request:", error);
+  // Admin User Management
+  const addUserMutation = useMutation({
+    mutationFn: userService.create,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+  });
+
+  const updateUserMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string, data: Partial<User> }) => userService.update(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: userService.delete,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+  });
+
+  // Settings & Departments
+  const updateSettingsMutation = useMutation({
+    mutationFn: systemService.updateSettings,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['settings'] })
+  });
+
+  const addDepartmentMutation = useMutation({
+    mutationFn: systemService.createDepartment,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['departments'] })
+  });
+
+  const updateDepartmentMutation = useMutation({
+    mutationFn: systemService.updateDepartment,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['departments'] })
+  });
+
+  const deleteDepartmentMutation = useMutation({
+    mutationFn: systemService.deleteDepartment,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['departments'] })
+  });
+
+  // Master Data
+  const addCategoryMutation = useMutation({
+    mutationFn: masterDataService.createCategory,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] })
+  });
+
+  const updateCategoryMutation = useMutation({
+    mutationFn: masterDataService.updateCategory,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] }) // Expense/Budget updates affect this too
+  });
+
+  const deleteCategoryMutation = useMutation({
+    mutationFn: masterDataService.deleteCategory,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] })
+  });
+
+  const addSubActivityMutation = useMutation({
+    mutationFn: masterDataService.createSubActivity,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['subActivities'] })
+  });
+
+  const deleteSubActivityMutation = useMutation({
+    mutationFn: masterDataService.deleteSubActivity,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['subActivities'] })
+  });
+
+  // Requests
+  const addRequestMutation = useMutation({
+    mutationFn: budgetService.createRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] }); // Used budget changes
     }
-  };
+  });
 
-  const updateRequestStatus = async (id: string, status: BudgetRequest['status']) => {
-    try {
-      const updatedReq = await budgetService.updateRequestStatus(id, status);
-      setRequests(prev => prev.map(req => req.id === id ? updatedReq : req));
-    } catch (error) {
-      console.error("Error updating status:", error);
+  const updateRequestStatusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string, status: BudgetRequest['status'] }) => budgetService.updateRequestStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
     }
-  };
+  });
 
-  const deleteRequest = async (id: string) => {
-    try {
-      await budgetService.deleteRequest(id);
-      setRequests(prev => prev.filter(req => req.id !== id));
-    } catch (error) {
-      console.error("Error deleting request:", error);
+  const deleteRequestMutation = useMutation({
+    mutationFn: budgetService.deleteRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
     }
-  };
+  });
 
-  const addCategory = async (category: Category) => {
-    try {
-      const savedCat = await masterDataService.createCategory(category);
-      setCategories(prev => [...prev, savedCat]);
-    } catch (error) {
-      console.error("Error adding category:", error);
-    }
-  };
+  // Budget Adjustments
+  const adjustBudgetMutation = useMutation({
+    mutationFn: (data: { categoryId: string, amount: number, type: any, reason: string, user?: string }) =>
+      budgetService.adjustBudget(data.categoryId, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] })
+  });
 
-  const updateCategory = async (updatedCategory: Category) => {
-    try {
-      const savedCat = await masterDataService.updateCategory(updatedCategory);
-      setCategories(prev => prev.map(cat => cat.id === updatedCategory.id ? savedCat : cat));
-    } catch (error) {
-      console.error("Error updating category:", error);
-    }
-  };
+  // Expenses
+  const addExpenseMutation = useMutation({
+    mutationFn: expenseService.create,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] })
+  });
 
-  const deleteCategory = async (id: string) => {
-    try {
-      await masterDataService.deleteCategory(id);
-      setCategories(prev => prev.filter(cat => cat.id !== id));
-    } catch (error) {
-      console.error("Error deleting category:", error);
-    }
-  };
+  const deleteExpenseMutation = useMutation({
+    mutationFn: expenseService.delete,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] })
+  });
 
-  const addSubActivity = async (subActivity: SubActivity) => {
-    try {
-      const savedSub = await masterDataService.createSubActivity(subActivity);
-      setSubActivities(prev => [...prev, savedSub]);
-    } catch (error) {
-      console.error("Error adding sub activity:", error);
-    }
-  };
+  const saveBudgetPlanMutation = useMutation({
+    mutationFn: budgetService.savePlan,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['budgetPlans'] })
+  });
 
-  const deleteSubActivity = async (id: string) => {
-    try {
-      await masterDataService.deleteSubActivity(id);
-      setSubActivities(prev => prev.filter(sub => sub.id !== id));
-    } catch (error) {
-      console.error("Error deleting sub activity:", error);
-    }
-  };
-
+  // --- Derived State (Stats) ---
   const getDashboardStats = () => {
     const currentYearCategories = categories.filter(cat => cat.year === settings.fiscalYear);
     const validCategoryNames = new Set(currentYearCategories.map(c => c.name));
@@ -209,147 +223,43 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     };
   };
 
+  // Helper Wrappers (to match old Context API)
+  const updateUserProfile = async (data: Partial<User>) => { await updateUserProfileMutation.mutateAsync(data); };
+  const changePassword = async (current: string, newPass: string) => { await changePasswordMutation.mutateAsync({ current, newPass }); };
+  const addUser = async (data: Partial<User>) => { await addUserMutation.mutateAsync(data); };
+  const updateUser = async (id: string, data: Partial<User>) => { await updateUserMutation.mutateAsync({ id, data }); };
+  const deleteUser = async (id: string) => { await deleteUserMutation.mutateAsync(id); };
+
+  const updateSettings = async (s: SystemSettings) => { await updateSettingsMutation.mutateAsync(s); };
+  const addDepartment = async (d: Department) => { await addDepartmentMutation.mutateAsync(d); };
+  const updateDepartment = async (d: Department) => { await updateDepartmentMutation.mutateAsync(d); };
+  const deleteDepartment = async (id: string) => { await deleteDepartmentMutation.mutateAsync(id); };
+
+  const addCategory = async (c: Category) => { await addCategoryMutation.mutateAsync(c); };
+  const updateCategory = async (c: Category) => { await updateCategoryMutation.mutateAsync(c); };
+  const deleteCategory = async (id: string) => { await deleteCategoryMutation.mutateAsync(id); };
+
+  const addSubActivity = async (s: SubActivity) => { await addSubActivityMutation.mutateAsync(s); };
+  const deleteSubActivity = async (id: string) => { await deleteSubActivityMutation.mutateAsync(id); };
+
+  const addRequest = async (r: BudgetRequest) => { await addRequestMutation.mutateAsync(r); };
+  const updateRequestStatus = async (id: string, status: BudgetRequest['status']) => { await updateRequestStatusMutation.mutateAsync({ id, status }); };
+  const deleteRequest = async (id: string) => { await deleteRequestMutation.mutateAsync(id); };
+
   const adjustBudget = async (categoryId: string, amount: number, type: 'ADD' | 'TRANSFER_IN' | 'TRANSFER_OUT' | 'REDUCE', reason: string) => {
-    try {
-      const updatedCategory = await budgetService.adjustBudget(categoryId, { amount, type, reason, user: user?.username });
-      setCategories(prev => prev.map(cat => cat.id === categoryId ? updatedCategory : cat));
-    } catch (error) {
-      console.error("Error adjusting budget:", error);
-    }
+    await adjustBudgetMutation.mutateAsync({ categoryId, amount, type, reason, user: user?.username });
+  };
+
+  const addExpense = async (e: Omit<Expense, 'id' | 'createdAt'>) => { await addExpenseMutation.mutateAsync(e); };
+  const deleteExpense = async (id: string) => { await deleteExpenseMutation.mutateAsync(id); };
+  const saveBudgetPlan = async (p: Omit<BudgetPlan, 'id' | 'updatedAt'>) => { await saveBudgetPlanMutation.mutateAsync(p); };
+
+  const getExpenses = async (categoryId: string): Promise<Expense[]> => {
+    return expenseService.getAll(categoryId); // Direct call still ok, or could be a Query
   };
 
   const getBudgetLogs = async (categoryId: string): Promise<BudgetLog[]> => {
-    try {
-      return await budgetService.getLogs(categoryId);
-    } catch (error) {
-      console.error("Error fetching logs:", error);
-      return [];
-    }
-  };
-
-  const addExpense = async (expense: Omit<Expense, 'id' | 'createdAt'>) => {
-    try {
-      await expenseService.create(expense);
-      // Refresh categories to get updated 'used' amount
-      const updatedCategories = await masterDataService.getCategories();
-      setCategories(updatedCategories);
-    } catch (error) {
-      console.error("Error adding expense:", error);
-    }
-  };
-
-  const getExpenses = async (categoryId: string): Promise<Expense[]> => {
-    try {
-      return await expenseService.getAll(categoryId);
-    } catch (error) {
-      console.error("Error fetching expenses:", error);
-      return [];
-    }
-  };
-
-  const deleteExpense = async (id: string) => {
-    try {
-      await expenseService.delete(id);
-      // Refresh categories to get updated 'used' amount
-      const updatedCategories = await masterDataService.getCategories();
-      setCategories(updatedCategories);
-    } catch (error) {
-      console.error("Error deleting expense:", error);
-    }
-  };
-
-  const login = async (username: string, password: string): Promise<boolean> => {
-    try {
-      const userData = await authService.login({ username, password });
-      setUser(userData);
-      localStorage.setItem('dcc_user', JSON.stringify(userData));
-      return true;
-    } catch (error) {
-      console.error("Login error:", error);
-      return false;
-    }
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('dcc_user');
-  };
-
-  const updateUserProfile = async (updatedData: Partial<User>) => {
-    if (!user) return;
-    try {
-      const updatedUser = await authService.updateProfile(user.id, updatedData);
-      setUser(updatedUser);
-      localStorage.setItem('dcc_user', JSON.stringify(updatedUser));
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      throw error;
-    }
-  };
-
-  const changePassword = async (current: string, newPass: string) => {
-    if (!user) return;
-    try {
-      await authService.changePassword({ userId: user.id, currentPassword: current, newPassword: newPass });
-    } catch (error) {
-      console.error("Error changing password:", error);
-      throw error;
-    }
-  };
-
-  const updateUser = async (id: string, updatedData: Partial<User>) => {
-    try {
-      const updatedUser = await userService.update(id, updatedData);
-      setUsers(prev => prev.map(u => u.id === id ? updatedUser : u));
-    } catch (error: any) {
-      console.error("Error updating user:", error);
-      alert(error.message || "Failed to update user");
-      throw error;
-    }
-  };
-
-  const addUser = async (newUser: Partial<User>) => {
-    try {
-      const createdUser = await userService.create(newUser);
-      setUsers(prev => [createdUser, ...prev]);
-    } catch (error: any) {
-      console.error("Error adding user:", error);
-      alert(error.message || "Failed to add user");
-      throw error;
-    }
-  };
-
-  const deleteUser = async (id: string) => {
-    try {
-      await userService.delete(id);
-      setUsers(prev => prev.filter(u => u.id !== id));
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      alert("Failed to delete user");
-    }
-  };
-
-  const saveBudgetPlan = async (plan: Omit<BudgetPlan, 'id' | 'updatedAt'>) => {
-    try {
-      const savedPlan = await budgetService.savePlan(plan);
-      setBudgetPlans(prev => {
-        const existingIndex = prev.findIndex(p =>
-          p.subActivityId === savedPlan.subActivityId &&
-          p.year === savedPlan.year &&
-          p.month === savedPlan.month
-        );
-
-        if (existingIndex >= 0) {
-          const newPlans = [...prev];
-          newPlans[existingIndex] = savedPlan;
-          return newPlans;
-        } else {
-          return [...prev, savedPlan];
-        }
-      });
-    } catch (error) {
-      console.error("Error saving budget plan:", error);
-    }
+    return budgetService.getLogs(categoryId);
   };
 
   return (
@@ -389,12 +299,11 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       budgetPlans,
       saveBudgetPlan,
       restoreData: (data: any) => {
-        if (data.requests) setRequests(data.requests);
-        if (data.categories) setCategories(data.categories);
-        if (data.settings) setSettings(data.settings);
-        if (data.departments) setDepartments(data.departments);
-        if (data.currentUser) setUser(data.currentUser);
-        alert('Data restored successfully (Session only)');
+        // Naive restore: just set cache
+        if (data.requests) queryClient.setQueryData(['requests'], data.requests);
+        if (data.categories) queryClient.setQueryData(['categories'], data.categories);
+        if (data.settings) queryClient.setQueryData(['settings'], data.settings);
+        alert('Data restored to Cache');
       }
     }}>
       {children}

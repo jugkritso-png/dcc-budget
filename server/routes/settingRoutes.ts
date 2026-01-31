@@ -1,5 +1,7 @@
 import express from 'express';
 import prisma from '../lib/prisma';
+import validate from '../middleware/validateResource';
+import { createDepartmentSchema } from '../schemas/masterDataSchema';
 
 const router = express.Router();
 
@@ -56,7 +58,7 @@ router.get('/departments', async (req, res) => {
     res.json(departments);
 });
 
-router.post('/departments', async (req, res) => {
+router.post('/departments', validate(createDepartmentSchema), async (req, res) => {
     const { name, code, color } = req.body;
     const department = await prisma.department.create({
         data: { name, code, color: color || "#3B82F6" }
@@ -64,8 +66,8 @@ router.post('/departments', async (req, res) => {
     res.json(department);
 });
 
-router.put('/departments/:id', async (req, res) => {
-    const { id } = req.params;
+router.put('/departments/:id', validate(createDepartmentSchema), async (req, res) => { // Reusing create schema as it has same fields
+    const { id } = req.params as { id: string };
     const { name, code, color } = req.body;
     const department = await prisma.department.update({
         where: { id },

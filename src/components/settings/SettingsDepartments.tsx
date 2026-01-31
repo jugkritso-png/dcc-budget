@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { Department } from '../../types';
 import { useBudget } from '../../context/BudgetContext';
+import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
 
 const SettingsDepartments: React.FC = () => {
     const { departments, addDepartment, updateDepartment, deleteDepartment } = useBudget();
@@ -107,23 +109,23 @@ const SettingsDepartments: React.FC = () => {
                     </div>
 
                     {!isAddMode && (
-                        <button
+                        <Button
                             onClick={() => setIsAddMode(true)}
-                            className="px-6 py-2.5 bg-gradient-to-r from-primary-600 to-indigo-600 text-white rounded-xl font-bold shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2"
+                            className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95"
                         >
-                            <Plus size={20} />
+                            <Plus size={20} className="mr-2" />
                             <span>เพิ่มหน่วยงานใหม่</span>
-                        </button>
+                        </Button>
                     )}
                 </div>
 
                 {/* Search Bar */}
                 <div className="relative w-full md:max-w-md">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                    <input
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-10" size={20} />
+                    <Input
                         type="text"
                         placeholder="ค้นหาชื่อหน่วยงาน หรือ รหัส..."
-                        className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none shadow-sm transition-all"
+                        className="pl-11 pr-4 py-3 h-auto rounded-2xl border-gray-200 focus:ring-primary-500 shadow-sm"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -144,29 +146,29 @@ const SettingsDepartments: React.FC = () => {
                                     </div>
                                     สร้างหน่วยงานใหม่
                                 </h3>
-                                <button onClick={() => setIsAddMode(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-full transition-colors">
+                                <Button variant="ghost" size="sm" onClick={() => setIsAddMode(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-full">
                                     <X size={20} />
-                                </button>
+                                </Button>
                             </div>
                             <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-6">
                                 <div className="md:col-span-2 space-y-2">
                                     <label className="text-xs font-bold text-gray-500 uppercase">รหัส (Code)</label>
-                                    <input
+                                    <Input
                                         type="text"
                                         value={newDept.code}
                                         readOnly
-                                        className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl font-mono font-bold text-gray-700 text-center"
+                                        className="p-3 h-auto bg-gray-50 border-gray-200 rounded-xl font-mono font-bold text-gray-700 text-center"
                                     />
                                 </div>
                                 <div className="md:col-span-6 space-y-2">
                                     <label className="text-xs font-bold text-gray-500 uppercase">ชื่อหน่วยงาน (Department Name) <span className="text-red-500">*</span></label>
-                                    <input
+                                    <Input
                                         type="text"
                                         autoFocus
                                         value={newDept.name}
                                         onChange={(e) => setNewDept({ ...newDept, name: e.target.value })}
                                         placeholder="ระบุชื่อหน่วยงาน..."
-                                        className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none transition-all"
+                                        className="p-3 h-auto border-gray-200 rounded-xl focus:ring-primary-500"
                                     />
                                 </div>
                                 <div className="md:col-span-2 space-y-2">
@@ -181,12 +183,12 @@ const SettingsDepartments: React.FC = () => {
                                     </div>
                                 </div>
                                 <div className="md:col-span-2 flex items-end">
-                                    <button
+                                    <Button
                                         onClick={handleAddDepartment}
-                                        className="w-full h-[50px] bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold shadow-md active:scale-95 transition-all"
+                                        className="w-full h-[50px] bg-primary-600 hover:bg-primary-700 border-none shadow-md"
                                     >
                                         ยืนยัน
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -221,11 +223,11 @@ const SettingsDepartments: React.FC = () => {
                                         {/* Code Column */}
                                         <td className="py-4 pl-6 align-middle rounded-l-2xl border-l-4 border-l-transparent group-hover:border-l-primary-500 bg-white group-hover:bg-blue-50/30 transition-colors w-32">
                                             {editingId === dept.id && editRowData ? (
-                                                <input
+                                                <Input
                                                     type="text"
                                                     value={editRowData.code}
                                                     onChange={(e) => setEditRowData({ ...editRowData, code: e.target.value })}
-                                                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-mono text-center"
+                                                    className="p-2 h-auto bg-gray-50 border-gray-200 text-sm font-mono text-center"
                                                 />
                                             ) : (
                                                 <div className="font-mono font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100 w-fit text-sm">
@@ -237,11 +239,11 @@ const SettingsDepartments: React.FC = () => {
                                         {/* Name Column */}
                                         <td className="py-4 align-middle bg-white group-hover:bg-blue-50/30">
                                             {editingId === dept.id && editRowData ? (
-                                                <input
+                                                <Input
                                                     type="text"
                                                     value={editRowData.name}
                                                     onChange={(e) => setEditRowData({ ...editRowData, name: e.target.value })}
-                                                    className="w-full p-2 bg-white border border-primary-500 ring-2 ring-primary-100 rounded-lg text-sm font-bold"
+                                                    className="p-2 h-auto border-primary-500 ring-2 ring-primary-100 text-sm font-bold"
                                                     autoFocus
                                                 />
                                             ) : (
@@ -282,37 +284,45 @@ const SettingsDepartments: React.FC = () => {
                                             <div className="flex justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all duration-200">
                                                 {editingId === dept.id ? (
                                                     <>
-                                                        <button
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
                                                             onClick={saveInlineEdit}
-                                                            className="p-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
+                                                            className="p-2 bg-green-50 text-green-600 hover:bg-green-100 hover:text-green-700"
                                                             title="บันทึก"
                                                         >
                                                             <Check size={18} />
-                                                        </button>
-                                                        <button
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
                                                             onClick={() => setEditingId(null)}
-                                                            className="p-2 bg-gray-50 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+                                                            className="p-2 bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                                                             title="ยกเลิก"
                                                         >
                                                             <X size={18} />
-                                                        </button>
+                                                        </Button>
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <button
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
                                                             onClick={() => startInlineEdit(dept)}
-                                                            className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                                                            className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50"
                                                             title="แก้ไข"
                                                         >
                                                             <Pencil size={18} />
-                                                        </button>
-                                                        <button
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
                                                             onClick={() => handleDelete(dept.id, dept.name)}
-                                                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50"
                                                             title="ลบ"
                                                         >
                                                             <Trash2 size={18} />
-                                                        </button>
+                                                        </Button>
                                                     </>
                                                 )}
                                             </div>

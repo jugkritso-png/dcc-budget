@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Download } from 'lucide-react';
 import { useBudget } from '../../context/BudgetContext';
+import { Button } from '../../components/ui/Button';
 
 const SettingsBackup: React.FC = () => {
     const { settings, departments, users, user, requests, categories } = useBudget();
@@ -44,13 +45,13 @@ const SettingsBackup: React.FC = () => {
                     <p className="text-sm font-semibold text-gray-900">{lastBackup || 'ยังไม่เคยสำรองข้อมูล'}</p>
                 </div>
 
-                <button
+                <Button
                     onClick={handleBackup}
-                    className="w-full bg-gradient-to-r from-primary-600 to-indigo-600 text-white rounded-xl py-3 font-bold hover:shadow-lg active:scale-95 transition-all shadow-indigo-200 flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-primary-600 to-indigo-600 border-none rounded-xl py-6 font-bold hover:shadow-lg active:scale-95 shadow-indigo-200"
                 >
-                    <Download size={20} />
+                    <Download size={20} className="mr-2" />
                     ดาวน์โหลดไฟล์ Backup
-                </button>
+                </Button>
 
             </div>
         </div>
