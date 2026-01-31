@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./prisma:/app/prisma
+    environment:
+      - DATABASE_URL=file:./dev.db
+    restart: always

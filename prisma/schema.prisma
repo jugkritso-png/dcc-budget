@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id            String        @id @default(uuid())
+  name          String
+  code          String
+  segment       String
+  allocated     Float
+  used          Float         @default(0)
+  color         String
+  colorLabel    String
+  year          Int
+  // Walailak University Budget Codes
+  businessPlace    String? // รหัสสถานประกอบการ (1000 = มวล)
+  businessArea     String? // ประเภทธุรกิจ
+  fund             String? // I = Internal, E = External
+  fundCenter       String? // หน่วยงานที่รับงบประมาณ
+  costCenter       String? // หน่วยงานที่ใช้งบประมาณจริง
+  functionalArea   String? // กิจกรรมย่อย
+  commitmentItem   String? // หมวดรายจ่าย
+  subActivities SubActivity[]
+  logs          BudgetLog[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  expenses      Expense[]
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  amount      Float
+  payee       String
+  date        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SubActivity {
+  id         String   @id @default(uuid())
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  name       String
+  allocated  Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  plans      BudgetPlan[]
+}
+
+model BudgetPlan {
+  id            String      @id @default(uuid())
+  subActivityId String
+  subActivity   SubActivity @relation(fields: [subActivityId], references: [id], onDelete: Cascade)
+  year          Int
+  month         Int // 0-11
+  amount        Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([subActivityId, year, month])
+}
+
+model Department {
+  id        String   @id @default(uuid())
+  name      String
+  code      String
+  color     String   @default("#3B82F6") // Default blue-500
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BudgetRequest {
+  id          String   @id @default(uuid())
+  project     String
+  category    String
+  activity    String? // Maps to "Sub-activity" - Optional field
+  amount      Float
+  date        String
+  status      String   @default("pending") // 'approved' | 'pending' | 'rejected' | 'draft'
+  requester   String
+  notes       String?
+  department  String?
+  approvalRef String?
+  urgency     String?  @default("normal") // 'normal' | 'urgent' | 'critical'
+  startDate   String?
+  endDate     String?
+  reason      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  expenseItems BudgetRequestItem[]
+}
+
+model BudgetRequestItem {
+  id          String        @id @default(uuid())
+  requestId   String
+  request     BudgetRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  category    String
+  description String
+  quantity    Float
+  unit        String
+  unitPrice   Float
+  total       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BudgetLog {
+  id          String   @id @default(uuid())
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  amount      Float
+  type        String   // 'ADD' | 'TRANSFER_IN' | 'TRANSFER_OUT' | 'REDUCE'
+  reason      String
+  user        String?  // Optional: who made the change
+  createdAt   DateTime @default(now())
+}
+
+model SystemSetting {
+  key   String @id
+  value String
+}
+
+model User {
+  id          String   @id @default(uuid())
+  username    String   @unique
+  password    String   // In real app, hash this!
+  name        String
+  email       String   @unique
+  role        String   @default("user") // 'admin', 'user', 'approver'
+  position    String?
+  department  String?
+  phone       String?
+  employeeId  String?
+  bio         String?
+  avatar      String?  // Base64 or URL
+  theme       String?  @default("light")
+  language    String?  @default("th")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  activityLogs ActivityLog[]
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entityId  String?
+  entityType String?
+  details   String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}

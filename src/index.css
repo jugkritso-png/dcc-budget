@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@config "./tailwind.config.js";
+
+@layer base {
+    body {
+        @apply bg-[#F4F7FA] font-sans text-gray-900 bg-gradient-mesh min-h-screen bg-fixed antialiased selection:bg-primary-100 selection:text-primary-700;
+        font-feature-settings: "cv11", "ss01";
+    }
+
+    /* Typography System */
+    /* Typography System */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-bold tracking-tight;
+        /* Removed text-gray-900 to allow utility override (e.g., text-white) */
+    }
+
+    h1 {
+        @apply text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight;
+    }
+
+    h2 {
+        @apply text-3xl sm:text-4xl font-bold tracking-tight leading-snug;
+    }
+
+    h3 {
+        @apply text-2xl sm:text-3xl font-bold leading-snug;
+    }
+
+    h4 {
+        @apply text-xl sm:text-2xl font-semibold leading-relaxed;
+    }
+
+    h5 {
+        @apply text-lg sm:text-xl font-semibold leading-relaxed;
+    }
+
+    h6 {
+        @apply text-base sm:text-lg font-medium leading-normal uppercase tracking-wide text-gray-500;
+    }
+
+    p {
+        @apply leading-relaxed text-gray-600;
+    }
+
+    /* Utility classes for specific weights if needed */
+    .font-ui {
+        @apply font-medium text-gray-700;
+    }
+
+    /* Modern Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors;
+    }
+}
