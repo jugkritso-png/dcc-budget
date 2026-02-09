@@ -27,7 +27,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
     onViewClick
 }) => {
     return (
-        <div className="bg-white rounded-3xl shadow-card border border-gray-100/50 p-4 md:p-8 relative overflow-hidden">
+        <div className="bg-white/60 backdrop-blur-xl rounded-3xl shadow-card border border-white/60 ring-1 ring-black/5 p-4 md:p-8 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-400 via-primary-500 to-indigo-500"></div>
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <div className="flex items-center gap-4">

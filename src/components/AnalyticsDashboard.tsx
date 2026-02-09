@@ -3,7 +3,9 @@ import React from 'react';
 import { useBudget } from '../context/BudgetContext';
 import { Card } from './ui/Card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
-import { Percent, Wallet, FileText, Calculator } from 'lucide-react';
+import { Percent, Wallet, FileText, Calculator, Download } from 'lucide-react';
+import { generateBudgetReport } from '../services/reportService';
+import { Button } from './ui/Button';
 
 const AnalyticsDashboard: React.FC = () => {
     const { requests, categories, settings } = useBudget();
@@ -60,14 +62,44 @@ const AnalyticsDashboard: React.FC = () => {
     const approvedRequests = requests.filter(r => r.status === 'approved');
     const avgPerRequest = approvedRequests.length > 0 ? totalUsed / approvedRequests.length : 0;
 
+    const engMonths = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+
+    const handleExport = () => {
+        // Map data for report
+        const reportMonthly = chartData.map((d, index) => ({
+            ...d,
+            name: engMonths[index] || d.name // Fallback to Thai (which might break) if index mismatch, but mapped is safer
+        }));
+
+        generateBudgetReport({
+            orgName: settings.orgName,
+            fiscalYear: settings.fiscalYear,
+            stats: {
+                totalBudget: totalAllocated,
+                totalUsed,
+                totalRemaining,
+                utilizationRate
+            },
+            monthlyData: reportMonthly,
+            categoryData: categoryData.map(c => ({ ...c })), // Clone
+        });
+    };
+
     return (
         <div className="space-y-6">
+            {/* Header Actions */}
+            <div className="flex justify-end">
+                <Button onClick={handleExport} className="bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-sm hover:shadow-md transition-all">
+                    <Download size={18} className="mr-2" />
+                    Export Report (PDF)
+                </Button>
+            </div>
             {/* KPI Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card interactive className="p-5 group flex flex-col justify-between">
                     <div className="flex justify-between items-start mb-3">
-                        <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
-                            <Percent size={20} className="text-blue-600" />
+                        <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
+                            <Percent size={20} className="text-primary-600" />
                         </div>
                     </div>
                     <div>
@@ -102,8 +134,8 @@ const AnalyticsDashboard: React.FC = () => {
 
                 <Card interactive className="p-5 group flex flex-col justify-between">
                     <div className="flex justify-between items-start mb-3">
-                        <div className="p-2 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
-                            <FileText size={20} className="text-indigo-600" />
+                        <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
+                            <FileText size={20} className="text-primary-600" />
                         </div>
                     </div>
                     <div>
@@ -137,8 +169,8 @@ const AnalyticsDashboard: React.FC = () => {
                                     formatter={(value: number) => `฿${value.toLocaleString()}`}
                                 />
                                 <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
-                                <Bar dataKey="planned" name="แผน (Planned)" fill="#93C5FD" radius={[6, 6, 6, 6]} barSize={20} />
-                                <Bar dataKey="actual" name="ผลจริง (Actual)" fill="#003964" radius={[6, 6, 6, 6]} barSize={20} />
+                                <Bar dataKey="planned" name="แผน (Planned)" fill="var(--color-primary-300)" radius={[6, 6, 6, 6]} barSize={20} />
+                                <Bar dataKey="actual" name="ผลจริง (Actual)" fill="var(--color-primary-600)" radius={[6, 6, 6, 6]} barSize={20} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -155,8 +187,8 @@ const AnalyticsDashboard: React.FC = () => {
                             <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#003964" stopOpacity={0.2} />
-                                        <stop offset="95%" stopColor="#003964" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="var(--color-primary-600)" stopOpacity={0.2} />
+                                        <stop offset="95%" stopColor="var(--color-primary-600)" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12, fontWeight: 500 }} dy={10} />
@@ -167,7 +199,7 @@ const AnalyticsDashboard: React.FC = () => {
                                     itemStyle={{ fontSize: '13px', fontWeight: 600, color: '#003964' }}
                                     formatter={(value: number) => `฿${value.toLocaleString()}`}
                                 />
-                                <Area type="monotone" dataKey="actual" stroke="#003964" strokeWidth={4} fillOpacity={1} fill="url(#colorActual)" />
+                                <Area type="monotone" dataKey="actual" stroke="var(--color-primary-800)" strokeWidth={4} fillOpacity={1} fill="url(#colorActual)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
@@ -182,14 +214,14 @@ const AnalyticsDashboard: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {categoryData.length > 0 ? categoryData.map((cat, idx) => (
-                        <div key={idx} className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 hover:border-blue-200 transition-colors group">
+                        <div key={idx} className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 hover:border-primary-200 transition-colors group">
                             <div className="flex justify-between text-sm mb-3">
                                 <span className="font-bold text-gray-700 group-hover:text-primary-700 transition-colors">{cat.name}</span>
                                 <span className="font-bold text-gray-900 border-b-2 border-primary-100 px-1">฿{cat.amount.toLocaleString()}</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                                 <div
-                                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
+                                    className="bg-gradient-to-r from-primary-500 to-primary-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
                                     style={{ width: `${(cat.amount / cat.totalAllocated) * 100}%` }}
                                 ></div>
                             </div>

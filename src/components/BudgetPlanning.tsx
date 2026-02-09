@@ -14,8 +14,8 @@ const BudgetPlanning: React.FC = () => {
     const [editAmount, setEditAmount] = useState('');
 
     const quarters = [
-        { id: 'q1', name: 'ไตรมาส 1 (Q1)', color: 'bg-blue-600', months: ['ต.ค.', 'พ.ย.', 'ธ.ค.'] },
-        { id: 'q2', name: 'ไตรมาส 2 (Q2)', color: 'bg-indigo-500', months: ['ม.ค.', 'ก.พ.', 'มี.ค.'] },
+        { id: 'q1', name: 'ไตรมาส 1 (Q1)', color: 'bg-primary-600', months: ['ต.ค.', 'พ.ย.', 'ธ.ค.'] },
+        { id: 'q2', name: 'ไตรมาส 2 (Q2)', color: 'bg-primary-500', months: ['ม.ค.', 'ก.พ.', 'มี.ค.'] },
         { id: 'q3', name: 'ไตรมาส 3 (Q3)', color: 'bg-teal-500', months: ['เม.ย.', 'พ.ค.', 'มิ.ย.'] },
         { id: 'q4', name: 'ไตรมาส 4 (Q4)', color: 'bg-amber-500', months: ['ก.ค.', 'ส.ค.', 'ก.ย.'] },
     ];
@@ -65,7 +65,7 @@ const BudgetPlanning: React.FC = () => {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="bg-white/60 backdrop-blur-sm p-3 rounded-2xl shadow-sm border border-white/60">
                         <Calendar className="text-primary-600 w-6 h-6" />
                     </div>
                     <div>
@@ -90,16 +90,16 @@ const BudgetPlanning: React.FC = () => {
             </div>
 
             {/* Main Content Card */}
-            <div className="bg-white rounded-3xl shadow-card border border-gray-100/60 p-6 md:p-8 relative">
+            <div className="bg-white/60 backdrop-blur-xl rounded-3xl shadow-card border border-white/60 ring-1 ring-black/5 p-6 md:p-8 relative">
 
                 {/* Instruction Banner */}
-                <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 mb-8 flex items-start gap-4">
-                    <div className="bg-blue-100 text-blue-600 p-2 rounded-xl shrink-0">
+                <div className="bg-primary-50/50 border border-primary-100 rounded-2xl p-5 mb-8 flex items-start gap-4">
+                    <div className="bg-primary-100 text-primary-600 p-2 rounded-xl shrink-0">
                         <Info size={20} />
                     </div>
                     <div>
-                        <h3 className="text-blue-900 font-bold mb-1 text-sm">การใช้งาน Milestone Timeline</h3>
-                        <p className="text-blue-700/80 text-xs leading-relaxed">
+                        <h3 className="text-primary-900 font-bold mb-1 text-sm">การใช้งาน Milestone Timeline</h3>
+                        <p className="text-primary-700/80 text-xs leading-relaxed">
                             คลิกที่ช่องเดือนเพื่อ "ระบุจำนวนเงิน" ที่วางแผนจะใช้ แถบสีจะแสดงขึ้นอัตโนมัติเมื่อมียอดเงิน &gt; 0
                         </p>
                     </div>
@@ -152,8 +152,8 @@ const BudgetPlanning: React.FC = () => {
                                             const hasAmount = plan && plan.amount > 0;
 
                                             // Determine bar color based on Quarter
-                                            let barColor = 'bg-blue-100 border-blue-300 text-blue-700';
-                                            if (i >= 3 && i <= 5) barColor = 'bg-indigo-100 border-indigo-300 text-indigo-700';
+                                            let barColor = 'bg-primary-100 border-primary-300 text-primary-700';
+                                            if (i >= 3 && i <= 5) barColor = 'bg-primary-200 border-primary-400 text-primary-800';
                                             else if (i >= 6 && i <= 8) barColor = 'bg-teal-100 border-teal-300 text-teal-700';
                                             else if (i >= 9) barColor = 'bg-amber-100 border-amber-300 text-amber-700';
 
@@ -197,7 +197,7 @@ const BudgetPlanning: React.FC = () => {
             {/* Edit Modal */}
             {isModalOpen && editingCell && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden animate-scale-in">
+                    <div className="bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden animate-scale-in border border-white/60 ring-1 ring-black/5">
                         <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                             <div>
                                 <h3 className="text-lg font-bold text-gray-900">กำหนดงบประมาณ</h3>

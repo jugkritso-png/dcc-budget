@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useBudget } from '../context/BudgetContext';
 import { User, Lock, ArrowRight, Loader, Mail, ShieldCheck } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login: React.FC = () => {
-    const { login } = useBudget();
+    const { login, loginWithGoogle } = useBudget();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -35,20 +36,20 @@ const Login: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-primary-600/90 via-primary-800/95 to-primary-950/90 mix-blend-multiply"></div>
                     {/* Animated Blobs */}
                     <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-500/30 rounded-full blur-[120px] -mr-32 -mt-32 animate-pulse"></div>
-                    <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/30 rounded-full blur-[100px] -ml-20 -mb-20"></div>
+                    <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary-500/30 rounded-full blur-[100px] -ml-20 -mb-20"></div>
                 </div>
 
                 {/* Content Overlay */}
                 <div className="relative z-10 p-16 text-white max-w-2xl">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-blue-100 text-xs font-bold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 shadow-lg">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-primary-100 text-xs font-bold mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 shadow-lg">
                         <span className="w-2 h-2 rounded-full bg-accent-400 animate-pulse box-shadow-glow"></span>
                         ระบบบริหารจัดการงบประมาณองค์กร
                     </div>
                     <h1 className="text-6xl font-extrabold mb-8 leading-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100 tracking-tight">
                         Smart Budget <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-blue-200">Management</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-primary-200">Management</span>
                     </h1>
-                    <p className="text-xl text-blue-100/80 mb-10 leading-relaxed max-w-lg animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200 font-light">
+                    <p className="text-xl text-primary-100/80 mb-10 leading-relaxed max-w-lg animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200 font-light">
                         ยกระดับการบริหารงบประมาณด้วยความโปร่งใส รวดเร็ว และแม่นยำ ด้วยระบบ Digital Trust Platform ที่ทันสมัยที่สุด
                     </p>
 
@@ -56,11 +57,11 @@ const Login: React.FC = () => {
                     <div className="flex gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
                         <div className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:bg-white/10 transition-colors cursor-default group">
                             <div className="text-3xl font-bold mb-1 text-white group-hover:text-accent-300 transition-colors">100%</div>
-                            <div className="text-sm text-blue-200 font-medium">Data Security</div>
+                            <div className="text-sm text-primary-200 font-medium">Data Security</div>
                         </div>
                         <div className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:bg-white/10 transition-colors cursor-default group">
                             <div className="text-3xl font-bold mb-1 text-white group-hover:text-accent-300 transition-colors">Real-time</div>
-                            <div className="text-sm text-blue-200 font-medium">Budget Tracking</div>
+                            <div className="text-sm text-primary-200 font-medium">Budget Tracking</div>
                         </div>
                     </div>
                 </div>
@@ -138,6 +139,42 @@ const Login: React.FC = () => {
                                     />
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-gray-200"></span>
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-white px-2 text-gray-500 font-bold">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div className="w-full flex justify-center">
+                            <GoogleLogin
+                                onSuccess={async (credentialResponse) => {
+                                    if (credentialResponse.credential) {
+                                        setIsLoading(true);
+                                        try {
+                                            const success = await loginWithGoogle(credentialResponse.credential);
+                                            if (!success) {
+                                                setError('Google Sign-In Failed');
+                                            }
+                                        } catch (err) {
+                                            setError('Google Sign-In Error');
+                                        } finally {
+                                            setIsLoading(false);
+                                        }
+                                    }
+                                }}
+                                onError={() => {
+                                    setError('Google Sign-In Failed');
+                                }}
+                                width="100%"
+                                shape="circle"
+                                theme="outline"
+                                text="signin_with"
+                            />
                         </div>
 
                         <button

@@ -11,6 +11,7 @@ import { useBudget } from './context/BudgetContext'; // Changed import
 import Login from './pages/Login';
 import CreateRequest from './pages/CreateRequest';
 import Notifications from './pages/Notifications';
+import ExpenseReport from './pages/ExpenseReport';
 import { Toaster } from 'react-hot-toast';
 
 const App: React.FC = () => {
@@ -38,6 +39,8 @@ const App: React.FC = () => {
         return <Settings />;
       case Page.NOTIFICATIONS:
         return <Notifications onNavigate={setCurrentPage} />;
+      case Page.EXPENSE_REPORT:
+        return <ExpenseReport />;
       default:
         return <Dashboard />;
     }

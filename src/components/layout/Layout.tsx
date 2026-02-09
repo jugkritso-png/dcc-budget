@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Wallet, Settings, BarChart3, LayoutGrid, Bell, User, LogOut, FileText, Menu, ChevronLeft } from 'lucide-react';
+import { Home, Wallet, Settings, BarChart3, LayoutGrid, Bell, User, LogOut, FileText, Menu, ChevronLeft, CheckCircle } from 'lucide-react';
 import { Page } from '../../types';
 import { useBudget } from '../../context/BudgetContext';
 
@@ -26,6 +26,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
     { id: Page.DASHBOARD, label: 'หน้าหลัก', icon: Home },
     { id: Page.BUDGET, label: 'งบประมาณ', icon: Wallet },
     { id: Page.CREATE_REQUEST, label: 'ขอใช้งบประมาณ', icon: FileText },
+    { id: Page.EXPENSE_REPORT, label: 'รายงานผล', icon: CheckCircle },
     // Only show Management (Budget Categories) to Admin
     ...(user?.role === 'admin' ? [{ id: Page.MANAGEMENT, label: 'การจัดการ', icon: Settings }] : []),
     { id: Page.ANALYTICS, label: 'วิเคราะห์', icon: BarChart3 },
@@ -36,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
     <>
       <div className="p-6">
         <div className={`flex items-center gap-3 mb-8 ${isCollapsed ? 'justify-center' : ''}`}>
-          <div className={`bg-gradient-primary text-white rounded-xl shadow-lg shadow-blue-500/30 ${isCollapsed ? 'p-2.5' : 'p-2'}`}>
+          <div className={`bg-gradient-to-br from-white/80 to-white/40 border border-white/60 text-primary-600 rounded-xl shadow-lg shadow-black/5 backdrop-blur-md ${isCollapsed ? 'p-2.5' : 'p-2'}`}>
             <Wallet className={isCollapsed ? 'w-6 h-6' : 'w-6 h-6'} />
           </div>
           {!isCollapsed && (
@@ -57,12 +58,12 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
               }}
               title={isCollapsed ? item.label : undefined}
               className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0 py-4' : 'px-4 py-3.5'} rounded-2xl transition-all duration-300 group relative overflow-hidden ${currentPage === item.id
-                ? 'text-white shadow-lg shadow-blue-500/25'
-                : 'text-gray-600 hover:bg-white hover:shadow-md hover:text-primary-600'
+                ? 'text-white shadow-lg shadow-primary-500/30 bg-gradient-primary'
+                : 'text-gray-600 hover:bg-white/50 hover:shadow-sm hover:text-primary-600'
                 }`}
             >
               {currentPage === item.id && (
-                <div className="absolute inset-0 bg-gradient-primary opacity-100 z-0"></div>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity z-0"></div>
               )}
               <item.icon className={`${isCollapsed ? 'w-6 h-6' : 'w-5 h-5'} ${!isCollapsed ? 'mr-3' : ''} relative z-10 transition-transform group-hover:scale-110 ${currentPage === item.id ? 'text-white' : 'text-gray-400 group-hover:text-primary-500'}`} />
               {!isCollapsed && <span className="relative z-10 font-medium tracking-wide">{item.label}</span>}
@@ -85,9 +86,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
   );
 
   return (
-    <div className="flex min-h-screen bg-[#F4F7FA] overflow-hidden">
+    <div className="flex min-h-screen bg-slate-50/50 overflow-hidden relative selection:bg-primary-200">
+      {/* Global Background Decor (Glass Effect Base) */}
+      <div className="fixed top-[-20%] left-[-10%] w-[800px] h-[800px] bg-primary-200/40 rounded-full blur-[120px] pointer-events-none z-0 mix-blend-multiply animate-pulse-slow"></div>
+      <div className="fixed bottom-[-20%] right-[-5%] w-[600px] h-[600px] bg-indigo-200/40 rounded-full blur-[100px] pointer-events-none z-0 mix-blend-multiply"></div>
+      <div className="fixed top-[20%] right-[10%] w-[400px] h-[400px] bg-teal-200/30 rounded-full blur-[90px] pointer-events-none z-0 mix-blend-multiply"></div>
+
       {/* Desktop Sidebar */}
-      <aside className={`hidden md:flex flex-col ${isSidebarCollapsed ? 'w-20' : 'w-72'} bg-white/80 backdrop-blur-xl border-r border-white/20 shadow-xl shadow-gray-200/50 z-20 h-screen fixed top-0 left-0 transition-all duration-300`}>
+      <aside className={`hidden md:flex flex-col ${isSidebarCollapsed ? 'w-20' : 'w-72'} bg-white/40 backdrop-blur-2xl border-r border-white/40 shadow-2xl shadow-gray-200/10 z-20 h-screen fixed top-0 left-0 transition-all duration-300`}>
         <SidebarContent isCollapsed={isSidebarCollapsed} />
         {/* Toggle Button */}
         <button
@@ -103,7 +109,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
       <div className={`flex-1 flex flex-col ${isSidebarCollapsed ? 'md:ml-20' : 'md:ml-72'} transition-all duration-300 min-h-screen`}>
 
         {/* Mobile Header */}
-        <header className="md:hidden bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100 px-4 py-3 flex items-center justify-between shadow-sm">
+        <header className="md:hidden bg-white/60 backdrop-blur-xl sticky top-0 z-40 border-b border-white/40 px-4 py-3 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2">
             <div className="bg-gradient-primary text-white p-1.5 rounded-lg">
               <Wallet className="w-5 h-5" />
@@ -151,8 +157,8 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
             {isNotificationsOpen && (
               <>
                 <div className="fixed inset-0 z-[90]" onClick={() => setIsNotificationsOpen(false)}></div>
-                <div className="absolute top-full right-0 mt-1 w-64 sm:w-72 bg-white rounded-2xl shadow-xl border border-gray-100/50 overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="p-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50 backdrop-blur-sm">
+                <div className="absolute top-full right-0 mt-1 w-64 sm:w-72 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60 ring-1 ring-black/5 overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="p-4 border-b border-white/40 flex justify-between items-center bg-white/40 backdrop-blur-sm">
                     <h3 className="font-bold text-gray-800">การแจ้งเตือน</h3>
                     <button
                       onClick={() => {
@@ -208,8 +214,16 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
                 <p className="text-sm font-bold text-gray-800">{user?.name}</p>
                 <p className="text-xs text-primary-500 font-medium">{user?.role === 'admin' ? 'ผู้ดูแลระบบ' : 'พนักงาน'}</p>
               </div>
-              <div className="h-10 w-10 rounded-full bg-gradient-primary text-white flex items-center justify-center text-sm font-bold shadow-lg shadow-blue-500/20 ring-2 ring-white cursor-pointer hover:scale-105 transition-transform">
-                {user?.avatar || user?.name?.substring(0, 2) || 'US'}
+              <div className="h-10 w-10 rounded-full bg-gradient-primary text-white flex items-center justify-center text-sm font-bold shadow-lg shadow-primary-500/20 ring-2 ring-white cursor-pointer hover:scale-105 transition-transform">
+                {(() => {
+                  const cleanAvatar = user?.avatar ? String(user.avatar).trim() : '';
+                  const isImage = cleanAvatar.startsWith('http') || cleanAvatar.startsWith('data:');
+
+                  if (isImage) {
+                    return <img src={cleanAvatar} alt={user?.name} className="w-full h-full object-cover rounded-full" />;
+                  }
+                  return cleanAvatar && cleanAvatar.length <= 3 ? cleanAvatar : (user?.name?.substring(0, 2) || 'US');
+                })()}
               </div>
             </div>
           </div>

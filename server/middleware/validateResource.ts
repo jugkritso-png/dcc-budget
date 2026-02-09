@@ -11,15 +11,18 @@ const validate = (schema: ZodSchema) => (req: Request, res: Response, next: Next
         next();
     } catch (e: any) {
         if (e instanceof ZodError) {
+            const errors = e.issues || (e as any).errors || [];
+            console.log("[Validation Error] Issues:", errors);
             return res.status(400).json({
                 error: 'Validation Error',
-                details: (e as any).errors.map((err: any) => ({
+                details: errors.map((err: any) => ({
                     path: err.path.join('.'),
                     message: err.message
                 }))
             });
         }
-        return res.status(400).send(e.errors);
+        console.error("Validation Middleware Error:", e);
+        return res.status(400).json({ error: e.message || 'Unknown Validation Error' });
     }
 };
 

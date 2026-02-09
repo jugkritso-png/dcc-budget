@@ -53,7 +53,7 @@ const SettingsActivityLogs: React.FC = () => {
 
     const getActionColor = (action: string) => {
         if (action.includes('LOGIN')) return 'text-green-600 bg-green-50';
-        if (action.includes('CREATE')) return 'text-blue-600 bg-blue-50';
+        if (action.includes('CREATE')) return 'text-primary-600 bg-primary-50';
         if (action.includes('UPDATE')) return 'text-orange-600 bg-orange-50';
         if (action.includes('DELETE')) return 'text-red-600 bg-red-50';
         return 'text-gray-600 bg-gray-50';
@@ -76,7 +76,7 @@ const SettingsActivityLogs: React.FC = () => {
                 </Button>
             </div>
 
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-card overflow-hidden">
+            <div className="bg-white/60 backdrop-blur-xl rounded-3xl border border-white/60 ring-1 ring-black/5 shadow-card overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50/50 border-b border-gray-100">
@@ -108,7 +108,15 @@ const SettingsActivityLogs: React.FC = () => {
                                             {log.user ? (
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 text-xs font-bold">
-                                                        {log.user.avatar || log.user.name.charAt(0)}
+                                                        {(() => {
+                                                            const cleanAvatar = log.user.avatar ? String(log.user.avatar).trim() : '';
+                                                            const isImage = cleanAvatar.startsWith('http') || cleanAvatar.startsWith('data:');
+
+                                                            if (isImage) {
+                                                                return <img src={cleanAvatar} alt={log.user.name} className="w-full h-full object-cover rounded-full" />;
+                                                            }
+                                                            return cleanAvatar && cleanAvatar.length <= 3 ? cleanAvatar : log.user.name.charAt(0);
+                                                        })()}
                                                     </div>
                                                     <div>
                                                         <p className="text-sm font-semibold text-gray-900">{log.user.name}</p>

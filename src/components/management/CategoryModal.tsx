@@ -75,7 +75,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
 
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl p-8 animate-in fade-in zoom-in duration-200">
+            <div className="bg-white/80 backdrop-blur-2xl rounded-2xl shadow-2xl w-full max-w-2xl p-8 animate-in fade-in zoom-in duration-200 border border-white/60 ring-1 ring-black/5">
                 <div className="flex justify-between items-center mb-6">
                     <h3 className="text-lg font-bold text-gray-900">{initialData ? 'แก้ไขหมวดหมู่' : 'เพิ่มหมวดหมู่ใหม่'}</h3>
                     <button onClick={onClose} className="text-gray-400 hover:text-gray-600"><X size={20} /></button>

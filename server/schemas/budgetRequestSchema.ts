@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const expenseItemSchema = z.object({
-    category: z.enum(['compensation', 'operating', 'materials', 'utilities', 'equipment', 'other']),
+    category: z.string().min(1),
     description: z.string().min(1),
     quantity: z.number().positive(),
     unitPrice: z.number().positive(),
@@ -14,6 +14,7 @@ export const createRequestSchema = z.object({
         project: z.string().min(1),
         category: z.string().min(1),
         activity: z.string().min(1),
+        subActivityId: z.string().optional(),
         amount: z.number().positive(),
         date: z.string(), // Could check regex for YYYY-MM-DD
         status: z.enum(['draft', 'pending', 'approved', 'rejected']).optional(),

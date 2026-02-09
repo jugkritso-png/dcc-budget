@@ -27,9 +27,22 @@ export const updateCategorySchema = z.object({
 
 export const createSubActivitySchema = z.object({
     body: z.object({
-        categoryId: z.string().uuid(),
+        id: z.string().optional(), // Allow ID if provided
+        categoryId: z.string().min(1),
         name: z.string().min(1),
-        allocated: z.number()
+        allocated: z.number(),
+        parentId: z.string().optional()
+    })
+});
+
+export const updateSubActivitySchema = z.object({
+    params: z.object({
+        id: z.string()
+    }),
+    body: z.object({
+        name: z.string().min(1).optional(),
+        allocated: z.number().optional(),
+        parentId: z.string().optional()
     })
 });
 

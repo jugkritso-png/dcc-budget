@@ -79,7 +79,7 @@ const BudgetCategories: React.FC = () => {
     }
 
     const categoryData: Category = {
-      id: editingCategory ? editingCategory.id : Date.now().toString(),
+      id: editingCategory ? editingCategory.id : crypto.randomUUID(),
       name: formData.name,
       code: formData.code,
       segment: formData.segment,
@@ -186,15 +186,20 @@ const BudgetCategories: React.FC = () => {
             if (activeDetailTab === 'history') getBudgetLogs(viewingCategory.id).then(setBudgetLogs);
           }
         }}
-        onAddSubActivity={(name, allocated) => {
+        onAddSubActivity={async (name, allocated) => {
           if (viewingCategory) {
-            addSubActivity({
-              id: `SUB-${Date.now()}`,
-              categoryId: viewingCategory.id,
-              name,
-              allocated: parseFloat(allocated)
-            });
-            toast.success('เพิ่มดกิจกรรมย่อยสำเร็จ');
+            try {
+              await addSubActivity({
+                id: crypto.randomUUID(),
+                categoryId: viewingCategory.id,
+                name,
+                allocated: parseFloat(allocated)
+              } as any);
+              toast.success('เพิ่มกิจกรรมย่อยสำเร็จ');
+            } catch (error) {
+              console.error("Failed to add sub-activity:", error);
+              toast.error('ไม่สามารถเพิ่มกิจกรรมย่อยได้');
+            }
           }
         }}
         onDeleteSubActivity={deleteSubActivity}

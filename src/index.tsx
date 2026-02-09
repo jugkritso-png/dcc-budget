@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import App from './App';
 
 import { BudgetProvider } from './context/BudgetContext';
@@ -17,9 +18,11 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BudgetProvider>
-        <App />
-      </BudgetProvider>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID"}>
+        <BudgetProvider>
+          <App />
+        </BudgetProvider>
+      </GoogleOAuthProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

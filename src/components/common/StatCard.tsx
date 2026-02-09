@@ -12,7 +12,7 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ title, amount, subtitle, icon: Icon, colorClass, iconBgClass }) => {
   return (
-    <div className={`bg-white rounded-xl p-6 shadow-sm border-l-4 ${colorClass} flex flex-col justify-between h-full`}>
+    <div className={`bg-white/60 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 ring-1 ring-black/5 border-l-4 ${colorClass} flex flex-col justify-between h-full`}>
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-sm font-medium text-gray-500">{title}</h3>
         <div className={`p-2 rounded-lg ${iconBgClass}`}>

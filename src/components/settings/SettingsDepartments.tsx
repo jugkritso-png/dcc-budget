@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Database, Plus, Check, X, Pencil, Trash2, Building, Search, LayoutGrid, List as ListIcon, Palette, Folder } from 'lucide-react';
+import { Building, Plus, Check, X, Pencil, Trash2, Search, LayoutGrid, Palette, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Department } from '../../types';
 import { useBudget } from '../../context/BudgetContext';
 import { Button } from '../../components/ui/Button';
@@ -93,246 +94,252 @@ const SettingsDepartments: React.FC = () => {
     };
 
     return (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col h-full bg-gray-50/50 min-h-screen">
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 p-6 md:p-8 h-full flex flex-col">
+            <div className="max-w-5xl mx-auto w-full flex flex-col h-full">
 
-            {/* Header Section */}
-            <div className="p-8 pb-4">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                {/* Header Section */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 shrink-0">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                            <Building className="text-primary-600" size={28} />
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <div className="p-2 bg-primary-100 rounded-xl text-primary-600">
+                                <LayoutGrid size={24} />
+                            </div>
                             จัดการหน่วยงาน
                         </h2>
-                        <p className="text-gray-500 mt-1">
+                        <p className="text-gray-500 text-sm mt-1 ml-12">
                             มีทั้งหมด <span className="text-primary-600 font-bold">{departments?.length || 0}</span> หน่วยงานในระบบ
                         </p>
                     </div>
 
-                    {!isAddMode && (
-                        <Button
-                            onClick={() => setIsAddMode(true)}
-                            className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95"
-                        >
-                            <Plus size={20} className="mr-2" />
-                            <span>เพิ่มหน่วยงานใหม่</span>
-                        </Button>
-                    )}
+                    <div className="flex items-center gap-3">
+                        <div className="relative">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-10" size={18} />
+                            <input
+                                type="text"
+                                placeholder="ค้นหา..."
+                                className="pl-11 pr-4 py-2.5 h-auto rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-300 w-48 transition-all hover:bg-white"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+
+                        {!isAddMode && (
+                            <Button
+                                onClick={() => setIsAddMode(true)}
+                                className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 rounded-xl"
+                            >
+                                <Plus size={20} className="mr-2" />
+                                <span>เพิ่มหน่วยงาน</span>
+                            </Button>
+                        )}
+                    </div>
                 </div>
 
-                {/* Search Bar */}
-                <div className="relative w-full md:max-w-md">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-10" size={20} />
-                    <Input
-                        type="text"
-                        placeholder="ค้นหาชื่อหน่วยงาน หรือ รหัส..."
-                        className="pl-11 pr-4 py-3 h-auto rounded-2xl border-gray-200 focus:ring-primary-500 shadow-sm"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </div>
-            </div>
+                {/* Content Area */}
+                <div className="flex-1 overflow-y-auto pr-2 -mr-2 pb-12">
+                    <AnimatePresence mode="popLayout">
+                        {isAddMode && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -20, height: 0 }}
+                                animate={{ opacity: 1, y: 0, height: 'auto' }}
+                                exit={{ opacity: 0, y: -20, height: 0 }}
+                                className="mb-6 overflow-hidden"
+                            >
+                                <div className="bg-white/80 backdrop-blur-xl rounded-[24px] p-6 shadow-xl border border-primary-100 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
 
-            {/* Content Area */}
-            <div className="px-8 pb-12 overflow-y-auto flex-1">
-
-                {/* Add New Department Form (Collapsible) */}
-                {isAddMode && (
-                    <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-300">
-                        <div className="bg-white rounded-3xl p-1 shadow-card border border-primary-100 ring-4 ring-primary-50">
-                            <div className="p-6 border-b border-gray-50 flex justify-between items-center">
-                                <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-                                    <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center">
-                                        <Plus size={18} />
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
+                                            <div className="w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center">
+                                                <Plus size={18} />
+                                            </div>
+                                            สร้างหน่วยงานใหม่
+                                        </h3>
+                                        <Button variant="ghost" size="sm" onClick={() => setIsAddMode(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full">
+                                            <X size={20} />
+                                        </Button>
                                     </div>
-                                    สร้างหน่วยงานใหม่
-                                </h3>
-                                <Button variant="ghost" size="sm" onClick={() => setIsAddMode(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-full">
-                                    <X size={20} />
-                                </Button>
-                            </div>
-                            <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-6">
-                                <div className="md:col-span-2 space-y-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase">รหัส (Code)</label>
-                                    <Input
-                                        type="text"
-                                        value={newDept.code}
-                                        readOnly
-                                        className="p-3 h-auto bg-gray-50 border-gray-200 rounded-xl font-mono font-bold text-gray-700 text-center"
-                                    />
-                                </div>
-                                <div className="md:col-span-6 space-y-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase">ชื่อหน่วยงาน (Department Name) <span className="text-red-500">*</span></label>
-                                    <Input
-                                        type="text"
-                                        autoFocus
-                                        value={newDept.name}
-                                        onChange={(e) => setNewDept({ ...newDept, name: e.target.value })}
-                                        placeholder="ระบุชื่อหน่วยงาน..."
-                                        className="p-3 h-auto border-gray-200 rounded-xl focus:ring-primary-500"
-                                    />
-                                </div>
-                                <div className="md:col-span-2 space-y-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase">สีระบุ (Color)</label>
-                                    <div className="relative h-[50px] w-full">
-                                        <input
-                                            type="color"
-                                            value={newDept.color}
-                                            onChange={(e) => setNewDept({ ...newDept, color: e.target.value })}
-                                            className="absolute inset-0 w-full h-full cursor-pointer rounded-xl border-0 p-0 overflow-hidden"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="md:col-span-2 flex items-end">
-                                    <Button
-                                        onClick={handleAddDepartment}
-                                        className="w-full h-[50px] bg-primary-600 hover:bg-primary-700 border-none shadow-md"
-                                    >
-                                        ยืนยัน
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
 
-                {filteredDepartments.length === 0 ? (
-                    <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-100">
-                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Search className="text-gray-400" size={32} />
-                        </div>
-                        <h3 className="text-gray-900 font-bold text-lg mb-1">ไม่พบข้อมูลหน่วยงาน</h3>
-                        <p className="text-gray-500">ลองค้นหาด้วยคำอื่น หรือเพิ่มหน่วยงานใหม่</p>
-                    </div>
-                ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-separate border-spacing-y-3">
-                            <thead>
-                                <tr className="text-sm text-gray-400 font-semibold uppercase tracking-wider">
-                                    <th className="py-2 pl-6">Code</th>
-                                    <th className="py-2">Department Name</th>
-                                    <th className="py-2 text-center">Color Tag</th>
-                                    <th className="py-2 text-right pr-6">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="text-gray-600">
-                                {filteredDepartments.map(dept => (
-                                    <tr
-                                        key={dept.id}
-                                        className="group bg-white hover:bg-blue-50/50 transition-all duration-300 shadow-sm hover:shadow-md rounded-2xl relative overflow-hidden transform hover:-translate-y-0.5"
-                                    >
-                                        {/* Code Column */}
-                                        <td className="py-4 pl-6 align-middle rounded-l-2xl border-l-4 border-l-transparent group-hover:border-l-primary-500 bg-white group-hover:bg-blue-50/30 transition-colors w-32">
-                                            {editingId === dept.id && editRowData ? (
+                                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                                        <div className="md:col-span-2 space-y-2">
+                                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">รหัส</label>
+                                            <div className="relative">
                                                 <Input
                                                     type="text"
+                                                    value={newDept.code}
+                                                    readOnly
+                                                    className="bg-gray-50 border-gray-200 text-center font-mono font-bold text-primary-600 text-lg tracking-wider"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="md:col-span-6 space-y-2">
+                                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">ชื่อหน่วยงาน <span className="text-red-500">*</span></label>
+                                            <Input
+                                                type="text"
+                                                autoFocus
+                                                value={newDept.name}
+                                                onChange={(e) => setNewDept({ ...newDept, name: e.target.value })}
+                                                placeholder="ระบุชื่อหน่วยงาน..."
+                                                className="bg-white border-gray-200 focus:ring-primary-500/20"
+                                                icon={Building}
+                                            />
+                                        </div>
+                                        <div className="md:col-span-2 space-y-2">
+                                            <label className="text-xs font-bold text-gray-500 uppercase ml-1">สีระบุ</label>
+                                            <div className="relative h-[48px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm transition-transform hover:scale-[1.02]">
+                                                <input
+                                                    type="color"
+                                                    value={newDept.color}
+                                                    onChange={(e) => setNewDept({ ...newDept, color: e.target.value })}
+                                                    className="absolute inset-0 w-[150%] h-[150%] -top-[25%] -left-[25%] cursor-pointer p-0"
+                                                />
+                                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none mix-blend-difference text-white font-mono text-xs uppercase">
+                                                    {newDept.color}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="md:col-span-2 flex items-end">
+                                            <Button
+                                                onClick={handleAddDepartment}
+                                                className="w-full h-[48px] bg-primary-600 hover:bg-primary-700 border-none shadow-lg shadow-primary-200 hover:shadow-xl transition-all"
+                                            >
+                                                บันทึก
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {filteredDepartments.length === 0 ? (
+                        <div className="text-center py-32 bg-white/40 backdrop-blur-sm rounded-[32px] border border-dashed border-gray-200 flex flex-col items-center justify-center">
+                            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                                <Search className="text-gray-300" size={32} />
+                            </div>
+                            <h3 className="text-gray-900 font-bold text-xl mb-2">ไม่พบข้อมูลหน่วยงาน</h3>
+                            <p className="text-gray-500 max-w-xs mx-auto">ลองค้นหาด้วยคำอื่น หรือกดปุ่ม "เพิ่มหน่วยงาน" เพื่อสร้างรายการใหม่</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            <AnimatePresence>
+                                {filteredDepartments.map((dept, index) => (
+                                    <motion.div
+                                        key={dept.id}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        transition={{ delay: index * 0.05 }}
+                                        layout
+                                        className="group bg-white hover:bg-primary-50/40 border border-transparent hover:border-primary-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-4 md:gap-6 relative overflow-hidden"
+                                    >
+                                        {/* Color Indicator */}
+                                        <div className="w-1.5 self-stretch rounded-full bg-gray-200 group-hover:scale-y-110 transition-transform duration-300" style={{ backgroundColor: dept.color }}></div>
+
+                                        {/* Code Badge */}
+                                        <div className="shrink-0">
+                                            {editingId === dept.id && editRowData ? (
+                                                <input
+                                                    className="w-16 text-center font-mono font-bold text-sm bg-white border border-primary-300 rounded-lg py-1.5 focus:outline-none focus:ring-2 focus:ring-primary-200 text-primary-700"
                                                     value={editRowData.code}
                                                     onChange={(e) => setEditRowData({ ...editRowData, code: e.target.value })}
-                                                    className="p-2 h-auto bg-gray-50 border-gray-200 text-sm font-mono text-center"
                                                 />
                                             ) : (
-                                                <div className="font-mono font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100 w-fit text-sm">
+                                                <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center text-gray-500 font-mono text-sm font-bold shadow-sm group-hover:shadow-inner group-hover:bg-white transition-all">
+                                                    <span className="text-[10px] uppercase text-gray-400 font-normal mb-0.5">Code</span>
                                                     {dept.code}
                                                 </div>
                                             )}
-                                        </td>
+                                        </div>
 
-                                        {/* Name Column */}
-                                        <td className="py-4 align-middle bg-white group-hover:bg-blue-50/30">
+                                        {/* Name & Info */}
+                                        <div className="flex-1 min-w-0">
                                             {editingId === dept.id && editRowData ? (
-                                                <Input
-                                                    type="text"
-                                                    value={editRowData.name}
-                                                    onChange={(e) => setEditRowData({ ...editRowData, name: e.target.value })}
-                                                    className="p-2 h-auto border-primary-500 ring-2 ring-primary-100 text-sm font-bold"
-                                                    autoFocus
-                                                />
-                                            ) : (
-                                                <div className="flex items-center gap-3">
-                                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-110`} style={{ backgroundColor: dept.color }}>
-                                                        <Building size={18} />
-                                                    </div>
-                                                    <span className="font-medium text-gray-800 text-base group-hover:text-primary-700 transition-colors">
-                                                        {dept.name}
-                                                    </span>
-                                                </div>
-                                            )}
-                                        </td>
-
-                                        {/* Color Column */}
-                                        <td className="py-4 align-middle text-center bg-white group-hover:bg-blue-50/30 w-32">
-                                            {editingId === dept.id && editRowData ? (
-                                                <div className="flex justify-center">
-                                                    <div className="relative w-10 h-10 overflow-hidden rounded-full border border-gray-200 shadow-sm cursor-pointer hover:scale-110 transition-transform">
+                                                <div className="flex items-center gap-4">
+                                                    <Input
+                                                        autoFocus
+                                                        className="h-10 text-lg font-bold bg-white focus:bg-white"
+                                                        value={editRowData.name}
+                                                        onChange={(e) => setEditRowData({ ...editRowData, name: e.target.value })}
+                                                    />
+                                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-200 shadow-sm shrink-0">
                                                         <input
                                                             type="color"
                                                             value={editRowData.color}
                                                             onChange={(e) => setEditRowData({ ...editRowData, color: e.target.value })}
-                                                            className="absolute -top-2 -left-2 w-16 h-16 cursor-pointer"
+                                                            className="absolute inset-0 w-[150%] h-[150%] -top-[25%] -left-[25%] cursor-pointer"
                                                         />
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-full border border-gray-100">
-                                                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: dept.color }}></div>
-                                                    <span className="text-xs font-mono text-gray-400 uppercase">{dept.color}</span>
+                                                <div className="flex items-center justify-between">
+                                                    <div>
+                                                        <h4 className="text-lg font-bold text-gray-900 group-hover:text-primary-700 transition-colors truncate">
+                                                            {dept.name}
+                                                        </h4>
+                                                        <div className="flex items-center gap-2 mt-1">
+                                                            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-gray-50 border border-gray-100 text-xs text-gray-500">
+                                                                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: dept.color }}></div>
+                                                                Color Tag
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             )}
-                                        </td>
+                                        </div>
 
-                                        {/* Actions Column */}
-                                        <td className="py-4 align-middle text-right pr-6 rounded-r-2xl bg-white group-hover:bg-blue-50/30 w-40">
-                                            <div className="flex justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all duration-200">
-                                                {editingId === dept.id ? (
-                                                    <>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            onClick={saveInlineEdit}
-                                                            className="p-2 bg-green-50 text-green-600 hover:bg-green-100 hover:text-green-700"
-                                                            title="บันทึก"
-                                                        >
-                                                            <Check size={18} />
-                                                        </Button>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            onClick={() => setEditingId(null)}
-                                                            className="p-2 bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                                                            title="ยกเลิก"
-                                                        >
-                                                            <X size={18} />
-                                                        </Button>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            onClick={() => startInlineEdit(dept)}
-                                                            className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50"
-                                                            title="แก้ไข"
-                                                        >
-                                                            <Pencil size={18} />
-                                                        </Button>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            onClick={() => handleDelete(dept.id, dept.name)}
-                                                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50"
-                                                            title="ลบ"
-                                                        >
-                                                            <Trash2 size={18} />
-                                                        </Button>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        {/* Actions */}
+                                        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 translate-x-4 group-hover:translate-x-0">
+                                            {editingId === dept.id ? (
+                                                <>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={saveInlineEdit}
+                                                        className="w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 hover:text-green-700 hover:scale-110 transition-all border border-green-200"
+                                                        title="บันทึก"
+                                                    >
+                                                        <Save size={18} />
+                                                    </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => setEditingId(null)}
+                                                        className="w-10 h-10 rounded-full bg-gray-50 text-gray-400 hover:bg-gray-100 hover:text-gray-600 hover:scale-110 transition-all border border-gray-200"
+                                                        title="ยกเลิก"
+                                                    >
+                                                        <X size={18} />
+                                                    </Button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => startInlineEdit(dept)}
+                                                        className="w-10 h-10 rounded-full text-gray-400 hover:text-primary-600 hover:bg-primary-50 hover:shadow-sm hover:scale-110 transition-all"
+                                                        title="แก้ไข"
+                                                    >
+                                                        <Pencil size={18} />
+                                                    </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => handleDelete(dept.id, dept.name)}
+                                                        className="w-10 h-10 rounded-full text-gray-400 hover:text-rose-600 hover:bg-rose-50 hover:shadow-sm hover:scale-110 transition-all"
+                                                        title="ลบ"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </div>
+                                    </motion.div>
                                 ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                            </AnimatePresence>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

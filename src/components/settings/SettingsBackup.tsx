@@ -47,7 +47,7 @@ const SettingsBackup: React.FC = () => {
 
                 <Button
                     onClick={handleBackup}
-                    className="w-full bg-gradient-to-r from-primary-600 to-indigo-600 border-none rounded-xl py-6 font-bold hover:shadow-lg active:scale-95 shadow-indigo-200"
+                    className="w-full bg-gradient-to-r from-primary-600 to-primary-500 border-none rounded-xl py-6 font-bold hover:shadow-lg active:scale-95 shadow-primary-200"
                 >
                     <Download size={20} className="mr-2" />
                     ดาวน์โหลดไฟล์ Backup

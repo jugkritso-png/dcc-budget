@@ -33,10 +33,10 @@ export const OfficialMemo: React.FC<OfficialMemoProps> = ({ request, category, o
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div className="bg-white/80 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-white/60 ring-1 ring-black/5">
                 {/* Header Actions */}
-                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center print:hidden">
+                <div className="sticky top-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 px-6 py-4 flex justify-between items-center print:hidden z-10">
                     <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
                         <FileText className="w-6 h-6 text-blue-600" />
                         บันทึกข้อความ

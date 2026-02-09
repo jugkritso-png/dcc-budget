@@ -41,7 +41,7 @@ const Notifications: React.FC<NotificationsProps> = ({ onNavigate }) => {
         switch (type) {
             case 'success': return 'bg-green-500 shadow-green-200';
             case 'warning': return 'bg-amber-500 shadow-amber-200';
-            default: return 'bg-blue-500 shadow-blue-200';
+            default: return 'bg-primary-500 shadow-primary-200';
         }
     };
 
@@ -65,7 +65,7 @@ const Notifications: React.FC<NotificationsProps> = ({ onNavigate }) => {
                 </button>
             </div>
 
-            <div className="bg-white rounded-3xl shadow-card border border-gray-100 overflow-hidden">
+            <div className="bg-white/60 backdrop-blur-xl rounded-3xl shadow-card border border-white/60 ring-1 ring-black/5 overflow-hidden">
                 {Object.entries(grouped).map(([date, items], groupIndex) => (
                     <div key={date}>
                         <div className="bg-gray-50/50 px-6 py-3 border-b border-gray-100 flex items-center gap-2">
@@ -77,7 +77,7 @@ const Notifications: React.FC<NotificationsProps> = ({ onNavigate }) => {
                                 <div
                                     key={item.id}
                                     onClick={() => item.targetPage && onNavigate(item.targetPage)}
-                                    className={`p-6 flex gap-4 hover:bg-gray-50/80 transition-colors cursor-pointer group border-b border-gray-100 last:border-0 ${item.unread ? 'bg-blue-50/30' : ''}`}
+                                    className={`p-6 flex gap-4 hover:bg-gray-50/80 transition-colors cursor-pointer group border-b border-gray-100 last:border-0 ${item.unread ? 'bg-primary-50/30' : ''}`}
                                 >
                                     <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg ${getBgColor(item.type)} flex-shrink-0`}>
                                         {getIcon(item.type)}

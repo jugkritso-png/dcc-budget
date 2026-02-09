@@ -21,13 +21,46 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     return saved ? JSON.parse(saved) : null;
   });
 
+  // Theme Management
+  useEffect(() => {
+    if (user?.theme) {
+      document.documentElement.setAttribute('data-theme', user.theme);
+    } else {
+      document.documentElement.setAttribute('data-theme', 'blue'); // Default
+    }
+  }, [user?.theme]);
+
+  const changeTheme = async (newTheme: string) => {
+    if (user) {
+      const updatedUser = { ...user, theme: newTheme as any };
+      setUser(updatedUser);
+      localStorage.setItem('dcc_user', JSON.stringify(updatedUser));
+      document.documentElement.setAttribute('data-theme', newTheme);
+
+      // Persist to backend
+      try {
+        await userService.update(user.id, { theme: newTheme as any });
+      } catch (err) {
+        console.error("Failed to persist theme", err);
+      }
+    }
+  };
+
+
   // --- Server State (Queries) ---
-  const { data: requests = [] } = useQuery({ queryKey: ['requests'], queryFn: budgetService.getRequests });
-  const { data: categories = [] } = useQuery({ queryKey: ['categories'], queryFn: masterDataService.getCategories });
-  const { data: subActivities = [] } = useQuery({ queryKey: ['subActivities'], queryFn: masterDataService.getSubActivities });
-  const { data: departments = [] } = useQuery({ queryKey: ['departments'], queryFn: systemService.getDepartments });
-  const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: userService.getAll });
-  const { data: budgetPlans = [] } = useQuery({ queryKey: ['budgetPlans'], queryFn: () => budgetService.getPlans() });
+  const { data: requests = [] } = useQuery({ queryKey: ['requests'], queryFn: budgetService.getRequests, enabled: !!user });
+  const { data: categories = [] } = useQuery({ queryKey: ['categories'], queryFn: masterDataService.getCategories, enabled: !!user });
+
+  useEffect(() => {
+    console.log("[BudgetContext] User:", user);
+    console.log("[BudgetContext] Requests:", requests);
+    console.log("[BudgetContext] Categories:", categories);
+  }, [user, requests, categories]);
+
+  const { data: subActivities = [] } = useQuery({ queryKey: ['subActivities'], queryFn: masterDataService.getSubActivities, enabled: !!user });
+  const { data: departments = [] } = useQuery({ queryKey: ['departments'], queryFn: systemService.getDepartments, enabled: !!user });
+  const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: userService.getAll, enabled: !!user });
+  const { data: budgetPlans = [] } = useQuery({ queryKey: ['budgetPlans'], queryFn: () => budgetService.getPlans(), enabled: !!user });
 
   const { data: settings = {
     orgName: 'DCC Company Ltd.',
@@ -37,6 +70,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   } as SystemSettings } = useQuery({
     queryKey: ['settings'],
     queryFn: systemService.getSettings,
+    enabled: !!user,
     initialData: {
       orgName: 'DCC Company Ltd.',
       fiscalYear: 2569,
@@ -50,9 +84,10 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   // User Actions
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      const userData = await authService.login({ username, password });
-      setUser(userData);
-      localStorage.setItem('dcc_user', JSON.stringify(userData));
+      const response = await authService.login({ username, password });
+      setUser(response.user);
+      localStorage.setItem('dcc_user', JSON.stringify(response.user));
+      localStorage.setItem('dcc_token', response.token);
       return true;
     } catch (error) {
       console.error("Login error:", error);
@@ -60,9 +95,23 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
+  const loginWithGoogle = async (token: string): Promise<boolean> => {
+    try {
+      const response = await authService.loginWithGoogle(token);
+      setUser(response.user);
+      localStorage.setItem('dcc_user', JSON.stringify(response.user));
+      localStorage.setItem('dcc_token', response.token);
+      return true;
+    } catch (error) {
+      console.error("Google Login error:", error);
+      return false;
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('dcc_user');
+    localStorage.removeItem('dcc_token');
     queryClient.clear(); // Clear cache on logout
   };
 
@@ -142,10 +191,17 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['subActivities'] })
   });
 
+  const updateSubActivityMutation = useMutation({
+    mutationFn: masterDataService.updateSubActivity,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['subActivities'] })
+  });
+
   const deleteSubActivityMutation = useMutation({
     mutationFn: masterDataService.deleteSubActivity,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['subActivities'] })
   });
+
+  // ...
 
   // Requests
   const addRequestMutation = useMutation({
@@ -163,6 +219,41 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       queryClient.invalidateQueries({ queryKey: ['categories'] });
     }
   });
+
+  const approveRequestMutation = useMutation({
+    mutationFn: ({ id, approverId }: { id: string, approverId: string }) => budgetService.approveRequest(id, approverId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    }
+  });
+
+  const rejectRequestMutation = useMutation({
+    mutationFn: ({ id, approverId, reason }: { id: string, approverId: string, reason: string }) => budgetService.rejectRequest(id, approverId, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+    }
+  });
+
+  const submitExpenseReportMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number } }) => budgetService.submitExpenseReport(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+    }
+  });
+
+  const completeRequestMutation = useMutation({
+    mutationFn: ({ id }: { id: string }) => budgetService.completeRequest(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    }
+  });
+
+  // ... (deleteRequestMutation)
+
+  const submitExpenseReport = async (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => { await submitExpenseReportMutation.mutateAsync({ id, data }); };
+  const completeRequest = async (id: string) => { await completeRequestMutation.mutateAsync({ id }); };
 
   const deleteRequestMutation = useMutation({
     mutationFn: budgetService.deleteRequest,
@@ -190,6 +281,18 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] })
   });
 
+  /* Duplicate completeRequest removed */
+
+  const revertCompleteMutation = useMutation({
+    mutationFn: ({ id }: { id: string }) => budgetService.revertComplete(id),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['requests'] });
+      await queryClient.invalidateQueries({ queryKey: ['categories'] });
+    }
+  });
+
+  const revertComplete = async (id: string) => { await revertCompleteMutation.mutateAsync({ id }); };
+
   const saveBudgetPlanMutation = useMutation({
     mutationFn: budgetService.savePlan,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['budgetPlans'] })
@@ -203,9 +306,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
     const currentYearRequests = requests.filter(req => validCategoryNames.has(req.category));
 
-    const totalUsed = currentYearRequests
-      .filter(req => req.status === 'approved')
-      .reduce((sum, req) => sum + req.amount, 0);
+    const totalUsed = currentYearCategories.reduce((sum, cat) => sum + (cat.used || 0), 0);
 
     const totalPending = currentYearRequests
       .filter(req => req.status === 'pending')
@@ -240,10 +341,14 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const deleteCategory = async (id: string) => { await deleteCategoryMutation.mutateAsync(id); };
 
   const addSubActivity = async (s: SubActivity) => { await addSubActivityMutation.mutateAsync(s); };
+  const updateSubActivity = async (s: SubActivity) => { await updateSubActivityMutation.mutateAsync(s); };
   const deleteSubActivity = async (id: string) => { await deleteSubActivityMutation.mutateAsync(id); };
 
   const addRequest = async (r: BudgetRequest) => { await addRequestMutation.mutateAsync(r); };
   const updateRequestStatus = async (id: string, status: BudgetRequest['status']) => { await updateRequestStatusMutation.mutateAsync({ id, status }); };
+  const approveRequest = async (id: string, approverId: string) => { await approveRequestMutation.mutateAsync({ id, approverId }); };
+  const rejectRequest = async (id: string, approverId: string, reason: string) => { await rejectRequestMutation.mutateAsync({ id, approverId, reason }); };
+
   const deleteRequest = async (id: string) => { await deleteRequestMutation.mutateAsync(id); };
 
   const adjustBudget = async (categoryId: string, amount: number, type: 'ADD' | 'TRANSFER_IN' | 'TRANSFER_OUT' | 'REDUCE', reason: string) => {
@@ -272,6 +377,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       user,
       users,
       login,
+      loginWithGoogle,
       logout,
       updateUserProfile,
       updateUser,
@@ -280,11 +386,18 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       changePassword,
       addRequest,
       updateRequestStatus,
+      approveRequest,
+      rejectRequest,
+
+      submitExpenseReport,
+      completeRequest,
+      revertComplete,
       deleteRequest,
       addCategory,
       updateCategory,
       deleteCategory,
       addSubActivity,
+      updateSubActivity,
       deleteSubActivity,
       updateSettings,
       addDepartment,
@@ -304,10 +417,11 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         if (data.categories) queryClient.setQueryData(['categories'], data.categories);
         if (data.settings) queryClient.setQueryData(['settings'], data.settings);
         alert('Data restored to Cache');
-      }
+      },
+      changeTheme
     }}>
       {children}
-    </BudgetContext.Provider>
+    </BudgetContext.Provider >
   );
 };
 

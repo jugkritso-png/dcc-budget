@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Maximize2, Minimize2, FileText, Layers, Clock, DollarSign, Folder } from 'lucide-react';
 import { Category, BudgetRequest, BudgetLog, Expense, SubActivity } from '../../types';
 import Swal from 'sweetalert2';
+import { useBudget } from '../../context/BudgetContext'; // Added import
 
 interface CategoryDetailModalProps {
     viewingCategory: Category | null;
@@ -44,6 +45,7 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
     // Modal visibility states for sub-forms
     const [isAdjustmentModalOpen, setIsAdjustmentModalOpen] = useState(false);
     const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false); // For adding root sub-activity
 
     if (!viewingCategory) return null;
 
@@ -81,12 +83,100 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
         setExpenseForm({ amount: '', payee: '', date: new Date().toISOString().split('T')[0], description: '' });
     };
 
+    // ... (previous code)
+
+    // Helper to build hierarchy
+    interface ExtendedSubActivity extends SubActivity {
+        childrenList: ExtendedSubActivity[];
+        used: number;
+    }
+
+    const buildHierarchy = (items: SubActivity[]) => {
+        const itemMap = new Map<string, ExtendedSubActivity>();
+        const roots: ExtendedSubActivity[] = [];
+
+        items.forEach(item => {
+            const used = requests
+                .filter(r => r.subActivityId === item.id && r.status !== 'rejected')
+                .reduce((sum, r) => sum + (r.amount - (r.returnAmount || 0)), 0);
+            itemMap.set(item.id, { ...item, childrenList: [], used } as ExtendedSubActivity);
+        });
+
+        items.forEach(item => {
+            const node = itemMap.get(item.id)!;
+            if (item.parentId && itemMap.has(item.parentId)) {
+                itemMap.get(item.parentId)!.childrenList.push(node);
+            } else {
+                roots.push(node);
+            }
+        });
+
+        return roots;
+    };
+
+    const { updateSubActivity } = useBudget();
+    // We also use onAddSubActivity (from props) and onDeleteSubActivity (from props) coverage.
+    // Ideally onAddSubActivity should also support parentId.
+    // The prop onAddSubActivity currently is: (name: string, allocated: string) => void.
+    // It needs to support parentId. 
+    // We will cast it or wrap it. 
+    // Actually, looking at props: onAddSubActivity: (name: string, allocated: string) => void;
+    // We need to change the prop type too if we want to support parentId via prop.
+    // OR we use the context directly for add as well? 
+    // Let's use context for everything related to SubActivity to be safe and consistent with the new hierarchy.
+
+    // BUT, I can't easily change the props interface without changing the parent.
+    // Let's stick to using context for the new functionality (update, add child).
+    // The 'onAddSubActivity' prop is likely wrapping 'addSubActivity' from context anyway in the parent.
+    // Let's use `useBudget` here for direct access.
+
+    const { addSubActivity: addSubActivityContext } = useBudget();
+
+    const handleUpdateSub = async (sub: SubActivity) => {
+        await updateSubActivity(sub);
+    };
+
+    const handleAddChild = async (name: string, allocated: string, parentId: string) => {
+        try {
+            await addSubActivityContext({
+                id: crypto.randomUUID(),
+                categoryId: viewingCategory.id,
+                name,
+                allocated: parseFloat(allocated),
+                parentId
+            } as any);
+            Swal.fire({
+                icon: 'success',
+                title: 'เพิ่มกิจกรรมย่อยสำเร็จ',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        } catch (error) {
+            console.error("Failed to add child sub-activity:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'ไม่สามารถเพิ่มกิจกรรมย่อยได้',
+                text: 'กรุณาลองใหม่อีกครั้ง',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+        }
+    };
+
+
+    const hierarchy = buildHierarchy(currentSubActivities);
+
     return (
         <>
             <div className={`fixed inset-0 bg-black/50 z-50 flex items-center justify-center backdrop-blur-sm transition-all duration-300 ${isFullScreen ? 'p-0' : 'p-4'}`}>
-                <div className={`bg-white shadow-2xl w-full overflow-hidden animate-fade-in flex flex-col transition-all duration-300 ${isFullScreen
+                <div className={`bg-white/80 backdrop-blur-2xl border border-white/60 ring-1 ring-black/5 shadow-2xl w-full overflow-hidden animate-fade-in flex flex-col transition-all duration-300 ${isFullScreen
                     ? 'h-full rounded-none'
-                    : 'max-w-6xl rounded-xl max-h-[90vh]'
+                    : 'max-w-6xl rounded-2xl max-h-[90vh]'
                     }`}>
                     {/* Modal Header */}
                     <div className="px-6 py-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center shrink-0">
@@ -153,7 +243,7 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
                         {activeDetailTab === 'requests' ? (
                             <>
                                 {/* Stats for Requests */}
-                                <div className="px-6 py-4 grid grid-cols-3 gap-4 bg-white border-b border-gray-100">
+                                <div className="px-6 py-4 grid grid-cols-3 gap-4 bg-white/40 border-b border-gray-100/50">
                                     <div className="p-3 bg-blue-50 rounded-lg">
                                         <p className="text-xs text-blue-600 mb-1 font-medium">งบที่ได้รับจัดสรร</p>
                                         <p className="text-lg font-bold text-gray-900">฿{viewingCategory.allocated.toLocaleString()}</p>
@@ -219,51 +309,48 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
                             <div className="p-6">
                                 <div className="flex justify-between items-center mb-6">
                                     <h4 className="text-lg font-bold text-gray-900">กิจกรรมย่อย (Sub-Activity)</h4>
-                                    <button onClick={() => setIsAdjustmentModalOpen(true)} className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold hover:bg-blue-100">
-                                        ปรับปรุงงบประมาณ
-                                    </button>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => setIsAdjustmentModalOpen(true)} className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold hover:bg-blue-100">
+                                            ปรับปรุงงบประมาณ
+                                        </button>
+                                    </div>
                                 </div>
 
-                                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
-                                    <table className="w-full text-left">
-                                        <thead className="bg-gray-50 text-gray-500 text-xs uppercase font-semibold">
-                                            <tr>
-                                                <th className="px-6 py-3">กิจกรรมย่อย</th>
-                                                <th className="px-6 py-3 text-right">งบประมาณที่จัดสรร</th>
-                                                <th className="px-6 py-3 text-right">จัดการ</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-100">
-                                            {currentSubActivities.map(sub => (
-                                                <tr key={sub.id}>
-                                                    <td className="px-6 py-3 text-sm font-medium text-gray-900">{sub.name}</td>
-                                                    <td className="px-6 py-3 text-right text-sm text-gray-600">฿{sub.allocated.toLocaleString()}</td>
-                                                    <td className="px-6 py-3 text-right">
-                                                        <button onClick={() => onDeleteSubActivity(sub.id)} className="text-red-500 hover:text-red-700 text-xs font-bold">ลบ</button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            <tr className="bg-gray-50/50">
-                                                <td className="px-6 py-3 text-sm font-bold text-gray-500">รวมจัดสรรแล้ว</td>
-                                                <td className="px-6 py-3 text-right text-sm font-bold text-gray-900">฿{totalAllocatedToSub.toLocaleString()}</td>
-                                                <td></td>
-                                            </tr>
-                                            <tr className="bg-green-50/50">
-                                                <td className="px-6 py-3 text-sm font-bold text-green-700">คงเหลือจัดสรรได้</td>
-                                                <td className="px-6 py-3 text-right text-sm font-bold text-green-700">฿{remainingToAllocate.toLocaleString()}</td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div className="bg-gray-100 p-4 rounded-xl">
-                                    <h5 className="text-sm font-bold text-gray-700 mb-3">เพิ่มกิจกรรมย่อย</h5>
+                                <div className="bg-gray-100 p-4 rounded-xl mb-6">
+                                    <h5 className="text-sm font-bold text-gray-700 mb-3">เพิ่มกิจกรรมหลัก</h5>
                                     <div className="flex gap-3">
                                         <input type="text" placeholder="ชื่อกิจกรรม" className="flex-1 px-3 py-2 rounded-lg border border-gray-300 text-sm" value={subActivityForm.name} onChange={e => setSubActivityForm({ ...subActivityForm, name: e.target.value })} />
                                         <input type="number" placeholder="จำนวนเงิน" className="w-32 px-3 py-2 rounded-lg border border-gray-300 text-sm" value={subActivityForm.allocated} onChange={e => setSubActivityForm({ ...subActivityForm, allocated: e.target.value })} />
                                         <button onClick={handleAddSub} className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-bold hover:bg-gray-900">เพิ่ม</button>
                                     </div>
+                                </div>
+
+                                <div className="space-y-1 mb-6">
+                                    {hierarchy.map(root => (
+                                        <SubActivityItem
+                                            key={root.id}
+                                            item={root}
+                                            onUpdate={handleUpdateSub}
+                                            onDelete={onDeleteSubActivity}
+                                            onAddChild={handleAddChild}
+                                        />
+                                    ))}
+
+                                    {hierarchy.length === 0 && (
+                                        <div className="text-center py-12 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                            <Layers size={48} className="mx-auto mb-2 opacity-20" />
+                                            <p>ยังไม่มีกิจกรรมย่อย</p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="flex justify-between items-center pt-4 border-t border-gray-100 text-sm">
+                                    <span className="text-gray-500 font-bold">รวมจัดสรรแล้ว</span>
+                                    <span className="font-bold text-gray-900">฿{totalAllocatedToSub.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between items-center pt-2 text-sm">
+                                    <span className="text-green-600 font-bold">คงเหลือจัดสรรได้</span>
+                                    <span className="font-bold text-green-600">฿{remainingToAllocate.toLocaleString()}</span>
                                 </div>
                             </div>
                         ) : activeDetailTab === 'history' ? (
@@ -339,8 +426,8 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
 
             {/* Sub Modals */}
             {isAdjustmentModalOpen && (
-                <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-sm p-6">
+                <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
+                    <div className="bg-white/80 backdrop-blur-xl border border-white/60 ring-1 ring-black/5 rounded-2xl shadow-xl w-full max-w-sm p-6">
                         <h3 className="font-bold text-lg mb-4">ปรับปรุงงบประมาณ</h3>
                         <div className="space-y-3">
                             <select className="w-full border p-2 rounded" value={adjustmentForm.type} onChange={e => setAdjustmentForm({ ...adjustmentForm, type: e.target.value as any })}>
@@ -359,8 +446,8 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
             )}
 
             {isExpenseModalOpen && (
-                <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+                <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
+                    <div className="bg-white/80 backdrop-blur-xl border border-white/60 ring-1 ring-black/5 rounded-2xl shadow-xl w-full max-w-md p-6">
                         <h3 className="font-bold text-lg mb-4">บันทึกรายจ่ายจริง</h3>
                         <div className="space-y-3">
                             <input type="date" className="w-full border p-2 rounded" value={expenseForm.date} onChange={e => setExpenseForm({ ...expenseForm, date: e.target.value })} />
@@ -379,4 +466,139 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
     );
 };
 
+// Also update the SubActivityItem props to use ExtendedSubActivity
+interface ExtendedSubActivity extends SubActivity {
+    childrenList: ExtendedSubActivity[];
+    used: number;
+}
+
+interface SubActivityItemProps {
+    item: ExtendedSubActivity;
+    level?: number;
+    onUpdate: (sub: SubActivity) => void;
+    onDelete: (id: string) => void;
+    onAddChild: (name: string, allocated: string, parentId: string) => void;
+}
+
+const SubActivityItem: React.FC<SubActivityItemProps> = ({ item, level = 0, onUpdate, onDelete, onAddChild }) => {
+    const [isExpanded, setIsExpanded] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editForm, setEditForm] = useState({ name: item.name, allocated: item.allocated.toString() });
+    const [isAddingChild, setIsAddingChild] = useState(false);
+    const [childForm, setChildForm] = useState({ name: '', allocated: '' });
+
+    return (
+        <div className="mb-2">
+            <div className={`flex items-center justify-between p-3 rounded-lg border ${level === 0 ? 'bg-white border-gray-200 shadow-sm' : 'bg-gray-50 border-gray-100 ml-6'}`}>
+                <div className="flex items-center gap-3 flex-1">
+                    {item.childrenList.length > 0 && (
+                        <button onClick={() => setIsExpanded(!isExpanded)} className="text-gray-400 hover:text-gray-600">
+                            {isExpanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+                        </button>
+                    )}
+                    {item.childrenList.length === 0 && <span className="w-3.5" />}
+
+                    {isEditing ? (
+                        <div className="flex items-center gap-2 flex-1">
+                            <input
+                                className="border rounded px-2 py-1 text-sm flex-1"
+                                value={editForm.name}
+                                onChange={e => setEditForm({ ...editForm, name: e.target.value })}
+                            />
+                            <input
+                                type="number"
+                                className="border rounded px-2 py-1 text-sm w-24"
+                                value={editForm.allocated}
+                                onChange={e => setEditForm({ ...editForm, allocated: e.target.value })}
+                            />
+                            <button onClick={() => {
+                                onUpdate({ ...item, name: editForm.name, allocated: parseFloat(editForm.allocated) });
+                                setIsEditing(false);
+                            }} className="text-green-600 text-xs font-bold">บันทึก</button>
+                            <button onClick={() => setIsEditing(false)} className="text-gray-400 text-xs">ยกเลิก</button>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                                <div className="mt-1 w-full max-w-xs">
+                                    <div className="flex justify-between text-xs text-gray-500 mb-0.5">
+                                        <span>ใช้ไป ฿{item.used.toLocaleString()}</span>
+                                        <span className={(item.allocated - item.used) < 0 ? 'text-red-500 font-bold' : ''}>
+                                            เหลือ ฿{(item.allocated - item.used).toLocaleString()}
+                                        </span>
+                                    </div>
+                                    <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                                        <div
+                                            className={`h-full rounded-full ${(item.allocated - item.used) < 0 ? 'bg-red-500' : 'bg-green-500'}`}
+                                            style={{ width: `${Math.min(100, (item.used / item.allocated) * 100) || 0}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="text-right mr-4">
+                                <p className="text-sm font-bold text-gray-900">฿{item.allocated.toLocaleString()}</p>
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                <div className="flex items-center gap-2">
+                    {!isEditing && (
+                        <>
+                            <button onClick={() => setIsAddingChild(true)} className="text-blue-500 hover:text-blue-700 p-1" title="เพิ่มกิจกรรมย่อย">
+                                <Layers size={14} />
+                            </button>
+                            <button onClick={() => setIsEditing(true)} className="text-gray-400 hover:text-gray-600 p-1" title="แก้ไข">
+                                <FileText size={14} />
+                            </button>
+                            <button onClick={() => onDelete(item.id)} className="text-red-400 hover:text-red-600 p-1" title="ลบ">
+                                <X size={14} />
+                            </button>
+                        </>
+                    )}
+                </div>
+            </div>
+
+            {isAddingChild && (
+                <div className="ml-10 mt-2 p-2 bg-blue-50 rounded border border-blue-100 flex gap-2">
+                    <input
+                        placeholder="ชื่อกิจกรรมย่อย"
+                        className="flex-1 border rounded px-2 py-1 text-sm"
+                        value={childForm.name}
+                        onChange={e => setChildForm({ ...childForm, name: e.target.value })}
+                    />
+                    <input
+                        type="number"
+                        placeholder="บาท"
+                        className="w-24 border rounded px-2 py-1 text-sm"
+                        value={childForm.allocated}
+                        onChange={e => setChildForm({ ...childForm, allocated: e.target.value })}
+                    />
+                    <button onClick={() => {
+                        onAddChild(childForm.name, childForm.allocated, item.id);
+                        setIsAddingChild(false);
+                        setChildForm({ name: '', allocated: '' });
+                    }} className="bg-blue-600 text-white text-xs px-3 py-1 rounded">เพิ่ม</button>
+                    <button onClick={() => setIsAddingChild(false)} className="text-gray-500 text-xs px-2">ยกเลิก</button>
+                </div>
+            )}
+
+            {isExpanded && item.childrenList.length > 0 && (
+                <div className="mt-2">
+                    {item.childrenList.map(child => (
+                        <SubActivityItem
+                            key={child.id}
+                            item={child}
+                            level={level + 1}
+                            onUpdate={onUpdate}
+                            onDelete={onDelete}
+                            onAddChild={onAddChild}
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
 export default CategoryDetailModal;

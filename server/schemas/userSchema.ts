@@ -8,7 +8,7 @@ export const createUserSchema = z.object({
         role: z.enum(['admin', 'user']),
         department: z.string().optional(),
         position: z.string().optional(),
-        email: z.string().email().optional().or(z.literal('')),
+        email: z.string().email('Invalid email format'),
     })
 });
 
@@ -24,7 +24,9 @@ export const updateUserSchema = z.object({
         email: z.string().email().optional().or(z.literal('')),
         phone: z.string().optional(),
         bio: z.string().optional(),
-        theme: z.enum(['light', 'dark', 'system']).optional(),
+        englishName: z.string().optional(),
+        startDate: z.string().optional(),
+        theme: z.enum(['light', 'dark', 'system', 'blue', 'green', 'purple', 'orange', 'red']).optional(),
         language: z.enum(['th', 'en']).optional(),
     })
 });

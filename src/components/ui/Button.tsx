@@ -24,12 +24,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant = "primary", size = "md", isLoading, children, disabled, ...props }, ref) => {
 
         const variants = {
-            primary: "bg-blue-600 text-white hover:bg-blue-700 shadow-sm border-transparent",
+            primary: "bg-primary-600 text-white hover:bg-primary-700 shadow-sm border-transparent",
             secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200 border-transparent",
             outline: "bg-white text-gray-700 border-gray-300 hover:bg-gray-50",
             ghost: "bg-transparent text-gray-700 hover:bg-gray-100 border-transparent",
             danger: "bg-red-600 text-white hover:bg-red-700 shadow-sm border-transparent",
-            gradient: "bg-gradient-to-r from-primary-600 to-indigo-600 text-white hover:from-primary-700 hover:to-indigo-700 shadow-lg hover:shadow-primary-200 border-transparent",
+            gradient: "bg-gradient-to-r from-primary-600 to-primary-500 text-white hover:from-primary-700 hover:to-primary-600 shadow-lg hover:shadow-primary-200 border-transparent",
         };
 
         const sizes = {
@@ -43,7 +43,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 ref={ref}
                 whileTap={{ scale: 0.95 }}
                 className={cn(
-                    "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none border",
+                    "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none border",
                     variants[variant],
                     sizes[size],
                     className

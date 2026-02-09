@@ -130,8 +130,8 @@ const Dashboard: React.FC = () => {
         {/* 1. Total Budget */}
         <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
-              <CreditCard size={20} className="text-blue-600" />
+            <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
+              <CreditCard size={20} className="text-primary-600" />
             </div>
           </div>
           <div>
@@ -153,11 +153,11 @@ const Dashboard: React.FC = () => {
           </div>
         </Card>
 
-        {/* 3. Pending (Blue for System Processing) */}
+        {/* 3. Pending (Primary for System Processing) */}
         <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
-              <FileCheck size={20} className="text-blue-600" />
+            <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
+              <FileCheck size={20} className="text-primary-600" />
             </div>
           </div>
           <div>
@@ -166,11 +166,11 @@ const Dashboard: React.FC = () => {
           </div>
         </Card>
 
-        {/* 4. Used (Dark Blue for Actual) */}
+        {/* 4. Used (Dark Primary for Actual) */}
         <Card interactive className="p-5 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
-              <TrendingDown size={20} className="text-blue-900" />
+            <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
+              <TrendingDown size={20} className="text-primary-900" />
             </div>
           </div>
           <div>
@@ -211,7 +211,7 @@ const Dashboard: React.FC = () => {
         {/* Pie Chart */}
         <Card className="lg:col-span-1 p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="bg-indigo-50 p-2 rounded-lg text-indigo-600">
+            <div className="bg-primary-50 p-2 rounded-lg text-primary-600">
               <PieChartIcon size={20} />
             </div>
             <div>
@@ -274,9 +274,7 @@ const Dashboard: React.FC = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={displayCategories.map(cat => {
-                  const catUsed = requests
-                    .filter(r => r.category === cat.name && r.status === 'approved')
-                    .reduce((sum, r) => sum + r.amount, 0);
+                  const catUsed = cat.used || 0;
                   const catRemaining = cat.allocated - catUsed;
 
                   return {
@@ -363,9 +361,7 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayCategories.map(cat => {
               // Calculate usage per category
-              const catUsed = requests
-                .filter(r => r.category === cat.name && r.status === 'approved')
-                .reduce((sum, r) => sum + r.amount, 0);
+              const catUsed = cat.used || 0;
               const catPending = requests
                 .filter(r => r.category === cat.name && r.status === 'pending')
                 .reduce((sum, r) => sum + r.amount, 0);
@@ -400,7 +396,7 @@ const Dashboard: React.FC = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500 font-medium">ใช้จริง:</span>
-                      <span className="font-bold text-blue-600">{fmt(catUsed)}</span>
+                      <span className="font-bold text-primary-600">{fmt(catUsed)}</span>
                     </div>
                     <div className="flex justify-between text-sm pt-2 border-t border-gray-200/50">
                       <span className="text-gray-900 font-bold">คงเหลือ:</span>
@@ -412,7 +408,7 @@ const Dashboard: React.FC = () => {
                   <div className="relative pt-1">
                     <div className="flex mb-2 items-center justify-between">
                       <div>
-                        <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${percent > 80 ? 'text-red-600 bg-red-50' : 'text-blue-600 bg-blue-50'}`}>
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${percent > 80 ? 'text-red-600 bg-red-50' : 'text-primary-600 bg-primary-50'}`}>
                           {percent > 80 ? 'Critical' : 'Usage'}
                         </span>
                       </div>
@@ -445,9 +441,7 @@ const Dashboard: React.FC = () => {
               </thead>
               <tbody className="text-gray-600">
                 {displayCategories.map(cat => {
-                  const catUsed = requests
-                    .filter(r => r.category === cat.name && r.status === 'approved')
-                    .reduce((sum, r) => sum + r.amount, 0);
+                  const catUsed = cat.used || 0;
                   const catPending = requests
                     .filter(r => r.category === cat.name && r.status === 'pending')
                     .reduce((sum, r) => sum + r.amount, 0);

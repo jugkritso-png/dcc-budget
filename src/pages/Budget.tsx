@@ -14,9 +14,10 @@ import { Input } from '../components/ui/Input';
 import { Select } from '../components/ui/Select';
 import { Badge } from '../components/ui/Badge';
 import { Modal } from '../components/ui/Modal';
+import { ApprovalModal } from '../components/budget/ApprovalModal';
 
 const Budget: React.FC = () => {
-  const { requests, deleteRequest, updateRequestStatus, categories } = useBudget();
+  const { requests, deleteRequest, updateRequestStatus, categories, user } = useBudget();
   const [selectedRequest, setSelectedRequest] = useState<BudgetRequest | null>(null);
   const [showOfficialMemo, setShowOfficialMemo] = useState(false);
   const [memoRequest, setMemoRequest] = useState<BudgetRequest | null>(null);
@@ -25,6 +26,7 @@ const Budget: React.FC = () => {
     type: 'delete',
     requestId: null
   });
+  const [approvalRequest, setApprovalRequest] = useState<BudgetRequest | null>(null);
   const [statusDropdownOpen, setStatusDropdownOpen] = useState<string | null>(null);
 
   const handleExportPDF = async () => {
@@ -40,8 +42,8 @@ const Budget: React.FC = () => {
     setConfirmDialog({ isOpen: true, type: 'delete', requestId: id });
   };
 
-  const handleRejectClick = (id: string) => {
-    setConfirmDialog({ isOpen: true, type: 'reject', requestId: id });
+  const openApprovalModal = (request: BudgetRequest) => {
+    setApprovalRequest(request);
   };
 
   const handleConfirmAction = () => {
@@ -51,12 +53,6 @@ const Budget: React.FC = () => {
         toast.success('ลบรายการสำเร็จ');
         if (selectedRequest?.id === confirmDialog.requestId) {
           setSelectedRequest(null);
-        }
-      } else if (confirmDialog.type === 'reject') {
-        updateRequestStatus(confirmDialog.requestId, 'rejected');
-        toast.success('ไม่อนุมัติคำขอสำเร็จ');
-        if (selectedRequest?.id === confirmDialog.requestId) {
-          setSelectedRequest(prev => prev ? { ...prev, status: 'rejected' as const } : null);
         }
       }
     }
@@ -68,8 +64,9 @@ const Budget: React.FC = () => {
       req.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || req.category === categoryFilter;
     const matchesStatus = statusFilter === 'all' || req.status === statusFilter;
+    const isNotCompleted = req.status !== 'completed';
 
-    return matchesSearch && matchesCategory && matchesStatus;
+    return matchesSearch && matchesCategory && matchesStatus && isNotCompleted;
   });
 
   // Calculate Summary Stats
@@ -82,14 +79,16 @@ const Budget: React.FC = () => {
   const rejectedCount = requests.filter(r => r.status === 'rejected').length;
   const rejectedAmount = requests.filter(r => r.status === 'rejected').reduce((acc, curr) => acc + curr.amount, 0);
 
-  const totalCount = requests.length;
-  const totalAmount = requests.reduce((acc, curr) => acc + curr.amount, 0);
+  // Exclude completed requests from the total count on this page as they are moved to Expense Report
+  const visibleRequests = requests.filter(r => r.status !== 'completed');
+  const totalCount = visibleRequests.length;
+  const totalAmount = visibleRequests.reduce((acc, curr) => acc + curr.amount, 0);
 
   return (
     <div className="space-y-6">
       {/* Top Tabs - Removed as Report is moved to Analytics */}
       <div className="flex items-center gap-2 mb-6">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-blue-200 flex items-center gap-2">
+        <div className="bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-primary-200 flex items-center gap-2">
           <FileText size={18} />
           รายการคำของบประมาณ
         </div>
@@ -211,23 +210,25 @@ const Budget: React.FC = () => {
             <Select
               className="h-11 font-bold"
               value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-            >
-              <option value="all">📁 หมวดหมู่ทั้งหมด</option>
-              {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-            </Select>
+              onChange={(value) => setCategoryFilter(value)}
+              options={[
+                { value: 'all', label: '📁 หมวดหมู่ทั้งหมด' },
+                ...categories.map(c => ({ value: c.name, label: c.name }))
+              ]}
+            />
           </div>
           <div className="w-full md:w-48">
             <Select
               className="h-11 font-bold"
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="all">⚡ สถานะทั้งหมด</option>
-              <option value="pending">รออนุมัติ</option>
-              <option value="approved">อนุมัติแล้ว</option>
-              <option value="rejected">ไม่อนุมัติ</option>
-            </Select>
+              onChange={(value) => setStatusFilter(value)}
+              options={[
+                { value: 'all', label: '⚡ สถานะทั้งหมด' },
+                { value: 'pending', label: 'รออนุมัติ' },
+                { value: 'approved', label: 'อนุมัติแล้ว' },
+                { value: 'rejected', label: 'ไม่อนุมัติ' }
+              ]}
+            />
           </div>
         </div>
 
@@ -249,7 +250,7 @@ const Budget: React.FC = () => {
               {filteredRequests.map((req) => {
                 const category = categories.find(c => c.name === req.category);
                 // Use category color or default
-                const accentColor = category ? category.color.replace('bg-', '') : 'blue-500';
+                const accentColor = category ? category.color.replace('bg-', '') : 'primary-500';
                 // Need to handle Tailwind arbitrary values if needed, but for now assuming standard colors
 
                 return (
@@ -310,13 +311,16 @@ const Budget: React.FC = () => {
                           {req.status === 'pending' && <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></div>}
                           {req.status === 'rejected' && <div className="w-2 h-2 rounded-full bg-red-500"></div>}
                           {req.status === 'approved' ? 'อนุมัติ' : req.status === 'pending' ? 'รออนุมัติ' : 'ไม่อนุมัติ'}
-                          <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
+                          {req.status === 'approved' ? 'อนุมัติ' : req.status === 'pending' ? 'รออนุมัติ' : 'ไม่อนุมัติ'}
+                          {(user?.role === 'admin' || user?.role === 'approver') && (
+                            <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          )}
                         </button>
 
                         {/* Dropdown Menu */}
-                        {statusDropdownOpen === req.id && (
+                        {statusDropdownOpen === req.id && (user?.role === 'admin' || user?.role === 'approver') && (
                           <>
                             <div
                               className="fixed inset-0 z-10"
@@ -326,14 +330,13 @@ const Budget: React.FC = () => {
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  updateRequestStatus(req.id, 'approved');
-                                  toast.success('อนุมัติคำขอสำเร็จ');
+                                  openApprovalModal(req);
                                   setStatusDropdownOpen(null);
                                 }}
                                 className="w-full px-4 py-2.5 text-left text-sm font-bold text-emerald-700 hover:bg-emerald-50 flex items-center gap-2 transition-colors"
                               >
                                 <CheckCircle2 size={16} className="text-emerald-600" />
-                                อนุมัติ
+                                ตรวจสอบ / อนุมัติ
                                 {req.status === 'approved' && <span className="ml-auto text-emerald-600">✓</span>}
                               </button>
                               <button
@@ -352,7 +355,7 @@ const Budget: React.FC = () => {
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleRejectClick(req.id);
+                                  openApprovalModal(req);
                                   setStatusDropdownOpen(null);
                                 }}
                                 className="w-full px-4 py-2.5 text-left text-sm font-bold text-rose-700 hover:bg-rose-50 flex items-center gap-2 transition-colors"
@@ -371,7 +374,7 @@ const Budget: React.FC = () => {
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-4 group-hover:translate-x-0">
 
                         {/* Action Buttons with Tooltips */}
-                        {req.status === 'pending' && (
+                        {req.status === 'pending' && (user?.role === 'admin' || user?.role === 'approver') && (
                           <>
                             <button
                               onClick={(e) => { e.stopPropagation(); updateRequestStatus(req.id, 'approved'); toast.success('อนุมัติคำขอสำเร็จ'); }}
@@ -381,7 +384,7 @@ const Budget: React.FC = () => {
                               <CheckCircle2 size={16} />
                             </button>
                             <button
-                              onClick={(e) => { e.stopPropagation(); handleRejectClick(req.id); }}
+                              onClick={(e) => { e.stopPropagation(); openApprovalModal(req); }}
                               className="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-500 hover:text-white flex items-center justify-center transition-all shadow-sm hover:shadow-orange-200"
                               title="ไม่อนุมัติ"
                             >
@@ -394,7 +397,7 @@ const Budget: React.FC = () => {
 
                         <button
                           onClick={() => setSelectedRequest(req)}
-                          className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-500 hover:text-white flex items-center justify-center transition-all shadow-sm hover:shadow-blue-200"
+                          className="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 hover:bg-primary-500 hover:text-white flex items-center justify-center transition-all shadow-sm hover:shadow-primary-200"
                           title="ดูรายละเอียด"
                         >
                           <FileText size={16} />
@@ -452,14 +455,14 @@ const Budget: React.FC = () => {
               <div>
                 <h4 className="text-xl font-bold text-gray-900 mb-1">{selectedRequest.project}</h4>
                 <p className="text-sm text-gray-500">รหัส: {selectedRequest.id} | วันที่: {selectedRequest.date}</p>
-                {selectedRequest.approvalRef && <p className="text-xs text-blue-500 mt-1">Ref: {selectedRequest.approvalRef}</p>}
+                {selectedRequest.approvalRef && <p className="text-xs text-primary-500 mt-1">Ref: {selectedRequest.approvalRef}</p>}
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
                 <span className="text-xs text-gray-500 block">จำนวนเงิน</span>
-                <span className="text-lg font-bold text-blue-600">฿{selectedRequest.amount.toLocaleString()}</span>
+                <span className="text-lg font-bold text-primary-600">฿{selectedRequest.amount.toLocaleString()}</span>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
                 <span className="text-xs text-gray-500 block">หมวดหมู่</span>
@@ -525,7 +528,7 @@ const Budget: React.FC = () => {
                     <tfoot className="bg-gray-50 border-t border-gray-200">
                       <tr>
                         <td colSpan={4} className="px-3 py-2 text-right font-bold text-gray-600 text-xs">รวมทั้งสิ้น</td>
-                        <td className="px-3 py-2 text-right font-extrabold text-blue-600">{selectedRequest.expenseItems.reduce((sum, i) => sum + i.total, 0).toLocaleString()}</td>
+                        <td className="px-3 py-2 text-right font-extrabold text-primary-600">{selectedRequest.expenseItems.reduce((sum, i) => sum + i.total, 0).toLocaleString()}</td>
                       </tr>
                     </tfoot>
                   </table>
@@ -569,7 +572,9 @@ const Budget: React.FC = () => {
                   variant={selectedRequest.status === 'rejected' ? 'danger' : 'outline'}
                   size="sm"
                   onClick={() => {
-                    handleRejectClick(selectedRequest.id);
+                    if (selectedRequest) {
+                      openApprovalModal(selectedRequest);
+                    }
                   }}
                   className={cn("flex-1", selectedRequest.status === 'rejected' ? '' : 'text-rose-600 border-rose-200 hover:bg-rose-50')}
                 >
@@ -582,7 +587,7 @@ const Budget: React.FC = () => {
             <div className="pt-2">
               <Button
                 variant="primary"
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 shadow-md"
+                className="w-full bg-gradient-to-r from-primary-600 to-primary-700 shadow-md"
                 onClick={() => {
                   setMemoRequest(selectedRequest);
                   setShowOfficialMemo(true);
@@ -627,6 +632,13 @@ const Budget: React.FC = () => {
           />
         )
       }
+      {approvalRequest && (
+        <ApprovalModal
+          isOpen={true}
+          onClose={() => setApprovalRequest(null)}
+          request={approvalRequest}
+        />
+      )}
     </div >
   );
 };

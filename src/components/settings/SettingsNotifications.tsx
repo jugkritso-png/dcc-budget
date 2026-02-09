@@ -36,7 +36,7 @@ const SettingsNotifications: React.FC = () => {
 
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                            <div className="p-2 bg-primary-50 text-primary-600 rounded-lg">
                                 <Mail size={20} />
                             </div>
                             <div>

@@ -7,9 +7,9 @@ import SettingsDepartments from '../components/settings/SettingsDepartments';
 import SettingsUsers from '../components/settings/SettingsUsers';
 import SettingsNotifications from '../components/settings/SettingsNotifications';
 import SettingsBackup from '../components/settings/SettingsBackup';
-import SettingsSecurity from '../components/settings/SettingsSecurity';
 import SettingsActivityLogs from '../components/settings/SettingsActivityLogs';
-import { Building, User, AlertCircle, Database, Users, Bell, Download, Lock, History } from 'lucide-react';
+import SettingsAppearance from '../components/settings/SettingsAppearance'; // Added import
+import { Building, User, AlertCircle, Database, Users, Bell, Download, Lock, History, Palette } from 'lucide-react'; // Added Palette
 import { Card } from '../components/ui/Card';
 
 const Settings: React.FC = () => {
@@ -21,6 +21,7 @@ const Settings: React.FC = () => {
          { id: 'general', label: 'ข้อมูลทั่วไป', icon: <Building size={18} /> },
       ] : []),
       { id: 'profile', label: 'โปรไฟล์ส่วนตัว', icon: <User size={18} /> },
+      { id: 'appearance', label: 'การแสดงผล', icon: <Palette size={18} /> }, // Added Appearance tab
       ...(user?.role === 'admin' ? [
          { id: 'policies', label: 'นโยบาย', icon: <AlertCircle size={18} /> },
          { id: 'departments', label: 'หน่วยงาน', icon: <Database size={18} /> },
@@ -29,7 +30,6 @@ const Settings: React.FC = () => {
          { id: 'activity', label: 'ประวัติการใช้งาน', icon: <History size={18} /> },
          { id: 'backup', label: 'สำรองข้อมูล', icon: <Download size={18} /> },
       ] : []),
-      { id: 'security', label: 'ความปลอดภัย', icon: <Lock size={18} /> },
    ];
 
    return (
@@ -69,6 +69,9 @@ const Settings: React.FC = () => {
                {/* Profile Tab */}
                {activeTab === 'profile' && <SettingsProfile />}
 
+               {/* Appearance Tab */}
+               {activeTab === 'appearance' && <SettingsAppearance />}
+
                {/* Policies Tab */}
                {activeTab === 'policies' && <SettingsPolicies />}
 
@@ -87,8 +90,7 @@ const Settings: React.FC = () => {
                {/* Activity Logs Tab */}
                {activeTab === 'activity' && <SettingsActivityLogs />}
 
-               {/* Security Tab */}
-               {activeTab === 'security' && <SettingsSecurity />}
+
             </main>
          </Card>
       </div>

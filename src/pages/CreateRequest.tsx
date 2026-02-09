@@ -6,7 +6,6 @@ import { SubActivity, BudgetRequest, ExpenseLineItem, Page } from '../types'; //
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Select } from '../components/ui/Select';
-import { CustomSelect } from '../components/ui/CustomSelect';
 
 interface CreateRequestProps {
     onNavigate?: (page: Page) => void;
@@ -15,20 +14,11 @@ interface CreateRequestProps {
 const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
     const { addRequest, categories, subActivities, user } = useBudget();
 
-    // Expense Categories with Thai labels
-    const expenseCategories = [
-        { value: 'compensation', label: 'ค่าตอบแทน' },
-        { value: 'operating', label: 'ค่าใช้สอย' },
-        { value: 'materials', label: 'ค่าวัสดุ' },
-        { value: 'utilities', label: 'ค่าสาธารณูปโภค' },
-        { value: 'equipment', label: 'ค่าครุภัณฑ์' },
-        { value: 'other', label: 'อื่นๆ' }
-    ];
-
     const [formData, setFormData] = useState<Partial<BudgetRequest> & { expenseItems: ExpenseLineItem[] }>({
         project: '',
         category: '',
         activity: '',
+        subActivityId: '',
         amount: 0,
         date: new Date().toISOString().split('T')[0],
         reason: '',
@@ -38,6 +28,19 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
         expenseItems: []
     });
 
+    // Derived state for budget checks
+    const [categoryUsage, setCategoryUsage] = useState<Record<string, number>>({});
+
+    useEffect(() => {
+        const usage: Record<string, number> = {};
+        formData.expenseItems.forEach(item => {
+            if (item.category) {
+                usage[item.category] = (usage[item.category] || 0) + item.total;
+            }
+        });
+        setCategoryUsage(usage);
+    }, [formData.expenseItems]);
+
     const [availableSubActivities, setAvailableSubActivities] = useState<SubActivity[]>([]);
     const [selectedCategoryData, setSelectedCategoryData] = useState<any>(null);
 
@@ -45,7 +48,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
     const addExpenseItem = () => {
         const newItem: ExpenseLineItem = {
             id: `EXP-${Date.now()}`,
-            category: 'operating',
+            category: formData.category || (categories[0]?.name || ''), // Default to main category or first available
             description: '',
             quantity: 1,
             unitPrice: 0,
@@ -216,7 +219,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">หมวดงบประมาณ <span className="text-red-500">*</span></label>
-                                <CustomSelect
+                                <Select
                                     options={categories.map(c => ({
                                         value: c.name,
                                         label: c.name,
@@ -230,7 +233,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                     required
                                 />
                                 {selectedCategoryData && (
-                                    <div className="mt-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-xs text-blue-700 flex items-center gap-2">
+                                    <div className="mt-2 p-3 bg-primary-50 rounded-xl border border-primary-100 text-xs text-primary-700 flex items-center gap-2">
                                         <CheckCircle2 size={14} />
                                         <span>งบคงเหลือ: ฿{(selectedCategoryData.allocated - selectedCategoryData.used).toLocaleString()}</span>
                                     </div>
@@ -242,14 +245,20 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                     <Select
                                         className="h-12 rounded-xl bg-white border-gray-200"
                                         value={formData.activity}
-                                        onChange={e => setFormData({ ...formData, activity: e.target.value })}
-                                    >
-                                        <option value="">เลือกกิจกรรมย่อย</option>
-                                        {availableSubActivities.map(sub => (
-                                            <option key={sub.id} value={sub.name}>{sub.name}</option>
-                                        ))}
-                                        <option value="อื่นๆ">อื่นๆ</option>
-                                    </Select>
+                                        onChange={(value) => {
+                                            const selectedSub = availableSubActivities.find(s => s.name === value);
+                                            setFormData({
+                                                ...formData,
+                                                activity: value,
+                                                subActivityId: selectedSub ? selectedSub.id : undefined
+                                            });
+                                        }}
+                                        options={[
+                                            { value: '', label: 'เลือกกิจกรรมย่อย' },
+                                            ...availableSubActivities.map(sub => ({ value: sub.name, label: sub.name })),
+                                            { value: 'อื่นๆ', label: 'อื่นๆ' }
+                                        ]}
+                                    />
                                 ) : (
                                     <Input
                                         type="text"
@@ -301,10 +310,10 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                         <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-2">
                             <h3 className="text-lg font-bold text-gray-900">3. รายละเอียดประมาณการค่าใช้จ่าย</h3>
                             <div className="flex items-center gap-2">
-                                <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
+                                <div className="p-2 bg-primary-50 rounded-lg text-primary-600">
                                     <Calculator size={20} />
                                 </div>
-                                <span className="text-sm font-bold text-gray-600">รวมทั้งสิ้น: <span className="text-blue-600 text-lg">฿{calculateExpenseTotal().toLocaleString()}</span></span>
+                                <span className="text-sm font-bold text-gray-600">รวมทั้งสิ้น: <span className="text-primary-600 text-lg">฿{calculateExpenseTotal().toLocaleString()}</span></span>
                             </div>
                         </div>
 
@@ -333,7 +342,12 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                                         value={item.category}
                                                         onChange={e => updateExpenseItem(item.id, 'category', e.target.value)}
                                                     >
-                                                        {expenseCategories.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                                                        <option value="">เลือกหมวดงบประมาณ</option>
+                                                        {categories.map(c => (
+                                                            <option key={c.id} value={c.name}>
+                                                                {c.name} (คงเหลือ: ฿{(c.allocated - c.used - (categoryUsage[c.name] || 0) + (c.name === item.category ? item.total : 0)).toLocaleString()})
+                                                            </option>
+                                                        ))}
                                                     </select>
                                                 </td>
                                                 <td className="px-4 py-3">

@@ -17,19 +17,22 @@ export interface User {
   employeeId?: string;
   bio?: string;
   avatar?: string; // base64
-  theme?: 'light' | 'dark' | 'system';
+  englishName?: string;
+  startDate?: string;
+  theme?: 'light' | 'dark' | 'system' | 'blue' | 'green' | 'purple' | 'orange' | 'red';
   language?: 'th' | 'en';
   role: 'admin' | 'user';
 }
 
 export interface ExpenseLineItem {
   id: string;
-  category: 'compensation' | 'operating' | 'materials' | 'utilities' | 'equipment' | 'other';
+  category: string;
   description: string;
   quantity: number;
   unitPrice: number;
   unit: string; // e.g., "ชิ้น", "คน", "วัน", "เดือน"
   total: number; // calculated: quantity * unitPrice
+  actualAmount?: number; // Spending amount
 }
 
 export interface BudgetRequest {
@@ -37,9 +40,10 @@ export interface BudgetRequest {
   project: string;
   category: string;
   activity: string; // This will map to "Sub-activity" / กิจกรรมย่อย
+  subActivityId?: string; // New field for strict linkage
   amount: number;
   date: string;
-  status: 'approved' | 'pending' | 'rejected' | 'draft';
+  status: 'approved' | 'pending' | 'rejected' | 'draft' | 'completed' | 'waiting_verification';
   requester: string;
   notes?: string;
   // New fields from the request
@@ -50,6 +54,14 @@ export interface BudgetRequest {
   endDate?: string;
   reason?: string;
   expenseItems?: ExpenseLineItem[]; // รายละเอียดประมาณการค่าใช้จ่าย
+  approverId?: string;
+  approvedAt?: string;
+  rejectionReason?: string;
+
+  // Expense Reporting
+  actualAmount?: number;
+  returnAmount?: number;
+  completedAt?: string;
 }
 
 export interface Category {
@@ -77,6 +89,8 @@ export interface SubActivity {
   categoryId: string;
   name: string;
   allocated: number;
+  parentId?: string | null;
+  children?: SubActivity[];
 }
 
 export interface ChartData {
@@ -93,6 +107,7 @@ export enum Page {
   SETTINGS = 'settings',
   CREATE_REQUEST = 'create_request',
   NOTIFICATIONS = 'notifications',
+  EXPENSE_REPORT = 'expense_report',
 }
 
 export interface SystemSettings {
@@ -128,6 +143,7 @@ export type BudgetContextType = {
   user: User | null;
   users: User[]; // List of all users
   login: (username: string, password: string) => Promise<boolean>;
+  loginWithGoogle: (token: string) => Promise<boolean>;
   logout: () => void;
   updateUserProfile: (user: Partial<User>) => Promise<void>;
   addUser: (user: Partial<User>) => Promise<void>;
@@ -135,12 +151,16 @@ export type BudgetContextType = {
   deleteUser: (id: string) => Promise<void>;
   changePassword: (current: string, newPass: string) => Promise<void>;
   addRequest: (request: BudgetRequest) => Promise<void>;
-  updateRequestStatus: (id: string, status: BudgetRequest['status']) => Promise<void>;
-  deleteRequest: (id: string) => Promise<void>;
+  approveRequest: (id: string, approverId: string) => Promise<void>;
+  rejectRequest: (id: string, approverId: string, reason: string) => Promise<void>;
+  submitExpenseReport: (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => Promise<void>;
+  completeRequest: (id: string) => Promise<void>;
+  revertComplete: (id: string) => Promise<void>;
   addCategory: (category: Category) => Promise<void>;
   updateCategory: (category: Category) => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
   addSubActivity: (subActivity: SubActivity) => Promise<void>;
+  updateSubActivity: (subActivity: SubActivity) => Promise<void>;
   deleteSubActivity: (id: string) => Promise<void>;
   updateSettings: (settings: SystemSettings) => Promise<void>;
   addDepartment: (department: Department) => Promise<void>;
@@ -160,6 +180,7 @@ export type BudgetContextType = {
   deleteExpense: (id: string) => Promise<void>;
   budgetPlans: BudgetPlan[];
   saveBudgetPlan: (plan: Omit<BudgetPlan, 'id' | 'updatedAt'>) => Promise<void>;
+  changeTheme: (theme: string) => Promise<void>;
 };
 
 export interface BudgetPlan {

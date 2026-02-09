@@ -13,13 +13,33 @@ import {
 const API_URL = '/api';
 
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
+    const token = localStorage.getItem('dcc_token');
+
+    const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+    };
+
+    if (token) {
+        (headers as any)['Authorization'] = `Bearer ${token}`;
+    }
+
+    console.log(`[API Request] ${endpoint}`, options);
     const response = await fetch(`${API_URL}${endpoint}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers,
-        },
+        headers,
         ...options,
     });
+
+    if (response.status === 401) {
+        // Token expired or invalid
+        localStorage.removeItem('dcc_token');
+        localStorage.removeItem('dcc_user');
+        if (!window.location.pathname.includes('/login')) {
+            window.location.href = '/login';
+        }
+        throw new Error('Unauthorized');
+    }
+
 
     if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
@@ -34,7 +54,10 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 
 export const authService = {
     login: (credentials: { username: string; password: string }) =>
-        request<User>('/login', { method: 'POST', body: JSON.stringify(credentials) }),
+        request<{ user: User; token: string }>('/login', { method: 'POST', body: JSON.stringify(credentials) }),
+
+    loginWithGoogle: (token: string) =>
+        request<{ user: User; token: string }>('/google', { method: 'POST', body: JSON.stringify({ token }) }),
 
     updateProfile: (id: string, data: Partial<User>) =>
         request<User>(`/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
@@ -68,6 +91,7 @@ export const masterDataService = {
 
     getSubActivities: () => request<SubActivity[]>('/sub-activities'),
     createSubActivity: (sub: SubActivity) => request<SubActivity>('/sub-activities', { method: 'POST', body: JSON.stringify(sub) }),
+    updateSubActivity: (sub: SubActivity) => request<SubActivity>(`/sub-activities/${sub.id}`, { method: 'PUT', body: JSON.stringify(sub) }),
     deleteSubActivity: (id: string) => request<{ success: boolean }>(`/sub-activities/${id}`, { method: 'DELETE' }),
 };
 
@@ -75,6 +99,11 @@ export const budgetService = {
     getRequests: () => request<BudgetRequest[]>('/requests'),
     createRequest: (req: BudgetRequest) => request<BudgetRequest>('/requests', { method: 'POST', body: JSON.stringify(req) }),
     updateRequestStatus: (id: string, status: string) => request<BudgetRequest>(`/requests/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
+    approveRequest: (id: string, approverId: string) => request<BudgetRequest>(`/requests/${id}/approve`, { method: 'PUT', body: JSON.stringify({ approverId }) }),
+    rejectRequest: (id: string, approverId: string, reason: string) => request<BudgetRequest>(`/requests/${id}/reject`, { method: 'PUT', body: JSON.stringify({ approverId, reason }) }),
+    completeRequest: (id: string) => request<BudgetRequest>(`/requests/${id}/complete`, { method: 'PUT' }),
+    submitExpenseReport: (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => request<BudgetRequest>(`/requests/${id}/submit-expense`, { method: 'PUT', body: JSON.stringify(data) }),
+    revertComplete: (id: string) => request<BudgetRequest>(`/requests/${id}/revert-complete`, { method: 'PUT' }),
     deleteRequest: (id: string) => request<{ success: boolean }>(`/requests/${id}`, { method: 'DELETE' }),
 
     getPlans: (year?: number) => request<BudgetPlan[]>(`/budget-plans${year ? `?year=${year}` : ''}`),

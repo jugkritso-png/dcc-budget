@@ -24,17 +24,17 @@ export default {
                     950: '#1a202c', // Added darker shade for contrast
                 },
                 primary: {
-                    50: '#F0F7FF',
-                    100: '#E0EFFE',
-                    200: '#BAE0FD',
-                    300: '#7CC5F8',
-                    400: '#36A5ED',
-                    500: '#0085DB', // Main Brand Color
-                    600: '#0066B3',
-                    700: '#005191',
-                    800: '#004478',
-                    900: '#003964',
-                    950: '#002543',
+                    50: 'var(--color-primary-50)',
+                    100: 'var(--color-primary-100)',
+                    200: 'var(--color-primary-200)',
+                    300: 'var(--color-primary-300)',
+                    400: 'var(--color-primary-400)',
+                    500: 'var(--color-primary-500)',
+                    600: 'var(--color-primary-600)',
+                    700: 'var(--color-primary-700)',
+                    800: 'var(--color-primary-800)',
+                    900: 'var(--color-primary-900)',
+                    950: 'var(--color-primary-950)',
                 },
                 secondary: {
                     50: '#F5F8FA',
@@ -59,7 +59,7 @@ export default {
                 'glow': '0 0 15px rgba(59, 130, 246, 0.5)',
             },
             backgroundImage: {
-                'gradient-primary': 'linear-gradient(135deg, #00A5E3 0%, #0085DB 100%)',
+                'gradient-primary': 'linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-600) 100%)',
                 'gradient-card': 'linear-gradient(135deg, #ffffff 0%, #F8FAFC 100%)',
                 'gradient-mesh': 'radial-gradient(at 0% 0%, hsla(203,88%,42%,0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, hsla(190,100%,45%,0.1) 0px, transparent 50%)',
             }
