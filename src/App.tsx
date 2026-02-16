@@ -17,7 +17,7 @@ import { Toaster } from 'react-hot-toast';
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.DASHBOARD);
 
-  const { user } = useBudget(); // Get user from context
+  const { user, hasPermission } = useBudget(); // Get user from context
 
   if (!user) {
     return <Login />;
@@ -28,13 +28,16 @@ const App: React.FC = () => {
       case Page.DASHBOARD:
         return <Dashboard />;
       case Page.BUDGET:
-        return <Budget />;
+        // Budget page might need generic 'view_budget' or just be open
+        return hasPermission('view_budget') ? <Budget /> : <Dashboard />;
       case Page.CREATE_REQUEST:
         return <CreateRequest onNavigate={setCurrentPage} />;
       case Page.MANAGEMENT:
-        return <BudgetCategories />;
+        return (hasPermission('manage_budget') || hasPermission('manage_departments'))
+          ? <BudgetCategories />
+          : <Dashboard />;
       case Page.ANALYTICS:
-        return <Analytics />;
+        return hasPermission('view_analytics') ? <Analytics /> : <Dashboard />;
       case Page.SETTINGS:
         return <Settings />;
       case Page.NOTIFICATIONS:

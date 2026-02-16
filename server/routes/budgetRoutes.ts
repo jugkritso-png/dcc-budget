@@ -1,5 +1,6 @@
 import express from 'express';
 import prisma from '../lib/prisma';
+import { Category } from '@prisma/client';
 import { logActivity } from '../utils/logger';
 import validate from '../middleware/validateResource';
 import { createRequestSchema, updateRequestStatusSchema } from '../schemas/budgetRequestSchema';
@@ -113,10 +114,14 @@ router.put('/requests/:id/status', validate(updateRequestStatusSchema), async (r
     res.json(request);
 });
 
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
+
+// ... (existing code)
+
 // Approve Request
-router.put('/requests/:id/approve', async (req, res) => {
+router.put('/requests/:id/approve', requirePermission('approve_budget'), async (req, res) => {
     const { id } = req.params;
-    const { approverId } = req.body;
+    const { approverId } = req.body as { approverId: string };
 
     try {
         const request = await prisma.budgetRequest.findUnique({
@@ -124,6 +129,10 @@ router.put('/requests/:id/approve', async (req, res) => {
             include: { expenseItems: true } // Ensure we have items
         });
         if (!request) return res.status(404).json({ error: 'Request not found' });
+
+        // Helper to check if expenseItems exists (for TS)
+        // casting to any because Prisma include types can be tricky in this setup
+        const items = (request as any).expenseItems || [];
 
         // 1. Update Request Status
         const updatedRequest = await prisma.budgetRequest.update({
@@ -140,10 +149,10 @@ router.put('/requests/:id/approve', async (req, res) => {
         const categoryUpdates: Record<string, number> = {};
 
         // If no items, fallback to main category (legacy support)
-        if (!request.expenseItems || request.expenseItems.length === 0) {
+        if (items.length === 0) {
             categoryUpdates[request.category] = request.amount;
         } else {
-            request.expenseItems.forEach(item => {
+            items.forEach(item => {
                 const catName = item.category || request.category; // Fallback to main if item has no category
                 categoryUpdates[catName] = (categoryUpdates[catName] || 0) + item.total;
             });
@@ -174,9 +183,9 @@ router.put('/requests/:id/approve', async (req, res) => {
 });
 
 // Reject Request
-router.put('/requests/:id/reject', async (req, res) => {
+router.put('/requests/:id/reject', requirePermission('approve_budget'), async (req, res) => {
     const { id } = req.params;
-    const { approverId, reason } = req.body;
+    const { approverId, reason } = req.body as { approverId: string, reason: string };
 
     try {
         const request = await prisma.budgetRequest.update({
@@ -245,6 +254,30 @@ router.put('/requests/:id/submit-expense', async (req, res) => {
     }
 });
 
+// 1.5 Send Back for Revision (Manager Action) - Moves back to "approved" (User can edit)
+router.put('/requests/:id/reject-expense', async (req, res) => {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    try {
+        const request = await prisma.budgetRequest.update({
+            where: { id },
+            data: {
+                status: 'approved', // Back to Approved (User can restart report)
+                // We keep actualAmount/expenseItems so they don't lose data, 
+                // but the UI should let them edit it again.
+                rejectionReason: reason // Optional: store why it was sent back
+            }
+        });
+
+        await logActivity(null, 'REJECT_EXPENSE_REPORT', { requestId: id, reason }, req);
+        res.json(request);
+    } catch (error) {
+        console.error("Error rejecting expense report:", error);
+        res.status(500).json({ error: 'Failed to send back for revision' });
+    }
+});
+
 // 2. Complete/Verify Request (Manager Action) - Moves to "completed" and Returns Funds
 router.put('/requests/:id/complete', async (req, res) => {
     const { id } = req.params;
@@ -261,7 +294,6 @@ router.put('/requests/:id/complete', async (req, res) => {
             // Optional strict check
         }
 
-        const returnAmount = request.returnAmount || 0;
 
         // 1. Update Request to Completed
         const updatedRequest = await prisma.budgetRequest.update({
@@ -272,63 +304,140 @@ router.put('/requests/:id/complete', async (req, res) => {
             }
         });
 
-        // 2. Return unused funds to Category (Per Item Category)
-        if (returnAmount > 0 && request.expenseItems && request.expenseItems.length > 0) {
+        // Pre-fetch all categories for the year to valid/fallback logic
+        const requestYear = new Date().getFullYear() + 543; // Or derived from request.date? usually current fiscal year
+        const allCategories = await prisma.category.findMany({
+            where: { year: { equals: requestYear } } // Assuming year match
+        });
+        const categoryMap = new Map(allCategories.map(c => [c.name, c]));
 
-            // Calculate return amount per category
-            const categoryReturns: Record<string, number> = {};
+        // Helper to resolve valid category
+        const resolveCategory = (name: string): Category | undefined => {
+            if (categoryMap.has(name)) return categoryMap.get(name);
+            // Fallback to request category
+            return categoryMap.get(request.category);
+        };
 
-            request.expenseItems.forEach((item: any) => {
-                // If item has no ID (new) or temp, it might differ, but generally we rely on 'total' vs 'actualAmount'
-                // Note: 'total' is the allocated amount for that item.
-                const itemReturn = Math.max(0, (item.total || 0) - (item.actualAmount || 0));
+        // 2. Calculate Budget Return/Charge per Category
+        // We must aggregate ALL items to their categories to find the net effect.
+        // Structure: { [categoryId]: { allocated: number, actual: number, categoryObj: Category } }
+        const categoryStats: Record<string, { allocated: number, actual: number, category: any }> = {};
 
-                if (itemReturn > 0) {
-                    const catName = item.category || request.category;
-                    categoryReturns[catName] = (categoryReturns[catName] || 0) + itemReturn;
-                }
-            });
+        // Helper to init category stats
+        const initCat = (category: any) => {
+            if (!categoryStats[category.id]) categoryStats[category.id] = { allocated: 0, actual: 0, category };
+        };
 
-            // Execute Updates
-            for (const [catName, amount] of Object.entries(categoryReturns)) {
-                if (amount <= 0) continue;
-
-                const category = await prisma.category.findFirst({
-                    where: { name: catName, year: new Date().getFullYear() + 543 }
-                });
+        // Process Expense Items
+        if (request.expenseItems && request.expenseItems.length > 0) {
+            request.expenseItems.forEach(item => {
+                const catName = item.category || request.category;
+                const category = resolveCategory(catName);
 
                 if (category) {
-                    await prisma.category.update({
-                        where: { id: category.id },
-                        data: { used: { decrement: amount } } // Reduce usage = Return funds
-                    });
-
-                    // Log Budget Return
-                    await prisma.budgetLog.create({
-                        data: {
-                            categoryId: category.id,
-                            amount: amount,
-                            type: 'REDUCE', // Reduce Usage
-                            reason: `คืนงบประมาณส่วนเหลืองาน: ${request.project} (${catName})`,
-                            user: 'System'
-                        }
-                    });
+                    initCat(category);
+                    categoryStats[category.id].allocated += item.total || 0;
+                    categoryStats[category.id].actual += item.actualAmount || 0;
                 } else {
-                    console.warn(`Category not found for return: ${catName}`);
+                    console.warn(`Could not resolve category for item: ${item.description}, cat: ${catName}`);
                 }
+            });
+        } else {
+            // Legacy/No-Item Support
+            const category = resolveCategory(request.category);
+            if (category) {
+                initCat(category);
+                categoryStats[category.id].allocated += request.amount;
+                categoryStats[category.id].actual += request.actualAmount || 0;
             }
         }
-        // Fallback for legacy requests without items or simple return logic
-        else if (returnAmount > 0) {
-            const category = await prisma.category.findFirst({ where: { name: request.category, year: new Date().getFullYear() + 543 } });
-            if (category) {
+
+        // Execute Updates based on Net Change
+        for (const [catId, stats] of Object.entries(categoryStats)) {
+            const netChange = stats.actual - stats.allocated;
+            // netChange < 0 means Underspent (Return funds) -> Decrement Used
+            // netChange > 0 means Overspent (Charge more funds) -> Increment Used
+
+            if (netChange === 0) continue;
+
+            const category = stats.category;
+
+            if (netChange < 0) {
+                // RETURN Funds (Underspent)
+                const returnAmount = Math.abs(netChange);
                 await prisma.category.update({
                     where: { id: category.id },
                     data: { used: { decrement: returnAmount } }
                 });
+
+                // Log Budget Return
+                await prisma.budgetLog.create({
+                    data: {
+                        categoryId: category.id,
+                        amount: returnAmount,
+                        type: 'REDUCE',
+                        reason: `คืนงบประมาณส่วนเหลืองาน: ${request.project} (${category.name})`,
+                        user: 'System'
+                    }
+                });
+            } else {
+                // CHARGE Funds (Overspent)
+                const extraAmount = netChange;
+                await prisma.category.update({
+                    where: { id: category.id },
+                    data: { used: { increment: extraAmount } }
+                });
+
+                // Log Budget Charge
+                await prisma.budgetLog.create({
+                    data: {
+                        categoryId: category.id,
+                        amount: extraAmount,
+                        type: 'ADD',
+                        reason: `ตัดงบประมาณเพิ่ม (เกินงบ): ${request.project} (${category.name})`,
+                        user: 'System'
+                    }
+                });
             }
         }
 
+        // 3. Create Expense Records for Tracking
+        if (request.expenseItems && request.expenseItems.length > 0) {
+            for (const item of request.expenseItems) {
+                if ((item.actualAmount || 0) > 0) {
+                    const catName = item.category || request.category;
+                    const category = resolveCategory(catName);
+
+                    if (category) {
+                        await prisma.expense.create({
+                            data: {
+                                categoryId: category.id,
+                                amount: item.actualAmount || 0,
+                                payee: request.requester,
+                                date: new Date().toISOString(),
+                                description: `[${request.project}] ${item.description}`
+                            }
+                        });
+                    }
+                }
+            }
+        } else if (request.actualAmount && request.actualAmount > 0) {
+            // Legacy/No-Item Support
+            const category = resolveCategory(request.category);
+            if (category) {
+                await prisma.expense.create({
+                    data: {
+                        categoryId: category.id,
+                        amount: request.actualAmount,
+                        payee: request.requester,
+                        date: new Date().toISOString(),
+                        description: `[${request.project}] Project Expense`
+                    }
+                });
+            }
+        }
+
+        const returnAmount = request.returnAmount || 0; // Legacy ref for logging
         await logActivity(null, 'VERIFY_AND_COMPLETE_REQUEST', { requestId: id, returnAmount }, req);
         res.json(updatedRequest);
     } catch (error) {
@@ -352,8 +461,6 @@ router.put('/requests/:id/revert-complete', async (req, res) => {
             return res.status(400).json({ error: 'Request is not completed' });
         }
 
-        const returnAmount = request.returnAmount || 0;
-
         // 1. Update Request back to waiting_verification
         const updatedRequest = await prisma.budgetRequest.update({
             where: { id },
@@ -363,61 +470,102 @@ router.put('/requests/:id/revert-complete', async (req, res) => {
             }
         });
 
-        // 2. Reverse Budget Return (Increase Used = Take funds back)
-        if (returnAmount > 0 && request.expenseItems && request.expenseItems.length > 0) {
+        // 2. Reverse Budget Return/Charge (Net Calculation)
 
-            // Calculate return amount per category (Same logic as complete)
-            const categoryReturns: Record<string, number> = {};
+        // Pre-fetch all categories
+        const requestYear = new Date().getFullYear() + 543;
+        const allCategories = await prisma.category.findMany({
+            where: { year: { equals: requestYear } }
+        });
+        const categoryMap = new Map(allCategories.map(c => [c.name, c]));
 
-            request.expenseItems.forEach((item: any) => {
-                const itemReturn = Math.max(0, (item.total || 0) - (item.actualAmount || 0));
+        const resolveCategory = (name: string): Category | undefined => {
+            if (categoryMap.has(name)) return categoryMap.get(name);
+            return categoryMap.get(request.category);
+        };
 
-                if (itemReturn > 0) {
-                    const catName = item.category || request.category;
-                    categoryReturns[catName] = (categoryReturns[catName] || 0) + itemReturn;
+        const categoryStats: Record<string, { allocated: number, actual: number, category: any }> = {};
+        const initCat = (category: any) => {
+            if (!categoryStats[category.id]) categoryStats[category.id] = { allocated: 0, actual: 0, category };
+        };
+
+        if (request.expenseItems && request.expenseItems.length > 0) {
+            request.expenseItems.forEach(item => {
+                const catName = item.category || request.category;
+                const category = resolveCategory(catName);
+                if (category) {
+                    initCat(category);
+                    categoryStats[category.id].allocated += item.total || 0;
+                    categoryStats[category.id].actual += item.actualAmount || 0;
                 }
             });
-
-            // Execute Reversions
-            for (const [catName, amount] of Object.entries(categoryReturns)) {
-                if (amount <= 0) continue;
-
-                const category = await prisma.category.findFirst({
-                    where: { name: catName, year: new Date().getFullYear() + 543 }
-                });
-
-                if (category) {
-                    await prisma.category.update({
-                        where: { id: category.id },
-                        data: { used: { increment: amount } } // Increase usage = Un-return funds
-                    });
-
-                    // Log Revert
-                    await prisma.budgetLog.create({
-                        data: {
-                            categoryId: category.id,
-                            amount: amount,
-                            type: 'ADD', // Add back to usage
-                            reason: `ยกเลิกการปิดโครงการ: ${request.project} (${catName})`,
-                            user: 'System'
-                        }
-                    });
-                } else {
-                    console.warn(`Category not found for revert: ${catName}`);
-                }
+        } else {
+            const category = resolveCategory(request.category);
+            if (category) {
+                initCat(category);
+                categoryStats[category.id].allocated += request.amount;
+                categoryStats[category.id].actual += request.actualAmount || 0;
             }
         }
-        else if (returnAmount > 0) {
-            // Legacy Fallback
-            const category = await prisma.category.findFirst({ where: { name: request.category, year: new Date().getFullYear() + 543 } });
-            if (category) {
+
+        for (const [catId, stats] of Object.entries(categoryStats)) {
+            const netChange = stats.actual - stats.allocated;
+            // Previously:
+            // netChange < 0 (Underspent/Returned) -> We Reduced Used -> NOW INCREASE USED
+            // netChange > 0 (Overspent/Charged)   -> We Increased Used -> NOW REDUCE USED
+
+            if (netChange === 0) continue;
+
+            const category = stats.category;
+
+            if (netChange < 0) {
+                // Was Underspent. Reverse -> Increase Used
+                const returnAmount = Math.abs(netChange);
                 await prisma.category.update({
                     where: { id: category.id },
                     data: { used: { increment: returnAmount } }
                 });
+
+                // Log Revert
+                await prisma.budgetLog.create({
+                    data: {
+                        categoryId: category.id,
+                        amount: returnAmount,
+                        type: 'ADD',
+                        reason: `ยกเลิกการปิดโครงการ (ดึงเงินคืนกลับ): ${request.project} (${category.name})`,
+                        user: 'System'
+                    }
+                });
+            } else {
+                // Was Overspent. Reverse -> Reduce Used
+                const extraAmount = netChange;
+                await prisma.category.update({
+                    where: { id: category.id },
+                    data: { used: { decrement: extraAmount } }
+                });
+
+                // Log Revert
+                await prisma.budgetLog.create({
+                    data: {
+                        categoryId: category.id,
+                        amount: extraAmount,
+                        type: 'REDUCE',
+                        reason: `ยกเลิกการปิดโครงการ (คืนยอดตัดเกิน): ${request.project} (${category.name})`,
+                        user: 'System'
+                    }
+                });
             }
         }
 
+
+        // 3. Delete Created Expenses (Cleanup)
+        await prisma.expense.deleteMany({
+            where: {
+                description: { startsWith: `[${request.project}]` },
+            }
+        });
+
+        const returnAmount = request.returnAmount || 0;
         await logActivity(null, 'REVERT_COMPLETE_REQUEST', { requestId: id, returnAmount }, req);
         res.json(updatedRequest);
     } catch (error) {

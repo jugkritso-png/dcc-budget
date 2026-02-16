@@ -20,8 +20,8 @@ const AnalyticsDashboard: React.FC = () => {
 
     months.forEach(m => monthlyDataMap.set(m, { planned: avgMonthlyPlan, actual: 0 }));
 
-    // Populate Actual from Approved Requests
-    requests.filter(r => r.status === 'approved').forEach(req => {
+    // Populate Actual from Completed Requests (Actual Spent)
+    requests.filter(r => r.status === 'completed').forEach(req => {
         const date = new Date(req.date);
         const monthIndex = date.getMonth(); // 0-11 (Jan-Dec)
 
@@ -32,7 +32,8 @@ const AnalyticsDashboard: React.FC = () => {
         if (fiscalIndex >= 0 && fiscalIndex < 12) {
             const mName = months[fiscalIndex];
             const current = monthlyDataMap.get(mName)!;
-            monthlyDataMap.set(mName, { ...current, actual: current.actual + req.amount });
+            // Use actualAmount instead of amount (allocated)
+            monthlyDataMap.set(mName, { ...current, actual: current.actual + (req.actualAmount || 0) });
         }
     });
 
@@ -152,8 +153,8 @@ const AnalyticsDashboard: React.FC = () => {
                         <h3 className="text-xl font-bold text-gray-800">เปรียบเทียบแผน vs ผลจริง</h3>
                         <p className="text-sm text-gray-400">แสดงการเปรียบเทียบงบเฉลี่ยรายเดือนกับการใช้จริง</p>
                     </div>
-                    <div className="h-80 w-full">
-                        <ResponsiveContainer width="100%" height="100%">
+                    <div style={{ width: '100%', height: 320, position: 'relative' }}>
+                        <ResponsiveContainer width="100%" height="100%" minHeight={200}>
                             <BarChart
                                 data={chartData}
                                 margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
@@ -182,8 +183,8 @@ const AnalyticsDashboard: React.FC = () => {
                         <h3 className="text-xl font-bold text-gray-800">แนวโน้มการใช้จ่ายสะสม</h3>
                         <p className="text-sm text-gray-400">กราฟแสดงยอดการใช้จ่ายสะสมตลอดปีงบประมาณ</p>
                     </div>
-                    <div className="h-80 w-full">
-                        <ResponsiveContainer width="100%" height="100%">
+                    <div style={{ width: '100%', height: 320, position: 'relative' }}>
+                        <ResponsiveContainer width="100%" height="100%" minHeight={200}>
                             <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">

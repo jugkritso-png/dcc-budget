@@ -5,8 +5,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies (including devDependencies for build)
-RUN npm install
+# Install dependencies
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -16,6 +16,9 @@ RUN npx prisma generate
 
 # Build Frontend
 RUN npm run build
+
+# Set environment to production
+ENV NODE_ENV=production
 
 # Expose the API port
 EXPOSE 3002

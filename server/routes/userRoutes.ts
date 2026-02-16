@@ -19,8 +19,10 @@ router.get('/', async (req, res) => {
     res.json(safeUsers);
 });
 
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
+
 // Create new user
-router.post('/', validate(createUserSchema), async (req, res) => {
+router.post('/', validate(createUserSchema), requirePermission('manage_users'), async (req, res) => {
     const { username, password, name, email, role, department, position } = req.body;
 
     // Check if username or email exists
@@ -59,6 +61,33 @@ router.post('/', validate(createUserSchema), async (req, res) => {
 // Update user
 router.put('/:id', validate(updateUserSchema), async (req, res) => {
     const { id } = req.params as { id: string };
+
+    // Permission Check: Allow if self-update OR has 'manage_users'
+    // Note: req.user is set by authenticateToken but we need to ensure it's there. 
+    // Ideally authenticateToken should be on the router globally or per route.
+    // Assuming authenticateToken is applied. If not, we should apply it.
+    // For now, let's assume global auth or apply it.
+    // Actually, I should probably check if `req.user` exists.
+
+    const currentUser = req.user;
+    if (!currentUser) return res.status(401).json({ error: 'Unauthorized' });
+
+    // Check if simple user trying to update another user
+    if (currentUser.id !== id && currentUser.role !== 'admin') {
+        // Check if they have manage_users permission
+        const settings = await prisma.systemSetting.findUnique({ where: { key: 'PERMISSIONS' } });
+        let hasPermission = false;
+        if (settings) {
+            const permissionsMap = JSON.parse(settings.value);
+            const userPermissions = permissionsMap[currentUser.role] || [];
+            if (userPermissions.includes('manage_users')) hasPermission = true;
+        }
+
+        if (!hasPermission) {
+            return res.status(403).json({ error: 'Permission denied' });
+        }
+    }
+
     const updateData = { ...req.body };
 
     // If updating password, hash it
@@ -102,8 +131,8 @@ router.post('/change-password', validate(changePasswordSchema), async (req, res)
 });
 
 // Delete user
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
+router.delete('/:id', requirePermission('manage_users'), async (req, res) => {
+    const { id } = req.params as { id: string };
     // Prevent deleting the last admin if needed, but for now just allow
     await prisma.user.delete({ where: { id } });
     res.json({ success: true });

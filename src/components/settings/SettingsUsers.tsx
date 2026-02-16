@@ -84,7 +84,7 @@ const SettingsUsers: React.FC = () => {
             try {
                 const updatePayload: any = {
                     name: userForm.name,
-                    email: userForm.email,
+                    email: userForm.email.trim(),
                     role: userForm.role,
                     department: userForm.section,
                     position: userForm.position
@@ -110,6 +110,8 @@ const SettingsUsers: React.FC = () => {
             try {
                 await addUser({
                     ...userForm,
+                    username: userForm.username.trim(),
+                    email: userForm.email.trim(),
                     department: userForm.section
                 });
                 setIsUserModalOpen(false);
@@ -195,7 +197,7 @@ const SettingsUsers: React.FC = () => {
 
                                         <div className="flex items-center gap-4 mb-4">
                                             <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold shadow-inner overflow-hidden shrink-0 ${user.role === 'admin' ? 'bg-gradient-to-br from-primary-500 to-indigo-600 text-white' :
-                                                    'bg-gray-50 text-gray-500'
+                                                'bg-gray-50 text-gray-500'
                                                 }`}>
                                                 {(() => {
                                                     const cleanAvatar = user.avatar ? String(user.avatar).trim() : '';
@@ -234,7 +236,8 @@ const SettingsUsers: React.FC = () => {
 
                                         <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                                             <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${user.role === 'admin' ? 'bg-indigo-50 text-indigo-700 border-indigo-100' :
-                                                    user.role === 'Finance' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                                                user.role === 'finance' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                                                    user.role === 'manager' || user.role === 'approver' ? 'bg-purple-50 text-purple-700 border-purple-100' :
                                                         'bg-gray-50 text-gray-600 border-gray-100'
                                                 }`}>
                                                 {user.role}
@@ -361,7 +364,10 @@ const SettingsUsers: React.FC = () => {
                                     onChange={(value) => setUserForm({ ...userForm, role: value })}
                                     options={[
                                         { value: 'user', label: 'User (ผู้ใช้งานทั่วไป)' },
-                                        { value: 'admin', label: 'Administrator (ผู้ดูแลระบบ)' }
+                                        { value: 'admin', label: 'Administrator (ผู้ดูแลระบบ)' },
+                                        { value: 'finance', label: 'Finance (การเงิน)' },
+                                        { value: 'manager', label: 'Manager (ผู้จัดการ)' },
+                                        { value: 'approver', label: 'Approver (ผู้อนุมัติ)' }
                                     ]}
                                 />
                             </div>

@@ -14,16 +14,28 @@ router.get('/settings', async (req, res) => {
         return acc;
     }, {} as Record<string, string>);
 
+    let permissions = {};
+    try {
+        if (settingsObj['PERMISSIONS']) {
+            permissions = JSON.parse(settingsObj['PERMISSIONS']);
+        }
+    } catch (e) {
+        console.error("Failed to parse permissions", e);
+    }
+
     res.json({
         orgName: settingsObj['ORG_NAME'] || 'DCC Company Ltd.',
         fiscalYear: parseInt(settingsObj['FISCAL_YEAR'] || '2569'),
         overBudgetAlert: settingsObj['OVER_BUDGET_ALERT'] === 'true',
         fiscalYearCutoff: settingsObj['FISCAL_YEAR_CUTOFF'] || '2026-09-30',
+        permissions
     });
 });
 
-router.put('/settings', async (req, res) => {
-    const { orgName, fiscalYear, overBudgetAlert, fiscalYearCutoff } = req.body;
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
+
+router.put('/settings', requirePermission('manage_settings'), async (req, res) => {
+    const { orgName, fiscalYear, overBudgetAlert, fiscalYearCutoff, permissions } = req.body;
 
     await prisma.systemSetting.upsert({
         where: { key: 'ORG_NAME' },
@@ -49,6 +61,14 @@ router.put('/settings', async (req, res) => {
         create: { key: 'FISCAL_YEAR_CUTOFF', value: fiscalYearCutoff }, // Store as YYYY-MM-DD string
     });
 
+    if (permissions) {
+        await prisma.systemSetting.upsert({
+            where: { key: 'PERMISSIONS' },
+            update: { value: JSON.stringify(permissions) },
+            create: { key: 'PERMISSIONS', value: JSON.stringify(permissions) },
+        });
+    }
+
     res.json({ success: true });
 });
 
@@ -58,7 +78,7 @@ router.get('/departments', async (req, res) => {
     res.json(departments);
 });
 
-router.post('/departments', validate(createDepartmentSchema), async (req, res) => {
+router.post('/departments', validate(createDepartmentSchema), requirePermission('manage_departments'), async (req, res) => {
     const { name, code, color } = req.body;
     const department = await prisma.department.create({
         data: { name, code, color: color || "#3B82F6" }
@@ -66,7 +86,7 @@ router.post('/departments', validate(createDepartmentSchema), async (req, res) =
     res.json(department);
 });
 
-router.put('/departments/:id', validate(createDepartmentSchema), async (req, res) => { // Reusing create schema as it has same fields
+router.put('/departments/:id', validate(createDepartmentSchema), requirePermission('manage_departments'), async (req, res) => { // Reusing create schema as it has same fields
     const { id } = req.params as { id: string };
     const { name, code, color } = req.body;
     const department = await prisma.department.update({
@@ -76,8 +96,8 @@ router.put('/departments/:id', validate(createDepartmentSchema), async (req, res
     res.json(department);
 });
 
-router.delete('/departments/:id', async (req, res) => {
-    const { id } = req.params;
+router.delete('/departments/:id', requirePermission('manage_departments'), async (req, res) => {
+    const { id } = req.params as { id: string };
     await prisma.department.delete({ where: { id } });
     res.json({ success: true });
 });

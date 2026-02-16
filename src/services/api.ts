@@ -43,7 +43,15 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 
     if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
-        throw new Error(errorBody.error || response.statusText || 'API request failed');
+        let errorMessage = errorBody.error || response.statusText || 'API request failed';
+
+        // Append validation details if available
+        if (errorBody.details && Array.isArray(errorBody.details)) {
+            const details = errorBody.details.map((d: any) => `${d.path}: ${d.message}`).join(', ');
+            errorMessage += ` (${details})`;
+        }
+
+        throw new Error(errorMessage);
     }
 
     // Some endpoints might return empty body (e.g. DELETE)
@@ -103,6 +111,7 @@ export const budgetService = {
     rejectRequest: (id: string, approverId: string, reason: string) => request<BudgetRequest>(`/requests/${id}/reject`, { method: 'PUT', body: JSON.stringify({ approverId, reason }) }),
     completeRequest: (id: string) => request<BudgetRequest>(`/requests/${id}/complete`, { method: 'PUT' }),
     submitExpenseReport: (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => request<BudgetRequest>(`/requests/${id}/submit-expense`, { method: 'PUT', body: JSON.stringify(data) }),
+    rejectExpenseReport: (id: string, reason: string) => request<BudgetRequest>(`/requests/${id}/reject-expense`, { method: 'PUT', body: JSON.stringify({ reason }) }),
     revertComplete: (id: string) => request<BudgetRequest>(`/requests/${id}/revert-complete`, { method: 'PUT' }),
     deleteRequest: (id: string) => request<{ success: boolean }>(`/requests/${id}`, { method: 'DELETE' }),
 

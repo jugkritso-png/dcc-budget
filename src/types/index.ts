@@ -21,7 +21,7 @@ export interface User {
   startDate?: string;
   theme?: 'light' | 'dark' | 'system' | 'blue' | 'green' | 'purple' | 'orange' | 'red';
   language?: 'th' | 'en';
-  role: 'admin' | 'user';
+  role: 'admin' | 'user' | 'finance' | 'manager' | 'approver';
 }
 
 export interface ExpenseLineItem {
@@ -110,11 +110,24 @@ export enum Page {
   EXPENSE_REPORT = 'expense_report',
 }
 
+export type Permission =
+  | 'view_dashboard'
+  | 'view_budget'
+  | 'manage_budget'
+  | 'approve_budget'
+  | 'view_analytics'
+  | 'manage_users'
+  | 'manage_departments'
+  | 'manage_policies'
+  | 'manage_settings'
+  | 'view_activity_log';
+
 export interface SystemSettings {
   orgName: string;
   fiscalYear: number;
   overBudgetAlert: boolean;
   fiscalYearCutoff: string;
+  permissions?: Record<string, Permission[]>; // role -> permissions[]
 }
 
 export interface Department {
@@ -155,6 +168,7 @@ export type BudgetContextType = {
   rejectRequest: (id: string, approverId: string, reason: string) => Promise<void>;
   submitExpenseReport: (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => Promise<void>;
   completeRequest: (id: string) => Promise<void>;
+  rejectExpenseReport: (id: string, reason: string) => Promise<void>;
   revertComplete: (id: string) => Promise<void>;
   addCategory: (category: Category) => Promise<void>;
   updateCategory: (category: Category) => Promise<void>;

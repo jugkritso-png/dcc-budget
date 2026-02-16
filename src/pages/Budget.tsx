@@ -14,10 +14,11 @@ import { Input } from '../components/ui/Input';
 import { Select } from '../components/ui/Select';
 import { Badge } from '../components/ui/Badge';
 import { Modal } from '../components/ui/Modal';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/Table';
 import { ApprovalModal } from '../components/budget/ApprovalModal';
 
 const Budget: React.FC = () => {
-  const { requests, deleteRequest, updateRequestStatus, categories, user } = useBudget();
+  const { requests, categories, user, departments, hasPermission, approveRequest, rejectRequest, completeRequest, revertComplete, addRequest, updateRequestStatus, deleteRequest } = useBudget();
   const [selectedRequest, setSelectedRequest] = useState<BudgetRequest | null>(null);
   const [showOfficialMemo, setShowOfficialMemo] = useState(false);
   const [memoRequest, setMemoRequest] = useState<BudgetRequest | null>(null);
@@ -64,9 +65,8 @@ const Budget: React.FC = () => {
       req.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || req.category === categoryFilter;
     const matchesStatus = statusFilter === 'all' || req.status === statusFilter;
-    const isNotCompleted = req.status !== 'completed';
 
-    return matchesSearch && matchesCategory && matchesStatus && isNotCompleted;
+    return matchesSearch && matchesCategory && matchesStatus;
   });
 
   // Calculate Summary Stats
@@ -79,10 +79,12 @@ const Budget: React.FC = () => {
   const rejectedCount = requests.filter(r => r.status === 'rejected').length;
   const rejectedAmount = requests.filter(r => r.status === 'rejected').reduce((acc, curr) => acc + curr.amount, 0);
 
-  // Exclude completed requests from the total count on this page as they are moved to Expense Report
-  const visibleRequests = requests.filter(r => r.status !== 'completed');
-  const totalCount = visibleRequests.length;
-  const totalAmount = visibleRequests.reduce((acc, curr) => acc + curr.amount, 0);
+  const waitingCount = requests.filter(r => r.status === 'waiting_verification').length;
+  const completedCount = requests.filter(r => r.status === 'completed').length;
+
+  // Show all requests in Total
+  const totalCount = requests.length;
+  const totalAmount = requests.reduce((acc, curr) => acc + curr.amount, 0);
 
   return (
     <div className="space-y-6">
@@ -95,7 +97,6 @@ const Budget: React.FC = () => {
       </div>
 
 
-      {/* Summary Cards Row - Clean Metro Style */}
       {/* Summary Cards Row - Clean Metro Style */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Pending */}
@@ -122,16 +123,16 @@ const Budget: React.FC = () => {
           <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-emerald-600">฿{approvedAmount.toLocaleString()}</span></p>
         </Card>
 
-        {/* Rejected */}
+        {/* Waiting Verification (Reporting) */}
         <Card interactive className="p-6 flex flex-col justify-between group">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-rose-50 rounded-2xl text-rose-600 border border-rose-100 group-hover:bg-rose-100 transition-colors">
-              <XCircle size={24} />
+            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600 border border-blue-100 group-hover:bg-blue-100 transition-colors">
+              <FileCheck2 size={24} />
             </div>
-            <Badge variant="error">ไม่อนุมัติ</Badge>
+            <Badge variant="info">รายงานผล</Badge>
           </div>
-          <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{rejectedCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
-          <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-rose-600">฿{rejectedAmount.toLocaleString()}</span></p>
+          <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{waitingCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
+          <p className="text-sm font-bold text-gray-500">รายงานผลแล้ว: {completedCount}</p>
         </Card>
 
         {/* Total */}
@@ -140,14 +141,13 @@ const Budget: React.FC = () => {
             <div className="p-3 bg-primary-50 rounded-2xl text-primary-600 border border-primary-100 group-hover:bg-primary-100 transition-colors">
               <BarChart size={24} />
             </div>
-            <Badge variant="info">ทั้งหมด</Badge>
+            <Badge variant="default">ทั้งหมด</Badge>
           </div>
           <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{totalCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
           <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-primary-600">฿{totalAmount.toLocaleString()}</span></p>
         </Card>
       </div>
 
-      {/* Main Content Area - System Design Table */}
       {/* Main Content Area - System Design Table */}
       <Card className="p-8 min-h-[600px] animate-in fade-in slide-in-from-bottom-8 duration-700">
         {/* Header & Actions */}
@@ -168,22 +168,7 @@ const Budget: React.FC = () => {
             </button>
             <a
               href="#"
-              onClick={(e) => { e.preventDefault(); window.location.hash = '#'; window.history.pushState({}, '', '/'); /* In a real app with router, use navigate. Here rely on Layout/App state wrapper if possible, or simple page reload if needed, but since we are in App.tsx state management: */ }}
-              // Actually, since we don't have access to setPage from here easily without prop drilling, 
-              // and looking at App.tsx, it renders pages conditionally based on state.
-              // We need to pass a navigation handler to Budget.tsx.
-              // For now, I'll assume I can just use a simple workaround or better yet, 
-              // I will update Budget.tsx signature to accept onNavigate.
-              // BUT for this specific step, I will just change the button text to specific instruction or 
-              // render a proper Link if I can.
-              // Wait, the user wants me to EXTRACT it.
-              // Let's modify App.tsx to pass onNavigate to Budget first? 
-              // Or I can just make the button say "Go to Create Request Menu" or similar.
-              // NO, I should do it properly.
-              // Let's look at how I can trigger the change.
-              // The sidebar change works because it calls `onNavigate`.
-              // `Budget` component is rendered inside `App`.
-              // I should update `Budget` component to accept `onNavigate`.
+              onClick={(e) => { e.preventDefault(); window.location.hash = '#'; window.history.pushState({}, '', '/'); }}
               className="pointer-events-none opacity-50 grayscale"
               title="กรุณาใช้เมนู 'ขอใช้งบประมาณ' ด้านซ้ายเพื่อสร้างรายการใหม่"
             >
@@ -217,7 +202,7 @@ const Budget: React.FC = () => {
               ]}
             />
           </div>
-          <div className="w-full md:w-48">
+          <div className="w-full md:w-56">
             <Select
               className="h-11 font-bold"
               value={statusFilter}
@@ -225,8 +210,10 @@ const Budget: React.FC = () => {
               options={[
                 { value: 'all', label: '⚡ สถานะทั้งหมด' },
                 { value: 'pending', label: 'รออนุมัติ' },
-                { value: 'approved', label: 'อนุมัติแล้ว' },
-                { value: 'rejected', label: 'ไม่อนุมัติ' }
+                { value: 'approved', label: 'อนุมัติ' },
+                { value: 'rejected', label: 'ไม่อนุมัติ' },
+                { value: 'waiting_verification', label: 'อยู่ระหว่างรายงานผล' },
+                { value: 'completed', label: 'รายงานผลเรียบร้อยแล้ว' }
               ]}
             />
           </div>
@@ -234,93 +221,124 @@ const Budget: React.FC = () => {
 
         {/* System Design Table - Floating Rows */}
         <div className="overflow-x-auto min-h-[400px]">
-          <table className="w-full text-left border-separate border-spacing-y-3 px-1">
-            <thead>
-              <tr className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
-                <th className="py-2 px-6 pl-8">วันที่ / รหัส</th>
-                <th className="py-2 px-4">โครงการ</th>
-                <th className="py-2 px-4">หมวดหมู่</th>
-                <th className="py-2 px-4">ผู้ขอ</th>
-                <th className="py-2 px-4 text-right">งบประมาณ</th>
-                <th className="py-2 px-4 text-center">สถานะ</th>
-                <th className="py-2 px-6 text-right pr-8">จัดการ</th>
+          <Table className="w-full text-left border-separate border-spacing-y-3 px-1">
+            <TableHeader>
+              <tr>
+                <TableHead className="py-2 px-6 pl-8 font-semibold text-gray-400 uppercase tracking-wider">วันที่ / รหัส</TableHead>
+                <TableHead className="py-2 px-4 font-semibold text-gray-400 uppercase tracking-wider">โครงการ</TableHead>
+                <TableHead className="py-2 px-4 font-semibold text-gray-400 uppercase tracking-wider">หมวดหมู่</TableHead>
+                <TableHead className="py-2 px-4 font-semibold text-gray-400 uppercase tracking-wider">ผู้ขอ</TableHead>
+                <TableHead className="py-2 px-4 text-right font-semibold text-gray-400 uppercase tracking-wider">งบประมาณ</TableHead>
+                <TableHead className="py-2 px-4 text-center font-semibold text-gray-400 uppercase tracking-wider">สถานะ</TableHead>
+                <TableHead className="py-2 px-6 text-right pr-8 font-semibold text-gray-400 uppercase tracking-wider">จัดการ</TableHead>
               </tr>
-            </thead>
-            <tbody className="text-gray-600">
+            </TableHeader>
+            <TableBody className="text-gray-600">
               {filteredRequests.map((req) => {
                 const category = categories.find(c => c.name === req.category);
-                // Use category color or default
                 const accentColor = category ? category.color.replace('bg-', '') : 'primary-500';
-                // Need to handle Tailwind arbitrary values if needed, but for now assuming standard colors
+
+                // Status Logic
+                let statusLabel = '';
+                let statusColorClass = '';
+                let statusDotClass = '';
+
+                switch (req.status) {
+                  case 'pending':
+                    statusLabel = 'รออนุมัติ';
+                    statusColorClass = 'bg-yellow-50 text-yellow-700 border-yellow-100 hover:bg-yellow-100';
+                    statusDotClass = 'bg-yellow-500 animate-pulse';
+                    break;
+                  case 'approved':
+                    statusLabel = 'อนุมัติ';
+                    statusColorClass = 'bg-green-50 text-green-700 border-green-100 hover:bg-green-100';
+                    statusDotClass = 'bg-green-500 animate-pulse';
+                    break;
+                  case 'rejected':
+                    statusLabel = 'ไม่อนุมัติ';
+                    statusColorClass = 'bg-red-50 text-red-700 border-red-100 hover:bg-red-100';
+                    statusDotClass = 'bg-red-500';
+                    break;
+                  case 'waiting_verification':
+                    statusLabel = 'อยู่ระหว่างรายงานผล';
+                    statusColorClass = 'bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100';
+                    statusDotClass = 'bg-blue-500 animate-pulse';
+                    break;
+                  case 'completed':
+                    statusLabel = 'รายงานผลเรียบร้อยแล้ว';
+                    statusColorClass = 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200';
+                    statusDotClass = 'bg-gray-500';
+                    break;
+                  default:
+                    statusLabel = req.status;
+                    statusColorClass = 'bg-gray-50 text-gray-600 border-gray-100';
+                    statusDotClass = 'bg-gray-400';
+                }
 
                 return (
-                  <tr
+                  <TableRow
                     key={req.id}
                     className="group bg-white transition-all duration-300 shadow-sm hover:shadow-card-hover rounded-2xl relative overflow-hidden transform hover:-translate-y-1 hover:z-10"
                   >
                     {/* Left Accent Strip */}
-                    <td className="py-4 px-6 pl-8 rounded-l-2xl align-middle relative">
+                    <TableCell className="py-4 px-6 pl-8 rounded-l-2xl align-middle relative">
                       <div className={`absolute left-0 top-0 bottom-0 w-1.5 md:w-2 ${category ? category.color : 'bg-gray-300'} group-hover:scale-y-100 transition-transform origin-bottom`}></div>
                       <div className="flex flex-col">
                         <span className="text-sm font-bold text-gray-800">{req.date}</span>
                         <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded border border-gray-200 w-fit mt-1 font-mono">{req.id}</span>
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="py-4 px-4 align-middle">
+                    <TableCell className="py-4 px-4 align-middle">
                       <p className="text-sm font-bold text-gray-800 group-hover:text-primary-600 transition-colors line-clamp-1 text-base">{req.project}</p>
                       {req.urgency === 'urgent' && <span className="text-[10px] text-orange-600 font-bold bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100 mt-1 inline-block">ด่วน</span>}
                       {req.urgency === 'critical' && <span className="text-[10px] text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded border border-red-100 mt-1 inline-block">ด่วนที่สุด</span>}
-                    </td>
+                    </TableCell>
 
-                    <td className="py-4 px-4 align-middle">
+                    <TableCell className="py-4 px-4 align-middle">
                       <div className="flex items-center gap-2">
                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white shadow-sm ${category ? category.color : 'bg-gray-400'}`}>
                           <FileText size={14} />
                         </div>
                         <span className="text-sm text-gray-700 font-bold">{req.category}</span>
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="py-4 px-4 text-sm text-gray-600 font-medium align-middle">
+                    <TableCell className="py-4 px-4 text-sm text-gray-600 font-medium align-middle">
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
                           <User size={12} />
                         </div>
                         {req.requester}
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="py-4 px-4 text-right align-middle">
+                    <TableCell className="py-4 px-4 text-right align-middle">
                       <span className="text-base font-extrabold text-gray-900 tracking-tight">฿{req.amount.toLocaleString()}</span>
-                    </td>
+                    </TableCell>
 
-                    <td className="py-4 px-4 text-center align-middle">
+                    <TableCell className="py-4 px-4 text-center align-middle">
                       <div className="relative inline-block">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setStatusDropdownOpen(statusDropdownOpen === req.id ? null : req.id);
+                            if (req.status === 'pending' || req.status === 'approved' || req.status === 'rejected') {
+                              setStatusDropdownOpen(statusDropdownOpen === req.id ? null : req.id);
+                            }
                           }}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm border cursor-pointer hover:shadow-md transition-all active:scale-95 ${req.status === 'approved' ? 'bg-green-50 text-green-700 border-green-100 hover:bg-green-100' :
-                            req.status === 'pending' ? 'bg-yellow-50 text-yellow-700 border-yellow-100 hover:bg-yellow-100' :
-                              'bg-red-50 text-red-700 border-red-100 hover:bg-red-100'
-                            }`}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm border cursor-pointer hover:shadow-md transition-all active:scale-95 ${statusColorClass}`}
                         >
-                          {req.status === 'approved' && <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>}
-                          {req.status === 'pending' && <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></div>}
-                          {req.status === 'rejected' && <div className="w-2 h-2 rounded-full bg-red-500"></div>}
-                          {req.status === 'approved' ? 'อนุมัติ' : req.status === 'pending' ? 'รออนุมัติ' : 'ไม่อนุมัติ'}
-                          {req.status === 'approved' ? 'อนุมัติ' : req.status === 'pending' ? 'รออนุมัติ' : 'ไม่อนุมัติ'}
-                          {(user?.role === 'admin' || user?.role === 'approver') && (
+                          <div className={`w-2 h-2 rounded-full ${statusDotClass}`}></div>
+                          {statusLabel}
+                          {(hasPermission('approve_budget')) && (req.status === 'pending' || req.status === 'approved' || req.status === 'rejected') && (
                             <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
                           )}
                         </button>
 
-                        {/* Dropdown Menu */}
-                        {statusDropdownOpen === req.id && (user?.role === 'admin' || user?.role === 'approver') && (
+                        {/* Dropdown Menu - Only for Approver Actions */}
+                        {statusDropdownOpen === req.id && (hasPermission('approve_budget')) && (req.status === 'pending' || req.status === 'approved' || req.status === 'rejected') && (
                           <>
                             <div
                               className="fixed inset-0 z-10"
@@ -368,13 +386,13 @@ const Budget: React.FC = () => {
                           </>
                         )}
                       </div>
-                    </td>
+                    </TableCell>
 
-                    <td className="py-4 px-6 text-right rounded-r-2xl align-middle pr-8">
+                    <TableCell className="py-4 px-6 text-right rounded-r-2xl align-middle pr-8">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-4 group-hover:translate-x-0">
 
                         {/* Action Buttons with Tooltips */}
-                        {req.status === 'pending' && (user?.role === 'admin' || user?.role === 'approver') && (
+                        {req.status === 'pending' && (hasPermission('approve_budget')) && (
                           <>
                             <button
                               onClick={(e) => { e.stopPropagation(); updateRequestStatus(req.id, 'approved'); toast.success('อนุมัติคำขอสำเร็จ'); }}
@@ -411,12 +429,12 @@ const Budget: React.FC = () => {
                           <Trash2 size={16} />
                         </button>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 )
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
           {filteredRequests.length === 0 && (
             <div className="text-center py-20 bg-gray-50/30 rounded-3xl border-2 border-dashed border-gray-100 m-4">
               <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
@@ -447,10 +465,16 @@ const Budget: React.FC = () => {
             <div className="flex items-start gap-4">
               <div className={cn("p-3 rounded-full flex-shrink-0",
                 selectedRequest.status === 'approved' ? 'bg-green-100 text-green-600' :
-                  selectedRequest.status === 'pending' ? 'bg-yellow-100 text-yellow-600' : 'bg-red-100 text-red-600'
+                  selectedRequest.status === 'pending' ? 'bg-yellow-100 text-yellow-600' :
+                    selectedRequest.status === 'rejected' ? 'bg-red-100 text-red-600' :
+                      selectedRequest.status === 'waiting_verification' ? 'bg-blue-100 text-blue-600' :
+                        'bg-gray-100 text-gray-600'
               )}>
                 {selectedRequest.status === 'approved' ? <CheckCircle2 size={32} /> :
-                  selectedRequest.status === 'pending' ? <Clock size={32} /> : <XCircle size={32} />}
+                  selectedRequest.status === 'pending' ? <Clock size={32} /> :
+                    selectedRequest.status === 'rejected' ? <XCircle size={32} /> :
+                      selectedRequest.status === 'waiting_verification' ? <FileCheck2 size={32} /> :
+                        <CheckCircle2 size={32} />}
               </div>
               <div>
                 <h4 className="text-xl font-bold text-gray-900 mb-1">{selectedRequest.project}</h4>
@@ -586,8 +610,8 @@ const Budget: React.FC = () => {
             {/* Official Memo Button */}
             <div className="pt-2">
               <Button
-                variant="primary"
-                className="w-full bg-gradient-to-r from-primary-600 to-primary-700 shadow-md"
+                variant="gradient"
+                className="w-full"
                 onClick={() => {
                   setMemoRequest(selectedRequest);
                   setShowOfficialMemo(true);

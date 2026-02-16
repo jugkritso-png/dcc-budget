@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Wallet, Settings, BarChart3, LayoutGrid, Bell, User, LogOut, FileText, Menu, ChevronLeft, CheckCircle } from 'lucide-react';
+import { Home, Wallet, Settings, BarChart3, LayoutGrid, Bell, User, LogOut, FileText, Menu, ChevronLeft, CheckCircle, LayoutDashboard } from 'lucide-react';
 import { Page } from '../../types';
 import { useBudget } from '../../context/BudgetContext';
 
@@ -9,9 +9,10 @@ interface LayoutProps {
   onNavigate: (page: Page) => void;
 }
 
+import { BottomNav } from './BottomNav';
+
 const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) => {
-  const { settings, user, logout } = useBudget();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const { settings, user, logout, hasPermission } = useBudget();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
 
@@ -22,14 +23,18 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
     { id: 3, title: 'คำขอใหม่', message: 'มีคำขอเบิกจ่ายใหม่รอการตรวจสอบ', time: '2 ชั่วโมงที่แล้ว', unread: false, type: 'info', targetPage: Page.BUDGET },
   ];
 
+  // Define navigation items with permission checks
   const navItems = [
-    { id: Page.DASHBOARD, label: 'หน้าหลัก', icon: Home },
-    { id: Page.BUDGET, label: 'งบประมาณ', icon: Wallet },
-    { id: Page.CREATE_REQUEST, label: 'ขอใช้งบประมาณ', icon: FileText },
-    { id: Page.EXPENSE_REPORT, label: 'รายงานผล', icon: CheckCircle },
-    // Only show Management (Budget Categories) to Admin
-    ...(user?.role === 'admin' ? [{ id: Page.MANAGEMENT, label: 'การจัดการ', icon: Settings }] : []),
-    { id: Page.ANALYTICS, label: 'วิเคราะห์', icon: BarChart3 },
+    { id: Page.DASHBOARD, label: 'ภาพรวม', icon: LayoutDashboard }, // Dashboard is usually open to all, or check 'view_dashboard'
+    ...(hasPermission('view_budget') ? [{ id: Page.BUDGET, label: 'งบประมาณ', icon: Wallet }] : []),
+    { id: Page.CREATE_REQUEST, label: 'ขอใช้งบประมาณ', icon: FileText }, // Assuming all can create
+    { id: Page.EXPENSE_REPORT, label: 'รายงานผล', icon: CheckCircle }, // Assuming all can report
+
+    // Management: 'manage_settings' or specific 'manage_departments' etc.
+    // For simplicity, let's use a specific permission for this menu
+    ...(hasPermission('manage_budget') || hasPermission('manage_departments') ? [{ id: Page.MANAGEMENT, label: 'การจัดการ', icon: Settings }] : []),
+
+    ...(hasPermission('view_analytics') ? [{ id: Page.ANALYTICS, label: 'วิเคราะห์', icon: BarChart3 }] : []),
     { id: Page.SETTINGS, label: 'ตั้งค่า', icon: LayoutGrid },
   ];
 
@@ -54,7 +59,6 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
               key={item.id}
               onClick={() => {
                 onNavigate(item.id);
-                setIsMobileMenuOpen(false);
               }}
               title={isCollapsed ? item.label : undefined}
               className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0 py-4' : 'px-4 py-3.5'} rounded-2xl transition-all duration-300 group relative overflow-hidden ${currentPage === item.id
@@ -106,9 +110,9 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
       </aside>
 
       {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col ${isSidebarCollapsed ? 'md:ml-20' : 'md:ml-72'} transition-all duration-300 min-h-screen`}>
+      <div className={`flex-1 flex flex-col ${isSidebarCollapsed ? 'md:ml-20' : 'md:ml-72'} transition-all duration-300 min-h-screen relative`}>
 
-        {/* Mobile Header */}
+        {/* Mobile Header (Brand Only) */}
         <header className="md:hidden bg-white/60 backdrop-blur-xl sticky top-0 z-40 border-b border-white/40 px-4 py-3 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2">
             <div className="bg-gradient-primary text-white p-1.5 rounded-lg">
@@ -116,22 +120,8 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
             </div>
             <span className="font-bold text-gray-800">{settings.orgName}</span>
           </div>
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-gray-600 rounded-lg hover:bg-gray-100"
-          >
-            <LayoutGrid className="w-6 h-6" />
-          </button>
+          {/* Mobile Profile/Notif could go here if needed */}
         </header>
-
-        {/* Mobile Menu Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 z-50 bg-gray-900/20 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}>
-            <div className="bg-white w-3/4 h-full shadow-2xl" onClick={e => e.stopPropagation()}>
-              <SidebarContent />
-            </div>
-          </div>
-        )}
 
         {/* Top Bar (Desktop) */}
         <header className="hidden md:flex h-20 items-center justify-between px-8 py-4 z-40 sticky top-0">
@@ -230,11 +220,15 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
         </header>
 
         {/* Content Scrollable Area */}
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto pb-24 md:pb-8">
           <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
             {children}
           </div>
         </main>
+
+        {/* Bottom Navigation for Mobile */}
+        <BottomNav currentPage={currentPage} onNavigate={onNavigate} navItems={navItems} />
+
       </div>
     </div>
   );

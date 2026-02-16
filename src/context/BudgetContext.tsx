@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { BudgetRequest, Category, BudgetContextType, SubActivity, SystemSettings, Department, Expense, User, BudgetPlan, BudgetLog } from '../types';
+import { BudgetRequest, Category, BudgetContextType, SubActivity, SystemSettings, Department, Expense, User, BudgetPlan, BudgetLog, Permission } from '../types';
 import {
   authService,
   userService,
@@ -75,9 +75,18 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       orgName: 'DCC Company Ltd.',
       fiscalYear: 2569,
       overBudgetAlert: false,
-      fiscalYearCutoff: '2026-09-30'
+      fiscalYearCutoff: '2026-09-30',
+      permissions: {}
     }
   });
+
+  const hasPermission = (permission: Permission): boolean => {
+    if (!user) return false;
+    if (user.role === 'admin') return true;
+
+    const rolePermissions = settings.permissions?.[user.role] || [];
+    return rolePermissions.includes(permission);
+  };
 
   // --- Mutations (Actions) ---
 
@@ -242,6 +251,13 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   });
 
+  const rejectExpenseReportMutation = useMutation({
+    mutationFn: ({ id, reason }: { id: string, reason: string }) => budgetService.rejectExpenseReport(id, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+    }
+  });
+
   const completeRequestMutation = useMutation({
     mutationFn: ({ id }: { id: string }) => budgetService.completeRequest(id),
     onSuccess: () => {
@@ -253,6 +269,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   // ... (deleteRequestMutation)
 
   const submitExpenseReport = async (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => { await submitExpenseReportMutation.mutateAsync({ id, data }); };
+  const rejectExpenseReport = async (id: string, reason: string) => { await rejectExpenseReportMutation.mutateAsync({ id, reason }); };
   const completeRequest = async (id: string) => { await completeRequestMutation.mutateAsync({ id }); };
 
   const deleteRequestMutation = useMutation({
@@ -312,12 +329,17 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       .filter(req => req.status === 'pending')
       .reduce((sum, req) => sum + req.amount, 0);
 
+    const totalActual = currentYearRequests
+      .filter(req => req.status === 'completed')
+      .reduce((sum, req) => sum + (req.actualAmount || 0), 0);
+
     const totalRemaining = totalBudget - totalUsed;
     const usagePercentage = totalBudget > 0 ? (totalUsed / totalBudget) * 100 : 0;
 
     return {
       totalBudget,
       totalUsed,
+      totalActual, // New field
       totalPending,
       totalRemaining,
       usagePercentage
@@ -373,6 +395,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       categories,
       subActivities,
       settings,
+      hasPermission,
       departments,
       user,
       users,
@@ -390,6 +413,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       rejectRequest,
 
       submitExpenseReport,
+      rejectExpenseReport,
       completeRequest,
       revertComplete,
       deleteRequest,

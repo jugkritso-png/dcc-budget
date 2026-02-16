@@ -9,25 +9,36 @@ import SettingsNotifications from '../components/settings/SettingsNotifications'
 import SettingsBackup from '../components/settings/SettingsBackup';
 import SettingsActivityLogs from '../components/settings/SettingsActivityLogs';
 import SettingsAppearance from '../components/settings/SettingsAppearance'; // Added import
-import { Building, User, AlertCircle, Database, Users, Bell, Download, Lock, History, Palette } from 'lucide-react'; // Added Palette
+import { Building, User, AlertCircle, Database, Users, Bell, Download, Lock, History, Palette, Shield } from 'lucide-react'; // Added Palette, Shield
 import { Card } from '../components/ui/Card';
+
+import SettingsPermissions from '../components/settings/SettingsPermissions';
 
 const Settings: React.FC = () => {
    const { user } = useBudget();
-   const [activeTab, setActiveTab] = useState(user?.role === 'admin' ? 'general' : 'profile');
+   const [activeTab, setActiveTab] = useState(user?.role === 'user' ? 'profile' : 'profile'); // Default to profile for safety, can be smarter if needed
 
    const menuItems = [
-      ...(user?.role === 'admin' ? [
+      ...(['admin', 'manager', 'finance'].includes(user?.role || '') ? [
          { id: 'general', label: 'ข้อมูลทั่วไป', icon: <Building size={18} /> },
       ] : []),
       { id: 'profile', label: 'โปรไฟล์ส่วนตัว', icon: <User size={18} /> },
       { id: 'appearance', label: 'การแสดงผล', icon: <Palette size={18} /> }, // Added Appearance tab
-      ...(user?.role === 'admin' ? [
+      ...(['admin', 'finance'].includes(user?.role || '') ? [
          { id: 'policies', label: 'นโยบาย', icon: <AlertCircle size={18} /> },
+      ] : []),
+      ...(['admin', 'finance', 'manager'].includes(user?.role || '') ? [
          { id: 'departments', label: 'หน่วยงาน', icon: <Database size={18} /> },
+      ] : []),
+      ...(user?.role === 'admin' ? [
          { id: 'users', label: 'ผู้ใช้งาน', icon: <Users size={18} /> },
+         { id: 'permissions', label: 'สิทธิ์การใช้งาน', icon: <Shield size={18} /> },
+      ] : []),
+      ...(['admin', 'finance', 'manager', 'approver'].includes(user?.role || '') ? [
          { id: 'notifications', label: 'แจ้งเตือน', icon: <Bell size={18} /> },
          { id: 'activity', label: 'ประวัติการใช้งาน', icon: <History size={18} /> },
+      ] : []),
+      ...(user?.role === 'admin' ? [
          { id: 'backup', label: 'สำรองข้อมูล', icon: <Download size={18} /> },
       ] : []),
    ];
@@ -90,6 +101,9 @@ const Settings: React.FC = () => {
                {/* Activity Logs Tab */}
                {activeTab === 'activity' && <SettingsActivityLogs />}
 
+
+               {/* Permissions Tab */}
+               {activeTab === 'permissions' && <SettingsPermissions />}
 
             </main>
          </Card>

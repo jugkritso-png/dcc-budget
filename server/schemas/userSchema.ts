@@ -5,7 +5,7 @@ export const createUserSchema = z.object({
         username: z.string().min(3, 'Username must be at least 3 characters'),
         password: z.string().min(4, 'Password must be at least 4 characters'), // Weak password policy for now as requested
         name: z.string().min(1, 'Name is required'),
-        role: z.enum(['admin', 'user']),
+        role: z.string(),
         department: z.string().optional(),
         position: z.string().optional(),
         email: z.string().email('Invalid email format'),
@@ -18,7 +18,7 @@ export const updateUserSchema = z.object({
     }),
     body: z.object({
         name: z.string().optional(),
-        role: z.enum(['admin', 'user']).optional(),
+        role: z.string().optional(),
         department: z.string().optional(),
         position: z.string().optional(),
         email: z.string().email().optional().or(z.literal('')),
