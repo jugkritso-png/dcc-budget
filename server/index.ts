@@ -29,13 +29,21 @@ const seedAdmin = async () => {
   const userCount = await prisma.user.count();
   if (userCount === 0) {
     console.log("Seeding default admin user...");
-    const hashedPassword = await bcrypt.hash('password123', 10);
+    const adminPassword = process.env.ADMIN_PASSWORD || 'password123';
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@dcc-motor.com';
+
+    if (!process.env.ADMIN_PASSWORD) {
+      console.warn("WARNING: ADMIN_PASSWORD not set. Using default: 'password123'");
+    }
+
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
     await prisma.user.create({
       data: {
         username: 'admin',
         password: hashedPassword,
         name: 'Admin User',
-        email: 'admin@dcc-motor.com',
+        email: adminEmail,
         role: 'admin',
         position: 'System Administrator',
         department: 'IT',
@@ -45,7 +53,7 @@ const seedAdmin = async () => {
         language: 'th'
       }
     });
-    console.log("Default admin created: username='admin', password='password123'");
+    console.log(`Default admin created: username='admin', password='${process.env.ADMIN_PASSWORD ? '[HIDDEN]' : adminPassword}'`);
   }
 };
 seedAdmin();
