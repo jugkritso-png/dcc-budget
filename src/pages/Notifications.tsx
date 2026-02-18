@@ -54,7 +54,7 @@ const Notifications: React.FC<NotificationsProps> = ({ onNavigate }) => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between items-end px-4 md:px-0">
                 <div>
                     <h2 className="text-3xl font-bold text-gray-800 tracking-tight">การแจ้งเตือน</h2>
                     <p className="text-gray-500 mt-1 font-medium">ประวัติการแจ้งเตือนและการทำงานทั้งหมด</p>
@@ -65,7 +65,7 @@ const Notifications: React.FC<NotificationsProps> = ({ onNavigate }) => {
                 </button>
             </div>
 
-            <div className="bg-white/60 backdrop-blur-xl rounded-3xl shadow-card border border-white/60 ring-1 ring-black/5 overflow-hidden">
+            <div className="bg-white/60 backdrop-blur-xl rounded-none md:rounded-3xl shadow-none md:shadow-card border-y md:border border-white/60 md:ring-1 ring-black/5 overflow-hidden">
                 {Object.entries(grouped).map(([date, items], groupIndex) => (
                     <div key={date}>
                         <div className="bg-gray-50/50 px-6 py-3 border-b border-gray-100 flex items-center gap-2">

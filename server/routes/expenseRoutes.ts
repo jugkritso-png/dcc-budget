@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     try {
         // 1. Get expense to know amount
         const expense = await prisma.expense.findUnique({ where: { id } });

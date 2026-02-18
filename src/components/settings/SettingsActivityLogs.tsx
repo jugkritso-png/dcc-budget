@@ -61,15 +61,15 @@ const SettingsActivityLogs: React.FC = () => {
 
     return (
         <div className="p-8 space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-            <div className="flex items-center justify-between">
-                <div>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="text-center md:text-left">
                     <h3 className="text-xl font-bold text-gray-900">ประวัติการใช้งานระบบ</h3>
                     <p className="text-gray-500 text-sm mt-1">บันทึกการกระทำต่างๆ ของผู้ใช้งานในระบบ (Audit Logs)</p>
                 </div>
                 <Button
                     variant="ghost"
                     onClick={fetchLogs}
-                    className="p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-full"
+                    className="p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-full w-full md:w-auto"
                     title="Refresh Logs"
                 >
                     <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />

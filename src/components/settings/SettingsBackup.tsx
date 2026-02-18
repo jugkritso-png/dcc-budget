@@ -32,7 +32,7 @@ const SettingsBackup: React.FC = () => {
     };
 
     return (
-        <div className="p-8 h-full flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-right-4 duration-300">
+        <div className="p-4 md:p-8 h-full flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-right-4 duration-300">
             <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-card border border-white/60">
                 <div className="w-16 h-16 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Download size={32} />

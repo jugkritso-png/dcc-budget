@@ -46,7 +46,7 @@ async function main() {
         console.log(`Response Status: ${response.status}`);
 
         if (response.ok) {
-            const json = await response.json();
+            const json = await response.json() as any;
             console.log("Response JSON:", json);
             if (json.status === 'approved') {
                 console.log("SUCCESS: API updated status to approved.");

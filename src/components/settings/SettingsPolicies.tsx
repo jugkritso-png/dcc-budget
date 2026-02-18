@@ -29,14 +29,14 @@ const SettingsPolicies: React.FC = () => {
 
     return (
         <div className="p-8 space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
-            <div className="flex items-center justify-between">
-                <div>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="text-center md:text-left">
                     <h3 className="text-xl font-bold text-gray-900">นโยบายงบประมาณ</h3>
                     <p className="text-gray-500 text-sm mt-1">กำหนดเงื่อนไขและข้อจำกัดในการใช้งบประมาณ</p>
                 </div>
                 <Button
                     onClick={handleSave}
-                    className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95"
+                    className="w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95"
                 >
                     <Save size={18} className="mr-2" />
                     บันทึก

@@ -93,7 +93,7 @@ const SettingsProfile: React.FC = () => {
             <div className="flex flex-col xl:flex-row gap-12 items-start justify-center">
 
                 {/* Left Column: Vertical ID Card */}
-                <div className="flex flex-col gap-6 sticky top-8 items-center">
+                <div className="flex flex-col gap-6 sticky top-8 items-center w-full xl:w-auto">
 
                     {/* ID Card Container */}
                     <div className="group perspective-1000 w-[320px]">
@@ -203,15 +203,15 @@ const SettingsProfile: React.FC = () => {
 
                 {/* Right Column: Edit Forms */}
                 <div className="flex-1 space-y-6 w-full max-w-2xl">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2 flex-col md:flex-row gap-4">
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-900">แก้ไขข้อมูลส่วนตัว</h2>
-                            <p className="text-gray-500 text-sm">จัดการข้อมูลโปรไฟล์และการตั้งค่าบัญชีของคุณ</p>
+                            <h2 className="text-2xl font-bold text-gray-900 text-center md:text-left">แก้ไขข้อมูลส่วนตัว</h2>
+                            <p className="text-gray-500 text-sm text-center md:text-left">จัดการข้อมูลโปรไฟล์และการตั้งค่าบัญชีของคุณ</p>
                         </div>
                         <Button
                             onClick={handleProfileSave}
                             variant="primary"
-                            className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-md hover:shadow-lg hover:shadow-primary-200"
+                            className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-md hover:shadow-lg hover:shadow-primary-200 w-full md:w-auto"
                         >
                             <Save size={18} className="mr-2" />
                             บันทึก

@@ -155,20 +155,20 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-end gap-4">
-                <div>
-                    <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                        <FileText className="text-primary-600" />
-                        ขอใช้งบประมาณ (Create Request)
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-2 md:gap-4 px-4 md:px-0">
+                <div className="min-w-0 w-full">
+                    <h2 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-2">
+                        <FileText className="text-primary-600 flex-shrink-0" size={22} />
+                        <span>ขอใช้งบประมาณ</span>
                     </h2>
-                    <p className="text-gray-500 text-sm mt-1 ml-8">กรอกรายละเอียดเพื่อขออนุมัติงบประมาณสำหรับโครงการหรือกิจกรรม</p>
+                    <p className="text-gray-500 text-xs md:text-sm mt-1 ml-8">กรอกรายละเอียดเพื่อขออนุมัติงบประมาณสำหรับโครงการหรือกิจกรรม</p>
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="bg-white p-8 rounded-3xl shadow-card border border-gray-100 space-y-8">
+            <form onSubmit={handleSubmit} className="animate-in fade-in slide-in-from-bottom-4 duration-500 w-full md:max-w-lg mx-auto">
+                <div className="bg-white px-5 py-6 md:p-8 rounded-2xl md:rounded-3xl shadow-sm md:shadow-card border border-gray-100 space-y-6 md:space-y-8">
 
                     {/* Section 1: Project Info */}
                     <div>
@@ -204,7 +204,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                 <label className="block text-sm font-bold text-gray-700 mb-2">เหตุผลความจำเป็น / วัตถุประสงค์</label>
                                 <textarea
                                     rows={3}
-                                    className="w-full border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-gray-50 focus:bg-white transition-all resize-none"
+                                    className="w-full border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none border bg-gray-50 focus:bg-white transition-all resize-y min-h-[100px]"
                                     placeholder="อธิบายรายละเอียดและความจำเป็นของโครงการ..."
                                     value={formData.reason}
                                     onChange={e => setFormData({ ...formData, reason: e.target.value })}
@@ -270,7 +270,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                             </div>
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">วงเงินที่ขออนุมัติ (บาท) <span className="text-red-500">*</span></label>
-                                <div className="relative">
+                                <div className="relative w-full">
                                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold">฿</div>
                                     <Input
                                         type="number"
@@ -424,7 +424,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                         </div>
                     </div>
 
-                    <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
+                    <div className="pt-6 border-t border-gray-100 flex flex-col md:flex-row justify-end gap-3">
                         <Button
                             type="button"
                             variant="ghost"
@@ -434,23 +434,24 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                         project: '',
                                         category: '',
                                         activity: '',
-                                        amount: '',
+                                        amount: 0,
                                         date: new Date().toISOString().split('T')[0],
                                         reason: '',
                                         urgency: 'normal',
                                         startDate: '',
-                                        endDate: ''
+                                        endDate: '',
+                                        expenseItems: []
                                     });
                                 }
                             }}
-                            className="px-6 py-3 h-auto text-gray-600 hover:bg-gray-100"
+                            className="w-full md:w-auto px-6 py-3 h-auto text-gray-600 hover:bg-gray-100 order-2 md:order-1"
                         >
                             ยกเลิก
                         </Button>
                         <Button
                             type="submit"
                             variant="gradient"
-                            className="px-8 py-3 h-auto text-sm font-bold flex items-center gap-2"
+                            className="w-full md:w-auto px-8 py-3 h-auto text-sm font-bold flex items-center justify-center gap-2 order-1 md:order-2"
                         >
                             <Save size={18} />
                             บันทึกคำขอ

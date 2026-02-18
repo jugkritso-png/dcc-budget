@@ -89,7 +89,7 @@ const Budget: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Tabs - Removed as Report is moved to Analytics */}
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mb-6 px-4 md:px-0">
         <div className="bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-primary-200 flex items-center gap-2">
           <FileText size={18} />
           รายการคำของบประมาณ
@@ -98,58 +98,58 @@ const Budget: React.FC = () => {
 
 
       {/* Summary Cards Row - Clean Metro Style */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Pending */}
-        <Card interactive className="p-6 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-amber-50 rounded-2xl text-amber-600 border border-amber-100 group-hover:bg-amber-100 transition-colors">
-              <Clock size={24} />
+        <Card interactive className="p-4 md:p-6 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-4">
+            <div className="p-2 md:p-3 bg-amber-50 rounded-xl md:rounded-2xl text-amber-600 border border-amber-100 group-hover:bg-amber-100 transition-colors">
+              <Clock size={18} className="md:w-6 md:h-6" />
             </div>
             <Badge variant="warning">รออนุมัติ</Badge>
           </div>
-          <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{pendingCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
-          <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-amber-600">฿{pendingAmount.toLocaleString()}</span></p>
+          <h3 className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight mb-0.5 md:mb-1">{pendingCount} <span className="text-xs md:text-sm text-gray-400 font-medium">รายการ</span></h3>
+          <p className="text-xs md:text-sm font-bold text-gray-500">มูลค่า <span className="text-amber-600">฿{pendingAmount.toLocaleString()}</span></p>
         </Card>
 
         {/* Approved */}
-        <Card interactive className="p-6 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600 border border-emerald-100 group-hover:bg-emerald-100 transition-colors">
-              <CheckCircle2 size={24} />
+        <Card interactive className="p-4 md:p-6 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-4">
+            <div className="p-2 md:p-3 bg-emerald-50 rounded-xl md:rounded-2xl text-emerald-600 border border-emerald-100 group-hover:bg-emerald-100 transition-colors">
+              <CheckCircle2 size={18} className="md:w-6 md:h-6" />
             </div>
             <Badge variant="success">อนุมัติแล้ว</Badge>
           </div>
-          <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{approvedCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
-          <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-emerald-600">฿{approvedAmount.toLocaleString()}</span></p>
+          <h3 className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight mb-0.5 md:mb-1">{approvedCount} <span className="text-xs md:text-sm text-gray-400 font-medium">รายการ</span></h3>
+          <p className="text-xs md:text-sm font-bold text-gray-500">มูลค่า <span className="text-emerald-600">฿{approvedAmount.toLocaleString()}</span></p>
         </Card>
 
         {/* Waiting Verification (Reporting) */}
-        <Card interactive className="p-6 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600 border border-blue-100 group-hover:bg-blue-100 transition-colors">
-              <FileCheck2 size={24} />
+        <Card interactive className="p-4 md:p-6 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-4">
+            <div className="p-2 md:p-3 bg-blue-50 rounded-xl md:rounded-2xl text-blue-600 border border-blue-100 group-hover:bg-blue-100 transition-colors">
+              <FileCheck2 size={18} className="md:w-6 md:h-6" />
             </div>
             <Badge variant="info">รายงานผล</Badge>
           </div>
-          <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{waitingCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
-          <p className="text-sm font-bold text-gray-500">รายงานผลแล้ว: {completedCount}</p>
+          <h3 className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight mb-0.5 md:mb-1">{waitingCount} <span className="text-xs md:text-sm text-gray-400 font-medium">รายการ</span></h3>
+          <p className="text-xs md:text-sm font-bold text-gray-500">รายงานผลแล้ว: {completedCount}</p>
         </Card>
 
         {/* Total */}
-        <Card interactive className="p-6 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-primary-50 rounded-2xl text-primary-600 border border-primary-100 group-hover:bg-primary-100 transition-colors">
-              <BarChart size={24} />
+        <Card interactive className="p-4 md:p-6 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-4">
+            <div className="p-2 md:p-3 bg-primary-50 rounded-xl md:rounded-2xl text-primary-600 border border-primary-100 group-hover:bg-primary-100 transition-colors">
+              <BarChart size={18} className="md:w-6 md:h-6" />
             </div>
             <Badge variant="default">ทั้งหมด</Badge>
           </div>
-          <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mb-1">{totalCount} <span className="text-sm text-gray-400 font-medium">รายการ</span></h3>
-          <p className="text-sm font-bold text-gray-500">มูลค่ารวม <span className="text-primary-600">฿{totalAmount.toLocaleString()}</span></p>
+          <h3 className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight mb-0.5 md:mb-1">{totalCount} <span className="text-xs md:text-sm text-gray-400 font-medium">รายการ</span></h3>
+          <p className="text-xs md:text-sm font-bold text-gray-500">มูลค่า <span className="text-primary-600">฿{totalAmount.toLocaleString()}</span></p>
         </Card>
       </div>
 
       {/* Main Content Area - System Design Table */}
-      <Card className="p-8 min-h-[600px] animate-in fade-in slide-in-from-bottom-8 duration-700">
+      <Card className="p-4 md:p-8 min-h-[400px] md:min-h-[600px] animate-in fade-in slide-in-from-bottom-8 duration-700">
         {/* Header & Actions */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
           <div>
@@ -219,8 +219,99 @@ const Budget: React.FC = () => {
           </div>
         </div>
 
-        {/* System Design Table - Floating Rows */}
-        <div className="overflow-x-auto min-h-[400px]">
+        {/* Mobile Card View (Hidden on Desktop) */}
+        <div className="md:hidden space-y-4">
+          {filteredRequests.map((req) => {
+            const category = categories.find(c => c.name === req.category);
+
+            // Status Logic (Duplicated for now, could be refactored)
+            let statusLabel = '';
+            let statusColorClass = '';
+            let statusDotClass = '';
+
+            switch (req.status) {
+              case 'pending':
+                statusLabel = 'รออนุมัติ';
+                statusColorClass = 'bg-yellow-50 text-yellow-700 border-yellow-100';
+                statusDotClass = 'bg-yellow-500 animate-pulse';
+                break;
+              case 'approved':
+                statusLabel = 'อนุมัติ';
+                statusColorClass = 'bg-green-50 text-green-700 border-green-100';
+                statusDotClass = 'bg-green-500 animate-pulse';
+                break;
+              case 'rejected':
+                statusLabel = 'ไม่อนุมัติ';
+                statusColorClass = 'bg-red-50 text-red-700 border-red-100';
+                statusDotClass = 'bg-red-500';
+                break;
+              case 'waiting_verification':
+                statusLabel = 'อยู่ระหว่างรายงานผล';
+                statusColorClass = 'bg-blue-50 text-blue-700 border-blue-100';
+                statusDotClass = 'bg-blue-500 animate-pulse';
+                break;
+              case 'completed':
+                statusLabel = 'รายงานผลเรียบร้อยแล้ว';
+                statusColorClass = 'bg-gray-100 text-gray-700 border-gray-200';
+                statusDotClass = 'bg-gray-500';
+                break;
+              default:
+                statusLabel = req.status;
+                statusColorClass = 'bg-gray-50 text-gray-600 border-gray-100';
+                statusDotClass = 'bg-gray-400';
+            }
+
+            return (
+              <div
+                key={req.id}
+                onClick={() => setSelectedRequest(req)}
+                className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden active:scale-[0.98] transition-all"
+              >
+                <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${category ? category.color : 'bg-gray-300'}`}></div>
+
+                <div className="flex justify-between items-start mb-3 pl-3">
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-sm line-clamp-1">{req.project}</h4>
+                    <div className="text-xs text-gray-500 flex gap-2 mt-1">
+                      <span>{req.id}</span>
+                      <span>•</span>
+                      <span>{req.date}</span>
+                    </div>
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg border ${statusColorClass} whitespace-nowrap`}>
+                    {statusLabel}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-end pl-3">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-1.5">
+                      <div className={`w-2 h-2 rounded-full ${category ? category.color.replace('bg-', 'bg-') : 'bg-gray-400'}`}></div>
+                      <span className="text-xs text-gray-600 font-medium">{req.category}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                      <User size={12} />
+                      {req.requester}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-gray-400 font-medium mb-0.5">งบประมาณ</p>
+                    <p className="text-lg font-extrabold text-primary-600">฿{req.amount.toLocaleString()}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+          {filteredRequests.length === 0 && (
+            <div className="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+              <Search className="mx-auto text-gray-300 mb-2" />
+              <p className="text-gray-500 text-sm">ไม่พบรายการ</p>
+            </div>
+          )}
+        </div>
+
+        {/* System Design Table - Floating Rows (Desktop Only) */}
+        <div className="hidden md:block overflow-x-auto min-h-[400px]">
           <Table className="w-full text-left border-separate border-spacing-y-3 px-1">
             <TableHeader>
               <tr>
@@ -524,7 +615,7 @@ const Budget: React.FC = () => {
             {selectedRequest.expenseItems && selectedRequest.expenseItems.length > 0 && (
               <div>
                 <h5 className="text-sm font-bold text-gray-700 mb-2">รายละเอียดค่าใช้จ่าย</h5>
-                <div className="bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
+                <div className="bg-gray-50 rounded-xl overflow-x-auto border border-gray-200">
                   <table className="w-full text-sm text-left">
                     <thead className="bg-gray-100 text-gray-500 font-semibold text-xs border-b border-gray-200">
                       <tr>

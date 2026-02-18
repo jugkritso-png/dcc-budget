@@ -122,7 +122,7 @@ const BudgetReport: React.FC = () => {
                 <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-card border border-gray-100">
                     <h3 className="text-lg font-bold text-gray-900 mb-6">การใช้จ่ายรายเดือน (Monthly Spending)</h3>
                     <div className="h-80">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" minHeight={300} minWidth={0}>
                             <BarChart data={monthlyChartData}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} />
@@ -141,7 +141,7 @@ const BudgetReport: React.FC = () => {
                 <div className="bg-white p-6 rounded-2xl shadow-card border border-gray-100">
                     <h3 className="text-lg font-bold text-gray-900 mb-6">สัดส่วนตามหมวดหมู่</h3>
                     <div className="h-64 mb-4">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" minHeight={200} minWidth={0}>
                             <PieChart>
                                 <Pie
                                     data={categoryData}

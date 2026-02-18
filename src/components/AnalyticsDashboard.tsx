@@ -6,9 +6,12 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { Percent, Wallet, FileText, Calculator, Download } from 'lucide-react';
 import { generateBudgetReport } from '../services/reportService';
 import { Button } from './ui/Button';
+import { useChartDimensions } from '../hooks/useChartDimensions';
 
 const AnalyticsDashboard: React.FC = () => {
     const { requests, categories, settings } = useBudget();
+    const { ref: barRef, dimensions: barDim } = useChartDimensions();
+    const { ref: areaRef, dimensions: areaDim } = useChartDimensions();
 
     // 1. Calculate Monthly Spending (Actual) vs Planned (Avg)
     const months = ['ต.ค.', 'พ.ย.', 'ธ.ค.', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.'];
@@ -148,61 +151,65 @@ const AnalyticsDashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Planned vs Actual Chart */}
-                <Card className="p-8 border-gray-100/60">
+                <Card className="p-8 border-gray-100/60 min-w-0">
                     <div className="mb-6">
                         <h3 className="text-xl font-bold text-gray-800">เปรียบเทียบแผน vs ผลจริง</h3>
                         <p className="text-sm text-gray-400">แสดงการเปรียบเทียบงบเฉลี่ยรายเดือนกับการใช้จริง</p>
                     </div>
-                    <div style={{ width: '100%', height: 320, position: 'relative' }}>
-                        <ResponsiveContainer width="100%" height="100%" minHeight={200}>
-                            <BarChart
-                                data={chartData}
-                                margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-                                barGap={8}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12, fontWeight: 500 }} dy={10} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
-                                <Tooltip
-                                    cursor={{ fill: '#F9FAFB' }}
-                                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '12px 16px' }}
-                                    itemStyle={{ fontSize: '13px', fontWeight: 600 }}
-                                    formatter={(value: number) => `฿${value.toLocaleString()}`}
-                                />
-                                <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
-                                <Bar dataKey="planned" name="แผน (Planned)" fill="var(--color-primary-300)" radius={[6, 6, 6, 6]} barSize={20} />
-                                <Bar dataKey="actual" name="ผลจริง (Actual)" fill="var(--color-primary-600)" radius={[6, 6, 6, 6]} barSize={20} />
-                            </BarChart>
-                        </ResponsiveContainer>
+                    <div ref={barRef} style={{ width: '100%', height: 320, position: 'relative' }}>
+                        {barDim.width > 0 && (
+                            <ResponsiveContainer width="100%" height="100%" debounce={100}>
+                                <BarChart
+                                    data={chartData}
+                                    margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                                    barGap={8}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12, fontWeight: 500 }} dy={10} />
+                                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                                    <Tooltip
+                                        cursor={{ fill: '#F9FAFB' }}
+                                        contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '12px 16px' }}
+                                        itemStyle={{ fontSize: '13px', fontWeight: 600 }}
+                                        formatter={(value: number) => `฿${value.toLocaleString()}`}
+                                    />
+                                    <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
+                                    <Bar dataKey="planned" name="แผน (Planned)" fill="var(--color-primary-300)" radius={[6, 6, 6, 6]} barSize={20} />
+                                    <Bar dataKey="actual" name="ผลจริง (Actual)" fill="var(--color-primary-600)" radius={[6, 6, 6, 6]} barSize={20} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        )}
                     </div>
                 </Card>
 
                 {/* Trend Line Chart */}
-                <Card className="p-8 border-gray-100/60">
+                <Card className="p-8 border-gray-100/60 min-w-0">
                     <div className="mb-6">
                         <h3 className="text-xl font-bold text-gray-800">แนวโน้มการใช้จ่ายสะสม</h3>
                         <p className="text-sm text-gray-400">กราฟแสดงยอดการใช้จ่ายสะสมตลอดปีงบประมาณ</p>
                     </div>
-                    <div style={{ width: '100%', height: 320, position: 'relative' }}>
-                        <ResponsiveContainer width="100%" height="100%" minHeight={200}>
-                            <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                                <defs>
-                                    <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--color-primary-600)" stopOpacity={0.2} />
-                                        <stop offset="95%" stopColor="var(--color-primary-600)" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12, fontWeight: 500 }} dy={10} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-                                <Tooltip
-                                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '12px 16px' }}
-                                    itemStyle={{ fontSize: '13px', fontWeight: 600, color: '#003964' }}
-                                    formatter={(value: number) => `฿${value.toLocaleString()}`}
-                                />
-                                <Area type="monotone" dataKey="actual" stroke="var(--color-primary-800)" strokeWidth={4} fillOpacity={1} fill="url(#colorActual)" />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                    <div ref={areaRef} style={{ width: '100%', height: 320, position: 'relative' }}>
+                        {areaDim.width > 0 && (
+                            <ResponsiveContainer width="100%" height="100%" debounce={100}>
+                                <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                    <defs>
+                                        <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="var(--color-primary-600)" stopOpacity={0.2} />
+                                            <stop offset="95%" stopColor="var(--color-primary-600)" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12, fontWeight: 500 }} dy={10} />
+                                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
+                                    <Tooltip
+                                        contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '12px 16px' }}
+                                        itemStyle={{ fontSize: '13px', fontWeight: 600, color: '#003964' }}
+                                        formatter={(value: number) => `฿${value.toLocaleString()}`}
+                                    />
+                                    <Area type="monotone" dataKey="actual" stroke="var(--color-primary-800)" strokeWidth={4} fillOpacity={1} fill="url(#colorActual)" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        )}
                     </div>
                 </Card>
             </div>

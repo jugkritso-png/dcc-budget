@@ -49,7 +49,71 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 </div>
             </div>
 
-            <div className="overflow-x-auto">
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+                {categories.map((cat) => {
+                    const percent = cat.allocated > 0 ? (cat.used / cat.allocated) * 100 : 0;
+                    const isCritical = percent > 80;
+
+                    return (
+                        <div key={cat.id} onClick={() => onViewClick(cat)} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden active:scale-[0.98] transition-all">
+                            <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${cat.color}`}></div>
+
+                            <div className="flex justify-between items-start mb-4 pl-3">
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md ${cat.color}`}>
+                                        {/* Simple Folder Icon placeholder or import it if needed */}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 2H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z" /></svg>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-800 text-base">{cat.name}</h4>
+                                        <span className="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded border border-gray-200 mt-1 inline-block">{cat.code}</span>
+                                    </div>
+                                </div>
+                                <div className="flex gap-1">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); onEditClick(cat); }}
+                                        className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg"
+                                    >
+                                        <div className="w-4 h-4"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg></div>
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); onDeleteClick(cat.id); }}
+                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"
+                                    >
+                                        <div className="w-4 h-4"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /></svg></div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="pl-3 space-y-3">
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-gray-500">งบประมาณ</span>
+                                    <span className="font-bold text-gray-900">฿{cat.allocated.toLocaleString()}</span>
+                                </div>
+
+                                <div>
+                                    <div className="flex justify-between items-end mb-1">
+                                        <span className="text-xs text-gray-500">ใช้ไปแล้ว</span>
+                                        <div className="text-right">
+                                            <span className="text-sm font-bold text-gray-900">฿{cat.used.toLocaleString()}</span>
+                                            <span className={`text-[10px] ml-1 ${isCritical ? 'text-red-500 font-bold' : 'text-gray-400'}`}>({percent.toFixed(1)}%)</span>
+                                        </div>
+                                    </div>
+                                    <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                                        <div
+                                            className={`h-full rounded-full transition-all duration-500 ${isCritical ? 'bg-red-500' : cat.color}`}
+                                            style={{ width: `${Math.min(percent, 100)}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left border-separate border-spacing-y-3">
                     <thead>
                         <tr className="text-sm text-gray-400 font-semibold uppercase tracking-wider">

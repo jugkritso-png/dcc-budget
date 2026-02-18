@@ -73,7 +73,7 @@ const Login: React.FC = () => {
             </div>
 
             {/* Right Side - Login Form */}
-            <div className="flex-1 flex flex-col justify-center items-center p-8 lg:p-12 bg-white relative">
+            <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-12 bg-white relative">
                 {/* Mobile Header (only visible on small screens) */}
                 <div className="lg:hidden absolute top-0 left-0 w-full p-6 flex justify-between items-center bg-gradient-to-r from-primary-600 to-primary-800 text-white shadow-lg">
                     <div className="flex items-center gap-2">
@@ -108,34 +108,40 @@ const Login: React.FC = () => {
                         <div className="space-y-5">
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700 ml-1">ชื่อผู้ใช้งาน</label>
-                                <div className="relative group">
+                                <div className="relative group w-full">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                         <User className="h-5 w-5 text-gray-400 group-focus-within:text-primary-600 transition-colors" />
                                     </div>
                                     <input
                                         type="text"
+                                        name="username"
+                                        id="username"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
                                         className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium hover:bg-white"
                                         placeholder="ระบุชื่อผู้ใช้งาน"
                                         required
+                                        autoComplete="username"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-gray-700 ml-1">รหัสผ่าน</label>
-                                <div className="relative group">
+                                <div className="relative group w-full">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                         <Lock className="h-5 w-5 text-gray-400 group-focus-within:text-primary-600 transition-colors" />
                                     </div>
                                     <input
                                         type="password"
+                                        name="password"
+                                        id="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium hover:bg-white"
                                         placeholder="••••••••"
                                         required
+                                        autoComplete="current-password"
                                     />
                                 </div>
                             </div>
@@ -167,10 +173,10 @@ const Login: React.FC = () => {
                                         }
                                     }
                                 }}
+
                                 onError={() => {
                                     setError('Google Sign-In Failed');
                                 }}
-                                width="100%"
                                 shape="circle"
                                 theme="outline"
                                 text="signin_with"

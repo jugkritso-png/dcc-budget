@@ -93,8 +93,8 @@ const SettingsPermissions: React.FC = () => {
     };
 
     return (
-        <div className="p-8 space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
-            <div className="flex items-center justify-between">
+        <div className="p-4 md:p-8 space-y-6 md:space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                         <Shield className="text-primary-600" size={24} />
@@ -105,7 +105,7 @@ const SettingsPermissions: React.FC = () => {
                 {isDirty && (
                     <Button
                         onClick={handleSave}
-                        className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95 animate-pulse"
+                        className="w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95 animate-pulse"
                     >
                         <Save size={18} className="mr-2" />
                         บันทึกการเปลี่ยนแปลง
@@ -123,10 +123,10 @@ const SettingsPermissions: React.FC = () => {
                                     <th key={role.role} className="px-4 py-4 text-center min-w-[100px]">
                                         <div className="flex flex-col items-center gap-1">
                                             <span className={`px-2 py-0.5 rounded text-xs ${role.role === 'admin' ? 'bg-indigo-100 text-indigo-700' :
-                                                    role.role === 'finance' ? 'bg-emerald-100 text-emerald-700' :
-                                                        role.role === 'manager' ? 'bg-purple-100 text-purple-700' :
-                                                            role.role === 'approver' ? 'bg-orange-100 text-orange-700' :
-                                                                'bg-gray-100 text-gray-600'
+                                                role.role === 'finance' ? 'bg-emerald-100 text-emerald-700' :
+                                                    role.role === 'manager' ? 'bg-purple-100 text-purple-700' :
+                                                        role.role === 'approver' ? 'bg-orange-100 text-orange-700' :
+                                                            'bg-gray-100 text-gray-600'
                                                 }`}>
                                                 {role.label}
                                             </span>
@@ -152,10 +152,10 @@ const SettingsPermissions: React.FC = () => {
                                                     onClick={() => togglePermission(role.role, perm.id)}
                                                     disabled={isAdmin}
                                                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${isAdmin
-                                                            ? 'bg-indigo-50 text-indigo-400 cursor-not-allowed opacity-50'
-                                                            : isEnabled
-                                                                ? 'bg-primary-100 text-primary-600 shadow-sm hover:scale-110 hover:shadow-md'
-                                                                : 'bg-gray-100 text-gray-300 hover:bg-gray-200 hover:text-gray-400'
+                                                        ? 'bg-indigo-50 text-indigo-400 cursor-not-allowed opacity-50'
+                                                        : isEnabled
+                                                            ? 'bg-primary-100 text-primary-600 shadow-sm hover:scale-110 hover:shadow-md'
+                                                            : 'bg-gray-100 text-gray-300 hover:bg-gray-200 hover:text-gray-400'
                                                         }`}
                                                 >
                                                     {isEnabled || isAdmin ? <Check size={18} strokeWidth={3} /> : <X size={18} />}

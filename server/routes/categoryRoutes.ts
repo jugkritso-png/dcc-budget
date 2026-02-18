@@ -45,7 +45,7 @@ router.put('/:id', validate(updateCategorySchema), async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     await prisma.category.delete({ where: { id } });
     res.json({ success: true });
 });
@@ -91,7 +91,7 @@ router.post('/:id/adjust', validate(budgetAdjustSchema), async (req, res) => {
 
 // Get budget logs
 router.get('/:id/logs', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const logs = await prisma.budgetLog.findMany({
         where: { categoryId: id },
         orderBy: { createdAt: 'desc' }
@@ -101,7 +101,7 @@ router.get('/:id/logs', async (req, res) => {
 
 // Get expenses for category
 router.get('/:id/expenses', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const expenses = await prisma.expense.findMany({
         where: { categoryId: id },
         orderBy: { date: 'desc' },

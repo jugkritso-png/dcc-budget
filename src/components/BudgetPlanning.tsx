@@ -210,7 +210,7 @@ const BudgetPlanning: React.FC = () => {
                         <form onSubmit={handleSave} className="p-6 space-y-4">
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">จำนวนเงิน (บาท)</label>
-                                <div className="relative">
+                                <div className="relative w-full">
                                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                                         <DollarSign size={18} />
                                     </div>

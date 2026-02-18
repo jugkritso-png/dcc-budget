@@ -2,6 +2,7 @@ import React from 'react';
 import { Home, Wallet, Settings, BarChart3, LayoutGrid, Bell, User, LogOut, FileText, Menu, ChevronLeft, CheckCircle, LayoutDashboard } from 'lucide-react';
 import { Page } from '../../types';
 import { useBudget } from '../../context/BudgetContext';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -90,7 +91,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
   );
 
   return (
-    <div className="flex min-h-screen bg-slate-50/50 overflow-hidden relative selection:bg-primary-200">
+    <div className="flex h-[100dvh] w-screen bg-slate-50/50 overflow-hidden relative selection:bg-primary-200">
       {/* Global Background Decor (Glass Effect Base) */}
       <div className="fixed top-[-20%] left-[-10%] w-[800px] h-[800px] bg-primary-200/40 rounded-full blur-[120px] pointer-events-none z-0 mix-blend-multiply animate-pulse-slow"></div>
       <div className="fixed bottom-[-20%] right-[-5%] w-[600px] h-[600px] bg-indigo-200/40 rounded-full blur-[100px] pointer-events-none z-0 mix-blend-multiply"></div>
@@ -110,17 +111,39 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
       </aside>
 
       {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col ${isSidebarCollapsed ? 'md:ml-20' : 'md:ml-72'} transition-all duration-300 min-h-screen relative`}>
+      <div className={`flex-1 flex flex-col h-full overflow-hidden ${isSidebarCollapsed ? 'md:ml-20' : 'md:ml-72'} transition-all duration-300 relative`}>
 
-        {/* Mobile Header (Brand Only) */}
-        <header className="md:hidden bg-white/60 backdrop-blur-xl sticky top-0 z-40 border-b border-white/40 px-4 py-3 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-2">
-            <div className="bg-gradient-primary text-white p-1.5 rounded-lg">
+        {/* Mobile Header (KrungthaiNEXT-style) */}
+        <header className="md:hidden bg-white sticky top-0 z-40 border-b border-gray-100 px-4 py-2.5 flex items-center justify-between"
+          style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 0.625rem)' }}
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="bg-primary-600 text-white p-1.5 rounded-lg">
               <Wallet className="w-5 h-5" />
             </div>
-            <span className="font-bold text-gray-800">{settings.orgName}</span>
+            <span className="font-bold text-gray-900 text-sm">{settings.orgName}</span>
           </div>
-          {/* Mobile Profile/Notif could go here if needed */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                onNavigate(Page.NOTIFICATIONS);
+              }}
+              className="relative p-2 rounded-full text-gray-500 hover:bg-gray-50 transition-colors"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+            </button>
+            <div className="h-8 w-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-xs font-bold ring-2 ring-primary-100">
+              {(() => {
+                const cleanAvatar = user?.avatar ? String(user.avatar).trim() : '';
+                const isImage = cleanAvatar.startsWith('http') || cleanAvatar.startsWith('data:');
+                if (isImage) {
+                  return <img src={cleanAvatar} alt={user?.name} className="w-full h-full object-cover rounded-full" />;
+                }
+                return cleanAvatar && cleanAvatar.length <= 3 ? cleanAvatar : (user?.name?.substring(0, 2) || 'US');
+              })()}
+            </div>
+          </div>
         </header>
 
         {/* Top Bar (Desktop) */}
@@ -220,9 +243,20 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
         </header>
 
         {/* Content Scrollable Area */}
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto pb-24 md:pb-8">
-          <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {children}
+        <main className="flex-1 px-3 pt-4 md:px-8 md:pt-8 overflow-y-auto overflow-x-hidden pb-24 md:pb-8 scroll-smooth scrolling-touch">
+          <div className="max-w-7xl mx-auto">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentPage}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="w-full"
+              >
+                {children}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </main>
 

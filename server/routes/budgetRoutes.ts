@@ -40,7 +40,7 @@ router.put('/sub-activities/:id', validate(updateSubActivitySchema), async (req,
 });
 
 router.delete('/sub-activities/:id', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     await prisma.subActivity.delete({ where: { id } });
     res.json({ success: true });
 });
@@ -120,7 +120,7 @@ import { authenticateToken, requirePermission } from '../middleware/authMiddlewa
 
 // Approve Request
 router.put('/requests/:id/approve', requirePermission('approve_budget'), async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const { approverId } = req.body as { approverId: string };
 
     try {
@@ -184,7 +184,7 @@ router.put('/requests/:id/approve', requirePermission('approve_budget'), async (
 
 // Reject Request
 router.put('/requests/:id/reject', requirePermission('approve_budget'), async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const { approverId, reason } = req.body as { approverId: string, reason: string };
 
     try {
@@ -208,7 +208,7 @@ router.put('/requests/:id/reject', requirePermission('approve_budget'), async (r
 
 // 1. Submit Expense Report (User Action) - Moves to "waiting_verification"
 router.put('/requests/:id/submit-expense', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const { expenseItems, actualTotal, returnAmount } = req.body;
 
     try {
@@ -256,7 +256,7 @@ router.put('/requests/:id/submit-expense', async (req, res) => {
 
 // 1.5 Send Back for Revision (Manager Action) - Moves back to "approved" (User can edit)
 router.put('/requests/:id/reject-expense', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const { reason } = req.body;
 
     try {
@@ -280,7 +280,7 @@ router.put('/requests/:id/reject-expense', async (req, res) => {
 
 // 2. Complete/Verify Request (Manager Action) - Moves to "completed" and Returns Funds
 router.put('/requests/:id/complete', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
 
     try {
         const request = await prisma.budgetRequest.findUnique({
@@ -448,7 +448,7 @@ router.put('/requests/:id/complete', async (req, res) => {
 
 // 3. Revert Complete (Manager Action) - Moves back to "waiting_verification" and Reverses Fund Return
 router.put('/requests/:id/revert-complete', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
 
     try {
         const request = await prisma.budgetRequest.findUnique({
@@ -575,7 +575,7 @@ router.put('/requests/:id/revert-complete', async (req, res) => {
 });
 
 router.delete('/requests/:id', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     await prisma.budgetRequest.delete({ where: { id } });
     res.json({ success: true });
 });

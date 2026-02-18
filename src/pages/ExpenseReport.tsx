@@ -145,7 +145,7 @@ const ExpenseReport: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-0">
                 <div>
                     <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                         รายงานผลการใช้จ่าย (Expense Report)
@@ -333,7 +333,7 @@ const ExpenseReport: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="max-h-[50vh] overflow-y-auto pr-2 space-y-4">
+                    <div className="max-h-[50vh] overflow-y-auto overflow-x-auto pr-2 space-y-4">
                         <table className="w-full text-sm text-left">
                             <thead className="text-gray-500 bg-gray-50 sticky top-0">
                                 <tr>
@@ -481,7 +481,7 @@ const ExpenseReport: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="max-h-[50vh] overflow-y-auto pr-2">
+                    <div className="max-h-[50vh] overflow-y-auto overflow-x-auto pr-2">
                         <table className="w-full text-sm text-left">
                             <thead className="text-gray-500 bg-gray-50 sticky top-0">
                                 <tr>

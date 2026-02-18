@@ -130,32 +130,32 @@ const SettingsUsers: React.FC = () => {
             <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 shrink-0">
-                    <div>
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <div className="text-center md:text-left">
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center justify-center md:justify-start gap-3">
                             <div className="p-2 bg-primary-100 rounded-xl text-primary-600">
                                 <Users size={24} />
                             </div>
                             จัดการผู้ใช้งาน
                         </h2>
-                        <p className="text-gray-500 text-sm mt-1 ml-12">
+                        <p className="text-gray-500 text-sm mt-1 md:ml-12 text-center md:text-left">
                             บริหารจัดการบัญชีผู้ใช้งานและสิทธิ์การเข้าถึงทั้งหมด <span className="text-primary-600 font-bold">{users.length}</span> บัญชี
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                        <div className="relative">
+                    <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
+                        <div className="relative w-full md:w-auto">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-10" size={18} />
                             <input
                                 type="text"
                                 placeholder="ค้นหาผู้ใช้งาน..."
-                                className="pl-11 pr-4 py-2.5 h-auto rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-300 w-48 md:w-64 transition-all hover:bg-white"
+                                className="pl-11 pr-4 py-2.5 h-auto rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-300 w-full md:w-64 transition-all hover:bg-white"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
                         <Button
                             onClick={handleAddUser}
-                            className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 rounded-xl"
+                            className="w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 rounded-xl"
                         >
                             <Plus size={20} className="mr-2" />
                             <span>เพิ่มผู้ใช้งาน</span>

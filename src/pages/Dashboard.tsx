@@ -4,9 +4,12 @@ import { Card } from '../components/ui/Card'; // Use new Design System Card
 import { useBudget } from '../context/BudgetContext';
 import { getHexColor } from '../lib/utils';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { useChartDimensions } from '../hooks/useChartDimensions';
 
 const Dashboard: React.FC = () => {
   const { getDashboardStats, categories, requests, settings } = useBudget();
+  const { ref: pieRef, dimensions: pieDim } = useChartDimensions();
+  const { ref: barRef, dimensions: barDim } = useChartDimensions();
   const stats = getDashboardStats();
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
@@ -82,150 +85,129 @@ const Dashboard: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 mb-2">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-800 tracking-tight">แดชบอร์ดภาพรวม</h2>
-          <p className="text-gray-500 mt-1 font-medium">ติดตามและบริหารจัดการงบประมาณแบบ Real-time</p>
-        </div>
-        <div className="bg-white text-primary-600 px-5 py-2.5 rounded-xl text-sm font-bold shadow-soft border border-primary-100 flex items-center gap-2">
-          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-          ปีงบประมาณ {settings.fiscalYear}
-        </div>
-      </div>
+    <div className="space-y-4 md:space-y-6">
+      {/* Hero Section */}
+      <div className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-gradient-to-br from-primary-700 to-primary-900 mx-0">
+        {/* Background Gradients - simplified for mobile */}
+        <div className="absolute top-0 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-accent-500/15 rounded-full blur-[80px] -mr-16 -mt-16"></div>
+        <div className="absolute bottom-0 left-0 w-[200px] md:w-[500px] h-[200px] md:h-[500px] bg-primary-400/20 rounded-full blur-[60px] -ml-10 -mb-10"></div>
 
-      {/* Hero Section with Glassmorphism */}
-      <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-primary-900">
-        {/* Background Gradients */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-500/20 rounded-full blur-[100px] -mr-32 -mt-32 animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-500/30 rounded-full blur-[100px] -ml-20 -mb-20"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-20 pointer-events-none"></div>
-
-        <div className="relative z-10 p-4 md:p-10">
-          <div className="flex justify-between items-start mb-10">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-white/15 backdrop-blur-md rounded-2xl shadow-inner border border-white/20">
-                <Wallet className="w-8 h-8 text-white drop-shadow-md" />
+        <div className="relative z-10 p-5 md:p-10">
+          {/* Header row */}
+          <div className="flex justify-between items-center mb-4 md:mb-8">
+            <div className="flex items-center gap-3">
+              <div className="p-2 md:p-3 bg-white/15 rounded-xl border border-white/20">
+                <Wallet className="w-5 h-5 md:w-8 md:h-8 text-white" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-white tracking-tight">ภาพรวมงบประมาณ</h2>
-                <p className="text-white/90 text-lg">ปีงบประมาณ {settings.fiscalYear}</p>
+                <h2 className="text-lg md:text-3xl font-bold text-white">ภาพรวมงบประมาณ</h2>
+                <p className="text-white/70 text-xs md:text-base">ปี {settings.fiscalYear}</p>
               </div>
             </div>
-            <div className="hidden md:block">
-              <span className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white text-sm font-medium border border-white/10">
-                ข้อมูลล่าสุด ณ วันนี้
-              </span>
-            </div>
+            <span className="hidden md:inline-block px-4 py-2 bg-white/10 rounded-full text-white text-sm font-medium border border-white/10">
+              ข้อมูลล่าสุด ณ วันนี้
+            </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Total Budget */}
-            <div className="space-y-2 group cursor-default">
-              <p className="text-white/80 font-medium text-sm uppercase tracking-wider group-hover:text-white transition-colors">งบประมาณทั้งหมด</p>
-              <p className="text-4xl md:text-5xl font-bold text-white tracking-tight text-shadow-sm">{fmt(stats.totalBudget)}</p>
+          {/* Stats grid - 2 cols on mobile, 4 on desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+            <div className="bg-white/10 rounded-xl p-3 md:p-4">
+              <p className="text-white/70 text-[10px] md:text-xs font-medium uppercase tracking-wider">งบประมาณทั้งหมด</p>
+              <p className="text-xl md:text-4xl font-bold text-white mt-1">{fmtShort(stats.totalBudget)}</p>
             </div>
-
-            {/* Remaining */}
-            <div className="space-y-2 group cursor-default">
-              <p className="text-white/80 font-medium text-sm uppercase tracking-wider group-hover:text-white transition-colors">คงเหลือสุทธิ</p>
-              <p className="text-4xl md:text-5xl font-bold text-white tracking-tight text-shadow-sm">{fmt(stats.totalRemaining)}</p>
+            <div className="bg-white/10 rounded-xl p-3 md:p-4">
+              <p className="text-white/70 text-[10px] md:text-xs font-medium uppercase tracking-wider">คงเหลือสุทธิ</p>
+              <p className="text-xl md:text-4xl font-bold text-emerald-300 mt-1">{fmtShort(stats.totalRemaining)}</p>
             </div>
-
-            {/* Pending */}
-            <div className="space-y-2 group cursor-default">
-              <p className="text-white/80 font-medium text-sm uppercase tracking-wider group-hover:text-white transition-colors">รออนุมัติ</p>
-              <p className="text-4xl md:text-5xl font-bold text-yellow-300 tracking-tight text-shadow-sm">{fmt(stats.totalPending)}</p>
+            <div className="bg-white/10 rounded-xl p-3 md:p-4">
+              <p className="text-white/70 text-[10px] md:text-xs font-medium uppercase tracking-wider">รออนุมัติ</p>
+              <p className="text-xl md:text-4xl font-bold text-yellow-300 mt-1">{fmtShort(stats.totalPending)}</p>
             </div>
-
-            {/* Approved (Used in context of dashboard logic update) */}
-            <div className="space-y-2 group cursor-default">
-              <p className="text-white/80 font-medium text-sm uppercase tracking-wider group-hover:text-white transition-colors">ได้รับอนุมัติแล้ว</p>
-              {/* Note: stats.totalActual might be misnamed in context, usually we'd want totalApproved here based on user request, but keeping stats object for now unless we update getDashboardStats */}
-              <p className="text-4xl md:text-5xl font-bold text-white/90 tracking-tight text-shadow-sm">{fmt((stats as any).totalActual || 0)}</p>
+            <div className="bg-white/10 rounded-xl p-3 md:p-4">
+              <p className="text-white/70 text-[10px] md:text-xs font-medium uppercase tracking-wider">อนุมัติแล้ว</p>
+              <p className="text-xl md:text-4xl font-bold text-white/90 mt-1">{fmtShort((stats as any).totalActual || 0)}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Metrics Row (Small Cards) */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4">
         {/* 1. Total Budget */}
-        <Card interactive className="p-5 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
-              <CreditCard size={20} className="text-primary-600" />
+        <Card interactive className="p-3 md:p-5 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-3">
+            <div className="p-1.5 md:p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
+              <CreditCard size={16} className="text-primary-600 md:w-5 md:h-5" />
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalBudget)}</p>
-            <p className="text-xs text-gray-400 font-medium mt-1">งบประมาณรวม</p>
+            <p className="text-base md:text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalBudget)}</p>
+            <p className="text-[10px] md:text-xs text-gray-400 font-medium mt-0.5 md:mt-1">งบประมาณรวม</p>
           </div>
         </Card>
 
         {/* 2. Remaining */}
-        <Card interactive className="p-5 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-teal-50 rounded-lg group-hover:bg-teal-100 transition-colors">
-              <Wallet size={20} className="text-teal-600" />
+        <Card interactive className="p-3 md:p-5 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-3">
+            <div className="p-1.5 md:p-2 bg-teal-50 rounded-lg group-hover:bg-teal-100 transition-colors">
+              <Wallet size={16} className="text-teal-600 md:w-5 md:h-5" />
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalRemaining)}</p>
-            <p className="text-xs text-teal-600 font-bold mt-1">คงเหลือใช้ได้</p>
+            <p className="text-base md:text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalRemaining)}</p>
+            <p className="text-[10px] md:text-xs text-teal-600 font-bold mt-0.5 md:mt-1">คงเหลือใช้ได้</p>
           </div>
         </Card>
 
         {/* 3. Pending */}
-        <Card interactive className="p-5 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
-              <FileCheck size={20} className="text-primary-600" />
+        <Card interactive className="p-3 md:p-5 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-3">
+            <div className="p-1.5 md:p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
+              <FileCheck size={16} className="text-primary-600 md:w-5 md:h-5" />
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalPending)}</p>
-            <p className="text-xs text-gray-400 font-medium mt-1">รอการอนุมัติ</p>
+            <p className="text-base md:text-2xl font-bold text-gray-800 tracking-tight">{fmtShort(stats.totalPending)}</p>
+            <p className="text-[10px] md:text-xs text-gray-400 font-medium mt-0.5 md:mt-1">รอการอนุมัติ</p>
           </div>
         </Card>
 
         {/* 4. Approved */}
-        <Card interactive className="p-5 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
-              <TrendingDown size={20} className="text-primary-900" />
+        <Card interactive className="p-3 md:p-5 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-3">
+            <div className="p-1.5 md:p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
+              <TrendingDown size={16} className="text-primary-900 md:w-5 md:h-5" />
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-800 tracking-tight">{fmtShort((stats as any).totalActual || 0)}</p>
-            <p className="text-xs text-gray-400 font-medium mt-1">อนุมัติแล้ว</p>
+            <p className="text-base md:text-2xl font-bold text-gray-800 tracking-tight">{fmtShort((stats as any).totalActual || 0)}</p>
+            <p className="text-[10px] md:text-xs text-gray-400 font-medium mt-0.5 md:mt-1">อนุมัติแล้ว</p>
           </div>
         </Card>
 
         {/* 5. Refund/Return */}
-        <Card interactive className="p-5 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition-colors">
-              <ArrowLeftRight size={20} className="text-orange-600" />
+        <Card interactive className="p-3 md:p-5 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-3">
+            <div className="p-1.5 md:p-2 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition-colors">
+              <ArrowLeftRight size={16} className="text-orange-600 md:w-5 md:h-5" />
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-800 tracking-tight">฿0</p>
-            <p className="text-xs text-gray-400 font-medium mt-1">งบรอเรียกคืน</p>
+            <p className="text-base md:text-2xl font-bold text-gray-800 tracking-tight">฿0</p>
+            <p className="text-[10px] md:text-xs text-gray-400 font-medium mt-0.5 md:mt-1">งบรอเรียกคืน</p>
           </div>
         </Card>
 
         {/* 6. Percentage */}
-        <Card interactive className="p-5 flex flex-col justify-between group">
-          <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-rose-50 rounded-lg group-hover:bg-rose-100 transition-colors">
-              <Percent size={20} className="text-rose-600" />
+        <Card interactive className="p-3 md:p-5 flex flex-col justify-between group">
+          <div className="flex justify-between items-start mb-2 md:mb-3">
+            <div className="p-1.5 md:p-2 bg-rose-50 rounded-lg group-hover:bg-rose-100 transition-colors">
+              <Percent size={16} className="text-rose-600 md:w-5 md:h-5" />
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-800 tracking-tight">{stats.usagePercentage.toFixed(1)}%</p>
-            <p className="text-xs text-gray-400 font-medium mt-1">อัตราการเบิกจ่าย</p>
+            <p className="text-base md:text-2xl font-bold text-gray-800 tracking-tight">{stats.usagePercentage.toFixed(1)}%</p>
+            <p className="text-[10px] md:text-xs text-gray-400 font-medium mt-0.5 md:mt-1">อัตราการเบิกจ่าย</p>
           </div>
         </Card>
       </div>
@@ -233,7 +215,7 @@ const Dashboard: React.FC = () => {
       {/* Budget Proportion Pie Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Pie Chart */}
-        <Card className="lg:col-span-1 p-6">
+        <Card className="lg:col-span-1 p-4 md:p-6 min-w-0">
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-primary-50 p-2 rounded-lg text-primary-600">
               <PieChartIcon size={20} />
@@ -243,32 +225,34 @@ const Dashboard: React.FC = () => {
               <p className="text-xs text-gray-400">แบ่งตามหมวดหมู่</p>
             </div>
           </div>
-          <div style={{ width: '100%', height: 320, position: 'relative' }}>
-            <ResponsiveContainer width="100%" height="100%" minHeight={100}>
-              <PieChart>
-                <Pie
-                  data={processedCategories.map(cat => ({
-                    name: cat.name,
-                    value: cat.allocated,
-                    color: cat.color
-                  }))}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={2}
-                  dataKey="value"
-                >
-                  {processedCategories.map((cat, index) => (
-                    <Cell key={`cell-${index}`} fill={getHexColor(cat.color)} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value: number) => `฿${value.toLocaleString()}`}
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+          <div ref={pieRef} style={{ width: '100%', height: 240, position: 'relative' }} className="md:!h-[320px]">
+            {pieDim.width > 0 && (
+              <ResponsiveContainer width="99%" height="100%" minHeight={100} minWidth={0} debounce={100}>
+                <PieChart>
+                  <Pie
+                    data={processedCategories.map(cat => ({
+                      name: cat.name,
+                      value: cat.allocated,
+                      color: cat.color
+                    }))}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {processedCategories.map((cat, index) => (
+                      <Cell key={`cell-${index}`} fill={getHexColor(cat.color)} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value: number) => `฿${value.toLocaleString()}`}
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </div>
           <div className="mt-4 space-y-2 max-h-40 overflow-y-auto">
             {processedCategories.slice(0, 6).map((cat, index) => (
@@ -284,7 +268,7 @@ const Dashboard: React.FC = () => {
         </Card>
 
         {/* Budget Comparison Bar Chart */}
-        <Card className="lg:col-span-2 p-6">
+        <Card className="lg:col-span-2 p-4 md:p-6 min-w-0">
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-emerald-50 p-2 rounded-lg text-emerald-600">
               <BarChart3 size={20} />
@@ -294,60 +278,62 @@ const Dashboard: React.FC = () => {
               <p className="text-xs text-gray-400">งบตั้ง vs อนุมัติ vs คงเหลือ</p>
             </div>
           </div>
-          <div style={{ width: '100%', height: 400, position: 'relative' }}>
-            <ResponsiveContainer width="100%" height="100%" minHeight={200}>
-              <BarChart
-                data={displayCategories.map(cat => ({
-                  name: cat.name.length > 15 ? cat.name.substring(0, 15) + '...' : cat.name,
-                  fullName: cat.name,
-                  งบตั้ง: cat.allocated,
-                  อนุมัติ: cat.catApprovedAmount,
-                  คงเหลือ: cat.catRemaining,
-                }))}
-                margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis
-                  dataKey="name"
-                  angle={-45}
-                  textAnchor="end"
-                  height={100}
-                  tick={{ fill: '#6b7280', fontSize: 11, fontWeight: 600 }}
-                />
-                <YAxis
-                  tick={{ fill: '#6b7280', fontSize: 11, fontWeight: 600 }}
-                  tickFormatter={(value) => `฿${(value / 1000).toFixed(0)}K`}
-                />
-                <Tooltip
-                  formatter={(value: number) => `฿${value.toLocaleString()}`}
-                  labelFormatter={(label) => {
-                    const item = displayCategories.find(cat =>
-                      cat.name.startsWith(label.replace('...', ''))
-                    );
-                    return item?.name || label;
-                  }}
-                  contentStyle={{
-                    borderRadius: '12px',
-                    border: 'none',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                    padding: '12px'
-                  }}
-                />
-                <Legend
-                  wrapperStyle={{ paddingTop: '20px' }}
-                  iconType="circle"
-                />
-                <Bar dataKey="งบตั้ง" fill="#93C5FD" radius={[8, 8, 0, 0]} />
-                <Bar dataKey="อนุมัติ" fill="#003964" radius={[8, 8, 0, 0]} />
-                <Bar dataKey="คงเหลือ" fill="#00C4CC" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <div ref={barRef} style={{ width: '100%', height: 280, position: 'relative' }} className="md:!h-[400px]">
+            {barDim.width > 0 && (
+              <ResponsiveContainer width="100%" height="100%" debounce={100}>
+                <BarChart
+                  data={displayCategories.map(cat => ({
+                    name: cat.name.length > 15 ? cat.name.substring(0, 15) + '...' : cat.name,
+                    fullName: cat.name,
+                    งบตั้ง: cat.allocated,
+                    อนุมัติ: cat.catApprovedAmount,
+                    คงเหลือ: cat.catRemaining,
+                  }))}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis
+                    dataKey="name"
+                    angle={-45}
+                    textAnchor="end"
+                    height={100}
+                    tick={{ fill: '#6b7280', fontSize: 11, fontWeight: 600 }}
+                  />
+                  <YAxis
+                    tick={{ fill: '#6b7280', fontSize: 11, fontWeight: 600 }}
+                    tickFormatter={(value) => `฿${(value / 1000).toFixed(0)}K`}
+                  />
+                  <Tooltip
+                    formatter={(value: number) => `฿${value.toLocaleString()}`}
+                    labelFormatter={(label) => {
+                      const item = displayCategories.find(cat =>
+                        cat.name.startsWith(label.replace('...', ''))
+                      );
+                      return item?.name || label;
+                    }}
+                    contentStyle={{
+                      borderRadius: '12px',
+                      border: 'none',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      padding: '12px'
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{ paddingTop: '20px' }}
+                    iconType="circle"
+                  />
+                  <Bar dataKey="งบตั้ง" fill="#93C5FD" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="อนุมัติ" fill="#003964" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="คงเหลือ" fill="#00C4CC" radius={[8, 8, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </Card>
       </div>
 
       {/* Budget Categories Grid */}
-      <Card className="p-6 md:p-8">
+      <Card className="p-4 md:p-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div className="flex items-center gap-3">
             <div className="bg-primary-50 p-2 rounded-lg text-primary-600">

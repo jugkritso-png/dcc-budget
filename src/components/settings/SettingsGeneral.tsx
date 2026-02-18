@@ -37,14 +37,14 @@ const SettingsGeneral: React.FC = () => {
 
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
+                    <div className="text-center md:text-left">
                         <h2 className="text-2xl font-bold text-gray-900">ข้อมูลองค์กร</h2>
                         <p className="text-gray-500 text-sm mt-1">ตั้งค่าข้อมูลพื้นฐานของหน่วยงานและการแสดงผลเอกสาร</p>
                     </div>
                     <Button
                         onClick={handleSave}
                         variant="primary"
-                        className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
+                        className="w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
                     >
                         <Save size={18} className="mr-2" />
                         บันทึกการเปลี่ยนแปลง
@@ -69,8 +69,8 @@ const SettingsGeneral: React.FC = () => {
                         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent"></div>
 
                         <div className="absolute bottom-6 left-8 flex items-end gap-6 z-10">
-                            <div className="w-24 h-24 bg-white rounded-2xl shadow-xl flex items-center justify-center text-primary-600 border-4 border-white/50 backdrop-blur-md">
-                                <Landmark size={48} />
+                            <div className="w-16 h-16 md:w-24 md:h-24 bg-white rounded-2xl shadow-xl flex items-center justify-center text-primary-600 border-4 border-white/50 backdrop-blur-md">
+                                <Landmark size={32} className="md:w-12 md:h-12" />
                             </div>
                             <div className="pb-2">
                                 <h3 className="text-2xl font-bold text-white drop-shadow-md">{formData.orgName || 'ชื่อหน่วยงาน'}</h3>

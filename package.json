@@ -23,7 +23,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
-    "framer-motion": "^12.29.2",
+    "framer-motion": "^12.34.1",
     "google-auth-library": "^10.5.0",
     "jsonwebtoken": "^9.0.3",
     "jspdf": "^4.0.0",

@@ -45,9 +45,9 @@ const Settings: React.FC = () => {
 
    return (
       <div className="animate-fade-in min-h-[calc(100vh-100px)] space-y-6">
-         <div className="mb-8">
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">ตั้งค่าระบบ</h2>
-            <p className="text-gray-500 text-lg mb-6">จัดการข้อมูลพื้นฐานและการตั้งค่าต่างๆ ของระบบ</p>
+         <div className="mb-8 px-4 md:px-0">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight mb-2">ตั้งค่าระบบ</h2>
+            <p className="text-gray-500 text-sm md:text-lg mb-6">จัดการข้อมูลพื้นฐานและการตั้งค่าต่างๆ ของระบบ</p>
 
             {/* Horizontal Tabs Navigation */}
             <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 overflow-x-auto scrollbar-hide">

@@ -99,25 +99,25 @@ const SettingsDepartments: React.FC = () => {
 
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 shrink-0">
-                    <div>
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <div className="text-center md:text-left">
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center justify-center md:justify-start gap-3">
                             <div className="p-2 bg-primary-100 rounded-xl text-primary-600">
                                 <LayoutGrid size={24} />
                             </div>
                             จัดการหน่วยงาน
                         </h2>
-                        <p className="text-gray-500 text-sm mt-1 ml-12">
+                        <p className="text-gray-500 text-sm mt-1 md:ml-12 text-center md:text-left">
                             มีทั้งหมด <span className="text-primary-600 font-bold">{departments?.length || 0}</span> หน่วยงานในระบบ
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                        <div className="relative">
+                    <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
+                        <div className="relative w-full md:w-auto">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-10" size={18} />
                             <input
                                 type="text"
                                 placeholder="ค้นหา..."
-                                className="pl-11 pr-4 py-2.5 h-auto rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-300 w-48 transition-all hover:bg-white"
+                                className="pl-11 pr-4 py-2.5 h-auto rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-300 w-full md:w-48 transition-all hover:bg-white"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -126,7 +126,7 @@ const SettingsDepartments: React.FC = () => {
                         {!isAddMode && (
                             <Button
                                 onClick={() => setIsAddMode(true)}
-                                className="bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 rounded-xl"
+                                className="w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 rounded-xl"
                             >
                                 <Plus size={20} className="mr-2" />
                                 <span>เพิ่มหน่วยงาน</span>
@@ -231,13 +231,15 @@ const SettingsDepartments: React.FC = () => {
                                         exit={{ opacity: 0, scale: 0.95 }}
                                         transition={{ delay: index * 0.05 }}
                                         layout
-                                        className="group bg-white hover:bg-primary-50/40 border border-transparent hover:border-primary-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-4 md:gap-6 relative overflow-hidden"
+                                        className="group bg-white hover:bg-primary-50/40 border border-transparent hover:border-primary-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 relative overflow-hidden"
                                     >
-                                        {/* Color Indicator */}
-                                        <div className="w-1.5 self-stretch rounded-full bg-gray-200 group-hover:scale-y-110 transition-transform duration-300" style={{ backgroundColor: dept.color }}></div>
+                                        {/* Color Indicator - Desktop */}
+                                        <div className="hidden md:block w-1.5 self-stretch rounded-full bg-gray-200 group-hover:scale-y-110 transition-transform duration-300" style={{ backgroundColor: dept.color }}></div>
 
                                         {/* Code Badge */}
-                                        <div className="shrink-0">
+                                        <div className="shrink-0 flex items-center md:block gap-3 w-full md:w-auto">
+                                            {/* Color Indicator - Mobile */}
+                                            <div className="md:hidden w-3 h-14 rounded-full" style={{ backgroundColor: dept.color }}></div>
                                             {editingId === dept.id && editRowData ? (
                                                 <input
                                                     className="w-16 text-center font-mono font-bold text-sm bg-white border border-primary-300 rounded-lg py-1.5 focus:outline-none focus:ring-2 focus:ring-primary-200 text-primary-700"
