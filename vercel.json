@@ -1,4 +1,10 @@
 {
+    "cleanUrls": true,
+    "functions": {
+        "api/**/*": {
+            "maxDuration": 10
+        }
+    },
     "rewrites": [
         {
             "source": "/api/(.*)",
