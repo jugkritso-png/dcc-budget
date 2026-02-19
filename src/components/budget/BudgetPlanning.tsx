@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Calendar, Save, Plus, Info, X, DollarSign } from 'lucide-react';
-import { useBudget } from '../context/BudgetContext';
+import { useBudget } from '../../context/BudgetContext';
 import toast from 'react-hot-toast';
 
 const BudgetPlanning: React.FC = () => {

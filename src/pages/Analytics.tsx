@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import BudgetReport from '../components/BudgetReport';
+import React, { useState, useEffect } from 'react';
+import BudgetReport from '../components/budget/BudgetReport';
+import { useBudget } from '../context/BudgetContext';
 import { BarChart2, Calendar, PieChart } from 'lucide-react';
-import AnalyticsDashboard from '../components/AnalyticsDashboard';
-import BudgetPlanning from '../components/BudgetPlanning';
+import AnalyticsDashboard from '../components/analytics/AnalyticsDashboard';
+import BudgetPlanning from '../components/budget/BudgetPlanning';
+import { Card } from '../components/ui/Card';
 
 const Analytics: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'planning' | 'report'>('overview');

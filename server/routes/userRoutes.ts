@@ -1,141 +1,24 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
-import prisma from '../lib/prisma';
 import validate from '../middleware/validateResource';
 import { createUserSchema, updateUserSchema, changePasswordSchema } from '../schemas/userSchema';
+import { requirePermission } from '../middleware/authMiddleware';
+import * as userController from '../controllers/userController';
 
 const router = express.Router();
 
 // List all users
-router.get('/', async (req, res) => {
-    const users = await prisma.user.findMany({
-        orderBy: { createdAt: 'desc' }
-    });
-    // Remove passwords before sending
-    const safeUsers = users.map(user => {
-        const { password, ...rest } = user;
-        return rest;
-    });
-    res.json(safeUsers);
-});
-
-import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
+router.get('/', userController.listUsers);
 
 // Create new user
-router.post('/', validate(createUserSchema), requirePermission('manage_users'), async (req, res) => {
-    const { username, password, name, email, role, department, position } = req.body;
-
-    // Check if username or email exists
-    const existing = await prisma.user.findFirst({
-        where: {
-            OR: [
-                { username },
-                { email: email || undefined }
-            ]
-        }
-    });
-
-    if (existing) {
-        return res.status(400).json({ error: 'Username or Email already exists' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await prisma.user.create({
-        data: {
-            username,
-            password: hashedPassword,
-            name,
-            email,
-            role: role || 'user',
-            department,
-            position,
-            avatar: name.substring(0, 2).toUpperCase() // Default avatar initials
-        }
-    });
-
-    const { password: _, ...userWithoutPassword } = newUser;
-    res.json(userWithoutPassword);
-});
+router.post('/', validate(createUserSchema), requirePermission('manage_users'), userController.createUser);
 
 // Update user
-router.put('/:id', validate(updateUserSchema), async (req, res) => {
-    const { id } = req.params as { id: string };
-
-    // Permission Check: Allow if self-update OR has 'manage_users'
-    // Note: req.user is set by authenticateToken but we need to ensure it's there. 
-    // Ideally authenticateToken should be on the router globally or per route.
-    // Assuming authenticateToken is applied. If not, we should apply it.
-    // For now, let's assume global auth or apply it.
-    // Actually, I should probably check if `req.user` exists.
-
-    const currentUser = req.user;
-    if (!currentUser) return res.status(401).json({ error: 'Unauthorized' });
-
-    // Check if simple user trying to update another user
-    if (currentUser.id !== id && currentUser.role !== 'admin') {
-        // Check if they have manage_users permission
-        const settings = await prisma.systemSetting.findUnique({ where: { key: 'PERMISSIONS' } });
-        let hasPermission = false;
-        if (settings) {
-            const permissionsMap = JSON.parse(settings.value);
-            const userPermissions = permissionsMap[currentUser.role] || [];
-            if (userPermissions.includes('manage_users')) hasPermission = true;
-        }
-
-        if (!hasPermission) {
-            return res.status(403).json({ error: 'Permission denied' });
-        }
-    }
-
-    const updateData = { ...req.body };
-
-    // If updating password, hash it
-    if (updateData.password) {
-        updateData.password = await bcrypt.hash(updateData.password, 10);
-    }
-
-    const updatedUser = await prisma.user.update({
-        where: { id },
-        data: updateData,
-    });
-    const { password: _, ...userWithoutPassword } = updatedUser;
-    res.json(userWithoutPassword);
-});
+router.put('/:id', validate(updateUserSchema), userController.updateUser);
 
 // Change Password
-router.post('/change-password', validate(changePasswordSchema), async (req, res) => {
-    const { userId, currentPassword, newPassword } = req.body;
-
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-
-    if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-    }
-
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
-    // Support plain text check for transition
-    const isPlainMatch = (!isMatch && currentPassword === user.password);
-
-    if (!isMatch && !isPlainMatch) {
-        return res.status(400).json({ error: 'Incorrect current password' });
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    await prisma.user.update({
-        where: { id: userId },
-        data: { password: hashedPassword },
-    });
-    res.json({ success: true });
-});
+router.post('/change-password', validate(changePasswordSchema), userController.changePassword);
 
 // Delete user
-router.delete('/:id', requirePermission('manage_users'), async (req, res) => {
-    const { id } = req.params as { id: string };
-    // Prevent deleting the last admin if needed, but for now just allow
-    await prisma.user.delete({ where: { id } });
-    res.json({ success: true });
-});
+router.delete('/:id', requirePermission('manage_users'), userController.deleteUser);
 
 export default router;

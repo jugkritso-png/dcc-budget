@@ -1,5 +1,5 @@
 import React from 'react';
-import { BudgetRequest, Category } from '../types';
+import { BudgetRequest, Category } from '../../types';
 import { FileText, Printer } from 'lucide-react';
 
 interface OfficialMemoProps {

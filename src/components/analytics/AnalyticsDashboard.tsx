@@ -1,12 +1,12 @@
 
 import React from 'react';
-import { useBudget } from '../context/BudgetContext';
-import { Card } from './ui/Card';
+import { useBudget } from '../../context/BudgetContext';
+import { Card } from '../ui/Card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { Percent, Wallet, FileText, Calculator, Download } from 'lucide-react';
-import { generateBudgetReport } from '../services/reportService';
-import { Button } from './ui/Button';
-import { useChartDimensions } from '../hooks/useChartDimensions';
+import { generateBudgetReport } from '../../services/reportService';
+import { Button } from '../ui/Button';
+import { useChartDimensions } from '../../hooks/useChartDimensions';
 
 const AnalyticsDashboard: React.FC = () => {
     const { requests, categories, settings } = useBudget();

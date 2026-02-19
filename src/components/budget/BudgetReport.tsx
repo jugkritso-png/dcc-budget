@@ -1,5 +1,5 @@
 import React from 'react';
-import { useBudget } from '../context/BudgetContext';
+import { useBudget } from '../../context/BudgetContext';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { DollarSign, PieChart as PieChartIcon, TrendingUp, AlertCircle } from 'lucide-react';
 

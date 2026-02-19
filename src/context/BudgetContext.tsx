@@ -122,8 +122,8 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     localStorage.removeItem('dcc_user');
     localStorage.removeItem('dcc_token');
     queryClient.clear(); // Clear cache on logout
-    // Sign out from Supabase Auth
-    import('../lib/supabase').then(({ supabase }) => supabase.auth.signOut());
+    // Sign out from Supabase Auth - REMOVED (Handled by backend/local state)
+    // import('../lib/supabase').then(({ supabase }) => supabase.auth.signOut());
   };
 
   const updateUserProfileMutation = useMutation({
