@@ -109,10 +109,13 @@ const SettingsUsers: React.FC = () => {
 
             try {
                 await addUser({
-                    ...userForm,
                     username: userForm.username.trim(),
+                    password: userForm.password,
+                    name: userForm.name,
                     email: userForm.email.trim(),
-                    department: userForm.section
+                    role: userForm.role,
+                    department: userForm.section,
+                    position: userForm.position
                 });
                 setIsUserModalOpen(false);
                 toast.success("เพิ่มผู้ใช้งานเรียบร้อยแล้ว");

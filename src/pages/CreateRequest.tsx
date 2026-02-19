@@ -167,7 +167,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="animate-in fade-in slide-in-from-bottom-4 duration-500 w-full md:max-w-lg mx-auto">
+            <form onSubmit={handleSubmit} className="animate-in fade-in slide-in-from-bottom-4 duration-500 w-full md:max-w-4xl mx-auto">
                 <div className="bg-white px-5 py-6 md:p-8 rounded-2xl md:rounded-3xl shadow-sm md:shadow-card border border-gray-100 space-y-6 md:space-y-8">
 
                     {/* Section 1: Project Info */}

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useBudget } from '../context/BudgetContext';
-import { User, Lock, ArrowRight, Loader, Mail, ShieldCheck } from 'lucide-react';
+import { Lock, ArrowRight, Loader, Mail, ShieldCheck } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 
 const Login: React.FC = () => {
     const { login, loginWithGoogle } = useBudget();
-    const [username, setUsername] = useState('');
+    const [emailOrUsername, setEmailOrUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -16,7 +16,7 @@ const Login: React.FC = () => {
         setError('');
 
         try {
-            const success = await login(username, password);
+            const success = await login(emailOrUsername, password);
             if (!success) {
                 setError('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
             }
@@ -107,21 +107,21 @@ const Login: React.FC = () => {
 
                         <div className="space-y-5">
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-700 ml-1">ชื่อผู้ใช้งาน</label>
+                                <label className="text-sm font-bold text-gray-700 ml-1">อีเมลหรือชื่อผู้ใช้งาน</label>
                                 <div className="relative group w-full">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <User className="h-5 w-5 text-gray-400 group-focus-within:text-primary-600 transition-colors" />
+                                        <Mail className="h-5 w-5 text-gray-400 group-focus-within:text-primary-600 transition-colors" />
                                     </div>
                                     <input
                                         type="text"
-                                        name="username"
-                                        id="username"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
+                                        name="email"
+                                        id="email"
+                                        value={emailOrUsername}
+                                        onChange={(e) => setEmailOrUsername(e.target.value)}
                                         className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-medium hover:bg-white"
-                                        placeholder="ระบุชื่อผู้ใช้งาน"
+                                        placeholder="example@email.com หรือ username"
                                         required
-                                        autoComplete="username"
+                                        autoComplete="email"
                                     />
                                 </div>
                             </div>

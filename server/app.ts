@@ -17,6 +17,7 @@ import budgetRoutes from './routes/budgetRoutes';
 import settingRoutes from './routes/settingRoutes';
 import activityLogRoutes from './routes/activityLogRoutes';
 import { authenticateToken } from './middleware/authMiddleware';
+import mcpRoutes from './routes/mcpRoutes';
 
 const app = express();
 
@@ -78,12 +79,18 @@ app.get('/api/health-db', async (req, res) => {
 
 // --- API Routes ---
 app.use('/api', authRoutes);
+// --- MCP Routes (SSE) ---
+app.use('/api/mcp', mcpRoutes);
+
 app.use('/api/users', authenticateToken, userRoutes);
 app.use('/api/categories', authenticateToken, categoryRoutes);
 app.use('/api/expenses', authenticateToken, expenseRoutes);
 app.use('/api', authenticateToken, budgetRoutes);
 app.use('/api', authenticateToken, settingRoutes);
 app.use('/api/activity-logs', authenticateToken, activityLogRoutes);
+
+
+
 
 // --- Static Files (Production/Render) ---
 const __filename = fileURLToPath(import.meta.url);
