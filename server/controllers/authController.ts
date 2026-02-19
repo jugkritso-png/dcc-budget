@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
-import { prisma } from '../lib/prisma';
-import { logActivity } from '../utils/logger';
+import { prisma } from '../lib/prisma.js';
+import { logActivity } from '../utils/logger.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dcc-secret-key-change-in-prod';
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID');

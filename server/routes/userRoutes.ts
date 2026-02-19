@@ -1,8 +1,8 @@
 import express from 'express';
-import validate from '../middleware/validateResource';
-import { createUserSchema, updateUserSchema, changePasswordSchema } from '../schemas/userSchema';
-import { requirePermission } from '../middleware/authMiddleware';
-import * as userController from '../controllers/userController';
+import validate from '../middleware/validateResource.js';
+import { createUserSchema, updateUserSchema, changePasswordSchema } from '../schemas/userSchema.js';
+import { requirePermission } from '../middleware/authMiddleware.js';
+import * as userController from '../controllers/userController.js';
 
 const router = express.Router();
 

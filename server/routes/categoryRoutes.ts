@@ -1,7 +1,7 @@
 import express from 'express';
-import validate from '../middleware/validateResource';
-import { createCategorySchema, updateCategorySchema, budgetAdjustSchema } from '../schemas/masterDataSchema';
-import * as categoryController from '../controllers/categoryController';
+import validate from '../middleware/validateResource.js';
+import { createCategorySchema, updateCategorySchema, budgetAdjustSchema } from '../schemas/masterDataSchema.js';
+import * as categoryController from '../controllers/categoryController.js';
 
 const router = express.Router();
 

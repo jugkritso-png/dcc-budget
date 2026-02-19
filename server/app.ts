@@ -5,19 +5,19 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
-import prisma from './lib/prisma';
-import { errorHandler } from './middleware/errorHandler';
+import prisma from './lib/prisma.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 // Import Routes
-import authRoutes from './routes/authRoutes';
-import userRoutes from './routes/userRoutes';
-import categoryRoutes from './routes/categoryRoutes';
-import expenseRoutes from './routes/expenseRoutes';
-import budgetRoutes from './routes/budgetRoutes';
-import settingRoutes from './routes/settingRoutes';
-import activityLogRoutes from './routes/activityLogRoutes';
-import { authenticateToken } from './middleware/authMiddleware';
-import mcpRoutes from './routes/mcpRoutes';
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import budgetRoutes from './routes/budgetRoutes.js';
+import settingRoutes from './routes/settingRoutes.js';
+import activityLogRoutes from './routes/activityLogRoutes.js';
+import { authenticateToken } from './middleware/authMiddleware.js';
+import mcpRoutes from './routes/mcpRoutes.js';
 
 const app = express();
 

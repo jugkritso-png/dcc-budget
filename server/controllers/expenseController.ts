@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 
 export const createExpense = async (req: Request, res: Response) => {
     const { categoryId, amount, payee, date, description } = req.body;

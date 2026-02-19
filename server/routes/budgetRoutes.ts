@@ -1,9 +1,9 @@
 import express from 'express';
-import validate from '../middleware/validateResource';
-import { createRequestSchema, updateRequestStatusSchema } from '../schemas/budgetRequestSchema';
-import { createSubActivitySchema, updateSubActivitySchema } from '../schemas/masterDataSchema';
-import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
-import * as budgetController from '../controllers/budgetController';
+import validate from '../middleware/validateResource.js';
+import { createRequestSchema, updateRequestStatusSchema } from '../schemas/budgetRequestSchema.js';
+import { createSubActivitySchema, updateSubActivitySchema } from '../schemas/masterDataSchema.js';
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware.js';
+import * as budgetController from '../controllers/budgetController.js';
 
 const router = express.Router();
 

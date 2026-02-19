@@ -1,5 +1,5 @@
 import express from 'express';
-import prisma from '../lib/prisma';
+import prisma from '../lib/prisma.js';
 
 export const logActivity = async (userId: string | null, action: string, details: any, req?: express.Request) => {
     try {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { prisma } from '../lib/prisma';
-import { logActivity } from '../utils/logger';
+import { prisma } from '../lib/prisma.js';
+import { logActivity } from '../utils/logger.js';
 import { Category, Prisma } from '@prisma/client';
 
 // Define type for Request with Items to help TypeScript

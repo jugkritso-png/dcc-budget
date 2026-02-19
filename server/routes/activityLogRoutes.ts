@@ -1,6 +1,6 @@
 import express from 'express';
-import { requirePermission } from '../middleware/authMiddleware';
-import * as activityLogController from '../controllers/activityLogController';
+import { requirePermission } from '../middleware/authMiddleware.js';
+import * as activityLogController from '../controllers/activityLogController.js';
 
 const router = express.Router();
 

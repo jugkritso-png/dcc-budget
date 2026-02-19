@@ -13,7 +13,7 @@ declare global {
 const JWT_SECRET = process.env.JWT_SECRET || 'dcc-secret-key-change-in-prod';
 
 
-import prisma from '../lib/prisma'; // Ensure prisma is imported
+import prisma from '../lib/prisma.js'; // Ensure prisma is imported
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
