@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks: {
             vendor: ['react', 'react-dom'],
-            utils: ['lodash', 'axios'] // Example, adjust based on actual dependencies if needed
+            utils: ['lodash'] // removed axios as it's not a dependency
           }
         }
       }
