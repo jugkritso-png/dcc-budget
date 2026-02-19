@@ -2,6 +2,7 @@
     "cleanUrls": true,
     "functions": {
         "api/**/*": {
+            "includeFiles": "prisma/schema.prisma",
             "maxDuration": 10
         }
     },
