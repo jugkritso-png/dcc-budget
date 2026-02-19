@@ -29,6 +29,17 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, 'src'),
       }
+    },
+    build: {
+      chunkSizeWarningLimit: 1000, // Increase limit to 1000kB
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            utils: ['lodash', 'axios'] // Example, adjust based on actual dependencies if needed
+          }
+        }
+      }
     }
   };
 });
