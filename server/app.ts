@@ -85,26 +85,25 @@ app.use('/api', authenticateToken, budgetRoutes);
 app.use('/api', authenticateToken, settingRoutes);
 app.use('/api/activity-logs', authenticateToken, activityLogRoutes);
 
-// --- Static Files (Production/Vercel) ---
-// Note: In Vercel, static files are handled by the Vercel CDN if in /public or /dist (depending on config)
-// But for "npm run server" locally, we still want this.
+// --- Static Files (Production/Render) ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+// In production (built with vite), dist is at the project root
 const distPath = path.join(__dirname, '../dist');
 
-if (fs.existsSync(distPath)) {
-    // Only serve static files if they exist (local prod build)
-    // On Vercel, this might not be needed if using 'vercel.json' rewrites for SPA
+// Serve static files if they exist OR if we are in production
+if (process.env.NODE_ENV === 'production' || fs.existsSync(distPath)) {
+    console.log(`Serving static files from: ${distPath}`);
     app.use(express.static(distPath));
 
     // Catch-all for SPA
     app.get('*', (req, res) => {
         if (!req.path.startsWith('/api')) {
-            // Check if file exists to avoid ENOENT crashes
             const indexPath = path.join(distPath, 'index.html');
             if (fs.existsSync(indexPath)) {
                 res.sendFile(indexPath);
             } else {
+                console.warn(`Index file not found at ${indexPath}`);
                 res.status(404).send('Not found');
             }
         } else {
