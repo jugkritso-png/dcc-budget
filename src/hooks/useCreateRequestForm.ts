@@ -10,6 +10,7 @@ export const useCreateRequestForm = (onSuccess?: () => void) => {
     const [formData, setFormData] = useState({
         project: '',
         date: new Date().toISOString().split('T')[0],
+        bookNumber: '', // Added bookNumber
         category: '',
         activity: '', // Changed from subActivity to activity to match BudgetRequest interface
         subActivityId: '',

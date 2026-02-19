@@ -9,29 +9,29 @@ To make the "Sign in with Google" button work, you need a **Google Client ID**. 
 4.  Click **Create Credentials** > **OAuth client ID**.
 5.  Select **Web application**.
 6.  Add Authorized JavaScript origins:
-    -   `http://localhost:3000` (Frontend)
+    -   `http://localhost:3000` (Frontend Dev)
     -   `http://localhost:3002` (Backend)
+    -   `https://your-production-domain.com` (Production)
 7.  Click **Create**.
 8.  Copy the **Client ID** (it looks like `123456789-xxxx.apps.googleusercontent.com`).
 
 ## 2. Update Your Code
-You need to paste this Client ID in two places:
+You need to paste this Client ID in your `.env` file (or deployment environment variables).
 
-### Backend (`.env` file)
-Create or update your `.env` file in the root directory:
+### Backend & Frontend (`.env` file)
+Create or update your `.env` file in the root directory. You need to verify the ID on the backend AND use it in the frontend.
+
 ```env
+# For Backend Verification
 GOOGLE_CLIENT_ID=your-copied-client-id
-```
 
-### Frontend (`src/index.tsx`)
-In `src/index.tsx`, locate the `GoogleOAuthProvider` and replace the placeholder:
-```tsx
-<GoogleOAuthProvider clientId="your-copied-client-id">
+# For Frontend Button (Vite requires VITE_ prefix)
+VITE_GOOGLE_CLIENT_ID=your-copied-client-id
 ```
 
 ## 3. Restart the System
-After updating the configuration:
-1.  Restart the backend server.
-2.  Restart the frontend (if needed).
+After updating the `.env` file:
+1.  Restart the backend server (`npm run server`).
+2.  Restart the frontend dev server (`npm run dev`).
 
 The Google Login should now work!

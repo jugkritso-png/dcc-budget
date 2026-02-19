@@ -57,6 +57,7 @@ export interface BudgetRequest {
   approverId?: string;
   approvedAt?: string;
   rejectionReason?: string;
+  bookNumber?: string; // New field for book number
 
   // Expense Reporting
   actualAmount?: number;

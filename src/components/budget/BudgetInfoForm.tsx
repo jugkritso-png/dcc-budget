@@ -27,92 +27,76 @@ export const BudgetInfoForm: React.FC<BudgetInfoFormProps> = ({
     setFormData
 }) => {
     return (
-        <Card className="p-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-                    <PieChart size={18} />
-                </div>
-                งบประมาณ
+        <div className="space-y-4">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 pt-4 border-t border-gray-100">
+                2. รายละเอียดงบประมาณ
             </h3>
-            <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">หมวดหมู่</label>
-                        <div className="relative">
-                            <select
-                                name="category"
-                                value={formData.category}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    setFormData((prev: any) => ({ ...prev, category: value, subActivity: '' }));
-                                }}
-                                className="w-full h-11 px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all appearance-none cursor-pointer font-bold text-gray-700 bg-white"
-                                required
-                            >
-                                <option value="">เลือกหมวดหมู่</option>
-                                {categories.map(c => (
-                                    <option key={c.id} value={c.name} className="font-bold">
-                                        {c.name} {c.remaining <= 0 ? '(งบหมด)' : ''}
-                                    </option>
-                                ))}
-                            </select>
-                            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                            </div>
-                        </div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">หมวดงบประมาณ <span className="text-red-500">*</span></label>
+                        <Select
+                            value={formData.category}
+                            onChange={(value) => {
+                                setFormData((prev: any) => ({ ...prev, category: value, subActivity: '' }));
+                            }}
+                            options={[
+                                { value: '', label: 'เลือกหมวดงบประมาณ' },
+                                ...categories.map(c => ({
+                                    value: c.name,
+                                    label: `${c.name} ${c.remaining <= 0 ? '(งบหมด)' : ''}`,
+                                    color: c.color
+                                }))
+                            ]}
+                            placeholder="เลือกหมวดงบประมาณ"
+                            className="bg-gray-50"
+                        />
                     </div>
                     <div>
                         <label className="block text-sm font-bold text-gray-700 mb-1">กิจกรรมย่อย</label>
-                        <Select
-                            name="subActivity"
-                            value={formData.subActivity}
-                            onChange={(value) => setFormData((prev: any) => ({ ...prev, subActivity: value }))}
-                            options={[
-                                { value: '', label: 'ระบุกิจกรรมย่อย (ถ้ามี)' },
-                                ...availableSubActivities.map(sub => ({
-                                    value: sub.name,
-                                    label: `${sub.name} (คงเหลือ: ฿${sub.remainingAmount.toLocaleString()})`
-                                }))
-                            ]}
-                            disabled={!formData.category}
+                        <Input
+                            name="activity" // Using text input for activity based on screenshot "ระบุกิจกรรมย่อย" being a placeholder text in a text-like field, though Select is also fine. Keeping it simple.
+                            value={formData.activity}
+                            handleChange={handleChange}
+                            placeholder="ระบุกิจกรรมย่อย"
+                            className="bg-gray-50 border-gray-200 focus:bg-white transition-colors"
                         />
                     </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">จำนวนเงิน (บาท)</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">วงเงินที่ขออนุมัติ (บาท) <span className="text-red-500">*</span></label>
                         <Input
                             type="number"
                             name="amount"
                             value={formData.amount || ''}
-                            onChange={handleChange}
+                            handleChange={handleChange}
                             placeholder="0.00"
                             min="0"
                             step="0.01"
                             required
-                            className="font-bold text-lg text-primary-600"
-                        // Read-only logic is handled in the parent/hook if needed (e.g., sum of items)
+                            className="bg-gray-50 border-gray-200 focus:bg-white transition-colors font-bold text-gray-800"
                         />
                     </div>
                     <div>
                         <label className="block text-sm font-bold text-gray-700 mb-1">ความเร่งด่วน</label>
-                        <div className="grid grid-cols-3 gap-2">
-                            <label className={`cursor-pointer rounded-xl border p-2 text-center transition-all ${formData.urgency === 'normal' ? 'bg-primary-50 border-primary-200 text-primary-700 ring-2 ring-primary-500/20' : 'border-gray-200 hover:bg-gray-50'}`}>
+                        <div className="grid grid-cols-3 gap-0 bg-gray-100 p-1 rounded-xl">
+                            <label className={`cursor-pointer rounded-lg py-2 text-center transition-all ${formData.urgency === 'normal' ? 'bg-white text-primary-600 shadow-sm font-bold' : 'text-gray-500 hover:text-gray-700'}`}>
                                 <input type="radio" name="urgency" value="normal" checked={formData.urgency === 'normal'} onChange={handleChange} className="sr-only" />
-                                <span className="text-sm font-bold">ปกติ</span>
+                                <span className="text-sm">ปกติ</span>
                             </label>
-                            <label className={`cursor-pointer rounded-xl border p-2 text-center transition-all ${formData.urgency === 'urgent' ? 'bg-orange-50 border-orange-200 text-orange-700 ring-2 ring-orange-500/20' : 'border-gray-200 hover:bg-gray-50'}`}>
+                            <label className={`cursor-pointer rounded-lg py-2 text-center transition-all ${formData.urgency === 'urgent' ? 'bg-white text-orange-600 shadow-sm font-bold' : 'text-gray-500 hover:text-gray-700'}`}>
                                 <input type="radio" name="urgency" value="urgent" checked={formData.urgency === 'urgent'} onChange={handleChange} className="sr-only" />
-                                <span className="text-sm font-bold flex items-center justify-center gap-1"><Zap size={14} /> ด่วน</span>
+                                <span className="text-sm">ด่วน</span>
                             </label>
-                            <label className={`cursor-pointer rounded-xl border p-2 text-center transition-all ${formData.urgency === 'critical' ? 'bg-red-50 border-red-200 text-red-700 ring-2 ring-red-500/20' : 'border-gray-200 hover:bg-gray-50'}`}>
+                            <label className={`cursor-pointer rounded-lg py-2 text-center transition-all ${formData.urgency === 'critical' ? 'bg-white text-red-600 shadow-sm font-bold' : 'text-gray-500 hover:text-gray-700'}`}>
                                 <input type="radio" name="urgency" value="critical" checked={formData.urgency === 'critical'} onChange={handleChange} className="sr-only" />
-                                <span className="text-sm font-bold flex items-center justify-center gap-1"><Zap size={14} /> ด่วนที่สุด</span>
+                                <span className="text-sm">ด่วนที่สุด</span>
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
-        </Card>
+        </div>
     );
 };

@@ -97,6 +97,7 @@ model BudgetRequest {
   urgency         String?             @default("normal")
   startDate       String?
   endDate         String?
+  bookNumber      String?             @map("book_number")
   reason          String?
   approverId      String?
   approvedAt      DateTime?

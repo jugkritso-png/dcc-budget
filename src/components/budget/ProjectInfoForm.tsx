@@ -8,59 +8,77 @@ interface ProjectInfoFormProps {
     formData: {
         project: string;
         date: string;
+        bookNumber: string; // Added bookNumber
         reason: string;
+        startDate: string;
+        endDate: string;
     };
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
 export const ProjectInfoForm: React.FC<ProjectInfoFormProps> = ({ formData, handleChange }) => {
     return (
-        <Card className="p-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600">
-                    <FileText size={18} />
-                </div>
-                ข้อมูลโครงการ
+        <div className="space-y-4">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">
+                1. ข้อมูลโครงการ
             </h3>
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-6">
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1">ชื่อโครงการ / รายการ</label>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">เลขที่หนังสือ</label>
                     <Input
-                        name="project"
-                        value={formData.project}
-                        onChange={handleChange}
-                        placeholder="ตัวอย่าง: โครงการอบรม..."
-                        required
-                        className="font-bold"
+                        name="bookNumber"
+                        value={formData.bookNumber}
+                        handleChange={handleChange}
+                        placeholder="ระบุเลขที่หนังสือ (ถ้ามี)"
+                        className="bg-gray-50 border-gray-200 focus:bg-white transition-colors"
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1">วันที่ทำรายการ</label>
-                    <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <label className="block text-sm font-bold text-gray-700 mb-1">ชื่อโครงการ/กิจกรรม <span className="text-red-500">*</span></label>
+                    <Input
+                        name="project"
+                        value={formData.project}
+                        handleChange={handleChange}
+                        placeholder="ระบุชื่อโครงการหรือกิจกรรม"
+                        required
+                        className="bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                    />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">วันที่เริ่มต้น</label>
                         <Input
                             type="date"
-                            name="date"
-                            value={formData.date}
-                            onChange={handleChange}
-                            className="pl-10 font-bold"
-                            required
+                            name="startDate"
+                            value={formData.startDate} // Ensure these match the interface logic
+                            handleChange={handleChange}
+                            className="bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">วันที่สิ้นสุด</label>
+                        <Input
+                            type="date"
+                            name="endDate"
+                            value={formData.endDate}
+                            handleChange={handleChange}
+                            className="bg-gray-50 border-gray-200 focus:bg-white transition-colors"
                         />
                     </div>
                 </div>
                 <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1">เหตุผลและความจำเป็น</label>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">เหตุผลความจำเป็น / วัตถุประสงค์</label>
                     <textarea
                         name="reason"
                         value={formData.reason}
                         onChange={handleChange}
-                        rows={3}
-                        className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all font-medium text-gray-600"
-                        placeholder="อธิบายเหตุผลและความจำเป็น..."
+                        rows={4}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all font-medium text-gray-600 resize-none"
+                        placeholder="อธิบายรายละเอียดและความจำเป็นของโครงการ..."
                         required
                     />
                 </div>
             </div>
-        </Card>
+        </div>
     );
 };

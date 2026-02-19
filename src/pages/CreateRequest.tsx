@@ -21,7 +21,8 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
         handleSubmit,
         addExpenseItem,
         removeExpenseItem,
-        updateExpenseItem
+        updateExpenseItem,
+        handleChange
     } = useCreateRequestForm(() => {
         if (onNavigate) {
             onNavigate(Page.BUDGET);
@@ -41,34 +42,28 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="animate-in fade-in slide-in-from-bottom-4 duration-500 w-full md:max-w-4xl mx-auto">
-                <div className="bg-white px-5 py-6 md:p-8 rounded-2xl md:rounded-3xl shadow-sm md:shadow-card border border-gray-100 space-y-6 md:space-y-8">
+            <form onSubmit={handleSubmit} className="w-full md:max-w-5xl mx-auto pb-10">
+                <div className="bg-white px-5 py-6 md:p-8 rounded-2xl md:rounded-3xl shadow-lg md:shadow-xl border border-gray-100/50 space-y-8">
 
                     <ProjectInfoForm
-                        project={formData.project}
-                        startDate={formData.startDate}
-                        endDate={formData.endDate}
-                        reason={formData.reason}
-                        onChange={(field, value) => setFormData(prev => ({ ...prev, [field]: value }))}
+                        formData={formData}
+                        handleChange={handleChange}
                     />
 
                     <BudgetInfoForm
-                        category={formData.category}
-                        activity={formData.activity}
-                        amount={formData.amount}
-                        urgency={formData.urgency}
+                        formData={formData}
                         categories={categories}
                         availableSubActivities={availableSubActivities}
-                        expenseItems={formData.expenseItems || []}
-                        onChange={(field, value) => setFormData(prev => ({ ...prev, [field]: value }))}
+                        handleChange={handleChange}
+                        setFormData={setFormData}
                     />
 
                     <ExpenseEstimationTable
                         expenseItems={formData.expenseItems || []}
                         categories={categories}
-                        onAdd={addExpenseItem}
-                        onRemove={removeExpenseItem}
-                        onUpdate={updateExpenseItem}
+                        addExpenseItem={addExpenseItem}
+                        removeExpenseItem={removeExpenseItem}
+                        updateExpenseItem={updateExpenseItem}
                     />
 
                     <div className="pt-6 border-t border-gray-100 flex flex-col md:flex-row justify-end gap-3">
