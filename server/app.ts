@@ -59,6 +59,23 @@ const seedAdmin = async () => {
 // Run seed on startup (async)
 seedAdmin().catch(console.error);
 
+
+// Health Check Endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'server-ok', timestamp: new Date().toISOString() });
+});
+
+// Database Health Check Endpoint (For debugging Vercel connection)
+app.get('/api/health-db', async (req, res) => {
+    try {
+        const userCount = await prisma.user.count();
+        res.json({ status: 'db-ok', users: userCount, timestamp: new Date().toISOString() });
+    } catch (error: any) {
+        console.error('DB Connection Failed:', error);
+        res.status(500).json({ status: 'db-error', message: error.message, stack: error.stack });
+    }
+});
+
 // --- API Routes ---
 app.use('/api', authRoutes);
 app.use('/api/users', authenticateToken, userRoutes);
