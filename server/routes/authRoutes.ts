@@ -13,7 +13,14 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dcc-secret-key-change-in-prod';
 router.post('/login', validate(loginSchema), async (req, res) => {
     const { username, password } = req.body;
 
-    const user = await prisma.user.findUnique({ where: { username } });
+    const user = await prisma.user.findFirst({
+        where: {
+            OR: [
+                { username },
+                { email: username }
+            ]
+        }
+    });
     if (!user) {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
