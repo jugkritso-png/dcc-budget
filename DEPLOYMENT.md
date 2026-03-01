@@ -1,82 +1,151 @@
 # Deployment Guide - DCC Budget Manager
 
-This guide explains how to deploy the **DCC Budget Manager** application. The project consists of a React frontend (Vite) and a Node.js/Express backend using Prisma and SQLite.
+This guide explains how to deploy the **DCC Budget Manager** application. The project consists of a React frontend (Vite) and a Node.js/Express backend using Prisma and PostgreSQL (Supabase).
 
 ## Prerequisites
-- **Node.js**: v18 or higher (for manual deployment)
-- **Docker & Docker Compose**: (Recommended for containerized deployment)
+- **Node.js**: v18 or higher
+- **Supabase Account**: For PostgreSQL database
+- **Vercel Account**: For deployment (recommended)
 
 ---
 
-## Option 1: Docker Deployment (Recommended)
-This method is the easiest as it bundles everything (Frontend + Backend + Database logic) into a single container.
+## Option 1: Deploy to Vercel (Recommended)
+
+Vercel รองรับทั้ง frontend และ backend (Serverless Functions) ในโปรเจกต์เดียว
+
+### วิธีที่ 1: Deploy ผ่าน Vercel CLI
+
+1. **ติดตั้ง Vercel CLI**:
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Login เข้า Vercel**:
+   ```bash
+   vercel login
+   ```
+
+3. **Deploy โปรเจกต์**:
+   ```bash
+   vercel
+   ```
+   
+   ตอบคำถามตามนี้:
+   - Set up and deploy? `Y`
+   - Which scope? เลือก account ของคุณ
+   - Link to existing project? `N`
+   - Project name? กด Enter (ใช้ชื่อเดิม)
+   - In which directory is your code located? `./`
+
+4. **ตั้งค่า Environment Variables**:
+   ```bash
+   vercel env add DATABASE_URL
+   vercel env add JWT_SECRET
+   vercel env add SUPABASE_URL
+   vercel env add SUPABASE_ANON_KEY
+   ```
+   
+   ใส่ค่าตามที่มีในไฟล์ `.env` ของคุณ
+
+5. **Deploy Production**:
+   ```bash
+   vercel --prod
+   ```
+
+### วิธีที่ 2: Deploy ผ่าน GitHub (แนะนำ)
+
+1. **Push โค้ดขึ้น GitHub**:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+   git push -u origin main
+   ```
+
+2. **Import Project ใน Vercel**:
+   - ไปที่ [Vercel Dashboard](https://vercel.com/dashboard)
+   - คลิก "Add New" > "Project"
+   - เลือก GitHub repository ของคุณ
+   - คลิก "Import"
+
+3. **ตั้งค่า Environment Variables**:
+   ใน Vercel Dashboard > Project Settings > Environment Variables เพิ่ม:
+   
+   ```
+   DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+   SUPABASE_URL=https://[PROJECT-REF].supabase.co
+   SUPABASE_ANON_KEY=[YOUR-ANON-KEY]
+   JWT_SECRET=[RANDOM-SECRET-KEY]
+   NODE_ENV=production
+   SEED_ADMIN=true
+   ```
+
+4. **Deploy**:
+   - คลิก "Deploy"
+   - รอให้ build เสร็จ (ประมาณ 2-3 นาที)
+   - เข้าใช้งานได้ที่ URL ที่ Vercel สร้างให้
+
+### Auto-Deploy
+
+หลังจาก setup แล้ว ทุกครั้งที่คุณ push โค้ดใหม่ขึ้น GitHub:
+- Vercel จะ auto-deploy ให้อัตโนมัติ
+- Preview deployment สำหรับ Pull Requests
+- Production deployment สำหรับ main branch
+
+---
+
+## Option 2: Docker Deployment
 
 ### 1. Build and Run
-Run the following command in the project root:
 ```bash
 docker-compose up -d --build
 ```
 
 ### 2. Access the Application
-Once the container is running, the application will be available at:
 **http://localhost:3002**
 
-### 3. Stops the Application
-To stop the application, run:
+### 3. Stop the Application
 ```bash
 docker-compose down
 ```
 
-### Data Persistence
-The database file (`dev.db`) is located in the `prisma/` folder. The `docker-compose.yml` file maps this folder to the container, so your data **will persist** even if you restart or rebuild the container.
-
 ---
 
-## Option 2: Manual Deployment (Linux/VPS/MacOS)
-Use this method if you want to run the application directly on a server without Docker.
+## Option 3: Manual Deployment (VPS/Server)
 
 ### 1. Install Dependencies
 ```bash
 npm install
 ```
 
-### 2. Generate Database Client
+### 2. Setup Environment Variables
 ```bash
-npx prisma generate
+cp .env.example .env
+# แก้ไขไฟล์ .env ให้ถูกต้อง
 ```
 
-### 3. Build the Frontend
-This compiles the React application into static files in the `dist/` folder.
+### 3. Generate Prisma Client & Push Schema
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 4. Build Frontend
 ```bash
 npm run build
 ```
 
-### 4. Start the Server
-Start the backend server. It is configured to serve the frontend files automatically in production.
+### 5. Start Server
 ```bash
-npm run server
+npm run start
 ```
 
-### 5. Running in Background (Production)
-For a real server, use a process manager like **PM2** to keep the app running.
-
-**Install PM2:**
+### 6. Use PM2 for Production
 ```bash
 npm install -g pm2
-```
-
-**Start with PM2:**
-```bash
-pm2 start "npm run server" --name dcc-budget-manager
-```
-
-**View Logs:**
-```bash
-pm2 logs
-```
-
-**Save Process List (Restart on Reboot):**
-```bash
+pm2 start "npm run start" --name dcc-budget-manager
 pm2 save
 pm2 startup
 ```
@@ -85,19 +154,50 @@ pm2 startup
 
 ## Database Management
 
-### Backup
-Since the database is a simple file (`prisma/dev.db`), you can back it up by simply copying the file:
+### Backup (Supabase)
+Supabase มี automatic backups แต่คุณสามารถ export ข้อมูลได้:
 ```bash
-cp prisma/dev.db prisma/backup_dev_$(date +%F).db
+pg_dump $DATABASE_URL > backup.sql
 ```
 
 ### Reset Database
-If you need to wipe the database and start fresh:
 ```bash
-rm prisma/dev.db
-npx prisma db push
+npx prisma db push --force-reset
+npx tsx scripts/init_profile.ts
 ```
 
+---
+
 ## Troubleshooting
-- **Port 3002 Setup**: If port 3002 is busy, change `PORT` in `server/index.ts` and update `docker-compose.yml`/`Dockerfile`.
-- **Database Locked**: SQLite can only handle one writer at a time. Ensure you don't have multiple instances of the app connected to the same file.
+
+### Vercel Deployment Issues
+
+1. **Build Failed**: ตรวจสอบ Environment Variables ว่าครบถ้วน
+2. **Database Connection Error**: ตรวจสอบ DATABASE_URL ว่าถูกต้อง
+3. **API Routes Not Working**: ตรวจสอบว่า `vercel.json` มีการ config routes ถูกต้อง
+
+### Local Development Issues
+
+1. **Port Already in Use**: เปลี่ยน port ใน `server/index.ts` และ `vite.config.ts`
+2. **Database Connection Failed**: ตรวจสอบ DATABASE_URL ในไฟล์ `.env`
+3. **Prisma Client Error**: รัน `npx prisma generate` ใหม่
+
+---
+
+## Performance Tips
+
+1. **Enable Supabase Connection Pooling**: ใช้ pooler URL สำหรับ serverless
+2. **Add Database Indexes**: เพิ่ม indexes สำหรับ queries ที่ใช้บ่อย
+3. **Enable Vercel Edge Caching**: ตั้งค่า cache headers สำหรับ static assets
+4. **Monitor Performance**: ใช้ Vercel Analytics และ Supabase Dashboard
+
+---
+
+## Security Checklist
+
+- ✅ ใช้ strong JWT_SECRET
+- ✅ Enable HTTPS (Vercel ทำให้อัตโนมัติ)
+- ✅ ตั้งค่า CORS อย่างถูกต้อง
+- ✅ ไม่ commit ไฟล์ `.env` ขึ้น Git
+- ✅ ใช้ Environment Variables สำหรับ secrets
+- ✅ Enable Supabase Row Level Security (RLS) ถ้าต้องการ
