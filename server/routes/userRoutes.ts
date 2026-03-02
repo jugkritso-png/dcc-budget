@@ -1,39 +1,44 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import prisma from '../lib/prisma';
+import { supabase } from '../lib/supabase';
 import validate from '../middleware/validateResource';
 import { createUserSchema, updateUserSchema, changePasswordSchema } from '../schemas/userSchema';
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
 // List all users
 router.get('/', async (req, res) => {
-    const users = await prisma.user.findMany({
-        orderBy: { createdAt: 'desc' }
-    });
+    const { data: users, error } = await supabase
+        .from('User')
+        .select('*')
+        .order('createdAt', { ascending: false });
+
+    if (error) {
+        return res.status(500).json({ error: 'Failed to fetch users' });
+    }
+
     // Remove passwords before sending
-    const safeUsers = users.map(user => {
+    const safeUsers = (users || []).map(user => {
         const { password, ...rest } = user;
         return rest;
     });
     res.json(safeUsers);
 });
 
-import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
-
 // Create new user
 router.post('/', validate(createUserSchema), requirePermission('manage_users'), async (req, res) => {
     const { username, password, name, email, role, department, position } = req.body;
 
     // Check if username or email exists
-    const existing = await prisma.user.findFirst({
-        where: {
-            OR: [
-                { username },
-                { email: email || undefined }
-            ]
-        }
-    });
+    let existingQuery = supabase.from('User').select('id');
+    if (email) {
+        existingQuery = existingQuery.or(`username.eq.${username},email.eq.${email}`);
+    } else {
+        existingQuery = existingQuery.eq('username', username);
+    }
+
+    const { data: existing } = await existingQuery.maybeSingle();
 
     if (existing) {
         return res.status(400).json({ error: 'Username or Email already exists' });
@@ -41,18 +46,21 @@ router.post('/', validate(createUserSchema), requirePermission('manage_users'), 
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await prisma.user.create({
-        data: {
-            username,
-            password: hashedPassword,
-            name,
-            email,
-            role: role || 'user',
-            department,
-            position,
-            avatar: name.substring(0, 2).toUpperCase() // Default avatar initials
-        }
-    });
+    const { data: newUser, error } = await supabase.from('User').insert({
+        username,
+        password: hashedPassword,
+        name,
+        email,
+        role: role || 'user',
+        department,
+        position,
+        avatar: name.substring(0, 2).toUpperCase() // Default avatar initials
+    }).select().single();
+
+    if (error || !newUser) {
+        console.error("Error creating user:", error);
+        return res.status(500).json({ error: 'Failed to create user' });
+    }
 
     const { password: _, ...userWithoutPassword } = newUser;
     res.json(userWithoutPassword);
@@ -62,20 +70,17 @@ router.post('/', validate(createUserSchema), requirePermission('manage_users'), 
 router.put('/:id', validate(updateUserSchema), async (req, res) => {
     const { id } = req.params as { id: string };
 
-    // Permission Check: Allow if self-update OR has 'manage_users'
-    // Note: req.user is set by authenticateToken but we need to ensure it's there. 
-    // Ideally authenticateToken should be on the router globally or per route.
-    // Assuming authenticateToken is applied. If not, we should apply it.
-    // For now, let's assume global auth or apply it.
-    // Actually, I should probably check if `req.user` exists.
-
     const currentUser = req.user;
     if (!currentUser) return res.status(401).json({ error: 'Unauthorized' });
 
     // Check if simple user trying to update another user
     if (currentUser.id !== id && currentUser.role !== 'admin') {
-        // Check if they have manage_users permission
-        const settings = await prisma.systemSetting.findUnique({ where: { key: 'PERMISSIONS' } });
+        const { data: settings } = await supabase
+            .from('SystemSetting')
+            .select('*')
+            .eq('key', 'PERMISSIONS')
+            .maybeSingle();
+
         let hasPermission = false;
         if (settings) {
             const permissionsMap = JSON.parse(settings.value);
@@ -95,10 +100,17 @@ router.put('/:id', validate(updateUserSchema), async (req, res) => {
         updateData.password = await bcrypt.hash(updateData.password, 10);
     }
 
-    const updatedUser = await prisma.user.update({
-        where: { id },
-        data: updateData,
-    });
+    const { data: updatedUser, error } = await supabase
+        .from('User')
+        .update(updateData)
+        .eq('id', id)
+        .select()
+        .single();
+
+    if (error || !updatedUser) {
+        return res.status(500).json({ error: 'Failed to update user' });
+    }
+
     const { password: _, ...userWithoutPassword } = updatedUser;
     res.json(userWithoutPassword);
 });
@@ -107,7 +119,11 @@ router.put('/:id', validate(updateUserSchema), async (req, res) => {
 router.post('/change-password', validate(changePasswordSchema), async (req, res) => {
     const { userId, currentPassword, newPassword } = req.body;
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const { data: user } = await supabase
+        .from('User')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
 
     if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -123,18 +139,25 @@ router.post('/change-password', validate(changePasswordSchema), async (req, res)
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    await prisma.user.update({
-        where: { id: userId },
-        data: { password: hashedPassword },
-    });
+    const { error } = await supabase
+        .from('User')
+        .update({ password: hashedPassword })
+        .eq('id', userId);
+
+    if (error) {
+        return res.status(500).json({ error: 'Failed to change password' });
+    }
+
     res.json({ success: true });
 });
 
 // Delete user
 router.delete('/:id', requirePermission('manage_users'), async (req, res) => {
     const { id } = req.params as { id: string };
-    // Prevent deleting the last admin if needed, but for now just allow
-    await prisma.user.delete({ where: { id } });
+    const { error } = await supabase.from('User').delete().eq('id', id);
+    if (error) {
+        return res.status(500).json({ error: 'Failed to delete user' });
+    }
     res.json({ success: true });
 });
 

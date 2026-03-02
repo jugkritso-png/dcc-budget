@@ -99,8 +99,8 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       localStorage.setItem('dcc_token', response.token);
       return true;
     } catch (error) {
-      console.error("Login error:", error);
-      return false;
+      console.error("Login Error in Context:", error);
+      throw error; // Forward the error to the component so we can see the message
     }
   };
 

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import 'express-async-errors';
 import express from 'express';
 import cors from 'cors';
@@ -5,7 +6,6 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
-import prisma from './lib/prisma';
 import { errorHandler } from './middleware/errorHandler';
 
 // Import Routes
@@ -25,30 +25,8 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // --- Seed Admin User ---
-const seedAdmin = async () => {
-  const userCount = await prisma.user.count();
-  if (userCount === 0) {
-    console.log("Seeding default admin user...");
-    const hashedPassword = await bcrypt.hash('password123', 10);
-    await prisma.user.create({
-      data: {
-        username: 'admin',
-        password: hashedPassword,
-        name: 'Admin User',
-        email: 'admin@dcc-motor.com',
-        role: 'admin',
-        position: 'System Administrator',
-        department: 'IT',
-        employeeId: 'EMP-001',
-        bio: 'Default System Administrator',
-        theme: 'light',
-        language: 'th'
-      }
-    });
-    console.log("Default admin created: username='admin', password='password123'");
-  }
-};
-seedAdmin();
+// Logic removed for Supabase JS migration
+
 
 import { authenticateToken } from './middleware/authMiddleware';
 

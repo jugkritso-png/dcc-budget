@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -11,9 +12,8 @@ declare global {
 }
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dcc-secret-key-change-in-prod';
-
-
-import prisma from '../lib/prisma'; // Ensure prisma is imported
+console.log("[authMiddleware] Using JWT_SECRET starting with:", JWT_SECRET.substring(0, 5), "Length:", JWT_SECRET.length);
+import { supabase } from '../lib/supabase';
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
@@ -24,10 +24,11 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
         req.user = decoded;
         next();
     } catch (error) {
+        console.error("JWT Verification Error:", error);
         return res.status(403).json({ error: 'Invalid or expired token.' });
     }
 };
@@ -44,9 +45,11 @@ export const requirePermission = (permission: string) => {
             }
 
             // Fetch permissions from settings
-            const settings = await prisma.systemSetting.findUnique({
-                where: { key: 'PERMISSIONS' }
-            });
+            const { data: settings } = await supabase
+                .from('SystemSetting')
+                .select('value')
+                .eq('key', 'PERMISSIONS')
+                .maybeSingle();
 
             if (!settings) {
                 // If no settings found, deny by default (except admin)
@@ -55,6 +58,7 @@ export const requirePermission = (permission: string) => {
 
             const permissionsMap = JSON.parse(settings.value);
             const userPermissions = permissionsMap[user.role] || [];
+
 
             if (userPermissions.includes(permission)) {
                 return next();

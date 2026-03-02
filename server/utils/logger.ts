@@ -1,5 +1,5 @@
 import express from 'express';
-import prisma from '../lib/prisma';
+import { supabase } from '../lib/supabase';
 
 export const logActivity = async (userId: string | null, action: string, details: any, req?: express.Request) => {
     try {
@@ -7,14 +7,12 @@ export const logActivity = async (userId: string | null, action: string, details
         const userAgent = req ? req.headers['user-agent'] : null;
         const detailsStr = typeof details === 'string' ? details : JSON.stringify(details);
 
-        await prisma.activityLog.create({
-            data: {
-                userId,
-                action,
-                details: detailsStr,
-                ipAddress,
-                userAgent
-            }
+        await supabase.from('ActivityLog').insert({
+            userId,
+            action,
+            details: detailsStr,
+            ipAddress,
+            userAgent
         });
     } catch (error) {
         console.error("Failed to log activity:", error);

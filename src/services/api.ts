@@ -30,7 +30,7 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
         ...options,
     });
 
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 403) {
         // Token expired or invalid
         localStorage.removeItem('dcc_token');
         localStorage.removeItem('dcc_user');

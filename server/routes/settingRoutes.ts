@@ -1,15 +1,21 @@
 import express from 'express';
-import prisma from '../lib/prisma';
+import { supabase } from '../lib/supabase';
 import validate from '../middleware/validateResource';
 import { createDepartmentSchema } from '../schemas/masterDataSchema';
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
 // --- System Settings ---
 router.get('/settings', async (req, res) => {
-    const settings = await prisma.systemSetting.findMany();
+    const { data: settings, error } = await supabase.from('SystemSetting').select('*');
+
+    if (error) {
+        return res.status(500).json({ error: 'Failed to fetch settings' });
+    }
+
     // Transform array to object
-    const settingsObj = settings.reduce((acc, curr) => {
+    const settingsObj = (settings || []).reduce((acc, curr) => {
         acc[curr.key] = curr.value;
         return acc;
     }, {} as Record<string, string>);
@@ -32,41 +38,21 @@ router.get('/settings', async (req, res) => {
     });
 });
 
-import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
-
 router.put('/settings', requirePermission('manage_settings'), async (req, res) => {
     const { orgName, fiscalYear, overBudgetAlert, fiscalYearCutoff, permissions } = req.body;
 
-    await prisma.systemSetting.upsert({
-        where: { key: 'ORG_NAME' },
-        update: { value: orgName },
-        create: { key: 'ORG_NAME', value: orgName },
-    });
+    const upsertSetting = async (key: string, value: string) => {
+        // Supabase upsert requires primary key 'key'
+        await supabase.from('SystemSetting').upsert({ key, value });
+    };
 
-    await prisma.systemSetting.upsert({
-        where: { key: 'FISCAL_YEAR' },
-        update: { value: fiscalYear.toString() },
-        create: { key: 'FISCAL_YEAR', value: fiscalYear.toString() },
-    });
-
-    await prisma.systemSetting.upsert({
-        where: { key: 'OVER_BUDGET_ALERT' },
-        update: { value: String(overBudgetAlert) },
-        create: { key: 'OVER_BUDGET_ALERT', value: String(overBudgetAlert) },
-    });
-
-    await prisma.systemSetting.upsert({
-        where: { key: 'FISCAL_YEAR_CUTOFF' },
-        update: { value: fiscalYearCutoff },
-        create: { key: 'FISCAL_YEAR_CUTOFF', value: fiscalYearCutoff }, // Store as YYYY-MM-DD string
-    });
+    await upsertSetting('ORG_NAME', orgName);
+    await upsertSetting('FISCAL_YEAR', fiscalYear.toString());
+    await upsertSetting('OVER_BUDGET_ALERT', String(overBudgetAlert));
+    await upsertSetting('FISCAL_YEAR_CUTOFF', fiscalYearCutoff);
 
     if (permissions) {
-        await prisma.systemSetting.upsert({
-            where: { key: 'PERMISSIONS' },
-            update: { value: JSON.stringify(permissions) },
-            create: { key: 'PERMISSIONS', value: JSON.stringify(permissions) },
-        });
+        await upsertSetting('PERMISSIONS', JSON.stringify(permissions));
     }
 
     res.json({ success: true });
@@ -74,31 +60,37 @@ router.put('/settings', requirePermission('manage_settings'), async (req, res) =
 
 // --- Departments ---
 router.get('/departments', async (req, res) => {
-    const departments = await prisma.department.findMany();
-    res.json(departments);
+    const { data: departments, error } = await supabase.from('Department').select('*');
+    if (error) return res.status(500).json({ error: 'Failed to fetch departments' });
+    res.json(departments || []);
 });
 
 router.post('/departments', validate(createDepartmentSchema), requirePermission('manage_departments'), async (req, res) => {
     const { name, code, color } = req.body;
-    const department = await prisma.department.create({
-        data: { name, code, color: color || "#3B82F6" }
-    });
+    const { data: department, error } = await supabase.from('Department').insert({
+        name, code, color: color || "#3B82F6"
+    }).select().single();
+
+    if (error) return res.status(500).json({ error: 'Failed to create department' });
     res.json(department);
 });
 
-router.put('/departments/:id', validate(createDepartmentSchema), requirePermission('manage_departments'), async (req, res) => { // Reusing create schema as it has same fields
+router.put('/departments/:id', validate(createDepartmentSchema), requirePermission('manage_departments'), async (req, res) => {
     const { id } = req.params as { id: string };
     const { name, code, color } = req.body;
-    const department = await prisma.department.update({
-        where: { id },
-        data: { name, code, color }
-    });
+
+    const { data: department, error } = await supabase.from('Department').update({
+        name, code, color
+    }).eq('id', id).select().single();
+
+    if (error) return res.status(500).json({ error: 'Failed to update department' });
     res.json(department);
 });
 
 router.delete('/departments/:id', requirePermission('manage_departments'), async (req, res) => {
     const { id } = req.params as { id: string };
-    await prisma.department.delete({ where: { id } });
+    const { error } = await supabase.from('Department').delete().eq('id', id);
+    if (error) return res.status(500).json({ error: 'Failed to delete department' });
     res.json({ success: true });
 });
 

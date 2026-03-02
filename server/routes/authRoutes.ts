@@ -1,11 +1,12 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import prisma from '../lib/prisma';
+import { supabase } from '../lib/supabase';
 import { logActivity } from '../utils/logger';
 
 import validate from '../middleware/validateResource';
 import { loginSchema } from '../schemas/authSchema';
+import { OAuth2Client } from 'google-auth-library';
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'dcc-secret-key-change-in-prod';
@@ -13,8 +14,13 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dcc-secret-key-change-in-prod';
 router.post('/login', validate(loginSchema), async (req, res) => {
     const { username, password } = req.body;
 
-    const user = await prisma.user.findUnique({ where: { username } });
-    if (!user) {
+    const { data: user, error } = await supabase
+        .from('User')
+        .select('*')
+        .eq('username', username)
+        .maybeSingle();
+
+    if (error || !user) {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
 
@@ -24,10 +30,10 @@ router.post('/login', validate(loginSchema), async (req, res) => {
     if (!isMatch && password === user.password) {
         console.warn(`User ${username} logged in with plain text password. Migrating...`);
         const hashed = await bcrypt.hash(password, 10);
-        await prisma.user.update({
-            where: { id: user.id },
-            data: { password: hashed }
-        });
+        await supabase
+            .from('User')
+            .update({ password: hashed })
+            .eq('id', user.id);
     } else if (!isMatch) {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -39,7 +45,7 @@ router.post('/login', validate(loginSchema), async (req, res) => {
     const token = jwt.sign(
         { id: user.id, username: user.username, role: user.role },
         JWT_SECRET,
-        { expiresIn: '24h' }
+        { expiresIn: '24h', algorithm: 'HS256' }
     );
 
     // Log Login Activity
@@ -47,7 +53,6 @@ router.post('/login', validate(loginSchema), async (req, res) => {
 
     res.json({ user: userWithoutPassword, token });
 });
-import { OAuth2Client } from 'google-auth-library';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID');
 
@@ -76,25 +81,32 @@ router.post('/google', async (req, res) => {
         }
 
         // 1. Check if user exists by Google ID
-        let user = await prisma.user.findFirst({
-            where: { OR: [{ googleId }, { email }] }
-        });
+        let { data: user } = await supabase
+            .from('User')
+            .select('*')
+            .or(`googleId.eq.${googleId},email.eq.${email}`)
+            .maybeSingle();
 
         if (user) {
             // Update Google ID if not present (Activity Log logic below handles auditing)
             if (!user.googleId) {
-                user = await prisma.user.update({
-                    where: { id: user.id },
-                    data: { googleId, avatar: user.avatar || picture }
-                });
+                const { data: updatedUser } = await supabase
+                    .from('User')
+                    .update({ googleId, avatar: user.avatar || picture })
+                    .eq('id', user.id)
+                    .select()
+                    .single();
+                user = updatedUser;
             }
         } else {
             // 2. Create new user if not exists
             const tempPassword = Math.random().toString(36).slice(-8) + 'Aa1!'; // Random placeholder
             const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
-            user = await prisma.user.create({
-                data: {
+            // Using uuids handled by postgres if configured, but let's assume default pg behavior is ok or we generate one
+            const { data: newUser, error: createError } = await supabase
+                .from('User')
+                .insert({
                     username: email.split('@')[0], // Generate username from email
                     email,
                     name: name || 'Google User',
@@ -103,8 +115,12 @@ router.post('/google', async (req, res) => {
                     googleId,
                     avatar: picture,
                     department: 'General'
-                }
-            });
+                })
+                .select()
+                .single();
+
+            if (createError) throw createError;
+            user = newUser;
         }
 
         // Generate Request Token

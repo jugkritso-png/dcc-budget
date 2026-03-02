@@ -18,10 +18,11 @@ const Login: React.FC = () => {
         try {
             const success = await login(username, password);
             if (!success) {
-                setError('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
+                setError('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง (login function returned false)');
             }
-        } catch (err) {
-            setError('เกิดข้อผิดพลาดในการเข้าสู่ระบบ');
+        } catch (err: any) {
+            console.error("Login Error Payload:", err);
+            setError(`เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ${err.message || err.toString()}`);
         } finally {
             setIsLoading(false);
         }
