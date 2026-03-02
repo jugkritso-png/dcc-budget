@@ -24,7 +24,7 @@ const SettingsActivityLogs: React.FC = () => {
     const fetchLogs = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:3002/api/activity-logs');
+            const response = await fetch('/api/activity-logs');
             if (response.ok) {
                 const data = await response.json();
                 setLogs(data);
