@@ -6,16 +6,16 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
-import { errorHandler } from './middleware/errorHandler';
+import { errorHandler } from './middleware/errorHandler.js';
 
 // Import Routes
-import authRoutes from './routes/authRoutes';
-import userRoutes from './routes/userRoutes';
-import categoryRoutes from './routes/categoryRoutes';
-import expenseRoutes from './routes/expenseRoutes';
-import budgetRoutes from './routes/budgetRoutes';
-import settingRoutes from './routes/settingRoutes';
-import activityLogRoutes from './routes/activityLogRoutes';
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import budgetRoutes from './routes/budgetRoutes.js';
+import settingRoutes from './routes/settingRoutes.js';
+import activityLogRoutes from './routes/activityLogRoutes.js';
 
 const app = express();
 const PORT = 3002;
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // Logic removed for Supabase JS migration
 
 
-import { authenticateToken } from './middleware/authMiddleware';
+import { authenticateToken } from './middleware/authMiddleware.js';
 
 // --- API Routes ---
 app.use('/api', authRoutes);
@@ -40,9 +40,15 @@ app.use('/api', authenticateToken, settingRoutes);
 app.use('/api/activity-logs', authenticateToken, activityLogRoutes);
 
 // --- Static Files (Production) ---
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const distPath = path.join(__dirname, '../dist');
+const getDirname = () => {
+  try {
+    return path.dirname(fileURLToPath(import.meta.url));
+  } catch (e) {
+    return __dirname;
+  }
+};
+const currentDir = getDirname();
+const distPath = path.join(currentDir, '../dist');
 
 if (fs.existsSync(distPath)) {
   console.log('Serving static files from', distPath);

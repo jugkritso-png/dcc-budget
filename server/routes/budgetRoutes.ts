@@ -1,10 +1,10 @@
 import express from 'express';
-import { supabase } from '../lib/supabase';
-import { logActivity } from '../utils/logger';
-import validate from '../middleware/validateResource';
-import { createRequestSchema, updateRequestStatusSchema } from '../schemas/budgetRequestSchema';
-import { createSubActivitySchema, updateSubActivitySchema } from '../schemas/masterDataSchema';
-import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
+import { supabase } from '../lib/supabase.js';
+import { logActivity } from '../utils/logger.js';
+import validate from '../middleware/validateResource.js';
+import { createRequestSchema, updateRequestStatusSchema } from '../schemas/budgetRequestSchema.js';
+import { createSubActivitySchema, updateSubActivitySchema } from '../schemas/masterDataSchema.js';
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.get('/sub-activities', async (req, res) => {
     if (error) return res.status(500).json({ error: 'Failed to fetch sub-activities' });
 
     const subs = subActivities || [];
-    const buildHierarchy = (parentId: string | null) => {
+    const buildHierarchy = (parentId: string | null): any[] => {
         return subs.filter(sub => sub.parentId === parentId).map(sub => ({
             ...sub,
             children: buildHierarchy(sub.id)
