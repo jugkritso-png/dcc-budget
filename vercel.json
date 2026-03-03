@@ -11,10 +11,6 @@
             }
         },
         {
-            "src": "api/test.ts",
-            "use": "@vercel/node"
-        },
-        {
             "src": "package.json",
             "use": "@vercel/static-build",
             "config": {
@@ -29,12 +25,7 @@
             "dest": "/api/index.ts"
         },
         {
-            "src": "/assets/(.*)",
-            "dest": "/assets/$1"
-        },
-        {
-            "src": "/(.*\\.(js|css|png|svg|ico|json|woff|woff2|ttf|map))",
-            "dest": "/$1"
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
