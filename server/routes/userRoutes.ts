@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create new user
-router.post('/', validate(createUserSchema), requirePermission('manage_users'), async (req, res) => {
+router.post('/', validate(createUserSchema), authenticateToken, requirePermission('manage_users'), async (req, res) => {
     const { username, password, name, email, role, department, position } = req.body;
 
     // Check if username or email exists
@@ -152,7 +152,7 @@ router.post('/change-password', validate(changePasswordSchema), async (req, res)
 });
 
 // Delete user
-router.delete('/:id', requirePermission('manage_users'), async (req, res) => {
+router.delete('/:id', authenticateToken, requirePermission('manage_users'), async (req, res) => {
     const { id } = req.params as { id: string };
     const { error } = await supabase.from('User').delete().eq('id', id);
     if (error) {
