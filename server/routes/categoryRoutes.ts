@@ -1,7 +1,7 @@
 import express from 'express';
-import { supabase } from '../lib/supabase';
-import validate from '../middleware/validateResource';
-import { createCategorySchema, updateCategorySchema, budgetAdjustSchema } from '../schemas/masterDataSchema';
+import { supabase } from '../lib/supabase.js';
+import validate from '../middleware/validateResource.js';
+import { createCategorySchema, updateCategorySchema, budgetAdjustSchema } from '../schemas/masterDataSchema.js';
 
 const router = express.Router();
 

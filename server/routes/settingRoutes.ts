@@ -1,8 +1,8 @@
 import express from 'express';
-import { supabase } from '../lib/supabase';
-import validate from '../middleware/validateResource';
-import { createDepartmentSchema } from '../schemas/masterDataSchema';
-import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
+import { supabase } from '../lib/supabase.js';
+import validate from '../middleware/validateResource.js';
+import { createDepartmentSchema } from '../schemas/masterDataSchema.js';
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 

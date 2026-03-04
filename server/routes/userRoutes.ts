@@ -1,9 +1,9 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import { supabase } from '../lib/supabase';
-import validate from '../middleware/validateResource';
-import { createUserSchema, updateUserSchema, changePasswordSchema } from '../schemas/userSchema';
-import { authenticateToken, requirePermission } from '../middleware/authMiddleware';
+import { supabase } from '../lib/supabase.js';
+import validate from '../middleware/validateResource.js';
+import { createUserSchema, updateUserSchema, changePasswordSchema } from '../schemas/userSchema.js';
+import { authenticateToken, requirePermission } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 

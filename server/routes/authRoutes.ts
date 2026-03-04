@@ -1,11 +1,11 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { supabase } from '../lib/supabase';
-import { logActivity } from '../utils/logger';
+import { supabase } from '../lib/supabase.js';
+import { logActivity } from '../utils/logger.js';
 
-import validate from '../middleware/validateResource';
-import { loginSchema } from '../schemas/authSchema';
+import validate from '../middleware/validateResource.js';
+import { loginSchema } from '../schemas/authSchema.js';
 import { OAuth2Client } from 'google-auth-library';
 
 const router = express.Router();

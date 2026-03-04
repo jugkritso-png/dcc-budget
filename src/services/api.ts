@@ -10,7 +10,7 @@ import {
     BudgetLog
 } from '../types';
 
-const API_URL = '/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const token = localStorage.getItem('dcc_token');

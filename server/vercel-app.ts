@@ -3,17 +3,17 @@ import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
 
-import { errorHandler } from './middleware/errorHandler';
+import { errorHandler } from './middleware/errorHandler.js';
 
 // Import Routes
-import authRoutes from './routes/authRoutes';
-import userRoutes from './routes/userRoutes';
-import categoryRoutes from './routes/categoryRoutes';
-import expenseRoutes from './routes/expenseRoutes';
-import budgetRoutes from './routes/budgetRoutes';
-import settingRoutes from './routes/settingRoutes';
-import activityLogRoutes from './routes/activityLogRoutes';
-import { authenticateToken } from './middleware/authMiddleware';
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import budgetRoutes from './routes/budgetRoutes.js';
+import settingRoutes from './routes/settingRoutes.js';
+import activityLogRoutes from './routes/activityLogRoutes.js';
+import { authenticateToken } from './middleware/authMiddleware.js';
 
 const app = express();
 

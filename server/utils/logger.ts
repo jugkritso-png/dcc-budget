@@ -1,5 +1,5 @@
 import express from 'express';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabase.js';
 
 export const logActivity = async (userId: string | null, action: string, details: any, req?: express.Request) => {
     try {

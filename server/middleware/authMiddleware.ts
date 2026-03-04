@@ -13,7 +13,7 @@ declare global {
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dcc-secret-key-change-in-prod';
 console.log("[authMiddleware] Using JWT_SECRET starting with:", JWT_SECRET.substring(0, 5), "Length:", JWT_SECRET.length);
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabase.js';
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
