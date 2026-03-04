@@ -16,6 +16,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
 
     const [formData, setFormData] = useState<Partial<BudgetRequest> & { expenseItems: ExpenseLineItem[] }>({
         project: '',
+        documentNumber: '',
         category: '',
         activity: '',
         subActivityId: '',
@@ -182,6 +183,15 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                     required
                                     value={formData.project}
                                     onChange={e => setFormData({ ...formData, project: e.target.value })}
+                                />
+                            </div>
+                            <div className="md:col-span-2">
+                                <label className="block text-sm font-bold text-gray-700 mb-2">หมายเลขหนังสือ</label>
+                                <Input
+                                    type="text"
+                                    placeholder="เช่น มวล 0101/2568, กจ 001/2568"
+                                    value={formData.documentNumber || ''}
+                                    onChange={e => setFormData({ ...formData, documentNumber: e.target.value })}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -432,6 +442,7 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ onNavigate }) => {
                                 if (confirm('คุณต้องการยกเลิกการทำรายการใช่หรือไม่? ข้อมูลที่กรอกจะหายไป')) {
                                     setFormData({
                                         project: '',
+                                        documentNumber: '',
                                         category: '',
                                         activity: '',
                                         amount: 0,

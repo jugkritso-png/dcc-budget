@@ -48,6 +48,7 @@ export interface BudgetRequest {
   notes?: string;
   // New fields from the request
   department?: string;
+  documentNumber?: string; // หมายเลขหนังสือ
   approvalRef?: string; // เลขหนังสืออนุมัติ
   urgency?: 'normal' | 'urgent' | 'critical';
   startDate?: string;
