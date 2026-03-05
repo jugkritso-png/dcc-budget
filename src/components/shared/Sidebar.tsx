@@ -1,8 +1,7 @@
-'use client'
-
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
     LayoutDashboard,
     Wallet,
@@ -12,120 +11,152 @@ import {
     BarChart3,
     LayoutGrid,
     LogOut,
+    ChevronLeft,
+    Menu,
 } from 'lucide-react'
 import { useBudget } from '@/context/BudgetContext'
 
 export function Sidebar() {
-    const { settings, logout, hasPermission } = useBudget()
+    const { settings, logout, hasPermission, isSidebarCollapsed, toggleSidebar } = useBudget()
     const pathname = usePathname()
 
     const navItems = [
         { id: '/dashboard', label: 'ภาพรวม', icon: LayoutDashboard },
-        ...(hasPermission('view_budget') ? [{ id: '/budget', label: 'งบประมาณ', icon: Wallet }] : []),
-        { id: '/request', label: 'ขอใช้งบประมาณ', icon: FileText },
-        { id: '/report', label: 'รายงานผล', icon: CheckCircle },
-        ...(hasPermission('manage_budget') || hasPermission('manage_departments') ? [{ id: '/management', label: 'การจัดการ', icon: Settings }] : []),
-        ...(hasPermission('view_analytics') ? [{ id: '/analytics', label: 'วิเคราะห์', icon: BarChart3 }] : []),
-        { id: '/settings', label: 'ตั้งค่า', icon: LayoutGrid },
+        ...(hasPermission('view_budget') ? [{ id: '/budget', label: 'จัดการงบประมาณ', icon: Wallet }] : []),
+        { id: '/requests', label: 'รายการคำขอ', icon: CheckCircle },
+        { id: '/request', label: 'บันทึกขอใช้งบ', icon: FileText },
+        { id: '/report', label: 'รายงานผล', icon: BarChart3 },
+        ...(hasPermission('view_analytics') ? [{ id: '/analytics', label: 'วิเคราะห์ & สถิติ', icon: BarChart3 }] : []),
+        { id: '/settings', label: 'ตั้งค่าระบบ', icon: Settings },
     ]
 
     return (
-        <aside className="hidden md:flex flex-col w-[240px] h-screen fixed top-0 left-0 z-20"
+        <motion.aside
+            initial={false}
+            animate={{ width: isSidebarCollapsed ? 80 : 260 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="hidden md:flex flex-col h-screen fixed top-0 left-0 z-40 overflow-hidden"
             style={{
                 background: 'var(--surface-card)',
                 borderRight: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--shadow-sm)',
-            }}>
-
-            {/* ── Logo / Brand ── */}
-            <div className="px-5 pt-6 pb-5">
+            }}
+        >
+            {/* ── Header / Logo ── */}
+            <div className="relative h-20 flex items-center px-5 border-b border-transparent">
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+                    <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center shadow-lg shadow-primary-500/20"
                         style={{ background: 'linear-gradient(135deg, #0066B3, #005191)' }}>
-                        <Wallet className="w-[18px] h-[18px] text-white" strokeWidth={2} />
+                        <Wallet className="w-5 h-5 text-white" strokeWidth={2.5} />
                     </div>
-                    <div>
-                        <p className="text-[13px] font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>
-                            {settings?.orgName || 'DCC Budget'}
-                        </p>
-                        <p className="text-[10px] font-medium tracking-wider uppercase"
-                            style={{ color: 'var(--text-tertiary)' }}>
-                            Budget Manager
-                        </p>
-                    </div>
+                    <AnimatePresence mode="wait">
+                        {!isSidebarCollapsed && (
+                            <motion.div
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -10 }}
+                                className="overflow-hidden whitespace-nowrap"
+                            >
+                                <p className="text-[14px] font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>
+                                    {settings?.orgName || 'DCC Budget'}
+                                </p>
+                                <p className="text-[10px] font-medium tracking-wider uppercase opacity-60"
+                                    style={{ color: 'var(--text-tertiary)' }}>
+                                    Budget Manager
+                                </p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
 
+            {/* ── Toggle Button ── */}
+            <button
+                onClick={toggleSidebar}
+                className="absolute -right-0 top-24 transform translate-x-1/2 z-[100] w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-200 group group-hover:bg-primary-50"
+                style={{ borderColor: 'var(--border-subtle)', background: 'var(--surface-card)' }}
+            >
+                <div className="transition-transform duration-300" style={{ transform: isSidebarCollapsed ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                    <ChevronLeft className="w-4 h-4 text-gray-400 group-hover:text-primary-600" />
+                </div>
+            </button>
+
             {/* Section label */}
-            <div className="px-5 mb-1.5">
-                <p className="text-[10px] font-semibold tracking-widest uppercase"
-                    style={{ color: 'var(--text-tertiary)' }}>เมนูหลัก</p>
+            <div className={`px-6 mb-2 mt-6 h-4 transition-opacity duration-200 ${isSidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
+                <p className="text-[10px] font-bold tracking-[0.1em] uppercase whitespace-nowrap"
+                    style={{ color: 'var(--text-tertiary)' }}>
+                    {isSidebarCollapsed ? '' : 'เมนูหลัก'}
+                </p>
             </div>
 
             {/* ── Navigation ── */}
-            <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto no-scrollbar">
+            <nav className="flex-1 px-3 space-y-1.5 overflow-y-auto no-scrollbar pt-2">
                 {navItems.map((item) => {
                     const isActive = pathname === item.id || (item.id !== '/' && pathname?.startsWith(item.id))
                     return (
                         <Link
                             key={item.id}
                             href={item.id}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200"
-                            style={isActive ? {
-                                background: 'linear-gradient(135deg, #0066B3, #005191)',
-                                color: '#FFFFFF',
-                                boxShadow: '0 4px 12px rgba(0,102,179,0.25)',
-                            } : {
-                                color: 'var(--text-secondary)',
-                            }}
-                            onMouseEnter={(e) => {
-                                if (!isActive) {
-                                    (e.currentTarget as HTMLElement).style.background = 'var(--color-primary-50)';
-                                    (e.currentTarget as HTMLElement).style.color = 'var(--color-primary-700)';
-                                }
-                            }}
-                            onMouseLeave={(e) => {
-                                if (!isActive) {
-                                    (e.currentTarget as HTMLElement).style.background = '';
-                                    (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
-                                }
-                            }}
+                            title={isSidebarCollapsed ? item.label : ''}
+                            className={`flex items-center h-12 rounded-xl transition-all duration-200 group relative ${isActive
+                                ? 'bg-gradient-to-br from-[#0066B3] to-[#005191] text-white shadow-[0_4px_12px_rgba(0,102,179,0.2)]'
+                                : 'text-gray-500 hover:bg-gray-100/80 hover:text-primary-700'
+                                }`}
+                            style={{ padding: isSidebarCollapsed ? '0 14px' : '0 14px' }}
                         >
                             <item.icon
-                                className="w-[18px] h-[18px] flex-shrink-0"
+                                className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 ${isSidebarCollapsed ? '' : 'mr-3.5'} group-hover:scale-110 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-primary-600'
+                                    }`}
                                 strokeWidth={isActive ? 2.2 : 1.8}
-                                style={{ color: isActive ? 'white' : 'var(--text-tertiary)' }}
                             />
-                            <span>{item.label}</span>
+                            <AnimatePresence mode="wait">
+                                {!isSidebarCollapsed && (
+                                    <motion.span
+                                        initial={{ opacity: 0, x: -5 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -5 }}
+                                        className="text-[14px] font-semibold whitespace-nowrap"
+                                    >
+                                        {item.label}
+                                    </motion.span>
+                                )}
+                            </AnimatePresence>
+                            {isActive && isSidebarCollapsed && (
+                                <motion.div
+                                    layoutId="active-indicator"
+                                    className="absolute left-0 w-1 h-6 bg-white rounded-r-full"
+                                />
+                            )}
                         </Link>
                     )
                 })}
             </nav>
 
-            {/* ── Logout ── */}
-            <div className="px-3 pb-4 pt-2" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+            {/* ── Footer / Logout ── */}
+            <div className="px-3 pb-6 pt-4 mt-auto">
+                <div className="mb-4 h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
                 <button
                     onClick={logout}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200"
-                    style={{ color: 'var(--text-tertiary)' }}
-                    onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = 'var(--accent-red-light)';
-                        (e.currentTarget as HTMLElement).style.color = 'var(--accent-red)';
-                    }}
-                    onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = '';
-                        (e.currentTarget as HTMLElement).style.color = 'var(--text-tertiary)';
-                    }}
+                    title={isSidebarCollapsed ? 'ออกจากระบบ' : ''}
+                    className="w-full h-11 flex items-center rounded-xl transition-all duration-200 text-gray-500 hover:bg-red-50 hover:text-red-600 group"
+                    style={{ padding: isSidebarCollapsed ? '0 14px' : '0 14px' }}
                 >
-                    <LogOut className="w-[18px] h-[18px]" strokeWidth={1.8} />
-                    <span>ออกจากระบบ</span>
+                    <LogOut className={`w-5 h-5 flex-shrink-0 ${isSidebarCollapsed ? '' : 'mr-3.5'}`} strokeWidth={1.8} />
+                    {!isSidebarCollapsed && (
+                        <span className="text-[13px] font-medium whitespace-nowrap">ออกจากระบบ</span>
+                    )}
                 </button>
+                {!isSidebarCollapsed && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="mt-4 px-3"
+                    >
+                        <p className="text-[10px] opacity-40 font-medium" style={{ color: 'var(--text-tertiary)' }}>
+                            v2.1.0 • DCC Platform
+                        </p>
+                    </motion.div>
+                )}
             </div>
-
-            {/* ── Version ── */}
-            <div className="px-5 pb-4">
-                <p className="text-[10px]" style={{ color: 'var(--border-default)' }}>v2.0.0 • DCC Platform</p>
-            </div>
-        </aside>
+        </motion.aside>
     )
 }

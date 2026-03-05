@@ -1,5 +1,5 @@
 import React from 'react'
-import ExpenseReport from '@/components/features/ExpenseReport'
+import ExpenseReport from '@/components/features/analytics/ExpenseReport'
 
 export default function ReportPage() {
     return (

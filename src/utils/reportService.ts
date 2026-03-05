@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { SystemSettings } from '../types';
+import { SystemSettings, BudgetRequest, ApprovalLog } from '../types';
 
 interface ReportData {
     orgName: string;
@@ -20,7 +20,13 @@ interface ReportData {
         name: string;
         amount: number;
         totalAllocated: number;
+        costCenter?: string;
+        fund?: string;
+        functionalArea?: string;
+        commitmentItem?: string;
     }[];
+    requests?: (BudgetRequest & { categoryData?: any })[];
+    approvalLogs?: ApprovalLog[];
 }
 
 export const generateBudgetReport = (data: ReportData) => {
@@ -112,6 +118,68 @@ export const generateBudgetReport = (data: ReportData) => {
         theme: 'striped',
         headStyles: { fillColor: [22, 160, 133] }
     });
+
+    // --- Detailed Transactions & Approval History ---
+    if (data.requests && data.requests.length > 0) {
+        doc.addPage();
+        yPos = 20;
+        doc.setFontSize(14);
+        doc.setTextColor(0);
+        doc.text('4. Detailed Budget Transactions', margin, yPos);
+
+        const requestRows = data.requests.map(req => {
+            const logs = data.approvalLogs?.filter(l => l.requestId === req.id) || [];
+            const history = logs.map(l =>
+                `${l.stage}: ${l.action === 'approve' ? 'Approved' : 'Rejected'} by ${l.user?.name || 'User'}`
+            ).join('\n');
+
+            return [
+                req.project,
+                req.category,
+                `THB ${req.amount.toLocaleString()}`,
+                req.status,
+                history || 'No history'
+            ];
+        });
+
+        autoTable(doc, {
+            startY: yPos + 6,
+            head: [['Project/Activity', 'Category', 'Amount', 'Status', 'Approval history']],
+            body: requestRows,
+            theme: 'grid',
+            headStyles: { fillColor: [44, 62, 80] },
+            styles: { fontSize: 8, cellPadding: 3, cellWidth: 'wrap' },
+            columnStyles: {
+                4: { cellWidth: 60 } // History column width
+            }
+        });
+
+        // --- SAP Mapping Table ---
+        // @ts-ignore
+        yPos = doc.lastAutoTable.finalY + 20;
+        if (yPos > 240) { doc.addPage(); yPos = 20; }
+
+        doc.setFontSize(14);
+        doc.text('5. SAP Account Assignment Mapping', margin, yPos);
+
+        const sapRows = data.categoryData.map(c => [
+            c.name,
+            '1000', // Business Place (Wul)
+            c.costCenter || '-',
+            c.fund || '-',
+            c.functionalArea || '-',
+            c.commitmentItem || '-'
+        ]);
+
+        autoTable(doc, {
+            startY: yPos + 6,
+            head: [['Category', 'BP', 'Cost Center', 'Fund', 'Func. Area', 'Commit. Item']],
+            body: sapRows,
+            theme: 'striped',
+            headStyles: { fillColor: [142, 68, 173] },
+            styles: { fontSize: 8 }
+        });
+    }
 
     // --- Footer ---
     const pageCount = doc.internal.pages.length - 1;

@@ -83,33 +83,72 @@ async function middleware(request) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/dashboard', request.url));
     }
     // ---- Permission enforcement ----
-    // Simple role‑based permission map (replace with DB‑driven settings later)
-    const rolePermissions = {
-        admin: [
-            '*'
-        ],
-        manager: [
-            '/budget',
-            '/management',
-            '/analytics',
-            '/dashboard'
-        ],
-        staff: [
-            '/dashboard'
-        ],
-        user: [
-            '/dashboard'
-        ]
-    };
+    // Simple role‑based permission map
+    let userRole = 'user';
     if (user) {
-        const userRole = user?.user_metadata?.role || 'staff';
-        const allowedRoutes = rolePermissions[userRole] ?? [];
+        // First try to check metadata
+        if (user.user_metadata?.role) {
+            userRole = String(user.user_metadata.role).toLowerCase();
+        } else {
+            // Fetch from database as fallback bypassing RLS to get true role
+            const supabaseAdmin = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$createServerClient$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["createServerClient"])(("TURBOPACK compile-time value", "https://lflhxsxubxymxpnxeqts.supabase.co"), process.env.SUPABASE_SERVICE_ROLE_KEY || ("TURBOPACK compile-time value", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxmbGh4c3h1Ynh5bXhwbnhlcXRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzgwMDUsImV4cCI6MjA4NzA1NDAwNX0.XDfGg6X9B5dBSAsytA4VUHQ53gvBi81n5kXKbgm-m2g"), {
+                cookies: {
+                    get: ()=>undefined,
+                    set: ()=>{},
+                    remove: ()=>{}
+                }
+            });
+            const { data: profile } = await supabaseAdmin.from('User').select('role').eq('id', user.id).maybeSingle();
+            if (!profile?.role && user.email) {
+                // Email fallback
+                const { data: profileByEmail } = await supabaseAdmin.from('User').select('role').eq('email', user.email).maybeSingle();
+                if (profileByEmail?.role) {
+                    userRole = String(profileByEmail.role).toLowerCase();
+                }
+            } else if (profile?.role) {
+                userRole = String(profile.role).toLowerCase();
+            }
+        }
+        // Allow all pages for admin, manager, finance, approver
+        // Restrict 'user' or 'staff' to dashboard and request
+        const rolePermissions = {
+            admin: [
+                '*'
+            ],
+            manager: [
+                '*'
+            ],
+            finance: [
+                '*'
+            ],
+            approver: [
+                '*'
+            ],
+            staff: [
+                '/dashboard',
+                '/request',
+                '/report',
+                '/settings'
+            ],
+            user: [
+                '/dashboard',
+                '/request',
+                '/report',
+                '/settings'
+            ]
+        };
+        const allowedRoutes = rolePermissions[userRole] ?? [
+            '/dashboard'
+        ];
         const path = request.nextUrl.pathname;
-        const isAllowed = allowedRoutes.includes('*') || allowedRoutes.some((r)=>path.startsWith(r));
-        if (!isAllowed) {
-            const url = new URL('/dashboard', request.url);
-            url.searchParams.set('unauthorized', '1');
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(url);
+        // isAuthPage already handled above
+        if (!isAuthPage) {
+            const isAllowed = allowedRoutes.includes('*') || allowedRoutes.some((r)=>path.startsWith(r));
+            if (!isAllowed) {
+                const url = new URL('/dashboard', request.url);
+                url.searchParams.set('unauthorized', '1');
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$exports$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(url);
+            }
         }
     }
     return response;

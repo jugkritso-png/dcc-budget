@@ -467,7 +467,7 @@ const SettingsGeneral = ()=>{
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                             onClick: handleSave,
                             variant: "primary",
-                            className: "w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300",
+                            className: "w-full md:w-auto bg-gradient-to-r from-[#00A1E4] to-[#0066B3] border-none shadow-md hover:shadow-lg w-full md:w-auto rounded-xl font-bold",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
                                     size: 18,
@@ -511,7 +511,7 @@ const SettingsGeneral = ()=>{
                             className: "relative h-48 overflow-hidden",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "absolute inset-0 bg-gradient-to-r from-primary-600 via-primary-700 to-indigo-800"
+                                    className: "absolute inset-0 bg-gradient-to-r from-[#00A1E4] via-[#0066B3] to-[#003964]"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsGeneral.tsx",
                                     lineNumber: 61,
@@ -542,7 +542,7 @@ const SettingsGeneral = ()=>{
                                     className: "absolute bottom-6 left-8 flex items-end gap-6 z-10",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "w-16 h-16 md:w-24 md:h-24 bg-white rounded-2xl shadow-xl flex items-center justify-center text-primary-600 border-4 border-white/50 backdrop-blur-md",
+                                            className: "w-16 h-16 md:w-24 md:h-24 bg-white rounded-[24px] shadow-xl flex items-center justify-center text-[#0066B3] border-4 border-white/50 backdrop-blur-md",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$landmark$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Landmark$3e$__["Landmark"], {
                                                 size: 32,
                                                 className: "md:w-12 md:h-12"
@@ -736,12 +736,13 @@ const SettingsGeneral = ()=>{
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-primary-50/50 rounded-2xl p-6 border border-primary-100 flex items-start gap-4",
+                                        className: "bg-[#00A1E4]/5 rounded-[24px] p-6 border border-[#00A1E4]/20 flex items-start gap-4",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "bg-white p-2 rounded-full shadow-sm text-primary-600 shrink-0",
+                                                className: "bg-white p-2.5 rounded-xl shadow-sm text-[#0066B3] shrink-0 border border-gray-100",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$landmark$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Landmark$3e$__["Landmark"], {
-                                                    size: 20
+                                                    size: 20,
+                                                    className: "stroke-[2.5px]"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsGeneral.tsx",
                                                     lineNumber: 130,
@@ -755,7 +756,7 @@ const SettingsGeneral = ()=>{
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                                        className: "font-bold text-primary-900 text-sm mb-1",
+                                                        className: "font-bold text-[#0066B3] text-[15px] mb-1.5 tracking-wide",
                                                         children: "เกี่ยวกับปีงบประมาณ"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsGeneral.tsx",
@@ -763,7 +764,7 @@ const SettingsGeneral = ()=>{
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-xs text-primary-700/80 leading-relaxed",
+                                                        className: "text-sm text-gray-600 leading-relaxed font-medium",
                                                         children: "การเปลี่ยนปีงบประมาณจะมีผลต่อเลขอ้างอิงเอกสารและรายงานสรุปยอดใช้จ่ายทั้งหมดในระบบ กรุณาตรวจสอบความถูกต้องก่อนบันทึก"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsGeneral.tsx",
@@ -1351,14 +1352,21 @@ const SettingsProfile = ()=>{
                                 className: "space-y-8",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-white border border-gray-100 shadow-sm rounded-xl p-6",
+                                        className: "bg-white border border-gray-100 shadow-sm hover:shadow-card transition-all duration-300 rounded-[24px] p-6 md:p-8",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                className: "text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 pb-2 border-b border-gray-50",
+                                                className: "text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-3 pb-4 border-b border-gray-50 tracking-tight",
                                                 children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
-                                                        className: "text-primary-600",
-                                                        size: 20
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "p-2.5 bg-blue-50 text-[#0066B3] rounded-xl",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
+                                                            size: 20,
+                                                            className: "stroke-[2.5px]"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/features/SettingsProfile.tsx",
+                                                            lineNumber: 225,
+                                                            columnNumber: 93
+                                                        }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                         lineNumber: 225,
@@ -1404,7 +1412,7 @@ const SettingsProfile = ()=>{
                                                                     }),
                                                                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"],
                                                                 placeholder: "ระบุชื่อภาษาไทย",
-                                                                className: "bg-gray-50/50 focus:bg-white transition-all"
+                                                                className: "bg-gray-50/50 focus:bg-white focus:ring-[#00A1E4] transition-all rounded-xl"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                 lineNumber: 231,
@@ -1436,7 +1444,7 @@ const SettingsProfile = ()=>{
                                                                     }),
                                                                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"],
                                                                 placeholder: "Full Name in English",
-                                                                className: "bg-gray-50/50 focus:bg-white transition-all"
+                                                                className: "bg-gray-50/50 focus:bg-white focus:ring-[#00A1E4] transition-all rounded-xl"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                 lineNumber: 242,
@@ -1461,14 +1469,21 @@ const SettingsProfile = ()=>{
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-white border border-gray-100 shadow-sm rounded-xl p-6",
+                                        className: "bg-white border border-gray-100 shadow-sm hover:shadow-card transition-all duration-300 rounded-[24px] p-6 md:p-8",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                className: "text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 pb-2 border-b border-gray-50",
+                                                className: "text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-3 pb-4 border-b border-gray-50 tracking-tight",
                                                 children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$briefcase$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Briefcase$3e$__["Briefcase"], {
-                                                        className: "text-orange-500",
-                                                        size: 20
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "p-2.5 bg-orange-50 text-[#F57F17] rounded-xl",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$briefcase$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Briefcase$3e$__["Briefcase"], {
+                                                            size: 20,
+                                                            className: "stroke-[2.5px]"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/features/SettingsProfile.tsx",
+                                                            lineNumber: 257,
+                                                            columnNumber: 95
+                                                        }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                         lineNumber: 257,
@@ -1503,7 +1518,7 @@ const SettingsProfile = ()=>{
                                                                         position: e.target.value
                                                                     }),
                                                                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$briefcase$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Briefcase$3e$__["Briefcase"],
-                                                                className: "bg-gray-50/50 focus:bg-white transition-all"
+                                                                className: "bg-gray-50/50 focus:bg-white focus:ring-[#00A1E4] transition-all rounded-xl"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                 lineNumber: 263,
@@ -1559,7 +1574,7 @@ const SettingsProfile = ()=>{
                                                                                     label: d.name
                                                                                 }))
                                                                         ],
-                                                                        className: "pl-12 bg-gray-50/50 focus:bg-white transition-all"
+                                                                        className: "pl-12 bg-gray-50/50 focus:bg-white focus:ring-[#00A1E4] transition-all rounded-xl"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                         lineNumber: 277,
@@ -1593,7 +1608,7 @@ const SettingsProfile = ()=>{
                                                                 value: profileForm.employeeId,
                                                                 disabled: true,
                                                                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__["CreditCard"],
-                                                                className: "bg-gray-100/80 text-gray-500 cursor-not-allowed border-dashed"
+                                                                className: "bg-gray-100/80 text-gray-500 cursor-not-allowed border-dashed rounded-xl"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                 lineNumber: 290,
@@ -1624,7 +1639,7 @@ const SettingsProfile = ()=>{
                                                                         startDate: e.target.value
                                                                     }),
                                                                 placeholder: "DD MMM YYYY (เช่น 04 เม.ย. 2560)",
-                                                                className: "bg-gray-50/50 focus:bg-white transition-all"
+                                                                className: "bg-gray-50/50 focus:bg-white focus:ring-[#00A1E4] transition-all rounded-xl"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                 lineNumber: 300,
@@ -1649,14 +1664,21 @@ const SettingsProfile = ()=>{
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-white border border-gray-100 shadow-sm rounded-xl p-6",
+                                        className: "bg-white border border-gray-100 shadow-sm hover:shadow-card transition-all duration-300 rounded-[24px] p-6 md:p-8",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                className: "text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 pb-2 border-b border-gray-50",
+                                                className: "text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-3 pb-4 border-b border-gray-50 tracking-tight",
                                                 children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
-                                                        className: "text-purple-500",
-                                                        size: 20
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "p-2.5 bg-purple-50 text-purple-600 rounded-xl",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
+                                                            size: 20,
+                                                            className: "stroke-[2.5px]"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/features/SettingsProfile.tsx",
+                                                            lineNumber: 314,
+                                                            columnNumber: 96
+                                                        }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                         lineNumber: 314,
@@ -1691,7 +1713,7 @@ const SettingsProfile = ()=>{
                                                                         email: e.target.value
                                                                     }),
                                                                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"],
-                                                                className: "bg-gray-50/50 focus:bg-white transition-all"
+                                                                className: "bg-gray-50/50 focus:bg-white focus:ring-[#00A1E4] transition-all rounded-xl"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                 lineNumber: 320,
@@ -1722,7 +1744,7 @@ const SettingsProfile = ()=>{
                                                                         phone: e.target.value
                                                                     }),
                                                                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"],
-                                                                className: "bg-gray-50/50 focus:bg-white transition-all"
+                                                                className: "bg-gray-50/50 focus:bg-white focus:ring-[#00A1E4] transition-all rounded-xl"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                 lineNumber: 330,
@@ -1747,17 +1769,24 @@ const SettingsProfile = ()=>{
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-white border border-gray-100 shadow-sm rounded-xl p-6",
+                                        className: "bg-white border border-gray-100 shadow-sm hover:shadow-card transition-all duration-300 rounded-[24px] p-6 md:p-8",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex items-center justify-between mb-4 pb-2 border-b border-gray-50",
+                                                className: "flex items-center justify-between mb-6 pb-4 border-b border-gray-50",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                        className: "text-lg font-bold text-gray-800 flex items-center gap-2",
+                                                        className: "text-xl font-extrabold text-gray-900 flex items-center gap-3 tracking-tight",
                                                         children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__["Lock"], {
-                                                                className: "text-rose-500",
-                                                                size: 20
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "p-2.5 bg-rose-50 text-rose-500 rounded-xl",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__["Lock"], {
+                                                                    size: 20,
+                                                                    className: "stroke-[2.5px]"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/components/features/SettingsProfile.tsx",
+                                                                    lineNumber: 345,
+                                                                    columnNumber: 96
+                                                                }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsProfile.tsx",
                                                                 lineNumber: 345,
@@ -1773,7 +1802,7 @@ const SettingsProfile = ()=>{
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                         onClick: handleSecuritySave,
                                                         size: "sm",
-                                                        className: "bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border-none shadow-none",
+                                                        className: "bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border-none shadow-none rounded-xl px-4 font-bold",
                                                         children: "เปลี่ยนรหัสผ่าน"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsProfile.tsx",
@@ -2064,7 +2093,7 @@ const SettingsPolicies = ()=>{
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].success('บันทึกนโยบายเรียบร้อยแล้ว');
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "p-8 space-y-8 animate-in fade-in slide-in-from-right-4 duration-300",
+        className: "p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-right-4 duration-500",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex flex-col md:flex-row items-center justify-between gap-4",
@@ -2073,7 +2102,7 @@ const SettingsPolicies = ()=>{
                         className: "text-center md:text-left",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                className: "text-xl font-bold text-gray-900",
+                                className: "text-2xl font-extrabold text-gray-900 tracking-tight",
                                 children: "นโยบายงบประมาณ"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsPolicies.tsx",
@@ -2096,7 +2125,7 @@ const SettingsPolicies = ()=>{
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         onClick: handleSave,
-                        className: "w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95",
+                        className: "w-full md:w-auto bg-gradient-to-r from-[#00A1E4] to-[#0066B3] border-none shadow-md hover:shadow-lg w-full md:w-auto rounded-xl font-bold",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
                                 size: 18,
@@ -2123,14 +2152,14 @@ const SettingsPolicies = ()=>{
                 className: "grid grid-cols-1 md:grid-cols-2 gap-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col justify-between p-6 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-200 gap-4",
+                        className: "flex flex-col justify-between p-6 md:p-8 bg-white border border-gray-100 rounded-[24px] shadow-sm hover:shadow-card transition-all duration-300 gap-4 group",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "flex items-center justify-between mb-2",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                            className: "text-base font-bold text-gray-900",
+                                            className: "text-lg font-bold text-gray-900 group-hover:text-[#0066B3] transition-colors",
                                             children: "แจ้งเตือนงบเกิน"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsPolicies.tsx",
@@ -2157,14 +2186,14 @@ const SettingsPolicies = ()=>{
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                                     htmlFor: "toggle",
-                                                    className: "block h-7 rounded-full bg-gray-200 cursor-pointer peer-checked:bg-green-500 transition-colors duration-300 ease-in-out"
+                                                    className: "block h-7 rounded-full bg-gray-200 cursor-pointer peer-checked:bg-[#00A1E4] transition-colors duration-300 ease-in-out"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsPolicies.tsx",
                                                     lineNumber: 60,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition-transform duration-300 ease-in-out peer-checked:translate-x-5 shadow-sm"
+                                                    className: "absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition-transform duration-300 ease-in-out peer-checked:translate-x-5 shadow-sm leading-none flex items-center justify-center pointer-events-none"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsPolicies.tsx",
                                                     lineNumber: 64,
@@ -2183,7 +2212,7 @@ const SettingsPolicies = ()=>{
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-xs text-gray-500 leading-relaxed",
+                                    className: "text-sm text-gray-500 leading-relaxed font-medium",
                                     children: "ระบบจะแจ้งเตือนเมื่อมีการขออนุมัติเกินวงเงินคงเหลือ แต่ยังสามารถบันทึกได้"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsPolicies.tsx",
@@ -2202,11 +2231,11 @@ const SettingsPolicies = ()=>{
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col justify-between p-6 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-200 gap-4",
+                        className: "flex flex-col justify-between p-6 md:p-8 bg-white border border-gray-100 rounded-[24px] shadow-sm hover:shadow-card transition-all duration-300 gap-4 group",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                    className: "text-base font-bold text-gray-900 mb-2",
+                                    className: "text-lg font-bold text-gray-900 mb-4 group-hover:text-[#0066B3] transition-colors",
                                     children: "วันปิดงบประมาณ"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsPolicies.tsx",
@@ -2214,11 +2243,17 @@ const SettingsPolicies = ()=>{
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2 border border-gray-200 focus-within:ring-2 focus-within:ring-primary-100 focus-within:border-primary-400 transition-all",
+                                    className: "relative flex items-center gap-2 bg-gray-50/50 rounded-xl border border-gray-200 focus-within:ring-2 focus-within:ring-[#00A1E4]/20 focus-within:border-[#00A1E4] transition-all overflow-hidden p-1",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {
-                                            size: 18,
-                                            className: "text-primary-500 absolute left-3 top-1/2 -translate-y-1/2 z-10"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "pl-3 z-10 text-[#00A1E4]",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {
+                                                size: 20
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/features/SettingsPolicies.tsx",
+                                                lineNumber: 76,
+                                                columnNumber: 33
+                                            }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsPolicies.tsx",
                                             lineNumber: 75,
@@ -2226,7 +2261,7 @@ const SettingsPolicies = ()=>{
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                             type: "date",
-                                            className: "pl-10 border-gray-200 focus:ring-primary-100 focus:border-primary-400 bg-gray-50 h-auto py-2",
+                                            className: "border-none focus:ring-0 bg-transparent h-12 flex-1 outline-none font-medium text-gray-700",
                                             value: formData.fiscalYearCutoff,
                                             onChange: (e)=>setFormData({
                                                     ...formData,
@@ -2234,7 +2269,7 @@ const SettingsPolicies = ()=>{
                                                 })
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsPolicies.tsx",
-                                            lineNumber: 76,
+                                            lineNumber: 78,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
@@ -2244,11 +2279,11 @@ const SettingsPolicies = ()=>{
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-xs text-gray-500 mt-2",
+                                    className: "text-sm text-gray-500 mt-4 font-medium",
                                     children: "กำหนดวันสุดท้ายที่อนุญาตให้ส่งคำขอสำหรับปีงบประมาณนี้"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsPolicies.tsx",
-                                    lineNumber: 83,
+                                    lineNumber: 85,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
@@ -2437,12 +2472,13 @@ const SettingsDepartments = ()=>{
                             className: "text-center md:text-left",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    className: "text-2xl font-bold text-gray-900 flex items-center justify-center md:justify-start gap-3",
+                                    className: "text-2xl font-extrabold text-gray-900 flex items-center justify-center md:justify-start gap-3 tracking-tight",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "p-2 bg-primary-100 rounded-xl text-primary-600",
+                                            className: "p-2.5 bg-[#00A1E4]/10 rounded-[16px] text-[#0066B3]",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$grid$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutGrid$3e$__["LayoutGrid"], {
-                                                size: 24
+                                                size: 24,
+                                                className: "stroke-[2.5px]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
                                                 lineNumber: 105,
@@ -2461,11 +2497,11 @@ const SettingsDepartments = ()=>{
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-gray-500 text-sm mt-1 md:ml-12 text-center md:text-left",
+                                    className: "text-gray-500 text-sm mt-2 md:ml-[60px] text-center md:text-left font-medium",
                                     children: [
                                         "มีทั้งหมด ",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: "text-primary-600 font-bold",
+                                            className: "text-[#0066B3] font-bold bg-[#00A1E4]/10 px-2 py-0.5 rounded-md",
                                             children: departments?.length || 0
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
@@ -2502,7 +2538,7 @@ const SettingsDepartments = ()=>{
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                             type: "text",
                                             placeholder: "ค้นหา...",
-                                            className: "pl-11 pr-4 py-2.5 h-auto rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-300 w-full md:w-48 transition-all hover:bg-white",
+                                            className: "pl-11 pr-4 py-3 h-auto rounded-[16px] border border-gray-200 bg-white focus:bg-white focus:ring-2 focus:ring-[#00A1E4]/20 focus:border-[#00A1E4] w-full md:w-56 transition-all hover:bg-gray-50 font-medium",
                                             value: searchQuery,
                                             onChange: (e)=>setSearchQuery(e.target.value)
                                         }, void 0, false, {
@@ -2518,7 +2554,7 @@ const SettingsDepartments = ()=>{
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 !isAddMode && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                     onClick: ()=>setIsAddMode(true),
-                                    className: "w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 rounded-xl",
+                                    className: "w-full md:w-auto bg-gradient-to-r from-[#00A1E4] to-[#0066B3] border-none shadow-md hover:shadow-lg w-full md:w-auto rounded-[16px] font-bold py-3",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
                                             size: 20,
@@ -2576,63 +2612,71 @@ const SettingsDepartments = ()=>{
                                 },
                                 className: "mb-6 overflow-hidden",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "bg-white/80 backdrop-blur-xl rounded-[24px] p-6 shadow-xl border border-primary-100 relative overflow-hidden group",
+                                    className: "bg-white/80 backdrop-blur-xl rounded-[24px] p-6 shadow-card border border-gray-100 relative overflow-hidden group",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"
+                                            className: "absolute top-0 right-0 w-48 h-48 bg-[#00A1E4]/10 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
                                             lineNumber: 149,
                                             columnNumber: 37
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute bottom-0 left-0 w-32 h-32 bg-[#0066B3]/5 rounded-full blur-2xl -z-10 -translate-x-1/2 translate-y-1/2"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/SettingsDepartments.tsx",
+                                            lineNumber: 150,
+                                            columnNumber: 37
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex justify-between items-center mb-6",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                    className: "font-bold text-lg text-gray-900 flex items-center gap-2",
+                                                    className: "font-extrabold text-xl text-gray-900 flex items-center gap-3 tracking-tight",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center",
+                                                            className: "w-10 h-10 rounded-xl bg-[#00A1E4]/10 text-[#0066B3] flex items-center justify-center",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
-                                                                size: 18
+                                                                size: 20,
+                                                                className: "stroke-[2.5px]"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 154,
+                                                                lineNumber: 155,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 153,
+                                                            lineNumber: 154,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         "สร้างหน่วยงานใหม่"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                    lineNumber: 152,
+                                                    lineNumber: 153,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                     variant: "ghost",
                                                     size: "sm",
                                                     onClick: ()=>setIsAddMode(false),
-                                                    className: "text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full",
+                                                    className: "text-gray-400 hover:text-gray-800 p-2 hover:bg-gray-100 rounded-full transition-colors",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
                                                         size: 20
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                        lineNumber: 159,
+                                                        lineNumber: 160,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                    lineNumber: 158,
+                                                    lineNumber: 159,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                            lineNumber: 151,
+                                            lineNumber: 152,
                                             columnNumber: 37
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2646,7 +2690,7 @@ const SettingsDepartments = ()=>{
                                                             children: "รหัส"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 165,
+                                                            lineNumber: 166,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2658,18 +2702,18 @@ const SettingsDepartments = ()=>{
                                                                 className: "bg-gray-50 border-gray-200 text-center font-mono font-bold text-primary-600 text-lg tracking-wider"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 167,
+                                                                lineNumber: 168,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 166,
+                                                            lineNumber: 167,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                    lineNumber: 164,
+                                                    lineNumber: 165,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2684,13 +2728,13 @@ const SettingsDepartments = ()=>{
                                                                     children: "*"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                    lineNumber: 176,
+                                                                    lineNumber: 177,
                                                                     columnNumber: 124
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 176,
+                                                            lineNumber: 177,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2706,13 +2750,13 @@ const SettingsDepartments = ()=>{
                                                             icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$building$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Building$3e$__["Building"]
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 177,
+                                                            lineNumber: 178,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                    lineNumber: 175,
+                                                    lineNumber: 176,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2723,7 +2767,7 @@ const SettingsDepartments = ()=>{
                                                             children: "สีระบุ"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 188,
+                                                            lineNumber: 189,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2739,49 +2783,49 @@ const SettingsDepartments = ()=>{
                                                                     className: "absolute inset-0 w-[150%] h-[150%] -top-[25%] -left-[25%] cursor-pointer p-0"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                    lineNumber: 190,
+                                                                    lineNumber: 191,
                                                                     columnNumber: 49
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "absolute inset-0 flex items-center justify-center pointer-events-none mix-blend-difference text-white font-mono text-xs uppercase",
+                                                                    className: "absolute inset-0 flex items-center justify-center pointer-events-none mix-blend-difference text-white font-mono text-xs uppercase font-bold",
                                                                     children: newDept.color
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                    lineNumber: 196,
+                                                                    lineNumber: 197,
                                                                     columnNumber: 49
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 189,
+                                                            lineNumber: 190,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                    lineNumber: 187,
+                                                    lineNumber: 188,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "md:col-span-2 flex items-end",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                         onClick: handleAddDepartment,
-                                                        className: "w-full h-[48px] bg-primary-600 hover:bg-primary-700 border-none shadow-lg shadow-primary-200 hover:shadow-xl transition-all",
+                                                        className: "w-full h-[48px] bg-gradient-to-r from-[#00A1E4] to-[#0066B3] border-none shadow-md hover:shadow-lg transition-all rounded-xl font-bold",
                                                         children: "บันทึก"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                        lineNumber: 202,
+                                                        lineNumber: 203,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                    lineNumber: 201,
+                                                    lineNumber: 202,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                            lineNumber: 163,
+                                            lineNumber: 164,
                                             columnNumber: 37
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
@@ -2810,12 +2854,12 @@ const SettingsDepartments = ()=>{
                                         size: 32
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                        lineNumber: 218,
+                                        lineNumber: 219,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                    lineNumber: 217,
+                                    lineNumber: 218,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2823,7 +2867,7 @@ const SettingsDepartments = ()=>{
                                     children: "ไม่พบข้อมูลหน่วยงาน"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                    lineNumber: 220,
+                                    lineNumber: 221,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2831,13 +2875,13 @@ const SettingsDepartments = ()=>{
                                     children: 'ลองค้นหาด้วยคำอื่น หรือกดปุ่ม "เพิ่มหน่วยงาน" เพื่อสร้างรายการใหม่'
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                    lineNumber: 221,
+                                    lineNumber: 222,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                            lineNumber: 216,
+                            lineNumber: 217,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "space-y-3",
@@ -2868,7 +2912,7 @@ const SettingsDepartments = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                lineNumber: 237,
+                                                lineNumber: 238,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2881,11 +2925,11 @@ const SettingsDepartments = ()=>{
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                        lineNumber: 242,
+                                                        lineNumber: 243,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     editingId === dept.id && editRowData ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                        className: "w-16 text-center font-mono font-bold text-sm bg-white border border-primary-300 rounded-lg py-1.5 focus:outline-none focus:ring-2 focus:ring-primary-200 text-primary-700",
+                                                        className: "w-16 text-center font-mono font-bold text-sm bg-white border border-[#00A1E4] rounded-lg py-1.5 focus:outline-none focus:ring-2 focus:ring-[#00A1E4]/20 text-[#0066B3]",
                                                         value: editRowData.code,
                                                         onChange: (e)=>setEditRowData({
                                                                 ...editRowData,
@@ -2893,30 +2937,30 @@ const SettingsDepartments = ()=>{
                                                             })
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                        lineNumber: 244,
+                                                        lineNumber: 245,
                                                         columnNumber: 49
                                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center text-gray-500 font-mono text-sm font-bold shadow-sm group-hover:shadow-inner group-hover:bg-white transition-all",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-[10px] uppercase text-gray-400 font-normal mb-0.5",
+                                                                className: "text-[10px] uppercase text-gray-400 font-medium mb-0.5",
                                                                 children: "Code"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 251,
+                                                                lineNumber: 252,
                                                                 columnNumber: 53
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             dept.code
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                        lineNumber: 250,
+                                                        lineNumber: 251,
                                                         columnNumber: 49
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                lineNumber: 240,
+                                                lineNumber: 241,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2934,7 +2978,7 @@ const SettingsDepartments = ()=>{
                                                                 })
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 261,
+                                                            lineNumber: 262,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2949,18 +2993,18 @@ const SettingsDepartments = ()=>{
                                                                 className: "absolute inset-0 w-[150%] h-[150%] -top-[25%] -left-[25%] cursor-pointer"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 268,
+                                                                lineNumber: 269,
                                                                 columnNumber: 57
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 267,
+                                                            lineNumber: 268,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                    lineNumber: 260,
+                                                    lineNumber: 261,
                                                     columnNumber: 49
                                                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex items-center justify-between",
@@ -2971,7 +3015,7 @@ const SettingsDepartments = ()=>{
                                                                 children: dept.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 279,
+                                                                lineNumber: 280,
                                                                 columnNumber: 57
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2986,35 +3030,35 @@ const SettingsDepartments = ()=>{
                                                                             }
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                            lineNumber: 284,
+                                                                            lineNumber: 285,
                                                                             columnNumber: 65
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         "Color Tag"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                    lineNumber: 283,
+                                                                    lineNumber: 284,
                                                                     columnNumber: 61
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 282,
+                                                                lineNumber: 283,
                                                                 columnNumber: 57
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                        lineNumber: 278,
+                                                        lineNumber: 279,
                                                         columnNumber: 53
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                    lineNumber: 277,
+                                                    lineNumber: 278,
                                                     columnNumber: 49
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                lineNumber: 258,
+                                                lineNumber: 259,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3031,12 +3075,12 @@ const SettingsDepartments = ()=>{
                                                                 size: 18
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 304,
+                                                                lineNumber: 305,
                                                                 columnNumber: 57
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 297,
+                                                            lineNumber: 298,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3049,12 +3093,12 @@ const SettingsDepartments = ()=>{
                                                                 size: 18
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 313,
+                                                                lineNumber: 314,
                                                                 columnNumber: 57
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 306,
+                                                            lineNumber: 307,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
@@ -3070,12 +3114,12 @@ const SettingsDepartments = ()=>{
                                                                 size: 18
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 325,
+                                                                lineNumber: 326,
                                                                 columnNumber: 57
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 318,
+                                                            lineNumber: 319,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3088,35 +3132,35 @@ const SettingsDepartments = ()=>{
                                                                 size: 18
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                                lineNumber: 334,
+                                                                lineNumber: 335,
                                                                 columnNumber: 57
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                            lineNumber: 327,
+                                                            lineNumber: 328,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                                lineNumber: 294,
+                                                lineNumber: 295,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, dept.id, true, {
                                         fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                        lineNumber: 227,
+                                        lineNumber: 228,
                                         columnNumber: 37
                                     }, ("TURBOPACK compile-time value", void 0)))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                                lineNumber: 225,
+                                lineNumber: 226,
                                 columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/SettingsDepartments.tsx",
-                            lineNumber: 224,
+                            lineNumber: 225,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
@@ -3469,12 +3513,13 @@ const SettingsUsers = ()=>{
                             className: "text-center md:text-left",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    className: "text-2xl font-bold text-gray-900 flex items-center justify-center md:justify-start gap-3",
+                                    className: "text-2xl font-extrabold text-gray-900 flex items-center justify-center md:justify-start gap-3 tracking-tight",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "p-2 bg-primary-100 rounded-xl text-primary-600",
+                                            className: "p-2.5 bg-[#00A1E4]/10 rounded-[16px] text-[#0066B3]",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$users$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Users$3e$__["Users"], {
-                                                size: 24
+                                                size: 24,
+                                                className: "stroke-[2.5px]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/SettingsUsers.tsx",
                                                 lineNumber: 136,
@@ -3493,11 +3538,11 @@ const SettingsUsers = ()=>{
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-gray-500 text-sm mt-1 md:ml-12 text-center md:text-left",
+                                    className: "text-gray-500 text-sm mt-2 md:ml-[60px] text-center md:text-left font-medium",
                                     children: [
                                         "บริหารจัดการบัญชีผู้ใช้งานและสิทธิ์การเข้าถึงทั้งหมด ",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: "text-primary-600 font-bold",
+                                            className: "text-[#0066B3] font-bold bg-[#00A1E4]/10 px-2 py-0.5 rounded-md",
                                             children: users.length
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsUsers.tsx",
@@ -3534,7 +3579,7 @@ const SettingsUsers = ()=>{
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                             type: "text",
                                             placeholder: "ค้นหาผู้ใช้งาน...",
-                                            className: "pl-11 pr-4 py-2.5 h-auto rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-300 w-full md:w-64 transition-all hover:bg-white",
+                                            className: "pl-11 pr-4 py-3 h-auto rounded-[16px] border border-gray-200 bg-white focus:bg-white focus:ring-2 focus:ring-[#00A1E4]/20 focus:border-[#00A1E4] w-full md:w-64 transition-all hover:bg-gray-50 font-medium",
                                             value: searchQuery,
                                             onChange: (e)=>setSearchQuery(e.target.value)
                                         }, void 0, false, {
@@ -3550,7 +3595,7 @@ const SettingsUsers = ()=>{
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                     onClick: handleAddUser,
-                                    className: "w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg shadow-primary-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 rounded-xl",
+                                    className: "w-full md:w-auto bg-gradient-to-r from-[#00A1E4] to-[#0066B3] border-none shadow-md hover:shadow-lg w-full md:w-auto rounded-[16px] font-bold py-3",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
                                             size: 20,
@@ -3646,7 +3691,7 @@ const SettingsUsers = ()=>{
                                         delay: index * 0.05
                                     },
                                     layout: true,
-                                    className: "group relative bg-white hover:bg-white/80 border border-gray-100 hover:border-primary-100 rounded-[24px] p-6 shadow-sm hover:shadow-card-hover transition-all duration-300 flex flex-col",
+                                    className: "group relative bg-white border border-gray-100 rounded-[24px] p-6 md:p-8 shadow-sm hover:shadow-card transition-all duration-300 flex flex-col",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 transform translate-x-2 group-hover:translate-x-0",
@@ -3690,10 +3735,10 @@ const SettingsUsers = ()=>{
                                             columnNumber: 41
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex items-center gap-4 mb-4",
+                                            className: "flex items-center gap-5 mb-6",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: `w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold shadow-inner overflow-hidden shrink-0 ${user.role === 'admin' ? 'bg-gradient-to-br from-primary-500 to-indigo-600 text-white' : 'bg-gray-50 text-gray-500'}`,
+                                                    className: `w-14 h-14 rounded-[16px] flex items-center justify-center text-xl font-bold shadow-sm overflow-hidden shrink-0 ${user.role === 'admin' ? 'bg-gradient-to-br from-[#00A1E4] to-[#0066B3] text-white' : 'bg-gray-50 text-gray-500 border border-gray-100'}`,
                                                     children: (()=>{
                                                         const cleanAvatar = user.avatar ? String(user.avatar).trim() : '';
                                                         const isImage = cleanAvatar.startsWith('http') || cleanAvatar.startsWith('data:');
@@ -3726,7 +3771,7 @@ const SettingsUsers = ()=>{
                                                     className: "min-w-0",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                                            className: "text-lg font-bold text-gray-900 group-hover:text-primary-700 transition-colors truncate",
+                                                            className: "text-lg font-bold text-gray-900 group-hover:text-[#0066B3] transition-colors truncate",
                                                             children: user.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsUsers.tsx",
@@ -3734,7 +3779,7 @@ const SettingsUsers = ()=>{
                                                             columnNumber: 49
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-xs text-gray-500 font-mono bg-gray-50 px-1.5 py-0.5 rounded border border-gray-100 inline-block mt-1 max-w-full truncate",
+                                                            className: "text-xs text-gray-500 font-mono bg-gray-50 px-2 py-1 rounded-md border border-gray-100 inline-block mt-1.5 max-w-full truncate",
                                                             children: [
                                                                 "@",
                                                                 user.username
@@ -3760,12 +3805,13 @@ const SettingsUsers = ()=>{
                                             className: "space-y-3 mt-2 flex-1",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center gap-3 text-sm text-gray-600",
+                                                    className: "flex items-center gap-3 text-sm text-gray-600 font-medium",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 shrink-0 group-hover:bg-primary-50 group-hover:text-primary-500 transition-colors",
+                                                            className: "w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 shrink-0 group-hover:bg-[#00A1E4]/10 group-hover:text-[#0066B3] transition-colors",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"], {
-                                                                size: 14
+                                                                size: 14,
+                                                                className: "stroke-[2.5px]"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsUsers.tsx",
                                                                 lineNumber: 225,
@@ -3792,12 +3838,13 @@ const SettingsUsers = ()=>{
                                                     columnNumber: 45
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center gap-3 text-sm text-gray-600",
+                                                    className: "flex items-center gap-3 text-sm text-gray-600 font-medium",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 shrink-0 group-hover:bg-primary-50 group-hover:text-primary-500 transition-colors",
+                                                            className: "w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 shrink-0 group-hover:bg-[#00A1E4]/10 group-hover:text-[#0066B3] transition-colors",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$briefcase$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Briefcase$3e$__["Briefcase"], {
-                                                                size: 14
+                                                                size: 14,
+                                                                className: "stroke-[2.5px]"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsUsers.tsx",
                                                                 lineNumber: 231,
@@ -3952,7 +3999,7 @@ const SettingsUsers = ()=>{
                                                 username: e.target.value
                                             }),
                                         disabled: !!editingUser,
-                                        className: `bg-gray-50/50 transition-all duration-200 ${!editingUser ? 'focus:bg-white focus:shadow-md focus:border-primary-200' : ''}`,
+                                        className: `bg-gray-50 transition-all duration-300 ${!editingUser ? 'focus:bg-white focus:shadow-sm focus:border-[#0066B3]' : 'opacity-70'}`,
                                         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"]
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsUsers.tsx",
@@ -4370,7 +4417,7 @@ const SettingsNotifications = ()=>{
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                className: "text-xl font-bold text-gray-900",
+                                className: "text-xl font-extrabold text-gray-900 tracking-tight",
                                 children: "กำหนดการแจ้งเตือน"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4378,7 +4425,7 @@ const SettingsNotifications = ()=>{
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-gray-500 text-sm mt-1",
+                                className: "text-gray-500 text-sm mt-1.5 font-medium",
                                 children: "เลือกช่องทางและเหตุการณ์ที่ต้องการรับการแจ้งเตือน"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4392,7 +4439,7 @@ const SettingsNotifications = ()=>{
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                        className: "bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95",
+                        className: "bg-gradient-to-r from-[#00A1E4] to-[#0066B3] border-none shadow-md hover:shadow-lg rounded-[16px] font-bold py-2.5 active:scale-95",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
                                 size: 18,
@@ -4419,10 +4466,10 @@ const SettingsNotifications = ()=>{
                 className: "space-y-6 max-w-3xl",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "bg-white p-6 rounded-3xl border border-gray-100 shadow-card space-y-4",
+                        className: "bg-white p-6 md:p-8 rounded-[24px] border border-gray-100 shadow-sm hover:shadow-card transition-shadow duration-300 space-y-5",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                className: "font-bold text-gray-900 border-b border-gray-50 pb-2",
+                                className: "font-extrabold text-gray-900 border-b border-gray-100 pb-3 tracking-tight",
                                 children: "ช่องทางการแจ้งเตือน"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4433,12 +4480,13 @@ const SettingsNotifications = ()=>{
                                 className: "flex items-center justify-between",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center gap-3",
+                                        className: "flex items-center gap-4",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "p-2 bg-primary-50 text-primary-600 rounded-lg",
+                                                className: "p-2.5 bg-[#00A1E4]/10 text-[#0066B3] rounded-[12px]",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"], {
-                                                    size: 20
+                                                    size: 20,
+                                                    className: "stroke-[2.5px]"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsNotifications.tsx",
                                                     lineNumber: 40,
@@ -4452,7 +4500,7 @@ const SettingsNotifications = ()=>{
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "font-medium text-gray-900",
+                                                        className: "font-bold text-gray-900",
                                                         children: "Email Notifications"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4460,7 +4508,7 @@ const SettingsNotifications = ()=>{
                                                         columnNumber: 33
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-xs text-gray-500",
+                                                        className: "text-xs text-gray-500 font-medium",
                                                         children: "รับสรุปข้อมูลผ่านอีเมล"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4486,7 +4534,7 @@ const SettingsNotifications = ()=>{
                                                 ...notificationSettings,
                                                 emailEnabled: e.target.checked
                                             }),
-                                        className: "toggle toggle-primary h-6 w-11 rounded-full bg-gray-200 cursor-pointer appearance-none checked:bg-primary-600 transition-all duration-200 relative before:content-[''] before:absolute before:left-1 before:top-1 before:w-4 before:h-4 before:bg-white before:rounded-full before:transition-transform before:checked:translate-x-5"
+                                        className: "toggle h-6 w-11 rounded-full bg-gray-200 cursor-pointer appearance-none checked:bg-[#0066B3] transition-all duration-200 relative before:content-[''] before:absolute before:left-1 before:top-1 before:w-4 before:h-4 before:bg-white before:rounded-full before:transition-transform before:checked:translate-x-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
                                         lineNumber: 47,
@@ -4502,12 +4550,13 @@ const SettingsNotifications = ()=>{
                                 className: "flex items-center justify-between",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center gap-3",
+                                        className: "flex items-center gap-4",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "p-2 bg-green-50 text-green-600 rounded-lg",
+                                                className: "p-2.5 bg-green-50 text-green-600 rounded-[12px]",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
-                                                    size: 20
+                                                    size: 20,
+                                                    className: "stroke-[2.5px]"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsNotifications.tsx",
                                                     lineNumber: 53,
@@ -4521,7 +4570,7 @@ const SettingsNotifications = ()=>{
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "font-medium text-gray-900",
+                                                        className: "font-bold text-gray-900",
                                                         children: "LINE Notify"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4529,7 +4578,7 @@ const SettingsNotifications = ()=>{
                                                         columnNumber: 33
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-xs text-gray-500",
+                                                        className: "text-xs text-gray-500 font-medium",
                                                         children: "รับการแจ้งเตือนทันทีผ่าน LINE"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4555,7 +4604,7 @@ const SettingsNotifications = ()=>{
                                                 ...notificationSettings,
                                                 lineEnabled: e.target.checked
                                             }),
-                                        className: "toggle toggle-primary h-6 w-11 rounded-full bg-gray-200 cursor-pointer appearance-none checked:bg-primary-600 transition-all duration-200 relative before:content-[''] before:absolute before:left-1 before:top-1 before:w-4 before:h-4 before:bg-white before:rounded-full before:transition-transform before:checked:translate-x-5"
+                                        className: "toggle h-6 w-11 rounded-full bg-gray-200 cursor-pointer appearance-none checked:bg-green-600 transition-all duration-200 relative before:content-[''] before:absolute before:left-1 before:top-1 before:w-4 before:h-4 before:bg-white before:rounded-full before:transition-transform before:checked:translate-x-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
                                         lineNumber: 60,
@@ -4568,11 +4617,11 @@ const SettingsNotifications = ()=>{
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             notificationSettings.lineEnabled && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "mt-2 pl-12 animate-in slide-in-from-top-2",
+                                className: "mt-2 pl-14 animate-in slide-in-from-top-2",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                     type: "text",
                                     placeholder: "LINE Notify Token",
-                                    className: "border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-green-500 h-auto",
+                                    className: "border-gray-200 rounded-[12px] px-4 py-2.5 text-sm focus:ring-green-500 h-auto",
                                     value: notificationSettings.lineToken,
                                     onChange: (e)=>setNotificationSettings({
                                             ...notificationSettings,
@@ -4595,10 +4644,10 @@ const SettingsNotifications = ()=>{
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "bg-white p-6 rounded-3xl border border-gray-100 shadow-card space-y-4",
+                        className: "bg-white p-6 md:p-8 rounded-[24px] border border-gray-100 shadow-sm hover:shadow-card transition-shadow duration-300 space-y-4",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                className: "font-bold text-gray-900 border-b border-gray-50 pb-2",
+                                className: "font-extrabold text-gray-900 border-b border-gray-100 pb-3 tracking-tight",
                                 children: "เงื่อนไขการแจ้งเตือน"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4606,7 +4655,7 @@ const SettingsNotifications = ()=>{
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                className: "flex items-center gap-3 cursor-pointer select-none",
+                                className: "flex items-center gap-4 cursor-pointer select-none py-1",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "checkbox",
@@ -4615,14 +4664,14 @@ const SettingsNotifications = ()=>{
                                                 ...notificationSettings,
                                                 notifyOnOverBudget: e.target.checked
                                             }),
-                                        className: "w-4 h-4 text-primary-600 rounded focus:ring-primary-500 border-gray-300"
+                                        className: "w-[18px] h-[18px] text-[#0066B3] rounded border-gray-300 focus:ring-[#00A1E4] transition-colors"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
                                         lineNumber: 81,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-sm text-gray-700",
+                                        className: "text-sm font-medium text-gray-700",
                                         children: "แจ้งเตือนเมื่อการใช้งบประมาณเกิน 80%"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4636,7 +4685,7 @@ const SettingsNotifications = ()=>{
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                className: "flex items-center gap-3 cursor-pointer select-none",
+                                className: "flex items-center gap-4 cursor-pointer select-none py-1",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "checkbox",
@@ -4645,14 +4694,14 @@ const SettingsNotifications = ()=>{
                                                 ...notificationSettings,
                                                 notifyOnRequest: e.target.checked
                                             }),
-                                        className: "w-4 h-4 text-primary-600 rounded focus:ring-primary-500 border-gray-300"
+                                        className: "w-[18px] h-[18px] text-[#0066B3] rounded border-gray-300 focus:ring-[#00A1E4] transition-colors"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
                                         lineNumber: 86,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-sm text-gray-700",
+                                        className: "text-sm font-medium text-gray-700",
                                         children: "แจ้งเตือนเมื่อมีคำขออนุมัติใหม่"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4666,7 +4715,7 @@ const SettingsNotifications = ()=>{
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                className: "flex items-center gap-3 cursor-pointer select-none",
+                                className: "flex items-center gap-4 cursor-pointer select-none py-1",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "checkbox",
@@ -4675,14 +4724,14 @@ const SettingsNotifications = ()=>{
                                                 ...notificationSettings,
                                                 notifyOnApproval: e.target.checked
                                             }),
-                                        className: "w-4 h-4 text-primary-600 rounded focus:ring-primary-500 border-gray-300"
+                                        className: "w-[18px] h-[18px] text-[#0066B3] rounded border-gray-300 focus:ring-[#00A1E4] transition-colors"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
                                         lineNumber: 91,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-sm text-gray-700",
+                                        className: "text-sm font-medium text-gray-700",
                                         children: "แจ้งเตือนเมื่อคำขอได้รับการอนุมัติ/ปฏิเสธ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsNotifications.tsx",
@@ -4773,12 +4822,13 @@ const SettingsBackup = ()=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "p-4 md:p-8 h-full flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-right-4 duration-300",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "max-w-md w-full bg-white p-8 rounded-3xl shadow-card border border-white/60",
+            className: "max-w-md w-full bg-white p-8 rounded-[24px] shadow-sm hover:shadow-card transition-shadow duration-300 border border-gray-100",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "w-16 h-16 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center mx-auto mb-6",
+                    className: "w-16 h-16 bg-[#00A1E4]/10 text-[#0066B3] rounded-[16px] flex items-center justify-center mx-auto mb-6",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$download$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Download$3e$__["Download"], {
-                        size: 32
+                        size: 32,
+                        className: "stroke-[2px]"
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/SettingsBackup.tsx",
                         lineNumber: 38,
@@ -4790,7 +4840,7 @@ const SettingsBackup = ()=>{
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                    className: "text-xl font-bold text-gray-900 mb-2",
+                    className: "text-xl font-extrabold text-gray-900 mb-2 tracking-tight",
                     children: "สำรองข้อมูล (Backup)"
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/SettingsBackup.tsx",
@@ -4798,7 +4848,7 @@ const SettingsBackup = ()=>{
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                    className: "text-gray-500 text-sm mb-8",
+                    className: "text-gray-500 text-sm mb-8 font-medium",
                     children: "ดาวน์โหลดข้อมูลทั้งหมดของระบบเก็บไว้ในรูปแบบไฟล์ JSON เพื่อความปลอดภัย"
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/SettingsBackup.tsx",
@@ -4806,10 +4856,10 @@ const SettingsBackup = ()=>{
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-6 p-4 bg-gray-50 rounded-xl text-left",
+                    className: "mb-6 p-5 bg-[#F4F6F9] rounded-[16px] text-left border border-gray-100",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-xs text-gray-500 mb-1",
+                            className: "text-xs text-gray-500 mb-1 font-medium",
                             children: "Backup ล่าสุด"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/SettingsBackup.tsx",
@@ -4817,7 +4867,7 @@ const SettingsBackup = ()=>{
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-sm font-semibold text-gray-900",
+                            className: "text-sm font-bold text-gray-900",
                             children: lastBackup || 'ยังไม่เคยสำรองข้อมูล'
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/SettingsBackup.tsx",
@@ -4832,11 +4882,11 @@ const SettingsBackup = ()=>{
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                     onClick: handleBackup,
-                    className: "w-full bg-gradient-to-r from-primary-600 to-primary-500 border-none rounded-xl py-6 font-bold hover:shadow-lg active:scale-95 shadow-primary-200",
+                    className: "w-full bg-gradient-to-r from-[#00A1E4] to-[#0066B3] border-none rounded-[16px] py-4 font-bold hover:shadow-lg active:scale-95 shadow-md flex items-center justify-center",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$download$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Download$3e$__["Download"], {
                             size: 20,
-                            className: "mr-2"
+                            className: "mr-2 stroke-[2.5px]"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/SettingsBackup.tsx",
                             lineNumber: 52,
@@ -4888,34 +4938,29 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/activity.js [app-client] (ecmascript) <export default as Activity>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$refresh$2d$cw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RefreshCw$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/refresh-cw.js [app-client] (ecmascript) <export default as RefreshCw>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/Button.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/context/BudgetContext.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
+;
 const SettingsActivityLogs = ()=>{
     _s();
-    const [logs, setLogs] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
-    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
-    const fetchLogs = async ()=>{
+    const { activityLogs, user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useBudget"])();
+    const queryClient = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"])();
+    const [loading, setLoading] = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].useState(false);
+    const handleRefresh = async ()=>{
         setLoading(true);
-        try {
-            const response = await fetch('/api/activity-logs');
-            if (response.ok) {
-                const data = await response.json();
-                setLogs(data);
-            }
-        } catch (error) {
-            console.error('Failed to fetch logs', error);
-        } finally{
-            setLoading(false);
-        }
+        await queryClient.invalidateQueries({
+            queryKey: [
+                'activityLogs'
+            ]
+        });
+        setLoading(false);
     };
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "SettingsActivityLogs.useEffect": ()=>{
-            fetchLogs();
-        }
-    }["SettingsActivityLogs.useEffect"], []);
     const formatDate = (dateString)=>{
         const date = new Date(dateString);
         return date.toLocaleDateString('th-TH', {
@@ -4927,12 +4972,48 @@ const SettingsActivityLogs = ()=>{
         });
     };
     const getActionColor = (action)=>{
-        if (action.includes('LOGIN')) return 'text-green-600 bg-green-50';
-        if (action.includes('CREATE')) return 'text-primary-600 bg-primary-50';
-        if (action.includes('UPDATE')) return 'text-orange-600 bg-orange-50';
-        if (action.includes('DELETE')) return 'text-red-600 bg-red-50';
+        const a = action.toUpperCase();
+        if (a.includes('LOGIN')) return 'text-green-600 bg-green-50';
+        if (a.includes('CREATE') || a.includes('SUBMIT')) return 'text-primary-600 bg-primary-50';
+        if (a.includes('UPDATE') || a.includes('APPROVE') || a.includes('ADJUST')) return 'text-orange-600 bg-orange-50';
+        if (a.includes('DELETE') || a.includes('REJECT')) return 'text-red-600 bg-red-50';
         return 'text-gray-600 bg-gray-50';
     };
+    if (user?.role !== 'admin') {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "p-12 text-center",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__["Activity"], {
+                    size: 48,
+                    className: "mx-auto text-gray-200 mb-4"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
+                    lineNumber: 41,
+                    columnNumber: 17
+                }, ("TURBOPACK compile-time value", void 0)),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                    className: "text-lg font-bold text-gray-900",
+                    children: "เข้าถึงไม่ได้"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
+                    lineNumber: 42,
+                    columnNumber: 17
+                }, ("TURBOPACK compile-time value", void 0)),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "text-gray-500",
+                    children: "คุณต้องเป็นผู้ดูแลระบบเพื่อดูประวัติการใช้งาน"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
+                    lineNumber: 43,
+                    columnNumber: 17
+                }, ("TURBOPACK compile-time value", void 0))
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
+            lineNumber: 40,
+            columnNumber: 13
+        }, ("TURBOPACK compile-time value", void 0));
+    }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "p-8 space-y-6 animate-in fade-in slide-in-from-right-4 duration-300",
         children: [
@@ -4943,191 +5024,126 @@ const SettingsActivityLogs = ()=>{
                         className: "text-center md:text-left",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                className: "text-xl font-bold text-gray-900",
+                                className: "text-xl font-extrabold text-gray-900 tracking-tight",
                                 children: "ประวัติการใช้งานระบบ"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                lineNumber: 66,
+                                lineNumber: 52,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-gray-500 text-sm mt-1",
+                                className: "text-gray-500 text-sm mt-1.5 font-medium",
                                 children: "บันทึกการกระทำต่างๆ ของผู้ใช้งานในระบบ (Audit Logs)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                lineNumber: 67,
+                                lineNumber: 53,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                        lineNumber: 65,
+                        lineNumber: 51,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         variant: "ghost",
-                        onClick: fetchLogs,
-                        className: "p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-full w-full md:w-auto",
+                        onClick: handleRefresh,
+                        className: "p-2.5 text-gray-500 hover:text-[#0066B3] hover:bg-[#00A1E4]/10 rounded-[12px] w-full md:w-auto transition-colors duration-200",
                         title: "Refresh Logs",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$refresh$2d$cw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RefreshCw$3e$__["RefreshCw"], {
                             size: 20,
                             className: loading ? 'animate-spin' : ''
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                            lineNumber: 75,
+                            lineNumber: 61,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                        lineNumber: 69,
+                        lineNumber: 55,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                lineNumber: 64,
+                lineNumber: 50,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "bg-white/60 backdrop-blur-xl rounded-3xl border border-white/60 ring-1 ring-black/5 shadow-card overflow-hidden",
+                className: "bg-white rounded-[24px] shadow-sm hover:shadow-card transition-shadow duration-300 border border-gray-100 overflow-hidden",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "overflow-x-auto",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
-                        className: "w-full text-left",
+                        className: "w-full text-left font-medium",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
-                                className: "bg-gray-50/50 border-b border-gray-100",
+                                className: "bg-[#F4F6F9] border-b border-gray-200",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                            className: "px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider",
+                                            className: "px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider",
                                             children: "เวลา"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                            lineNumber: 84,
+                                            lineNumber: 70,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                            className: "px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider",
+                                            className: "px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider",
                                             children: "ผู้ใช้งาน"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                            lineNumber: 85,
+                                            lineNumber: 71,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                            className: "px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider",
+                                            className: "px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider",
                                             children: "การกระทำ"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                            lineNumber: 86,
+                                            lineNumber: 72,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                            className: "px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider",
+                                            className: "px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider",
                                             children: "รายละเอียด"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                            lineNumber: 87,
+                                            lineNumber: 73,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                    lineNumber: 83,
+                                    lineNumber: 69,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                lineNumber: 82,
+                                lineNumber: 68,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
                                 className: "divide-y divide-gray-100",
-                                children: loading ? Array.from({
-                                    length: 5
-                                }).map((_, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                        className: "animate-pulse",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                className: "px-6 py-4",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "h-4 bg-gray-100 rounded w-24"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 94,
-                                                    columnNumber: 67
-                                                }, ("TURBOPACK compile-time value", void 0))
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                lineNumber: 94,
-                                                columnNumber: 41
-                                            }, ("TURBOPACK compile-time value", void 0)),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                className: "px-6 py-4",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "h-4 bg-gray-100 rounded w-32"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 95,
-                                                    columnNumber: 67
-                                                }, ("TURBOPACK compile-time value", void 0))
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                lineNumber: 95,
-                                                columnNumber: 41
-                                            }, ("TURBOPACK compile-time value", void 0)),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                className: "px-6 py-4",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "h-4 bg-gray-100 rounded w-20"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 96,
-                                                    columnNumber: 67
-                                                }, ("TURBOPACK compile-time value", void 0))
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                lineNumber: 96,
-                                                columnNumber: 41
-                                            }, ("TURBOPACK compile-time value", void 0)),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                className: "px-6 py-4",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "h-4 bg-gray-100 rounded w-48"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 97,
-                                                    columnNumber: 67
-                                                }, ("TURBOPACK compile-time value", void 0))
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                lineNumber: 97,
-                                                columnNumber: 41
-                                            }, ("TURBOPACK compile-time value", void 0))
-                                        ]
-                                    }, i, true, {
-                                        fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                        lineNumber: 93,
-                                        columnNumber: 37
-                                    }, ("TURBOPACK compile-time value", void 0))) : logs.length > 0 ? logs.map((log)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                children: activityLogs.length > 0 ? activityLogs.map((log)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                         className: "hover:bg-gray-50/50 transition-colors",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                className: "px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center gap-2",
+                                                className: "px-6 py-4 whitespace-nowrap text-[13px] text-gray-500 flex items-center gap-2",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
-                                                        size: 14
+                                                        size: 14,
+                                                        className: "text-gray-400"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                        lineNumber: 104,
+                                                        lineNumber: 81,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     formatDate(log.createdAt)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                lineNumber: 103,
+                                                lineNumber: 80,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -5136,7 +5152,7 @@ const SettingsActivityLogs = ()=>{
                                                     className: "flex items-center gap-3",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 text-xs font-bold",
+                                                            className: "w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 text-[11px] font-extrabold border-2 border-white shadow-sm overflow-hidden",
                                                             children: (()=>{
                                                                 const cleanAvatar = log.user.avatar ? String(log.user.avatar).trim() : '';
                                                                 const isImage = cleanAvatar.startsWith('http') || cleanAvatar.startsWith('data:');
@@ -5144,184 +5160,197 @@ const SettingsActivityLogs = ()=>{
                                                                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
                                                                         src: cleanAvatar,
                                                                         alt: log.user.name,
-                                                                        className: "w-full h-full object-cover rounded-full"
+                                                                        className: "w-full h-full object-cover"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                                        lineNumber: 116,
+                                                                        lineNumber: 93,
                                                                         columnNumber: 72
                                                                     }, ("TURBOPACK compile-time value", void 0));
                                                                 }
-                                                                return cleanAvatar && cleanAvatar.length <= 3 ? cleanAvatar : log.user.name.charAt(0);
+                                                                return log.user.name.charAt(0);
                                                             })()
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                            lineNumber: 110,
+                                                            lineNumber: 87,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-sm font-semibold text-gray-900",
+                                                                    className: "text-[13px] font-bold text-gray-900",
                                                                     children: log.user.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                                    lineNumber: 122,
+                                                                    lineNumber: 99,
                                                                     columnNumber: 57
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-xs text-gray-400",
+                                                                    className: "text-[11px] text-gray-400 font-semibold",
                                                                     children: [
                                                                         "@",
                                                                         log.user.username
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                                    lineNumber: 123,
+                                                                    lineNumber: 100,
                                                                     columnNumber: 57
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                            lineNumber: 121,
+                                                            lineNumber: 98,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 109,
+                                                    lineNumber: 86,
                                                     columnNumber: 49
                                                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex items-center gap-3 opacity-60",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500",
+                                                            className: "w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-200",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
                                                                 size: 14
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                                lineNumber: 129,
+                                                                lineNumber: 106,
                                                                 columnNumber: 57
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                            lineNumber: 128,
+                                                            lineNumber: 105,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-sm text-gray-500 font-medium",
-                                                            children: "System / Unknown"
+                                                            className: "text-[13px] text-gray-500 font-bold",
+                                                            children: "System"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                            lineNumber: 131,
+                                                            lineNumber: 108,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 127,
+                                                    lineNumber: 104,
                                                     columnNumber: 49
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                lineNumber: 107,
+                                                lineNumber: 84,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                 className: "px-6 py-4 whitespace-nowrap",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: `px-2.5 py-1 rounded-lg text-xs font-bold border border-current/10 ${getActionColor(log.action)}`,
+                                                    className: `px-2.5 py-1 rounded-lg text-[11px] font-bold border border-current/10 ${getActionColor(log.action)}`,
                                                     children: log.action
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 136,
+                                                    lineNumber: 113,
                                                     columnNumber: 45
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                lineNumber: 135,
+                                                lineNumber: 112,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                className: "px-6 py-4 text-sm text-gray-600 max-w-xs truncate",
+                                                className: "px-6 py-4 text-[13px] text-gray-600 max-w-xs truncate font-medium",
                                                 title: log.details,
                                                 children: log.details
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                lineNumber: 140,
+                                                lineNumber: 117,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, log.id, true, {
                                         fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                        lineNumber: 102,
+                                        lineNumber: 79,
                                         columnNumber: 37
                                     }, ("TURBOPACK compile-time value", void 0))) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         colSpan: 4,
-                                        className: "px-6 py-12 text-center text-gray-400",
+                                        className: "px-6 py-20 text-center text-gray-400",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex flex-col items-center justify-center gap-3",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__["Activity"], {
-                                                    size: 48,
-                                                    className: "text-gray-200"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-2",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__["Activity"], {
+                                                        size: 32,
+                                                        className: "text-gray-200"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
+                                                        lineNumber: 127,
+                                                        columnNumber: 49
+                                                    }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 149,
+                                                    lineNumber: 126,
                                                     columnNumber: 45
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    children: "ยังไม่มีประวัติการใช้งาน"
+                                                    className: "font-bold text-gray-400 italic",
+                                                    children: "ยังไม่มีประวัติการใช้งานในขณะนี้"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                                    lineNumber: 150,
+                                                    lineNumber: 129,
                                                     columnNumber: 45
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                            lineNumber: 148,
+                                            lineNumber: 125,
                                             columnNumber: 41
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                        lineNumber: 147,
+                                        lineNumber: 124,
                                         columnNumber: 37
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                    lineNumber: 146,
+                                    lineNumber: 123,
                                     columnNumber: 33
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                                lineNumber: 90,
+                                lineNumber: 76,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                        lineNumber: 81,
+                        lineNumber: 67,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                    lineNumber: 80,
+                    lineNumber: 66,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-                lineNumber: 79,
+                lineNumber: 65,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/features/SettingsActivityLogs.tsx",
-        lineNumber: 63,
+        lineNumber: 49,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(SettingsActivityLogs, "lYx/TOoNu7KeE6EXJa8Z4htpyYA=");
+_s(SettingsActivityLogs, "jJwbhdf39wwr6ZGMhN7sfyh4f3E=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useBudget"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$QueryClientProvider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQueryClient"]
+    ];
+});
 _c = SettingsActivityLogs;
 const __TURBOPACK__default__export__ = SettingsActivityLogs;
 var _c;
@@ -5463,13 +5492,23 @@ const SettingsAppearance = ()=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-6",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+            className: "rounded-[24px] shadow-sm border border-gray-100 overflow-hidden",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                    className: "bg-gray-50/50 border-b border-gray-100 p-6 md:p-8",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
-                        className: "flex items-center gap-2",
+                        className: "text-xl font-extrabold text-gray-900 flex items-center gap-3 tracking-tight",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$palette$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Palette$3e$__["Palette"], {
-                                className: "h-5 w-5 text-primary-600"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "p-2.5 bg-purple-50 text-purple-600 rounded-xl",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$palette$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Palette$3e$__["Palette"], {
+                                    size: 20,
+                                    className: "stroke-[2.5px]"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/features/SettingsAppearance.tsx",
+                                    lineNumber: 27,
+                                    columnNumber: 88
+                                }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsAppearance.tsx",
                                 lineNumber: 27,
@@ -5488,13 +5527,14 @@ const SettingsAppearance = ()=>{
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                    className: "p-6 md:p-8",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-4",
+                        className: "space-y-6",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                        className: "text-sm font-medium text-gray-700 block mb-3",
+                                        className: "text-sm font-bold text-gray-700 block mb-4",
                                         children: "ธีมสีของระบบ (Color Theme)"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsAppearance.tsx",
@@ -5502,13 +5542,13 @@ const SettingsAppearance = ()=>{
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex flex-wrap gap-4",
+                                        className: "flex flex-wrap gap-5",
                                         children: themes.map((theme)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 onClick: ()=>handleThemeChange(theme.id),
                                                 className: `
-                      group relative w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-200
-                      ${currentTheme === theme.id ? 'ring-4 ring-offset-2 ring-primary-300 scale-105 shadow-lg' : 'hover:scale-105 hover:shadow-md'}
-                    `,
+                                            group relative w-[72px] h-[72px] rounded-[24px] flex items-center justify-center transition-all duration-300
+                                            ${currentTheme === theme.id ? 'ring-[6px] ring-offset-2 ring-primary-100 scale-[1.05] shadow-lg' : 'hover:scale-[1.05] hover:shadow-md'}
+                                        `,
                                                 style: {
                                                     backgroundColor: theme.color
                                                 },
@@ -5522,7 +5562,7 @@ const SettingsAppearance = ()=>{
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "absolute -bottom-8 text-xs font-semibold text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity",
+                                                        className: "absolute -bottom-8 text-xs font-bold text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity",
                                                         children: theme.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/SettingsAppearance.tsx",
@@ -5547,10 +5587,10 @@ const SettingsAppearance = ()=>{
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "mt-8 pt-6 border-t border-gray-100",
+                                className: "mt-8 pt-6 border-t border-gray-100 bg-gray-50/50 -mx-6 md:-mx-8 px-6 md:px-8 -mb-6 md:-mb-8 pb-6 md:pb-8",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-sm text-gray-500",
-                                    children: "การเปลี่ยนธีมสีจะส่งผลต่อปุ่ม, แถบสถานะ, และองค์ประกอบหลักอื่นๆ ของระบบ"
+                                    className: "text-sm text-gray-500 font-medium",
+                                    children: "การเปลี่ยนธีมสีจำแนกตามสีเพื่อให้สามารถเปลี่ยนสีปุ่ม, แถบสถานะ, และองค์ประกอบหลักอื่นๆ ของระบบได้อย่างสวยงาม"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/SettingsAppearance.tsx",
                                     lineNumber: 61,
@@ -5791,10 +5831,10 @@ const SettingsPermissions = ()=>{
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                className: "text-xl font-bold text-gray-900 flex items-center gap-2",
+                                className: "text-xl font-extrabold text-gray-900 flex items-center gap-2 tracking-tight",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__["Shield"], {
-                                        className: "text-primary-600",
+                                        className: "text-[#0066B3] stroke-[2.5px]",
                                         size: 24
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/SettingsPermissions.tsx",
@@ -5809,7 +5849,7 @@ const SettingsPermissions = ()=>{
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-gray-500 text-sm mt-1",
+                                className: "text-gray-500 text-sm mt-1.5 font-medium",
                                 children: "ตั้งค่าสิทธิ์การเข้าถึงเมนูและการทำงานต่างๆ ของแต่ละ Role"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsPermissions.tsx",
@@ -5824,7 +5864,7 @@ const SettingsPermissions = ()=>{
                     }, ("TURBOPACK compile-time value", void 0)),
                     isDirty && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         onClick: handleSave,
-                        className: "w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 border-none shadow-lg hover:shadow-xl active:scale-95 animate-pulse",
+                        className: "w-full md:w-auto bg-gradient-to-r from-[#00A1E4] to-[#0066B3] border-none shadow-md hover:shadow-lg rounded-[16px] font-bold py-2.5 active:scale-95 animate-pulse",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
                                 size: 18,
@@ -5848,7 +5888,7 @@ const SettingsPermissions = ()=>{
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden",
+                className: "bg-white rounded-[24px] shadow-sm hover:shadow-card transition-shadow duration-300 border border-gray-100 overflow-hidden",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "overflow-x-auto",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
@@ -5937,7 +5977,7 @@ const SettingsPermissions = ()=>{
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                         onClick: ()=>togglePermission(role.role, perm.id),
                                                         disabled: isAdmin,
-                                                        className: `w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${isAdmin ? 'bg-indigo-50 text-indigo-400 cursor-not-allowed opacity-50' : isEnabled ? 'bg-primary-100 text-primary-600 shadow-sm hover:scale-110 hover:shadow-md' : 'bg-gray-100 text-gray-300 hover:bg-gray-200 hover:text-gray-400'}`,
+                                                        className: `w-8 h-8 rounded-[10px] flex items-center justify-center transition-all duration-300 ${isAdmin ? 'bg-indigo-50 text-indigo-400 cursor-not-allowed opacity-50' : isEnabled ? 'bg-[#00A1E4]/10 text-[#0066B3] shadow-sm hover:scale-110' : 'bg-gray-50 text-gray-300 hover:bg-gray-100 hover:text-gray-500'}`,
                                                         children: isEnabled || isAdmin ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {
                                                             size: 18,
                                                             strokeWidth: 3
@@ -5946,7 +5986,8 @@ const SettingsPermissions = ()=>{
                                                             lineNumber: 161,
                                                             columnNumber: 77
                                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
-                                                            size: 18
+                                                            size: 18,
+                                                            strokeWidth: 2.5
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/SettingsPermissions.tsx",
                                                             lineNumber: 161,
@@ -5991,10 +6032,10 @@ const SettingsPermissions = ()=>{
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-start gap-3",
+                className: "bg-gradient-to-br from-blue-50 to-[#F0F4F8] border border-blue-100/50 rounded-[20px] p-5 flex items-start gap-4 shadow-sm",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
-                        className: "text-blue-600 shrink-0 mt-0.5",
+                        className: "text-[#0066B3] shrink-0 mt-0.5 stroke-[2px]",
                         size: 20
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/SettingsPermissions.tsx",
@@ -6004,7 +6045,7 @@ const SettingsPermissions = ()=>{
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                className: "font-bold text-blue-800 text-sm",
+                                className: "font-bold text-[#005191] text-sm tracking-wide",
                                 children: "หมายเหตุ"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/SettingsPermissions.tsx",
@@ -6012,7 +6053,7 @@ const SettingsPermissions = ()=>{
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-blue-600 text-xs mt-1",
+                                className: "text-[#0066B3]/80 text-xs mt-1.5 leading-relaxed font-medium",
                                 children: [
                                     "- ",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
@@ -6096,7 +6137,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$history$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__History$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/history.js [app-client] (ecmascript) <export default as History>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$palette$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Palette$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/palette.js [app-client] (ecmascript) <export default as Palette>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shield.js [app-client] (ecmascript) <export default as Shield>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/Card.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsPermissions$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/features/SettingsPermissions.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
@@ -6114,17 +6154,17 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-;
 const Settings = ()=>{
     _s();
     const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useBudget"])();
     const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(user?.role === 'user' ? 'profile' : 'profile'); // Default to profile for safety, can be smarter if needed
+    const userRole = user?.role?.toLowerCase() || '';
     const menuItems = [
         ...[
             'admin',
             'manager',
             'finance'
-        ].includes(user?.role || '') ? [
+        ].includes(userRole) ? [
             {
                 id: 'general',
                 label: 'ข้อมูลทั่วไป',
@@ -6132,7 +6172,7 @@ const Settings = ()=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 24,
+                    lineNumber: 26,
                     columnNumber: 56
                 }, ("TURBOPACK compile-time value", void 0))
             }
@@ -6144,7 +6184,7 @@ const Settings = ()=>{
                 size: 18
             }, void 0, false, {
                 fileName: "[project]/src/components/features/Settings.tsx",
-                lineNumber: 26,
+                lineNumber: 28,
                 columnNumber: 55
             }, ("TURBOPACK compile-time value", void 0))
         },
@@ -6155,14 +6195,14 @@ const Settings = ()=>{
                 size: 18
             }, void 0, false, {
                 fileName: "[project]/src/components/features/Settings.tsx",
-                lineNumber: 27,
+                lineNumber: 29,
                 columnNumber: 53
             }, ("TURBOPACK compile-time value", void 0))
         },
         ...[
             'admin',
             'finance'
-        ].includes(user?.role || '') ? [
+        ].includes(userRole) ? [
             {
                 id: 'policies',
                 label: 'นโยบาย',
@@ -6170,7 +6210,7 @@ const Settings = ()=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 29,
+                    lineNumber: 31,
                     columnNumber: 51
                 }, ("TURBOPACK compile-time value", void 0))
             }
@@ -6179,7 +6219,7 @@ const Settings = ()=>{
             'admin',
             'finance',
             'manager'
-        ].includes(user?.role || '') ? [
+        ].includes(userRole) ? [
             {
                 id: 'departments',
                 label: 'หน่วยงาน',
@@ -6187,12 +6227,12 @@ const Settings = ()=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 32,
+                    lineNumber: 34,
                     columnNumber: 56
                 }, ("TURBOPACK compile-time value", void 0))
             }
         ] : [],
-        ...user?.role === 'admin' ? [
+        ...userRole === 'admin' ? [
             {
                 id: 'users',
                 label: 'ผู้ใช้งาน',
@@ -6200,7 +6240,7 @@ const Settings = ()=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 35,
+                    lineNumber: 37,
                     columnNumber: 51
                 }, ("TURBOPACK compile-time value", void 0))
             },
@@ -6211,7 +6251,7 @@ const Settings = ()=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 36,
+                    lineNumber: 38,
                     columnNumber: 63
                 }, ("TURBOPACK compile-time value", void 0))
             }
@@ -6221,7 +6261,7 @@ const Settings = ()=>{
             'finance',
             'manager',
             'approver'
-        ].includes(user?.role || '') ? [
+        ].includes(userRole) ? [
             {
                 id: 'notifications',
                 label: 'แจ้งเตือน',
@@ -6229,7 +6269,7 @@ const Settings = ()=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 39,
+                    lineNumber: 41,
                     columnNumber: 59
                 }, ("TURBOPACK compile-time value", void 0))
             },
@@ -6240,12 +6280,12 @@ const Settings = ()=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 40,
+                    lineNumber: 42,
                     columnNumber: 61
                 }, ("TURBOPACK compile-time value", void 0))
             }
         ] : [],
-        ...user?.role === 'admin' ? [
+        ...userRole === 'admin' ? [
             {
                 id: 'backup',
                 label: 'สำรองข้อมูล',
@@ -6253,7 +6293,7 @@ const Settings = ()=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 43,
+                    lineNumber: 45,
                     columnNumber: 54
                 }, ("TURBOPACK compile-time value", void 0))
             }
@@ -6267,129 +6307,135 @@ const Settings = ()=>{
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                         className: "text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight mb-2",
-                        children: "ตั้งค่าระบบ"
-                    }, void 0, false, {
+                        children: [
+                            "ตั้งค่าระบบ ",
+                            userRole === 'admin' ? '(Admin)' : ''
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/components/features/Settings.tsx",
-                        lineNumber: 50,
+                        lineNumber: 52,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-gray-500 text-sm md:text-lg mb-6",
-                        children: "จัดการข้อมูลพื้นฐานและการตั้งค่าต่างๆ ของระบบ"
-                    }, void 0, false, {
+                        children: [
+                            "จัดการข้อมูลพื้นฐานและการตั้งค่าต่างๆ ของระบบ | Role: ",
+                            userRole || 'none'
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/components/features/Settings.tsx",
-                        lineNumber: 51,
+                        lineNumber: 53,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "bg-white rounded-2xl p-2 shadow-sm border border-gray-100 overflow-x-auto scrollbar-hide",
+                        className: "bg-white rounded-[24px] p-2 md:p-3 shadow-sm border border-gray-100",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex gap-1 min-w-max",
+                            className: "flex flex-wrap gap-2",
                             children: menuItems.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     onClick: ()=>setActiveTab(item.id),
-                                    className: `flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap ${activeTab === item.id ? 'bg-gradient-to-r from-primary-600 to-indigo-600 text-white shadow-md shadow-primary-200 scale-100' : 'text-gray-500 hover:bg-gray-50 hover:text-primary-600 scale-95 hover:scale-100'}`,
+                                    className: `flex items-center gap-2.5 px-6 py-3 rounded-[16px] text-[15px] font-bold transition-all duration-300 whitespace-nowrap ${activeTab === item.id ? 'bg-gradient-to-r from-[#00A1E4] to-[#0066B3] text-white shadow-md scale-100' : 'text-gray-500 hover:bg-gray-50 hover:text-[#0066B3] scale-[0.98] hover:scale-100'}`,
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: activeTab === item.id ? 'text-white' : 'opacity-70',
+                                            className: activeTab === item.id ? 'text-white' : 'opacity-70 group-hover:opacity-100 transition-opacity',
                                             children: item.icon
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/Settings.tsx",
-                                            lineNumber: 65,
+                                            lineNumber: 67,
                                             columnNumber: 25
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         item.label
                                     ]
                                 }, item.id, true, {
                                     fileName: "[project]/src/components/features/Settings.tsx",
-                                    lineNumber: 57,
+                                    lineNumber: 59,
                                     columnNumber: 22
                                 }, ("TURBOPACK compile-time value", void 0)))
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 55,
+                            lineNumber: 57,
                             columnNumber: 16
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/Settings.tsx",
-                        lineNumber: 54,
+                        lineNumber: 56,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/Settings.tsx",
-                lineNumber: 49,
+                lineNumber: 51,
                 columnNumber: 10
             }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "shadow-xl shadow-gray-100/50 min-h-[600px] overflow-hidden relative border-gray-100",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "bg-white rounded-[24px] shadow-card min-h-[600px] overflow-hidden relative border border-gray-100 p-6 md:p-8",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
                     className: "w-full",
                     children: [
                         activeTab === 'general' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsGeneral$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 79,
+                            lineNumber: 81,
                             columnNumber: 44
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'profile' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsProfile$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 82,
+                            lineNumber: 84,
                             columnNumber: 44
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'appearance' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsAppearance$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 85,
+                            lineNumber: 87,
                             columnNumber: 47
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'policies' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsPolicies$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 88,
+                            lineNumber: 90,
                             columnNumber: 45
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'departments' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsDepartments$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 91,
+                            lineNumber: 93,
                             columnNumber: 48
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'users' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsUsers$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 94,
+                            lineNumber: 96,
                             columnNumber: 42
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'notifications' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsNotifications$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 97,
+                            lineNumber: 99,
                             columnNumber: 50
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'backup' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsBackup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 100,
+                            lineNumber: 102,
                             columnNumber: 43
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'activity' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsActivityLogs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 103,
+                            lineNumber: 105,
                             columnNumber: 45
                         }, ("TURBOPACK compile-time value", void 0)),
                         activeTab === 'permissions' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$features$2f$SettingsPermissions$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/features/Settings.tsx",
-                            lineNumber: 107,
+                            lineNumber: 109,
                             columnNumber: 48
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/Settings.tsx",
-                    lineNumber: 77,
+                    lineNumber: 79,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/features/Settings.tsx",
-                lineNumber: 75,
+                lineNumber: 77,
                 columnNumber: 10
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/features/Settings.tsx",
-        lineNumber: 48,
+        lineNumber: 50,
         columnNumber: 7
     }, ("TURBOPACK compile-time value", void 0));
 };

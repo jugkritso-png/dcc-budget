@@ -38,151 +38,123 @@ const StatCard = ({ title, value, icon: Icon, trend, type = 'primary', prefix = 
     const isPositive = (trend ?? 0) >= 0;
     const displayValue = typeof value === 'number' ? value.toLocaleString() : value;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "p-5 transition-all duration-200",
-        style: {
-            background: 'var(--surface-card)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-sm)'
-        },
-        onMouseEnter: (e)=>{
-            e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-            e.currentTarget.style.borderColor = 'var(--color-primary-200)';
-        },
-        onMouseLeave: (e)=>{
-            e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
-            e.currentTarget.style.borderColor = 'var(--border-default)';
-        },
+        className: "p-6 transition-all duration-300 bg-white border border-gray-100 rounded-[20px] shadow-sm hover:shadow-md hover:-translate-y-1",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-start justify-between mb-4",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-[11px] font-semibold uppercase tracking-wider",
-                        style: {
-                            color: 'var(--text-tertiary)'
-                        },
+                        className: "text-[14px] font-bold text-gray-500",
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/src/components/shared/StatCard.tsx",
-                        lineNumber: 49,
+                        lineNumber: 35,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0",
+                        className: "w-12 h-12 rounded-[16px] flex items-center justify-center flex-shrink-0",
                         style: {
                             background: styles.iconBg
                         },
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                            className: "w-4 h-4",
+                            className: "w-6 h-6",
                             strokeWidth: 2,
                             style: {
                                 color: styles.iconColor
                             }
                         }, void 0, false, {
                             fileName: "[project]/src/components/shared/StatCard.tsx",
-                            lineNumber: 55,
+                            lineNumber: 40,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/shared/StatCard.tsx",
-                        lineNumber: 53,
+                        lineNumber: 38,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/shared/StatCard.tsx",
-                lineNumber: 48,
+                lineNumber: 34,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-baseline gap-1",
+                className: "flex items-end gap-1.5 mt-2",
                 children: [
                     prefix && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-sm font-semibold",
-                        style: {
-                            color: 'var(--text-secondary)'
-                        },
+                        className: "text-sm font-semibold text-gray-400 mb-1",
                         children: prefix
                     }, void 0, false, {
                         fileName: "[project]/src/components/shared/StatCard.tsx",
-                        lineNumber: 62,
+                        lineNumber: 47,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-2xl font-bold tracking-tight",
+                        className: "text-[32px] font-extrabold tracking-tight text-gray-900 leading-none",
                         style: {
-                            color: 'var(--text-primary)',
                             fontFamily: 'Inter, sans-serif'
                         },
                         children: displayValue
                     }, void 0, false, {
                         fileName: "[project]/src/components/shared/StatCard.tsx",
-                        lineNumber: 64,
+                        lineNumber: 49,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     suffix && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-sm font-medium",
-                        style: {
-                            color: 'var(--text-tertiary)'
-                        },
+                        className: "text-sm font-semibold text-gray-500 mb-1",
                         children: suffix
                     }, void 0, false, {
                         fileName: "[project]/src/components/shared/StatCard.tsx",
-                        lineNumber: 68,
+                        lineNumber: 53,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/shared/StatCard.tsx",
-                lineNumber: 60,
+                lineNumber: 45,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             trend !== undefined && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-1.5 mt-3",
+                className: "flex items-center gap-2 mt-4 pt-4 border-t border-gray-50",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-center gap-0.5 text-[11px] font-semibold",
-                        style: {
-                            color: isPositive ? 'var(--accent-green)' : 'var(--accent-red)'
-                        },
+                        className: `flex items-center gap-1 text-[13px] font-bold px-2 py-0.5 rounded-full ${isPositive ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`,
                         children: [
                             isPositive ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUp$3e$__["TrendingUp"], {
-                                className: "w-3 h-3"
+                                className: "w-3.5 h-3.5",
+                                strokeWidth: 2.5
                             }, void 0, false, {
                                 fileName: "[project]/src/components/shared/StatCard.tsx",
-                                lineNumber: 77,
+                                lineNumber: 61,
                                 columnNumber: 27
                             }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingDown$3e$__["TrendingDown"], {
-                                className: "w-3 h-3"
+                                className: "w-3.5 h-3.5",
+                                strokeWidth: 2.5
                             }, void 0, false, {
                                 fileName: "[project]/src/components/shared/StatCard.tsx",
-                                lineNumber: 77,
-                                columnNumber: 64
+                                lineNumber: 61,
+                                columnNumber: 86
                             }, ("TURBOPACK compile-time value", void 0)),
                             Math.abs(trend).toFixed(1),
                             "%"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/shared/StatCard.tsx",
-                        lineNumber: 75,
+                        lineNumber: 60,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-[11px]",
-                        style: {
-                            color: 'var(--text-tertiary)'
-                        },
-                        children: "จากเดือนก่อน"
+                        className: "text-[12px] font-medium text-gray-400",
+                        children: "เทียบกับเดือนที่แล้ว"
                     }, void 0, false, {
                         fileName: "[project]/src/components/shared/StatCard.tsx",
-                        lineNumber: 80,
+                        lineNumber: 64,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/shared/StatCard.tsx",
-                lineNumber: 74,
+                lineNumber: 59,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
@@ -460,6 +432,98 @@ const generateBudgetReport = (data)=>{
             ]
         }
     });
+    // --- Detailed Transactions & Approval History ---
+    if (data.requests && data.requests.length > 0) {
+        doc.addPage();
+        yPos = 20;
+        doc.setFontSize(14);
+        doc.setTextColor(0);
+        doc.text('4. Detailed Budget Transactions', margin, yPos);
+        const requestRows = data.requests.map((req)=>{
+            const logs = data.approvalLogs?.filter((l)=>l.requestId === req.id) || [];
+            const history = logs.map((l)=>`${l.stage}: ${l.action === 'approve' ? 'Approved' : 'Rejected'} by ${l.user?.name || 'User'}`).join('\n');
+            return [
+                req.project,
+                req.category,
+                `THB ${req.amount.toLocaleString()}`,
+                req.status,
+                history || 'No history'
+            ];
+        });
+        (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$jspdf$2d$autotable$2f$dist$2f$jspdf$2e$plugin$2e$autotable$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])(doc, {
+            startY: yPos + 6,
+            head: [
+                [
+                    'Project/Activity',
+                    'Category',
+                    'Amount',
+                    'Status',
+                    'Approval history'
+                ]
+            ],
+            body: requestRows,
+            theme: 'grid',
+            headStyles: {
+                fillColor: [
+                    44,
+                    62,
+                    80
+                ]
+            },
+            styles: {
+                fontSize: 8,
+                cellPadding: 3,
+                cellWidth: 'wrap'
+            },
+            columnStyles: {
+                4: {
+                    cellWidth: 60
+                } // History column width
+            }
+        });
+        // --- SAP Mapping Table ---
+        // @ts-ignore
+        yPos = doc.lastAutoTable.finalY + 20;
+        if (yPos > 240) {
+            doc.addPage();
+            yPos = 20;
+        }
+        doc.setFontSize(14);
+        doc.text('5. SAP Account Assignment Mapping', margin, yPos);
+        const sapRows = data.categoryData.map((c)=>[
+                c.name,
+                '1000',
+                c.costCenter || '-',
+                c.fund || '-',
+                c.functionalArea || '-',
+                c.commitmentItem || '-'
+            ]);
+        (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$jspdf$2d$autotable$2f$dist$2f$jspdf$2e$plugin$2e$autotable$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])(doc, {
+            startY: yPos + 6,
+            head: [
+                [
+                    'Category',
+                    'BP',
+                    'Cost Center',
+                    'Fund',
+                    'Func. Area',
+                    'Commit. Item'
+                ]
+            ],
+            body: sapRows,
+            theme: 'striped',
+            headStyles: {
+                fillColor: [
+                    142,
+                    68,
+                    173
+                ]
+            },
+            styles: {
+                fontSize: 8
+            }
+        });
+    }
     // --- Footer ---
     const pageCount = doc.internal.pages.length - 1;
     for(let i = 1; i <= pageCount; i++){
@@ -597,6 +661,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file-text.js [app-ssr] (ecmascript) <export default as FileText>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calculator$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Calculator$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calculator.js [app-ssr] (ecmascript) <export default as Calculator>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$download$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Download$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/download.js [app-ssr] (ecmascript) <export default as Download>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$database$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Database$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/database.js [app-ssr] (ecmascript) <export default as Database>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layers$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Layers$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/layers.js [app-ssr] (ecmascript) <export default as Layers>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$reportService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/reportService.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/Button.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$useChartDimensions$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/hooks/useChartDimensions.ts [app-ssr] (ecmascript)");
@@ -609,7 +675,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$useChartDime
 ;
 ;
 const AnalyticsDashboard = ()=>{
-    const { requests, categories, settings } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useBudget"])();
+    const { requests, categories, settings, getAllApprovalLogs } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useBudget"])();
     const { ref: barRef, dimensions: barDim } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$useChartDimensions$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useChartDimensions"])();
     const { ref: areaRef, dimensions: areaDim } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$useChartDimensions$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useChartDimensions"])();
     // 1. Calculate Monthly Spending (Actual) vs Planned (Avg)
@@ -658,15 +724,24 @@ const AnalyticsDashboard = ()=>{
             actual: val.actual
         }));
     // 2. Category Breakdown
-    const categoryData = categories.filter((c)=>c.used > 0).sort((a, b)=>b.used - a.used).slice(0, 4).map((c)=>({
+    const categoryData = categories.filter((c)=>c.used > 0).sort((a, b)=>b.used - a.used).slice(0, 6).map((c)=>({
             name: c.name,
             amount: c.used,
-            totalAllocated: c.allocated
+            totalAllocated: c.allocated,
+            code: c.code,
+            costCenter: c.costCenter,
+            fund: c.fund,
+            functionalArea: c.functionalArea
         }));
     // 3. KPI Stats
     const totalUsed = categories.reduce((sum, cat)=>sum + cat.used, 0);
     const utilizationRate = totalAllocated > 0 ? totalUsed / totalAllocated * 100 : 0;
     const totalRemaining = totalAllocated - totalUsed;
+    // 4. SAP Specifics: Internal vs External
+    const internalBudget = categories.filter((c)=>c.fund === 'I').reduce((sum, c)=>sum + c.allocated, 0);
+    const externalBudget = categories.filter((c)=>c.fund === 'E').reduce((sum, c)=>sum + c.allocated, 0);
+    const internalUsed = categories.filter((c)=>c.fund === 'I').reduce((sum, c)=>sum + c.used, 0);
+    const externalUsed = categories.filter((c)=>c.fund === 'E').reduce((sum, c)=>sum + c.used, 0);
     // Avg per approved request
     const approvedRequests = requests.filter((r)=>r.status === 'approved');
     const avgPerRequest = approvedRequests.length > 0 ? totalUsed / approvedRequests.length : 0;
@@ -684,11 +759,13 @@ const AnalyticsDashboard = ()=>{
         'Aug',
         'Sep'
     ];
-    const handleExport = ()=>{
+    const handleExport = async ()=>{
+        // Fetch all logs for the detailed report
+        const allLogs = await getAllApprovalLogs();
         // Map data for report
         const reportMonthly = chartData.map((d, index)=>({
                 ...d,
-                name: engMonths[index] || d.name // Fallback to Thai (which might break) if index mismatch, but mapped is safer
+                name: engMonths[index] || d.name
             }));
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$reportService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["generateBudgetReport"])({
             orgName: settings.orgName,
@@ -700,9 +777,20 @@ const AnalyticsDashboard = ()=>{
                 utilizationRate
             },
             monthlyData: reportMonthly,
-            categoryData: categoryData.map((c)=>({
-                    ...c
-                }))
+            categoryData: categories.map((c)=>({
+                    name: c.name,
+                    amount: c.used,
+                    totalAllocated: c.allocated,
+                    costCenter: c.costCenter,
+                    fund: c.fund,
+                    functionalArea: c.functionalArea,
+                    commitmentItem: c.commitmentItem
+                })),
+            requests: requests.map((r)=>({
+                    ...r,
+                    categoryData: categories.find((c)=>c.name === r.category)
+                })),
+            approvalLogs: allLogs
         });
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -712,285 +800,431 @@ const AnalyticsDashboard = ()=>{
                 className: "flex justify-end",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                     onClick: handleExport,
-                    className: "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-sm hover:shadow-md transition-all",
+                    className: "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-sm hover:shadow-md transition-all rounded-[14px] font-semibold",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$download$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Download$3e$__["Download"], {
                             size: 18,
                             className: "mr-2"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                            lineNumber: 97,
+                            lineNumber: 123,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         "Export Report (PDF)"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                    lineNumber: 96,
+                    lineNumber: 122,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                lineNumber: 95,
+                lineNumber: 121,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6",
+                className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
                         interactive: true,
-                        className: "p-5 group flex flex-col justify-between",
+                        className: "p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex justify-between items-start mb-3",
+                                className: "flex justify-between items-start mb-2",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors",
+                                    className: "p-1.5 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$percent$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Percent$3e$__["Percent"], {
-                                        size: 20,
+                                        size: 18,
                                         className: "text-primary-600"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 106,
+                                        lineNumber: 132,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                    lineNumber: 105,
+                                    lineNumber: 131,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 104,
+                                lineNumber: 130,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-2xl font-bold text-gray-800 tracking-tight",
+                                        className: "text-[22px] font-extrabold text-gray-900 tracking-tight leading-none",
                                         children: [
                                             utilizationRate.toFixed(1),
                                             "%"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 110,
+                                        lineNumber: 136,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs text-gray-400 font-medium mt-1",
-                                        children: "อัตราการเบิกจ่ายรวม"
+                                        className: "text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1",
+                                        children: "เบิกจ่ายรวม"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 111,
+                                        lineNumber: 137,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 109,
+                                lineNumber: 135,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                        lineNumber: 103,
+                        lineNumber: 129,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
                         interactive: true,
-                        className: "p-5 group flex flex-col justify-between",
+                        className: "p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex justify-between items-start mb-3",
+                                className: "flex justify-between items-start mb-2",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-2 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition-colors",
+                                    className: "p-1.5 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition-colors",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calculator$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Calculator$3e$__["Calculator"], {
-                                        size: 20,
+                                        size: 18,
                                         className: "text-orange-600"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 118,
+                                        lineNumber: 144,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                    lineNumber: 117,
+                                    lineNumber: 143,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 116,
+                                lineNumber: 142,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-2xl font-bold text-gray-800 tracking-tight",
+                                        className: "text-[22px] font-extrabold text-gray-900 tracking-tight leading-none",
                                         children: [
                                             "฿",
-                                            avgPerRequest > 1000000 ? (avgPerRequest / 1000000).toFixed(2) + 'M' : (avgPerRequest / 1000).toFixed(1) + 'K'
+                                            avgPerRequest > 1000000 ? (avgPerRequest / 1000000).toFixed(1) + 'M' : (avgPerRequest / 1000).toFixed(0) + 'K'
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 148,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs text-gray-400 font-medium mt-1",
-                                        children: "งบเฉลี่ยต่อโครงการ"
+                                        className: "text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1",
+                                        children: "เฉลี่ยต่อโครงการ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 123,
+                                        lineNumber: 149,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 121,
+                                lineNumber: 147,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                        lineNumber: 115,
+                        lineNumber: 141,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
                         interactive: true,
-                        className: "p-5 group flex flex-col justify-between",
+                        className: "p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex justify-between items-start mb-3",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wallet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wallet$3e$__["Wallet"], {
-                                        size: 20,
-                                        className: "text-primary-600"
+                                className: "flex justify-between items-start mb-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "p-1.5 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$database$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Database$3e$__["Database"], {
+                                            size: 18,
+                                            className: "text-indigo-600"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                            lineNumber: 156,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 130,
-                                        columnNumber: 29
+                                        lineNumber: 155,
+                                        columnNumber: 25
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    internalBudget > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md",
+                                        children: [
+                                            (internalUsed / internalBudget * 100).toFixed(0),
+                                            "%"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                        lineNumber: 158,
+                                        columnNumber: 48
                                     }, ("TURBOPACK compile-time value", void 0))
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                    lineNumber: 129,
-                                    columnNumber: 25
-                                }, ("TURBOPACK compile-time value", void 0))
-                            }, void 0, false, {
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 128,
+                                lineNumber: 154,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-2xl font-bold text-primary-600 tracking-tight",
+                                        className: "text-[22px] font-bold text-gray-900 tracking-tight leading-none",
                                         children: [
                                             "฿",
-                                            totalRemaining > 1000000 ? (totalRemaining / 1000000).toFixed(2) + 'M' : (totalRemaining / 1000).toFixed(0) + 'K'
+                                            (internalBudget / 1000000).toFixed(1),
+                                            "M"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 134,
+                                        lineNumber: 161,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs text-gray-400 font-medium mt-1",
+                                        className: "text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1",
+                                        children: "งบภายใน (Internal)"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                        lineNumber: 162,
+                                        columnNumber: 25
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                lineNumber: 160,
+                                columnNumber: 21
+                            }, ("TURBOPACK compile-time value", void 0))
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                        lineNumber: 153,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
+                        interactive: true,
+                        className: "p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between items-start mb-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "p-1.5 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layers$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Layers$3e$__["Layers"], {
+                                            size: 18,
+                                            className: "text-amber-600"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                            lineNumber: 169,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                        lineNumber: 168,
+                                        columnNumber: 25
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    externalBudget > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md",
+                                        children: [
+                                            (externalUsed / externalBudget * 100).toFixed(0),
+                                            "%"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                        lineNumber: 171,
+                                        columnNumber: 48
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                lineNumber: 167,
+                                columnNumber: 21
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-[22px] font-bold text-gray-900 tracking-tight leading-none",
+                                        children: [
+                                            "฿",
+                                            (externalBudget / 1000000).toFixed(1),
+                                            "M"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                        lineNumber: 174,
+                                        columnNumber: 25
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1",
+                                        children: "งบภายนอก (External)"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                        lineNumber: 175,
+                                        columnNumber: 25
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                lineNumber: 173,
+                                columnNumber: 21
+                            }, ("TURBOPACK compile-time value", void 0))
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                        lineNumber: 166,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
+                        interactive: true,
+                        className: "p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between items-start mb-2",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "p-1.5 bg-emerald-50 rounded-lg group-hover:bg-emerald-100 transition-colors",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wallet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wallet$3e$__["Wallet"], {
+                                        size: 18,
+                                        className: "text-emerald-600"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                        lineNumber: 182,
+                                        columnNumber: 29
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                    lineNumber: 181,
+                                    columnNumber: 25
+                                }, ("TURBOPACK compile-time value", void 0))
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                lineNumber: 180,
+                                columnNumber: 21
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-[22px] font-extrabold text-emerald-600 tracking-tight leading-none",
+                                        children: [
+                                            "฿",
+                                            totalRemaining > 1000000 ? (totalRemaining / 1000000).toFixed(1) + 'M' : (totalRemaining / 1000).toFixed(0) + 'K'
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                        lineNumber: 186,
+                                        columnNumber: 25
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1",
                                         children: "งบประมาณคงเหลือ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 135,
+                                        lineNumber: 187,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 133,
+                                lineNumber: 185,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                        lineNumber: 127,
+                        lineNumber: 179,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
                         interactive: true,
-                        className: "p-5 group flex flex-col justify-between",
+                        className: "p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex justify-between items-start mb-3",
+                                className: "flex justify-between items-start mb-2",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors",
+                                    className: "p-1.5 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"], {
-                                        size: 20,
-                                        className: "text-primary-600"
+                                        size: 18,
+                                        className: "text-blue-600"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 142,
+                                        lineNumber: 194,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                    lineNumber: 141,
+                                    lineNumber: 193,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 140,
+                                lineNumber: 192,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-2xl font-bold text-gray-800 tracking-tight",
+                                        className: "text-[22px] font-extrabold text-gray-900 tracking-tight leading-none",
                                         children: approvedRequests.length
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 146,
+                                        lineNumber: 198,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs text-gray-400 font-medium mt-1",
-                                        children: "จำนวนโครงการอนุมัติ"
+                                        className: "text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1",
+                                        children: "โครงการอนุมัติ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 147,
+                                        lineNumber: 199,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 145,
+                                lineNumber: 197,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                        lineNumber: 139,
+                        lineNumber: 191,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                lineNumber: 102,
+                lineNumber: 128,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "grid grid-cols-1 lg:grid-cols-2 gap-6",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
-                        className: "p-8 border-gray-100/60 min-w-0",
+                        className: "p-8 border-gray-100/60 min-w-0 rounded-[24px] shadow-sm",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "mb-6",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        className: "text-xl font-bold text-gray-800",
+                                        className: "text-[22px] font-extrabold text-gray-900 tracking-tight",
                                         children: "เปรียบเทียบแผน vs ผลจริง"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 156,
+                                        lineNumber: 208,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -998,13 +1232,13 @@ const AnalyticsDashboard = ()=>{
                                         children: "แสดงการเปรียบเทียบงบเฉลี่ยรายเดือนกับการใช้จริง"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 157,
+                                        lineNumber: 209,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 155,
+                                lineNumber: 207,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1034,7 +1268,7 @@ const AnalyticsDashboard = ()=>{
                                                 stroke: "#F3F4F6"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 167,
+                                                lineNumber: 219,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["XAxis"], {
@@ -1049,7 +1283,7 @@ const AnalyticsDashboard = ()=>{
                                                 dy: 10
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 168,
+                                                lineNumber: 220,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["YAxis"], {
@@ -1061,7 +1295,7 @@ const AnalyticsDashboard = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 169,
+                                                lineNumber: 221,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tooltip"], {
@@ -1081,7 +1315,7 @@ const AnalyticsDashboard = ()=>{
                                                 formatter: (value)=>`฿${(value || 0).toLocaleString()}`
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 170,
+                                                lineNumber: 222,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Legend$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Legend"], {
@@ -1091,7 +1325,7 @@ const AnalyticsDashboard = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 176,
+                                                lineNumber: 228,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Bar"], {
@@ -1107,7 +1341,7 @@ const AnalyticsDashboard = ()=>{
                                                 barSize: 20
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 177,
+                                                lineNumber: 229,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Bar"], {
@@ -1123,43 +1357,43 @@ const AnalyticsDashboard = ()=>{
                                                 barSize: 20
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 178,
+                                                lineNumber: 230,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 162,
+                                        lineNumber: 214,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                    lineNumber: 161,
+                                    lineNumber: 213,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 159,
+                                lineNumber: 211,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                        lineNumber: 154,
+                        lineNumber: 206,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
-                        className: "p-8 border-gray-100/60 min-w-0",
+                        className: "p-8 border-gray-100/60 min-w-0 rounded-[24px] shadow-sm",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "mb-6",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        className: "text-xl font-bold text-gray-800",
+                                        className: "text-[22px] font-extrabold text-gray-900 tracking-tight",
                                         children: "แนวโน้มการใช้จ่ายสะสม"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 188,
+                                        lineNumber: 240,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1167,13 +1401,13 @@ const AnalyticsDashboard = ()=>{
                                         children: "กราฟแสดงยอดการใช้จ่ายสะสมตลอดปีงบประมาณ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 189,
+                                        lineNumber: 241,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 187,
+                                lineNumber: 239,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1210,7 +1444,7 @@ const AnalyticsDashboard = ()=>{
                                                             stopOpacity: 0.2
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                            lineNumber: 197,
+                                                            lineNumber: 249,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("stop", {
@@ -1219,18 +1453,18 @@ const AnalyticsDashboard = ()=>{
                                                             stopOpacity: 0
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                            lineNumber: 198,
+                                                            lineNumber: 250,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                    lineNumber: 196,
+                                                    lineNumber: 248,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 195,
+                                                lineNumber: 247,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["XAxis"], {
@@ -1245,7 +1479,7 @@ const AnalyticsDashboard = ()=>{
                                                 dy: 10
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 201,
+                                                lineNumber: 253,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["YAxis"], {
@@ -1257,7 +1491,7 @@ const AnalyticsDashboard = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 202,
+                                                lineNumber: 254,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CartesianGrid"], {
@@ -1266,7 +1500,7 @@ const AnalyticsDashboard = ()=>{
                                                 stroke: "#F3F4F6"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 203,
+                                                lineNumber: 255,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tooltip"], {
@@ -1284,7 +1518,7 @@ const AnalyticsDashboard = ()=>{
                                                 formatter: (value)=>`฿${(value || 0).toLocaleString()}`
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 204,
+                                                lineNumber: 256,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Area$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Area"], {
@@ -1296,151 +1530,271 @@ const AnalyticsDashboard = ()=>{
                                                 fill: "url(#colorActual)"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 209,
+                                                lineNumber: 261,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 194,
+                                        lineNumber: 246,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                    lineNumber: 193,
+                                    lineNumber: 245,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 191,
+                                lineNumber: 243,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                        lineNumber: 186,
+                        lineNumber: 238,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                lineNumber: 152,
+                lineNumber: 204,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-8 border-gray-100/60",
+                className: "p-8 border-gray-100/60 rounded-[24px] shadow-sm",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex justify-between items-center mb-8",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                            className: "text-xl font-bold text-gray-800",
+                            className: "text-[22px] font-extrabold text-gray-900 tracking-tight",
                             children: "สัดส่วนหมวดหมู่ที่มีการเบิกจ่ายสูงสุด"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                            lineNumber: 220,
+                            lineNumber: 272,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                        lineNumber: 219,
+                        lineNumber: 271,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "grid grid-cols-1 md:grid-cols-2 gap-8",
+                        className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
                         children: categoryData.length > 0 ? categoryData.map((cat, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "bg-gray-50/50 p-4 rounded-2xl border border-gray-100 hover:border-primary-200 transition-colors group",
+                                className: "bg-gray-50/50 p-6 rounded-[24px] border border-gray-100 hover:border-primary-200 transition-all group hover:shadow-lg hover:shadow-primary-100/20",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex justify-between text-sm mb-3",
+                                        className: "flex justify-between items-start mb-4",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "font-bold text-gray-700 group-hover:text-primary-700 transition-colors",
-                                                children: cat.name
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 227,
-                                                columnNumber: 33
-                                            }, ("TURBOPACK compile-time value", void 0)),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "font-bold text-gray-900 border-b-2 border-primary-100 px-1",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "min-w-0",
                                                 children: [
-                                                    "฿",
-                                                    cat.amount.toLocaleString()
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-[10px] font-bold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-md border border-primary-100 uppercase tracking-tighter mb-1 inline-block",
+                                                        children: [
+                                                            "Code: ",
+                                                            cat.code
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 280,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
+                                                        className: "font-bold text-gray-800 group-hover:text-primary-700 transition-colors truncate",
+                                                        children: cat.name
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 281,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                                lineNumber: 228,
+                                                lineNumber: 279,
+                                                columnNumber: 33
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "text-right shrink-0",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-lg font-extrabold text-gray-900",
+                                                        children: [
+                                                            "฿",
+                                                            cat.amount.toLocaleString()
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 284,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-[10px] text-gray-400 font-medium",
+                                                        children: [
+                                                            "Used of ฿",
+                                                            cat.totalAllocated.toLocaleString()
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 285,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                lineNumber: 283,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 226,
+                                        lineNumber: 278,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "w-full bg-gray-200 rounded-full h-2.5 overflow-hidden",
+                                        className: "w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-6",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "bg-gradient-to-r from-primary-500 to-primary-600 h-2.5 rounded-full transition-all duration-1000 ease-out",
+                                            className: "bg-gradient-to-r from-primary-500 to-primary-600 h-2 rounded-full transition-all duration-1000 ease-out",
                                             style: {
-                                                width: `${cat.amount / cat.totalAllocated * 100}%`
+                                                width: `${Math.min(cat.amount / cat.totalAllocated * 100, 100)}%`
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                            lineNumber: 231,
+                                            lineNumber: 290,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 230,
+                                        lineNumber: 289,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "mt-2 text-right",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: "text-[10px] text-gray-400",
-                                            children: [
-                                                "จากงบ ",
-                                                cat.totalAllocated.toLocaleString()
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                            lineNumber: 237,
-                                            columnNumber: 33
-                                        }, ("TURBOPACK compile-time value", void 0))
-                                    }, void 0, false, {
+                                        className: "grid grid-cols-2 gap-y-3 gap-x-4 pt-4 border-t border-dashed border-gray-200 opacity-60 group-hover:opacity-100 transition-opacity",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-[9px] font-bold text-gray-400 uppercase",
+                                                        children: "Cost Center"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 299,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-xs font-bold text-gray-700",
+                                                        children: cat.costCenter || '-'
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 300,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                lineNumber: 298,
+                                                columnNumber: 33
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-[9px] font-bold text-gray-400 uppercase",
+                                                        children: "Fund Source"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 303,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex items-center gap-1.5",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: `w-1.5 h-1.5 rounded-full ${cat.fund === 'I' ? 'bg-blue-500' : 'bg-orange-500'}`
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                                lineNumber: 305,
+                                                                columnNumber: 41
+                                                            }, ("TURBOPACK compile-time value", void 0)),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs font-bold text-gray-700",
+                                                                children: cat.fund === 'I' ? 'Internal' : 'External'
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                                lineNumber: 306,
+                                                                columnNumber: 41
+                                                            }, ("TURBOPACK compile-time value", void 0))
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 304,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                lineNumber: 302,
+                                                columnNumber: 33
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "col-span-2",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-[9px] font-bold text-gray-400 uppercase",
+                                                        children: "Functional Area"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 310,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-xs font-bold text-gray-700 truncate",
+                                                        children: cat.functionalArea || '-'
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                        lineNumber: 311,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
+                                                lineNumber: 309,
+                                                columnNumber: 33
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                        lineNumber: 236,
+                                        lineNumber: 297,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, idx, true, {
                                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                                lineNumber: 225,
+                                lineNumber: 277,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "col-span-2 text-center text-gray-400 py-8",
                             children: "ไม่มีข้อมูลการเบิกจ่าย"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                            lineNumber: 241,
+                            lineNumber: 316,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                        lineNumber: 223,
+                        lineNumber: 275,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-                lineNumber: 218,
+                lineNumber: 270,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/features/AnalyticsDashboard.tsx",
-        lineNumber: 93,
+        lineNumber: 119,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -1478,28 +1832,35 @@ function DashboardPage() {
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                            className: "text-3xl font-extrabold text-gray-900 tracking-tight",
-                            children: "แผงพอร์ตโฟลิโองบประมาณ"
+                            className: "text-[28px] md:text-[32px] font-extrabold text-gray-900 tracking-tight",
+                            children: "ภาพรวมงบประมาณ"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(authenticated)/dashboard/page.tsx",
                             lineNumber: 17,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-2 mt-2",
+                            className: "flex items-center gap-2 mt-2.5",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "w-2 h-2 rounded-full bg-primary-500 animate-pulse"
+                                    className: "w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(authenticated)/dashboard/page.tsx",
                                     lineNumber: 19,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-sm font-semibold text-gray-500 tracking-wide uppercase",
+                                    className: "text-[14px] font-medium text-gray-500",
                                     children: [
-                                        "สถานะปัจจุบันของคุณ: ",
-                                        user?.role === 'admin' ? 'ผู้บริหารสูงสุด' : 'สมาชิกในทีม'
+                                        "สิทธิ์การใช้งาน: ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "font-bold text-gray-900",
+                                            children: user?.role === 'admin' ? 'ผู้ดูแลระบบ (Admin)' : 'เจ้าหน้าที่ (Staff)'
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/(authenticated)/dashboard/page.tsx",
+                                            lineNumber: 20,
+                                            columnNumber: 95
+                                        }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(authenticated)/dashboard/page.tsx",
@@ -1524,7 +1885,7 @@ function DashboardPage() {
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6",
+                className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$shared$2f$StatCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["StatCard"], {
                         title: "งบประมาณทั้งหมด",

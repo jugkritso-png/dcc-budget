@@ -28,56 +28,40 @@ export const StatCard: React.FC<StatCardProps> = ({
 
   return (
     <div
-      className="p-5 transition-all duration-200"
-      style={{
-        background: 'var(--surface-card)',
-        border: '1px solid var(--border-default)',
-        borderRadius: 'var(--radius-lg)',
-        boxShadow: 'var(--shadow-sm)',
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-md)';
-        (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-primary-200)';
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-sm)';
-        (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-default)';
-      }}
+      className="p-6 transition-all duration-300 bg-white border border-gray-100 rounded-[20px] shadow-sm hover:shadow-md hover:-translate-y-1"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wider"
-          style={{ color: 'var(--text-tertiary)' }}>
+        <p className="text-[14px] font-bold text-gray-500">
           {title}
         </p>
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        <div className="w-12 h-12 rounded-[16px] flex items-center justify-center flex-shrink-0"
           style={{ background: styles.iconBg }}>
-          <Icon className="w-4 h-4" strokeWidth={2} style={{ color: styles.iconColor }} />
+          <Icon className="w-6 h-6" strokeWidth={2} style={{ color: styles.iconColor }} />
         </div>
       </div>
 
       {/* Value */}
-      <div className="flex items-baseline gap-1">
+      <div className="flex items-end gap-1.5 mt-2">
         {prefix && (
-          <span className="text-sm font-semibold" style={{ color: 'var(--text-secondary)' }}>{prefix}</span>
+          <span className="text-sm font-semibold text-gray-400 mb-1">{prefix}</span>
         )}
-        <span className="text-2xl font-bold tracking-tight" style={{ color: 'var(--text-primary)', fontFamily: 'Inter, sans-serif' }}>
+        <span className="text-[32px] font-extrabold tracking-tight text-gray-900 leading-none" style={{ fontFamily: 'Inter, sans-serif' }}>
           {displayValue}
         </span>
         {suffix && (
-          <span className="text-sm font-medium" style={{ color: 'var(--text-tertiary)' }}>{suffix}</span>
+          <span className="text-sm font-semibold text-gray-500 mb-1">{suffix}</span>
         )}
       </div>
 
       {/* Trend */}
       {trend !== undefined && (
-        <div className="flex items-center gap-1.5 mt-3">
-          <div className="flex items-center gap-0.5 text-[11px] font-semibold"
-            style={{ color: isPositive ? 'var(--accent-green)' : 'var(--accent-red)' }}>
-            {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-50">
+          <div className={`flex items-center gap-1 text-[13px] font-bold px-2 py-0.5 rounded-full ${isPositive ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+            {isPositive ? <TrendingUp className="w-3.5 h-3.5" strokeWidth={2.5} /> : <TrendingDown className="w-3.5 h-3.5" strokeWidth={2.5} />}
             {Math.abs(trend).toFixed(1)}%
           </div>
-          <span className="text-[11px]" style={{ color: 'var(--text-tertiary)' }}>จากเดือนก่อน</span>
+          <span className="text-[12px] font-medium text-gray-400">เทียบกับเดือนที่แล้ว</span>
         </div>
       )}
     </div>

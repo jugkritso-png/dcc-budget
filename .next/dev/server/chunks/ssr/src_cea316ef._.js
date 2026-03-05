@@ -375,7 +375,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navi
 ;
 const CreateRequest = ()=>{
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
-    const { addRequest, categories, subActivities, user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useBudget"])();
+    const { addRequest, categories, subActivities, user, uploadAttachment } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useBudget"])();
+    const [isUploading, setIsUploading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [selectedFiles, setSelectedFiles] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         project: '',
         documentNumber: '',
@@ -492,20 +494,31 @@ const CreateRequest = ()=>{
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].error('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน');
             return;
         }
+        setIsUploading(true);
         try {
+            const uploadedUrls = [];
+            for (const file of selectedFiles){
+                const url = await uploadAttachment(file);
+                uploadedUrls.push(url);
+            }
             await addRequest({
                 id: `REQ-${Date.now()}`,
                 ...formData,
                 amount: Number(formData.amount),
                 status: 'pending',
                 requester: user?.name || 'Unknown User',
-                department: user?.department || 'สำนักวิชา'
+                requesterId: user?.id,
+                department: user?.department || 'สำนักวิชา',
+                attachments: uploadedUrls
             });
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].success('สร้างคำขอใหม่สำเร็จ - รอการอนุมัติ');
             // Navigate back to Budget page
             router.push('/budget');
         } catch (error) {
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].error('เกิดข้อผิดพลาดในการสร้างคำขอ');
+            console.error("Upload/Submit Error: ", error);
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].error('เกิดข้อผิดพลาดในการสร้างคำขอ หรือ อัปโหลดไฟล์');
+        } finally{
+            setIsUploading(false);
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -517,62 +530,79 @@ const CreateRequest = ()=>{
                     className: "min-w-0 w-full",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                            className: "text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-2",
+                            className: "text-2xl md:text-[28px] font-extrabold text-gray-900 flex items-center gap-3 tracking-tight",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"], {
-                                    className: "text-primary-600 flex-shrink-0",
-                                    size: 22
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "p-2.5 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"], {
+                                        className: "text-primary-600 flex-shrink-0",
+                                        size: 24
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                        lineNumber: 163,
+                                        columnNumber: 29
+                                    }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 147,
+                                    lineNumber: 162,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                     children: "ขอใช้งบประมาณ"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 165,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                            lineNumber: 146,
+                            lineNumber: 161,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-gray-500 text-xs md:text-sm mt-1 ml-8",
+                            className: "text-gray-500 text-sm mt-2 md:pl-[52px]",
                             children: "กรอกรายละเอียดเพื่อขออนุมัติงบประมาณสำหรับโครงการหรือกิจกรรม"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                            lineNumber: 150,
+                            lineNumber: 167,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                    lineNumber: 145,
+                    lineNumber: 160,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                lineNumber: 144,
+                lineNumber: 159,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                 onSubmit: handleSubmit,
-                className: "animate-in fade-in slide-in-from-bottom-4 duration-500 w-full md:max-w-4xl mx-auto",
+                className: "animate-in fade-in slide-in-from-bottom-4 duration-500 w-full md:max-w-5xl mx-auto",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "bg-white px-5 py-6 md:p-8 rounded-2xl md:rounded-3xl shadow-sm md:shadow-card border border-gray-100 space-y-6 md:space-y-8",
+                    className: "bg-white px-6 py-8 md:p-10 rounded-[24px] shadow-sm border border-gray-100 space-y-8 md:space-y-10",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-lg font-bold text-gray-900 mb-6 border-b border-gray-100 pb-2",
-                                    children: "1. ข้อมูลโครงการ"
-                                }, void 0, false, {
+                                    className: "text-xl font-extrabold text-gray-900 mb-8 flex items-center gap-3 tracking-tight",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-sm",
+                                            children: "1"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                            lineNumber: 177,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        "ข้อมูลโครงการ"
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 159,
+                                    lineNumber: 176,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -590,13 +620,13 @@ const CreateRequest = ()=>{
                                                             children: "*"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 162,
+                                                            lineNumber: 182,
                                                             columnNumber: 115
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 162,
+                                                    lineNumber: 182,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -610,13 +640,13 @@ const CreateRequest = ()=>{
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 163,
+                                                    lineNumber: 183,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 161,
+                                            lineNumber: 181,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -627,7 +657,7 @@ const CreateRequest = ()=>{
                                                     children: "หมายเลขหนังสือ"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 172,
+                                                    lineNumber: 192,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -640,13 +670,13 @@ const CreateRequest = ()=>{
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 173,
+                                                    lineNumber: 193,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 171,
+                                            lineNumber: 191,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -657,7 +687,7 @@ const CreateRequest = ()=>{
                                                     children: "วันที่เริ่มต้น"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 181,
+                                                    lineNumber: 201,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -669,13 +699,13 @@ const CreateRequest = ()=>{
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 182,
+                                                    lineNumber: 202,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 180,
+                                            lineNumber: 200,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -686,7 +716,7 @@ const CreateRequest = ()=>{
                                                     children: "วันที่สิ้นสุด"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 189,
+                                                    lineNumber: 209,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -698,13 +728,13 @@ const CreateRequest = ()=>{
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 190,
+                                                    lineNumber: 210,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 188,
+                                            lineNumber: 208,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -715,7 +745,7 @@ const CreateRequest = ()=>{
                                                     children: "เหตุผลความจำเป็น / วัตถุประสงค์"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 197,
+                                                    lineNumber: 217,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -729,35 +759,45 @@ const CreateRequest = ()=>{
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 198,
+                                                    lineNumber: 218,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 196,
+                                            lineNumber: 216,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 160,
+                                    lineNumber: 180,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                            lineNumber: 158,
+                            lineNumber: 175,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-lg font-bold text-gray-900 mb-6 border-b border-gray-100 pb-2",
-                                    children: "2. รายละเอียดงบประมาณ"
-                                }, void 0, false, {
+                                    className: "text-xl font-extrabold text-gray-900 mb-8 flex items-center gap-3 tracking-tight mt-12 border-t border-gray-100 pt-10",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-sm",
+                                            children: "2"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                            lineNumber: 232,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        "รายละเอียดงบประมาณ"
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 211,
+                                    lineNumber: 231,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -774,13 +814,13 @@ const CreateRequest = ()=>{
                                                             children: "*"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 214,
+                                                            lineNumber: 237,
                                                             columnNumber: 108
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 214,
+                                                    lineNumber: 237,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -801,7 +841,7 @@ const CreateRequest = ()=>{
                                                     required: true
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 215,
+                                                    lineNumber: 238,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 selectedCategoryData && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -811,7 +851,7 @@ const CreateRequest = ()=>{
                                                             size: 14
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 230,
+                                                            lineNumber: 253,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -821,19 +861,19 @@ const CreateRequest = ()=>{
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 231,
+                                                            lineNumber: 254,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 229,
+                                                    lineNumber: 252,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 213,
+                                            lineNumber: 236,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -843,7 +883,7 @@ const CreateRequest = ()=>{
                                                     children: "กิจกรรมย่อย"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 236,
+                                                    lineNumber: 259,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 availableSubActivities.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -873,7 +913,7 @@ const CreateRequest = ()=>{
                                                     ]
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 238,
+                                                    lineNumber: 261,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
                                                     type: "text",
@@ -885,13 +925,13 @@ const CreateRequest = ()=>{
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 256,
+                                                    lineNumber: 279,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 235,
+                                            lineNumber: 258,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -905,13 +945,13 @@ const CreateRequest = ()=>{
                                                             children: "*"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 265,
+                                                            lineNumber: 288,
                                                             columnNumber: 120
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 265,
+                                                    lineNumber: 288,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -922,7 +962,7 @@ const CreateRequest = ()=>{
                                                             children: "฿"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 267,
+                                                            lineNumber: 290,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -937,19 +977,19 @@ const CreateRequest = ()=>{
                                                                 })
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 268,
+                                                            lineNumber: 291,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 266,
+                                                    lineNumber: 289,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 264,
+                                            lineNumber: 287,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -959,7 +999,7 @@ const CreateRequest = ()=>{
                                                     children: "ความเร่งด่วน"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 279,
+                                                    lineNumber: 302,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -978,43 +1018,53 @@ const CreateRequest = ()=>{
                                                             children: level === 'normal' ? 'ปกติ' : level === 'urgent' ? 'ด่วน' : 'ด่วนที่สุด'
                                                         }, level, false, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 282,
+                                                            lineNumber: 305,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 280,
+                                                    lineNumber: 303,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 278,
+                                            lineNumber: 301,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 212,
+                                    lineNumber: 235,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                            lineNumber: 210,
+                            lineNumber: 230,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex items-center justify-between mb-6 border-b border-gray-100 pb-2",
+                                    className: "flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 mt-12 border-t border-gray-100 pt-10",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                            className: "text-lg font-bold text-gray-900",
-                                            children: "3. รายละเอียดประมาณการค่าใช้จ่าย"
-                                        }, void 0, false, {
+                                            className: "text-xl font-extrabold text-gray-900 flex items-center gap-3 tracking-tight",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-sm",
+                                                    children: "3"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                    lineNumber: 328,
+                                                    columnNumber: 33
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                "รายละเอียดประมาณการค่าใช้จ่าย"
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 304,
+                                            lineNumber: 327,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1026,12 +1076,12 @@ const CreateRequest = ()=>{
                                                         size: 20
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                        lineNumber: 307,
+                                                        lineNumber: 333,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 306,
+                                                    lineNumber: 332,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1046,29 +1096,29 @@ const CreateRequest = ()=>{
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 309,
+                                                            lineNumber: 335,
                                                             columnNumber: 96
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                    lineNumber: 309,
+                                                    lineNumber: 335,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 305,
+                                            lineNumber: 331,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 303,
+                                    lineNumber: 326,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "bg-gray-50/50 rounded-2xl border border-gray-200 overflow-hidden",
+                                    className: "bg-white rounded-[20px] border border-gray-200 shadow-sm overflow-hidden",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "overflow-x-auto",
@@ -1076,7 +1126,7 @@ const CreateRequest = ()=>{
                                                 className: "w-full text-sm text-left",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
-                                                        className: "bg-[#f8fafc] border-b border-gray-200 text-gray-500 font-semibold",
+                                                        className: "bg-gray-50/50 border-b border-gray-200 text-gray-600 font-semibold",
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1084,7 +1134,7 @@ const CreateRequest = ()=>{
                                                                     children: "#"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 318,
+                                                                    lineNumber: 344,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1092,7 +1142,7 @@ const CreateRequest = ()=>{
                                                                     children: "หมวดรายจ่าย"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 319,
+                                                                    lineNumber: 345,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1100,7 +1150,7 @@ const CreateRequest = ()=>{
                                                                     children: "รายการ"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 320,
+                                                                    lineNumber: 346,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1108,7 +1158,7 @@ const CreateRequest = ()=>{
                                                                     children: "จำนวน"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 321,
+                                                                    lineNumber: 347,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1116,7 +1166,7 @@ const CreateRequest = ()=>{
                                                                     children: "หน่วย"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 322,
+                                                                    lineNumber: 348,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1124,7 +1174,7 @@ const CreateRequest = ()=>{
                                                                     children: "ราคา/หน่วย"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 323,
+                                                                    lineNumber: 349,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1132,25 +1182,25 @@ const CreateRequest = ()=>{
                                                                     children: "รวม (บาท)"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 324,
+                                                                    lineNumber: 350,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
                                                                     className: "px-4 py-3 w-16 text-center"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 325,
+                                                                    lineNumber: 351,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                            lineNumber: 317,
+                                                            lineNumber: 343,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                        lineNumber: 316,
+                                                        lineNumber: 342,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1164,7 +1214,7 @@ const CreateRequest = ()=>{
                                                                             children: index + 1
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                            lineNumber: 331,
+                                                                            lineNumber: 357,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1179,7 +1229,7 @@ const CreateRequest = ()=>{
                                                                                         children: "เลือกหมวดงบประมาณ"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                        lineNumber: 338,
+                                                                                        lineNumber: 364,
                                                                                         columnNumber: 57
                                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                                     categories.map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1192,18 +1242,18 @@ const CreateRequest = ()=>{
                                                                                             ]
                                                                                         }, c.id, true, {
                                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                            lineNumber: 340,
+                                                                                            lineNumber: 366,
                                                                                             columnNumber: 61
                                                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                lineNumber: 333,
+                                                                                lineNumber: 359,
                                                                                 columnNumber: 53
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                            lineNumber: 332,
+                                                                            lineNumber: 358,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1216,12 +1266,12 @@ const CreateRequest = ()=>{
                                                                                 onChange: (e)=>updateExpenseItem(item.id, 'description', e.target.value)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                lineNumber: 347,
+                                                                                lineNumber: 373,
                                                                                 columnNumber: 53
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                            lineNumber: 346,
+                                                                            lineNumber: 372,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1234,12 +1284,12 @@ const CreateRequest = ()=>{
                                                                                 onChange: (e)=>updateExpenseItem(item.id, 'quantity', parseFloat(e.target.value) || 0)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                lineNumber: 356,
+                                                                                lineNumber: 382,
                                                                                 columnNumber: 53
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                            lineNumber: 355,
+                                                                            lineNumber: 381,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1252,12 +1302,12 @@ const CreateRequest = ()=>{
                                                                                 onChange: (e)=>updateExpenseItem(item.id, 'unit', e.target.value)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                lineNumber: 365,
+                                                                                lineNumber: 391,
                                                                                 columnNumber: 53
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                            lineNumber: 364,
+                                                                            lineNumber: 390,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1271,12 +1321,12 @@ const CreateRequest = ()=>{
                                                                                 onChange: (e)=>updateExpenseItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                lineNumber: 374,
+                                                                                lineNumber: 400,
                                                                                 columnNumber: 53
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                            lineNumber: 373,
+                                                                            lineNumber: 399,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1284,7 +1334,7 @@ const CreateRequest = ()=>{
                                                                             children: item.total.toLocaleString()
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                            lineNumber: 383,
+                                                                            lineNumber: 409,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1297,23 +1347,23 @@ const CreateRequest = ()=>{
                                                                                     size: 16
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                    lineNumber: 392,
+                                                                                    lineNumber: 418,
                                                                                     columnNumber: 57
                                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                                lineNumber: 387,
+                                                                                lineNumber: 413,
                                                                                 columnNumber: 53
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                            lineNumber: 386,
+                                                                            lineNumber: 412,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     ]
                                                                 }, item.id, true, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 330,
+                                                                    lineNumber: 356,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))),
                                                             formData.expenseItems.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
@@ -1323,29 +1373,29 @@ const CreateRequest = ()=>{
                                                                     children: 'ยังไม่มีรายการค่าใช้จ่าย คลิก "เพิ่มรายการ" เพื่อเริ่มต้น'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                    lineNumber: 399,
+                                                                    lineNumber: 425,
                                                                     columnNumber: 49
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                                lineNumber: 398,
+                                                                lineNumber: 424,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                        lineNumber: 328,
+                                                        lineNumber: 354,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                lineNumber: 315,
+                                                lineNumber: 341,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 314,
+                                            lineNumber: 340,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1359,35 +1409,166 @@ const CreateRequest = ()=>{
                                                         size: 16
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                        lineNumber: 413,
+                                                        lineNumber: 439,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     "เพิ่มรายการ"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                                lineNumber: 408,
+                                                lineNumber: 434,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 407,
+                                            lineNumber: 433,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 313,
+                                    lineNumber: 339,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                            lineNumber: 302,
+                            lineNumber: 325,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "pt-6 border-t border-gray-100 flex flex-col md:flex-row justify-end gap-3",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 mt-12 border-t border-gray-100 pt-10",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        className: "text-xl font-extrabold text-gray-900 flex items-center gap-3 tracking-tight",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-sm",
+                                                children: "4"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                lineNumber: 449,
+                                                columnNumber: 33
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            "เอกสารแนบ (ถ้ามี)"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                        lineNumber: 448,
+                                        columnNumber: 29
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                    lineNumber: 447,
+                                    columnNumber: 25
+                                }, ("TURBOPACK compile-time value", void 0)),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "bg-white rounded-[20px] border border-gray-200 shadow-sm p-6 flex flex-col items-center justify-center border-dashed",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            type: "file",
+                                            multiple: true,
+                                            id: "file-upload",
+                                            className: "hidden",
+                                            onChange: (e)=>{
+                                                if (e.target.files) {
+                                                    setSelectedFiles(Array.from(e.target.files));
+                                                }
+                                            }
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                            lineNumber: 454,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            htmlFor: "file-upload",
+                                            className: "cursor-pointer flex flex-col items-center space-y-2 text-gray-500 hover:text-primary-600 transition-colors",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"], {
+                                                    size: 48,
+                                                    className: "mb-2 opacity-50"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                    lineNumber: 466,
+                                                    columnNumber: 33
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-sm font-semibold",
+                                                    children: "คลิกเพื่อเลือกไฟล์แนบ"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                    lineNumber: 467,
+                                                    columnNumber: 33
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-xs text-gray-400",
+                                                    children: "รองรับ PDF, JPG, PNG ขนาดไม่เกิน 10MB"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                    lineNumber: 468,
+                                                    columnNumber: 33
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                            lineNumber: 465,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        selectedFiles.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                                            className: "mt-4 w-full max-w-md space-y-2",
+                                            children: selectedFiles.map((f, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    className: "flex items-center justify-between text-sm bg-gray-50 px-3 py-2 rounded-lg border border-gray-100",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "truncate max-w-[80%]",
+                                                            children: f.name
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                            lineNumber: 475,
+                                                            columnNumber: 45
+                                                        }, ("TURBOPACK compile-time value", void 0)),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                            type: "button",
+                                                            onClick: ()=>setSelectedFiles((prev)=>prev.filter((_, index)=>index !== i)),
+                                                            className: "text-red-400 hover:text-red-600 ml-2",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
+                                                                size: 16
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                                lineNumber: 481,
+                                                                columnNumber: 49
+                                                            }, ("TURBOPACK compile-time value", void 0))
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                            lineNumber: 476,
+                                                            columnNumber: 45
+                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                    ]
+                                                }, i, true, {
+                                                    fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                    lineNumber: 474,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0)))
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                            lineNumber: 472,
+                                            columnNumber: 33
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                    lineNumber: 453,
+                                    columnNumber: 25
+                                }, ("TURBOPACK compile-time value", void 0))
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/features/CreateRequest.tsx",
+                            lineNumber: 446,
+                            columnNumber: 21
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "pt-6 border-t border-gray-100 flex flex-col md:flex-row justify-end gap-3 mt-12",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                     type: "button",
@@ -1409,53 +1590,67 @@ const CreateRequest = ()=>{
                                             });
                                         }
                                     },
-                                    className: "w-full md:w-auto px-6 py-3 h-auto text-gray-600 hover:bg-gray-100 order-2 md:order-1",
+                                    className: "w-full md:w-auto px-6 py-3.5 h-auto text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-xl font-medium order-2 md:order-1 transition-colors",
                                     children: "ยกเลิก"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 421,
+                                    lineNumber: 491,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                     type: "submit",
                                     variant: "gradient",
-                                    className: "w-full md:w-auto px-8 py-3 h-auto text-sm font-bold flex items-center justify-center gap-2 order-1 md:order-2",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
-                                            size: 18
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                            lineNumber: 450,
-                                            columnNumber: 29
-                                        }, ("TURBOPACK compile-time value", void 0)),
-                                        "บันทึกคำขอ"
-                                    ]
-                                }, void 0, true, {
+                                    disabled: isUploading,
+                                    className: `w-full md:w-auto px-10 py-3.5 h-auto text-[15px] font-bold flex items-center justify-center gap-2 order-1 md:order-2 rounded-xl shadow-md transition-all ${isUploading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-lg'}`,
+                                    children: isUploading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "animate-spin rounded-full h-4 w-4 border-2 border-white/20 border-t-white"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                lineNumber: 523,
+                                                columnNumber: 37
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            "กำลังอัปโหลด..."
+                                        ]
+                                    }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
+                                                size: 18
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/features/CreateRequest.tsx",
+                                                lineNumber: 528,
+                                                columnNumber: 37
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            "บันทึกคำขอ"
+                                        ]
+                                    }, void 0, true)
+                                }, void 0, false, {
                                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                                    lineNumber: 445,
+                                    lineNumber: 515,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/CreateRequest.tsx",
-                            lineNumber: 420,
+                            lineNumber: 490,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/CreateRequest.tsx",
-                    lineNumber: 155,
+                    lineNumber: 172,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/features/CreateRequest.tsx",
-                lineNumber: 154,
+                lineNumber: 171,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/features/CreateRequest.tsx",
-        lineNumber: 142,
+        lineNumber: 157,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };

@@ -23,6 +23,8 @@ function createClient() {
 "use strict";
 
 __turbopack_context__.s([
+    "activityLogService",
+    ()=>activityLogService,
     "authService",
     ()=>authService,
     "budgetService",
@@ -31,6 +33,8 @@ __turbopack_context__.s([
     ()=>expenseService,
     "masterDataService",
     ()=>masterDataService,
+    "notificationService",
+    ()=>notificationService,
     "systemService",
     ()=>systemService,
     "userService",
@@ -42,48 +46,51 @@ const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$
 const authService = {
     login: async (credentials)=>{
         const cleanUsername = credentials.username.trim();
-        const cleanPassword = credentials.password; // Do not trim password
+        const cleanPassword = credentials.password;
         let email = cleanUsername.includes('@') ? cleanUsername : '';
-        console.log('[Login] 1. Username input:', `"${cleanUsername}"`);
         if (!email) {
-            console.log('[Login] 2. Resolving email via RPC for:', cleanUsername);
             const { data: resolvedEmail, error: rpcError } = await supabase.rpc('get_user_email', {
                 p_username: cleanUsername
             });
-            console.log('[Login] 3. RPC Result:', resolvedEmail, 'RPC Error:', rpcError);
             if (!rpcError && resolvedEmail) {
                 email = resolvedEmail;
             } else {
-                email = `${cleanUsername}@wu.ac.th`; // Fallback
+                email = `${cleanUsername}@wu.ac.th`;
             }
         }
-        console.log('[Login] 4. Sign-in email:', `"${email}"`);
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
             password: cleanPassword
         });
-        if (error) {
-            console.error('[Login] 5. Supabase Auth Error:', error.message, 'Code:', error.status);
-            throw new Error(error.message);
-        }
-        console.log('[Login] 6. Success! User ID:', data.user?.id);
-        console.log('[Login] Sign-in successful for user:', data.user?.email);
+        if (error) throw new Error(error.message);
         // Fetch user profile
-        const { data: profile, error: profileError } = await supabase.from('User').select('*').eq('id', data.user.id).maybeSingle();
-        if (profileError) {
-            console.error('[Login] Profile fetch error:', profileError.message, profileError.code);
+        // Fetch user profile via our API route to bypass RLS
+        let profile = null;
+        try {
+            const res = await fetch(`/api/profile?id=${data.user.id}&email=${data.user.email || ''}`);
+            if (res.ok) {
+                const result = await res.json();
+                if (result.profile) {
+                    profile = result.profile;
+                    console.log("LOGIN -> DB profile fetch success:", profile.role);
+                }
+            } else {
+                console.error("LOGIN -> Error fetching profile via API:", await res.text());
+            }
+        } catch (e) {
+            console.error("LOGIN -> Failed to fetch profile via API:", e);
         }
-        console.log('[Login] Profile result:', profile);
+        const userObj = profile || {
+            id: data.user.id,
+            email: data.user.email,
+            role: 'user',
+            username: credentials.username,
+            name: credentials.username,
+            position: '',
+            department: ''
+        };
         return {
-            user: profile || {
-                id: data.user.id,
-                email: data.user.email,
-                role: 'user',
-                username: credentials.username,
-                name: credentials.username,
-                position: '',
-                department: ''
-            },
+            user: userObj,
             token: data.session.access_token
         };
     },
@@ -161,20 +168,22 @@ const systemService = {
         };
     },
     updateSettings: async (settings)=>{
-        const upsert = async (key, value)=>{
-            const { error } = await supabase.from('SystemSetting').upsert({
+        const upsert = (key, value)=>supabase.from('SystemSetting').upsert({
                 key,
                 value
+            }).then(({ error })=>{
+                if (error) throw new Error(error.message);
             });
-            if (error) throw new Error(error.message);
-        };
-        await upsert('ORG_NAME', settings.orgName);
-        await upsert('FISCAL_YEAR', settings.fiscalYear.toString());
-        await upsert('OVER_BUDGET_ALERT', String(settings.overBudgetAlert));
-        await upsert('FISCAL_YEAR_CUTOFF', settings.fiscalYearCutoff);
-        if (settings.permissions) {
-            await upsert('PERMISSIONS', JSON.stringify(settings.permissions));
-        }
+        // Run all upserts in parallel instead of sequentially
+        await Promise.all([
+            upsert('ORG_NAME', settings.orgName),
+            upsert('FISCAL_YEAR', settings.fiscalYear.toString()),
+            upsert('OVER_BUDGET_ALERT', String(settings.overBudgetAlert)),
+            upsert('FISCAL_YEAR_CUTOFF', settings.fiscalYearCutoff),
+            ...settings.permissions ? [
+                upsert('PERMISSIONS', JSON.stringify(settings.permissions))
+            ] : []
+        ]);
         return {
             success: true
         };
@@ -256,6 +265,17 @@ const masterDataService = {
     }
 };
 const budgetService = {
+    uploadAttachment: async (file)=>{
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
+        const { data, error } = await supabase.storage.from('attachments').upload(filePath, file);
+        if (error) {
+            throw new Error(error.message);
+        }
+        const { data: publicUrlData } = supabase.storage.from('attachments').getPublicUrl(filePath);
+        return publicUrlData.publicUrl;
+    },
     getRequests: async ()=>{
         const { data, error } = await supabase.from('BudgetRequest').select('*, expenseItems:BudgetRequestItem(*)').order('createdAt', {
             ascending: false
@@ -264,12 +284,17 @@ const budgetService = {
         return data;
     },
     createRequest: async (req)=>{
-        const { expenseItems, ...rest } = req;
-        const { data, error } = await supabase.from('BudgetRequest').insert(rest).select().single();
+        const { expenseItems, id, documentNumber, ...rest } = req;
+        // Map documentNumber to approvalRef if approvalRef is not provided
+        const payloadToInsert = {
+            ...rest,
+            approvalRef: rest.approvalRef || documentNumber
+        };
+        const { data, error } = await supabase.from('BudgetRequest').insert(payloadToInsert).select().single();
         if (error) throw new Error(error.message);
         if (expenseItems && expenseItems.length > 0) {
-            const items = expenseItems.map((item)=>({
-                    ...item,
+            const items = expenseItems.map(({ id: itemId, ...itemRest })=>({
+                    ...itemRest,
                     requestId: data.id
                 }));
             const { error: itemError } = await supabase.from('BudgetRequestItem').insert(items);
@@ -288,29 +313,82 @@ const budgetService = {
         return data;
     },
     approveRequest: async (id, approverId)=>{
-        const { data, error } = await supabase.from('BudgetRequest').update({
-            status: 'approved',
+        // 1. Get current request to know the step
+        const { data: currentReq } = await supabase.from('BudgetRequest').select('*').eq('id', id).single();
+        if (!currentReq) throw new Error('Request not found');
+        const step = currentReq.currentStep || 'manager';
+        let nextStep = step;
+        let nextStatus = 'pending';
+        if (step === 'manager') {
+            nextStep = 'finance';
+        } else if (step === 'finance') {
+            nextStep = 'director';
+        } else if (step === 'director') {
+            nextStatus = 'approved';
+        }
+        // 2. Update status and step
+        const updateData = {
+            currentStep: nextStep,
+            status: nextStatus,
             approverId,
-            approvedAt: new Date().toISOString()
-        }).eq('id', id).select().single();
+            updatedAt: new Date().toISOString()
+        };
+        if (nextStatus === 'approved') {
+            updateData.approvedAt = new Date().toISOString();
+        }
+        const { data, error } = await supabase.from('BudgetRequest').update(updateData).eq('id', id).select().single();
         if (error) throw new Error(error.message);
-        // Note: For full accuracy with category `used` field, an RPC or Edge function is strongly recommended. 
-        // We will just do a basic client-side update as a fallback to keep the app working.
-        const req = data;
-        const { data: categoryData } = await supabase.from('Category').select('*').eq('name', req.category).maybeSingle();
-        if (categoryData) {
-            await supabase.from('Category').update({
-                used: (categoryData.used || 0) + req.amount
-            }).eq('id', categoryData.id);
+        // 3. Log the approval
+        await supabase.from('ApprovalLog').insert({
+            requestId: id,
+            approverId,
+            action: 'approve',
+            stage: step
+        });
+        // 4. Update category budget ONLY on final approval
+        if (nextStatus === 'approved') {
+            const req = data;
+            const { data: categoryData } = await supabase.from('Category').select('*').eq('name', req.category).maybeSingle();
+            if (categoryData) {
+                await supabase.from('Category').update({
+                    used: (categoryData.used || 0) + req.amount
+                }).eq('id', categoryData.id);
+            }
         }
         return data;
     },
     rejectRequest: async (id, approverId, reason)=>{
+        // 1. Get current request to know the step
+        const { data: currentReq } = await supabase.from('BudgetRequest').select('currentStep').eq('id', id).single();
+        const step = currentReq?.currentStep || 'manager';
         const { data, error } = await supabase.from('BudgetRequest').update({
             status: 'rejected',
             approverId,
-            rejectionReason: reason
+            rejectionReason: reason,
+            updatedAt: new Date().toISOString()
         }).eq('id', id).select().single();
+        if (error) throw new Error(error.message);
+        // 2. Log the rejection
+        await supabase.from('ApprovalLog').insert({
+            requestId: id,
+            approverId,
+            action: 'reject',
+            stage: step,
+            comment: reason
+        });
+        return data;
+    },
+    getApprovalLogs: async (requestId)=>{
+        const { data, error } = await supabase.from('ApprovalLog').select('*, user:User(name, role, avatar)').eq('requestId', requestId).order('createdAt', {
+            ascending: true
+        });
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    getAllApprovalLogs: async ()=>{
+        const { data, error } = await supabase.from('ApprovalLog').select('*, user:User(name, role, avatar)').order('createdAt', {
+            ascending: true
+        });
         if (error) throw new Error(error.message);
         return data;
     },
@@ -325,7 +403,8 @@ const budgetService = {
         const { error } = await supabase.from('BudgetRequest').update({
             status: 'waiting_verification',
             actualAmount: submitData.actualTotal,
-            returnAmount: submitData.returnAmount
+            returnAmount: submitData.returnAmount,
+            attachments: submitData.attachments
         }).eq('id', id);
         if (error) throw new Error(error.message);
         if (submitData.expenseItems && submitData.expenseItems.length > 0) {
@@ -451,6 +530,65 @@ const expenseService = {
         };
     }
 };
+const notificationService = {
+    getAll: async (userId)=>{
+        const { data, error } = await supabase.from('Notification').select('*').eq('userId', userId).order('createdAt', {
+            ascending: false
+        });
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    markAsRead: async (id)=>{
+        const { data, error } = await supabase.from('Notification').update({
+            isRead: true
+        }).eq('id', id).select().single();
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    markAllAsRead: async (userId)=>{
+        const { error } = await supabase.from('Notification').update({
+            isRead: true
+        }).eq('userId', userId).eq('isRead', false);
+        if (error) throw new Error(error.message);
+        return {
+            success: true
+        };
+    },
+    create: async (notification)=>{
+        const { data, error } = await supabase.from('Notification').insert(notification).select().single();
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    delete: async (id)=>{
+        const { error } = await supabase.from('Notification').delete().eq('id', id);
+        if (error) throw new Error(error.message);
+        return {
+            success: true
+        };
+    }
+};
+const activityLogService = {
+    getAll: async ()=>{
+        const { data, error } = await supabase.from('ActivityLog').select(`
+                *,
+                user:User (
+                    name,
+                    role,
+                    avatar,
+                    username
+                )
+            `).order('createdAt', {
+            ascending: false
+        });
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    log: async (log)=>{
+        const { data, error } = await supabase.from('ActivityLog').insert(log).select().single();
+        if (error) throw new Error(error.message);
+        return data;
+    }
+};
 }),
 "[project]/src/context/BudgetContext.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -480,18 +618,77 @@ const BudgetProvider = ({ children })=>{
     const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createClient"])();
     // --- Client State (Session) ---
     const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const saved = localStorage.getItem('dcc_user');
-        if (saved) setUser(JSON.parse(saved));
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session)=>{
-            if (event === 'SIGNED_OUT') {
-                setUser(null);
-                localStorage.removeItem('dcc_user');
-                localStorage.removeItem('dcc_token');
-                queryClient.clear();
+        const savedSidebar = localStorage.getItem('dcc_sidebar_collapsed');
+        if (savedSidebar) {
+            setIsSidebarCollapsed(savedSidebar === 'true');
+        }
+        const checkSession = async ()=>{
+            const saved = localStorage.getItem('dcc_user');
+            if (saved) {
+                try {
+                    const parsedUser = JSON.parse(saved);
+                    // Verify actual role in DB via API to bypass RLS
+                    try {
+                        const res = await fetch(`/api/profile?id=${parsedUser.id}&email=${parsedUser.email || ''}`);
+                        if (res.ok) {
+                            const result = await res.json();
+                            if (result.profile) {
+                                const dbUser = result.profile;
+                                console.log("DB User on load:", dbUser.role);
+                                setUser({
+                                    ...parsedUser,
+                                    ...dbUser
+                                });
+                                localStorage.setItem('dcc_user', JSON.stringify({
+                                    ...parsedUser,
+                                    ...dbUser
+                                }));
+                            } else {
+                                console.log("Profile not found in DB via API");
+                                setUser(parsedUser);
+                            }
+                        } else {
+                            console.log("Local User on load API fallback:", parsedUser.role);
+                            setUser(parsedUser);
+                        }
+                    } catch (err) {
+                        console.error("API fetch error:", err);
+                        setUser(parsedUser);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
             }
-        });
-        return ()=>subscription.unsubscribe();
+            const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session)=>{
+                if (event === 'SIGNED_OUT') {
+                    setUser(null);
+                    localStorage.removeItem('dcc_user');
+                    localStorage.removeItem('dcc_token');
+                    queryClient.clear();
+                } else if (event === 'SIGNED_IN' && session?.user) {
+                    try {
+                        const res = await fetch(`/api/profile?id=${session.user.id}&email=${session.user.email || ''}`);
+                        if (res.ok) {
+                            const result = await res.json();
+                            if (result.profile) {
+                                const mergedUser = {
+                                    ...session.user,
+                                    ...result.profile
+                                };
+                                setUser(mergedUser);
+                                localStorage.setItem('dcc_user', JSON.stringify(mergedUser));
+                            }
+                        }
+                    } catch (e) {
+                        console.error("API fetch error on auth change", e);
+                    }
+                }
+            });
+            return ()=>subscription.unsubscribe();
+        };
+        checkSession();
     }, [
         queryClient,
         supabase.auth
@@ -525,72 +722,150 @@ const BudgetProvider = ({ children })=>{
             }
         }
     };
+    const toggleSidebar = ()=>{
+        setIsSidebarCollapsed((prev)=>{
+            const next = !prev;
+            localStorage.setItem('dcc_sidebar_collapsed', String(next));
+            return next;
+        });
+    };
     // --- Server State (Queries) ---
+    // staleTime: 5 min — prevents refetch on every tab focus / mount
+    const STALE = 5 * 60 * 1000;
     const { data: requests = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
         queryKey: [
             'requests'
         ],
         queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].getRequests,
-        enabled: !!user
+        enabled: !!user,
+        staleTime: STALE
     });
     const { data: categories = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
         queryKey: [
             'categories'
         ],
         queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["masterDataService"].getCategories,
-        enabled: !!user
+        enabled: !!user,
+        staleTime: STALE
     });
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        console.log("[BudgetContext] User:", user);
-        console.log("[BudgetContext] Requests:", requests);
-        console.log("[BudgetContext] Categories:", categories);
-    }, [
-        user,
-        requests,
-        categories
-    ]);
     const { data: subActivities = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
         queryKey: [
             'subActivities'
         ],
         queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["masterDataService"].getSubActivities,
-        enabled: !!user
+        enabled: !!user,
+        staleTime: STALE
     });
     const { data: departments = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
         queryKey: [
             'departments'
         ],
         queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["systemService"].getDepartments,
-        enabled: !!user
+        enabled: !!user,
+        staleTime: STALE
     });
     const { data: users = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
         queryKey: [
             'users'
         ],
         queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["userService"].getAll,
-        enabled: !!user
+        enabled: !!user,
+        staleTime: STALE
     });
     const { data: budgetPlans = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
         queryKey: [
             'budgetPlans'
         ],
         queryFn: ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].getPlans(),
-        enabled: !!user
+        enabled: !!user,
+        staleTime: STALE
     });
     const { data: expenses = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
         queryKey: [
             'expenses'
         ],
         queryFn: ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["expenseService"].getAll(),
-        enabled: !!user
+        enabled: !!user,
+        staleTime: STALE
     });
     const { data: budgetLogs = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
         queryKey: [
             'budgetLogs'
         ],
         queryFn: ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].getLogs(),
-        enabled: !!user
+        enabled: !!user,
+        staleTime: STALE
     });
+    const { data: notifications = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
+        queryKey: [
+            'notifications',
+            user?.id
+        ],
+        queryFn: ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["notificationService"].getAll(user.id),
+        enabled: !!user,
+        staleTime: STALE
+    });
+    const { data: activityLogs = [] } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useQuery$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])({
+        queryKey: [
+            'activityLogs'
+        ],
+        queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["activityLogService"].getAll,
+        enabled: !!user && user.role === 'admin',
+        staleTime: STALE
+    });
+    // Real-time Notifications Subscription
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (!user) return;
+        const channel = supabase.channel('realtime_notifications').on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'Notification',
+            filter: `userId=eq.${user.id}`
+        }, (payload)=>{
+            console.log('New notification received:', payload);
+            queryClient.invalidateQueries({
+                queryKey: [
+                    'notifications',
+                    user.id
+                ]
+            });
+            // Optional: Browser notification or toast
+            if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+            ;
+        }).subscribe();
+        return ()=>{
+            supabase.removeChannel(channel);
+        };
+    }, [
+        user,
+        supabase,
+        queryClient
+    ]);
+    const logActivityMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: (log)=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["activityLogService"].log(log),
+        onSuccess: ()=>{
+            queryClient.invalidateQueries({
+                queryKey: [
+                    'activityLogs'
+                ]
+            });
+        }
+    });
+    const logActivity = async (action, details, entityId, entityType)=>{
+        if (!user) return;
+        try {
+            await logActivityMutation.mutateAsync({
+                userId: user.id,
+                action,
+                details,
+                entityId,
+                entityType,
+                userAgent: ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : undefined
+            });
+        } catch (error) {
+            console.error('Failed to log activity:', error);
+        }
+    };
     const { data: settings = {
         orgName: 'DCC Company Ltd.',
         fiscalYear: 2569,
@@ -602,6 +877,7 @@ const BudgetProvider = ({ children })=>{
         ],
         queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["systemService"].getSettings,
         enabled: !!user,
+        staleTime: STALE,
         initialData: {
             orgName: 'DCC Company Ltd.',
             fiscalYear: 2569,
@@ -612,7 +888,7 @@ const BudgetProvider = ({ children })=>{
     });
     const hasPermission = (permission)=>{
         if (!user) return false;
-        if (user.role === 'admin') return true;
+        if (user.role?.toLowerCase() === 'admin') return true;
         const rolePermissions = settings.permissions?.[user.role] || [];
         return rolePermissions.includes(permission);
     };
@@ -627,6 +903,13 @@ const BudgetProvider = ({ children })=>{
             setUser(response.user);
             localStorage.setItem('dcc_user', JSON.stringify(response.user));
             localStorage.setItem('dcc_token', response.token);
+            // Log login activity
+            __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["activityLogService"].log({
+                userId: response.user.id,
+                action: 'LOGIN',
+                details: 'เข้าสู่ระบบด้วยชื่อผู้ใช้งาน',
+                userAgent: ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : undefined
+            }).catch((err)=>console.error('Failed to log login:', err));
             return true;
         } catch (error) {
             console.error("Login Error in Context:", error);
@@ -677,60 +960,81 @@ const BudgetProvider = ({ children })=>{
     // Admin User Management
     const addUserMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["userService"].create,
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (data)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'users'
                 ]
-            })
+            });
+            logActivity('CREATE_USER', `สร้างผู้ใช้งานใหม่: ${data.name} (@${data.username})`, data.id, 'User');
+        }
     });
     const updateUserMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: ({ id, data })=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["userService"].update(id, data),
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (data)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'users'
                 ]
-            })
+            });
+            logActivity('UPDATE_USER', `แก้ไขข้อมูลผู้ใช้งาน: ${data.name} (@${data.username})`, data.id, 'User');
+        }
     });
     const deleteUserMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["userService"].delete,
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (_, id)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'users'
                 ]
-            })
+            });
+            logActivity('DELETE_USER', `ลบผู้ใช้งาน (ID: ${id})`, id, 'User');
+        }
     });
     // Settings & Departments
     const updateSettingsMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["systemService"].updateSettings,
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (_, variables)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'settings'
                 ]
-            })
+            });
+            logActivity('UPDATE_SETTINGS', `แก้ไขการตั้งค่าระบบ: ปีงบประมาณ ${variables.fiscalYear}`, 'system', 'Settings');
+        }
     });
     const addDepartmentMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["systemService"].createDepartment,
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (data)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'departments'
                 ]
-            })
+            });
+            logActivity('CREATE_DEPARTMENT', `เพิ่มแผนกใหม่: ${data.name}`, data.id, 'Department');
+        }
     });
     const updateDepartmentMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["systemService"].updateDepartment,
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (data)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'departments'
                 ]
-            })
+            });
+            logActivity('UPDATE_DEPARTMENT', `แก้ไขข้อมูลแผนก: ${data.name}`, data.id, 'Department');
+        }
     });
     const deleteDepartmentMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["systemService"].deleteDepartment,
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (_, id)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'departments'
                 ]
-            })
+            });
+            logActivity('DELETE_DEPARTMENT', `ลบแผนก (ID: ${id})`, id, 'Department');
+        }
     });
     // Master Data
     const addCategoryMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
@@ -743,19 +1047,25 @@ const BudgetProvider = ({ children })=>{
     });
     const updateCategoryMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["masterDataService"].updateCategory,
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (data)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'categories'
                 ]
-            }) // Expense/Budget updates affect this too
+            });
+            logActivity('UPDATE_CATEGORY', `แก้ไขข้อมูลหมวดหมู่: ${data.name}`, data.id, 'Category');
+        }
     });
     const deleteCategoryMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["masterDataService"].deleteCategory,
-        onSuccess: ()=>queryClient.invalidateQueries({
+        onSuccess: (_, id)=>{
+            queryClient.invalidateQueries({
                 queryKey: [
                     'categories'
                 ]
-            })
+            });
+            logActivity('DELETE_CATEGORY', `ลบหมวดหมู่ (ID: ${id})`, id, 'Category');
+        }
     });
     const addSubActivityMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["masterDataService"].createSubActivity,
@@ -815,7 +1125,7 @@ const BudgetProvider = ({ children })=>{
     });
     const approveRequestMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: ({ id, approverId })=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].approveRequest(id, approverId),
-        onSuccess: ()=>{
+        onSuccess: (data)=>{
             queryClient.invalidateQueries({
                 queryKey: [
                     'requests'
@@ -826,36 +1136,56 @@ const BudgetProvider = ({ children })=>{
                     'categories'
                 ]
             });
+            if (data.requesterId) {
+                sendNotification(data.requesterId, 'คำขอโครงการได้รับอนุมัติ ✅', `โครงการ "${data.project}" ได้รับการอนุมัติแล้ว`, 'success', `/budget?id=${data.id}`);
+            }
+            logActivity('APPROVE_REQUEST', `อนุมัติโครงการ: ${data.project} (งบประมาณ: ${data.amount.toLocaleString()} บาท)`, data.id, 'BudgetRequest');
         }
     });
     const rejectRequestMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: ({ id, approverId, reason })=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].rejectRequest(id, approverId, reason),
-        onSuccess: ()=>{
+        onSuccess: (data, variables)=>{
             queryClient.invalidateQueries({
                 queryKey: [
                     'requests'
                 ]
             });
+            if (data.requesterId) {
+                sendNotification(data.requesterId, 'คำขอโครงการถูกปฏิเสธ ❌', `โครงการ "${data.project}" ถูกปฏิเสธ: ${variables.reason}`, 'error', `/budget?id=${data.id}`);
+            }
+            logActivity('REJECT_REQUEST', `ปฏิเสธโครงการ: ${data.project} (เหตุผล: ${variables.reason})`, data.id, 'BudgetRequest');
         }
     });
     const submitExpenseReportMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: ({ id, data })=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].submitExpenseReport(id, data),
-        onSuccess: ()=>{
+        onSuccess: (data)=>{
             queryClient.invalidateQueries({
                 queryKey: [
                     'requests'
                 ]
             });
+            // Notify approvers/finance
+            const admins = users.filter((u)=>u.role === 'admin' || u.role === 'approver' || u.role === 'finance');
+            admins.forEach((admin)=>{
+                if (admin.id !== user?.id) {
+                    sendNotification(admin.id, 'รายงานผลการใช้จ่ายใหม่ 📑', `มีการส่งรายงานผลสำหรับโครงการ "${data.project}" รอการตรวจสอบ`, 'primary', `/budget?id=${data.id}`);
+                }
+            });
+            logActivity('SUBMIT_EXPENSE', `ส่งรายงานผลการใช้จ่ายโครงการ: ${data.project} (จำนวนเงิน: ${data.actualAmount?.toLocaleString()} บาท)`, data.id, 'BudgetRequest');
         }
     });
     const rejectExpenseReportMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: ({ id, reason })=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].rejectExpenseReport(id, reason),
-        onSuccess: ()=>{
+        onSuccess: (data, variables)=>{
             queryClient.invalidateQueries({
                 queryKey: [
                     'requests'
                 ]
             });
+            if (data.requesterId) {
+                sendNotification(data.requesterId, 'รายงานผลการใช้จ่ายถูกส่งคืน ⚠️', `รายงานผลสำหรับโครงการ "${data.project}" ถูกส่งคืนให้แก้ไข: ${variables.reason}`, 'warning', `/budget?id=${data.id}`);
+            }
+            logActivity('REJECT_EXPENSE', `ส่งคืนรายงานผลการใช้จ่ายโครงการ: ${data.project} (เหตุผล: ${variables.reason})`, data.id, 'BudgetRequest');
         }
     });
     const completeRequestMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
@@ -890,6 +1220,9 @@ const BudgetProvider = ({ children })=>{
         await completeRequestMutation.mutateAsync({
             id
         });
+    };
+    const uploadAttachment = async (file)=>{
+        return await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].uploadAttachment(file);
     };
     const deleteRequestMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
         mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].deleteRequest,
@@ -960,8 +1293,8 @@ const BudgetProvider = ({ children })=>{
                 ]
             })
     });
-    // --- Derived State (Stats) ---
-    const getDashboardStats = ()=>{
+    // --- Derived State (Stats) — memoized so it only recomputes when source data changes ---
+    const dashboardStats = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>{
         const currentYearCategories = categories.filter((cat)=>cat.year === settings.fiscalYear);
         const validCategoryNames = new Set(currentYearCategories.map((c)=>c.name));
         const totalBudget = currentYearCategories.reduce((sum, cat)=>sum + cat.allocated, 0);
@@ -979,7 +1312,14 @@ const BudgetProvider = ({ children })=>{
             totalRemaining,
             usagePercentage
         };
-    };
+    }, [
+        categories,
+        requests,
+        settings.fiscalYear
+    ]);
+    const getDashboardStats = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(()=>dashboardStats, [
+        dashboardStats
+    ]);
     // Helper Wrappers (to match old Context API)
     const updateUserProfile = async (data)=>{
         await updateUserProfileMutation.mutateAsync(data);
@@ -1001,6 +1341,53 @@ const BudgetProvider = ({ children })=>{
     };
     const deleteUser = async (id)=>{
         await deleteUserMutation.mutateAsync(id);
+    };
+    const markNotificationAsReadMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["notificationService"].markAsRead,
+        onSuccess: ()=>queryClient.invalidateQueries({
+                queryKey: [
+                    'notifications',
+                    user?.id
+                ]
+            })
+    });
+    const markAllNotificationsAsReadMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: (userId)=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["notificationService"].markAllAsRead(userId),
+        onSuccess: ()=>queryClient.invalidateQueries({
+                queryKey: [
+                    'notifications',
+                    user?.id
+                ]
+            })
+    });
+    const deleteNotificationMutation = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$query$2f$build$2f$modern$2f$useMutation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])({
+        mutationFn: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["notificationService"].delete,
+        onSuccess: ()=>queryClient.invalidateQueries({
+                queryKey: [
+                    'notifications',
+                    user?.id
+                ]
+            })
+    });
+    const markNotificationAsRead = async (id)=>{
+        await markNotificationAsReadMutation.mutateAsync(id);
+    };
+    const markAllNotificationsAsRead = async ()=>{
+        if (user) await markAllNotificationsAsReadMutation.mutateAsync(user.id);
+    };
+    const deleteNotification = async (id)=>{
+        await deleteNotificationMutation.mutateAsync(id);
+    };
+    const sendNotification = async (userId, title, message, type = 'info', link)=>{
+        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["notificationService"].create({
+            userId,
+            title,
+            message,
+            type,
+            link
+        });
+    // Note: We don't necessarily need to invalidate our own queries if we are sending to someone else,
+    // but the recipient will get it via real-time.
     };
     const updateSettings = async (s)=>{
         await updateSettingsMutation.mutateAsync(s);
@@ -1081,6 +1468,12 @@ const BudgetProvider = ({ children })=>{
     const getBudgetLogs = async (categoryId)=>{
         return __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].getLogs(categoryId);
     };
+    const getApprovalLogs = async (requestId)=>{
+        return await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].getApprovalLogs(requestId);
+    };
+    const getAllApprovalLogs = async ()=>{
+        return await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["budgetService"].getAllApprovalLogs();
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(BudgetContext.Provider, {
         value: {
             requests,
@@ -1108,6 +1501,7 @@ const BudgetProvider = ({ children })=>{
             completeRequest,
             revertComplete,
             deleteRequest,
+            uploadAttachment,
             addCategory,
             updateCategory,
             deleteCategory,
@@ -1141,12 +1535,23 @@ const BudgetProvider = ({ children })=>{
                 ], data.settings);
                 alert('Data restored to Cache');
             },
-            changeTheme
+            changeTheme,
+            notifications,
+            markNotificationAsRead,
+            markAllNotificationsAsRead,
+            deleteNotification,
+            sendNotification,
+            activityLogs,
+            logActivity,
+            getApprovalLogs,
+            getAllApprovalLogs,
+            isSidebarCollapsed,
+            toggleSidebar
         },
         children: children
     }, void 0, false, {
         fileName: "[project]/src/context/BudgetContext.tsx",
-        lineNumber: 415,
+        lineNumber: 657,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

@@ -326,6 +326,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/save.js [app-ssr] (ecmascript) <export default as Save>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-ssr] (ecmascript) <export default as X>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-left.js [app-ssr] (ecmascript) <export default as ArrowLeft>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/plus.js [app-ssr] (ecmascript) <export default as Plus>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Modal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/Modal.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/Button.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/Input.tsx [app-ssr] (ecmascript)");
@@ -341,11 +342,14 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot
 ;
 ;
 const ExpenseReport = ()=>{
-    const { requests, user, submitExpenseReport, completeRequest, revertComplete, rejectExpenseReport } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useBudget"])();
+    const { requests, user, submitExpenseReport, completeRequest, revertComplete, rejectExpenseReport, uploadAttachment } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$BudgetContext$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useBudget"])();
     const [searchTerm, setSearchTerm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
     const [selectedRequest, setSelectedRequest] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [isModalOpen, setIsModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isVerifyModalOpen, setIsVerifyModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    // Upload state
+    const [isUploading, setIsUploading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [selectedFiles, setSelectedFiles] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     // Expenses Editing State
     const [expenseData, setExpenseData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     // Filter modes
@@ -410,6 +414,8 @@ const ExpenseReport = ()=>{
                 actualAmount: item.actualAmount ?? 0
             })) || [];
         setExpenseData(items);
+        setSelectedFiles([]);
+        setIsUploading(false);
         setIsModalOpen(true);
     };
     const handleExpenseChange = (id, value)=>{
@@ -433,19 +439,32 @@ const ExpenseReport = ()=>{
     };
     const handleSubmit = async ()=>{
         if (!selectedRequest) return;
+        setIsUploading(true);
         try {
             const { totalActual, returnAmount } = calculateTotals();
+            // Upload files first
+            const uploadedUrls = [
+                ...selectedRequest.attachments || []
+            ];
+            for (const file of selectedFiles){
+                const url = await uploadAttachment(file);
+                uploadedUrls.push(url);
+            }
             await submitExpenseReport(selectedRequest.id, {
                 expenseItems: expenseData,
                 actualTotal: totalActual,
-                returnAmount: returnAmount
+                returnAmount: returnAmount,
+                attachments: uploadedUrls
             });
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].success('ส่งรายงานผลการตรวจสอบเรียบร้อยแล้ว (Waiting for Verification)');
             setIsModalOpen(false);
             setSelectedRequest(null);
+            setSelectedFiles([]);
         } catch (error) {
             console.error(error);
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].error('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+        } finally{
+            setIsUploading(false);
         }
     };
     const { totalBudget, totalActual, returnAmount } = calculateTotals();
@@ -462,7 +481,7 @@ const ExpenseReport = ()=>{
                                 children: "รายงานผลการใช้จ่าย (Expense Report)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 151,
+                                lineNumber: 168,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -470,13 +489,13 @@ const ExpenseReport = ()=>{
                                 children: "บันทึกค่าใช้จ่ายจริงและปิดโครงการเพื่อคืนเงินงบประมาณ"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 154,
+                                lineNumber: 171,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                        lineNumber: 150,
+                        lineNumber: 167,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -488,7 +507,7 @@ const ExpenseReport = ()=>{
                                 children: "รอรายงานผล"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 160,
+                                lineNumber: 177,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -501,7 +520,7 @@ const ExpenseReport = ()=>{
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 169,
+                                lineNumber: 186,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -510,19 +529,19 @@ const ExpenseReport = ()=>{
                                 children: "ประวัติการปิดโครงการ"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 178,
+                                lineNumber: 195,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                        lineNumber: 159,
+                        lineNumber: 176,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                lineNumber: 149,
+                lineNumber: 166,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -554,12 +573,12 @@ const ExpenseReport = ()=>{
                                             className: "w-24 h-24 text-gray-100 -rotate-12 transform translate-x-8 -translate-y-8"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 203,
+                                            lineNumber: 220,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                        lineNumber: 202,
+                                        lineNumber: 219,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -575,7 +594,7 @@ const ExpenseReport = ()=>{
                                                                 children: req.category
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 209,
+                                                                lineNumber: 226,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -583,7 +602,7 @@ const ExpenseReport = ()=>{
                                                                 children: req.project
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 212,
+                                                                lineNumber: 229,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -594,13 +613,13 @@ const ExpenseReport = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 213,
+                                                                lineNumber: 230,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 208,
+                                                        lineNumber: 225,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -614,7 +633,7 @@ const ExpenseReport = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 216,
+                                                                lineNumber: 233,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -622,19 +641,19 @@ const ExpenseReport = ()=>{
                                                                 children: "งบประมาณที่ได้รับ"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 219,
+                                                                lineNumber: 236,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 215,
+                                                        lineNumber: 232,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                lineNumber: 207,
+                                                lineNumber: 224,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -649,7 +668,7 @@ const ExpenseReport = ()=>{
                                                                     size: 14
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                    lineNumber: 227,
+                                                                    lineNumber: 244,
                                                                     columnNumber: 49
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 " ใช้จริง: ฿",
@@ -657,7 +676,7 @@ const ExpenseReport = ()=>{
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                            lineNumber: 226,
+                                                            lineNumber: 243,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)) : viewMode === 'verify' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             className: "text-orange-500 font-medium flex items-center gap-1",
@@ -666,14 +685,14 @@ const ExpenseReport = ()=>{
                                                                     size: 14
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                    lineNumber: 231,
+                                                                    lineNumber: 248,
                                                                     columnNumber: 49
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 " รอการตรวจสอบ"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                            lineNumber: 230,
+                                                            lineNumber: 247,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             className: "text-orange-500 font-medium flex items-center gap-1",
@@ -682,19 +701,19 @@ const ExpenseReport = ()=>{
                                                                     size: 14
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                    lineNumber: 235,
+                                                                    lineNumber: 252,
                                                                     columnNumber: 49
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 " รอการรายงานผล"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                            lineNumber: 234,
+                                                            lineNumber: 251,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 224,
+                                                        lineNumber: 241,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     req.rejectionReason && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -706,7 +725,7 @@ const ExpenseReport = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 241,
+                                                        lineNumber: 258,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     viewMode === 'active' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -715,7 +734,7 @@ const ExpenseReport = ()=>{
                                                         children: "รายงานผล"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 247,
+                                                        lineNumber: 264,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     viewMode === 'verify' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -724,7 +743,7 @@ const ExpenseReport = ()=>{
                                                         children: "ตรวจสอบและปิดโครงการ"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 255,
+                                                        lineNumber: 272,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     viewMode === 'history' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -742,7 +761,7 @@ const ExpenseReport = ()=>{
                                                                 children: "ส่งกลับไปตรวจสอบ"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 264,
+                                                                lineNumber: 281,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -753,36 +772,36 @@ const ExpenseReport = ()=>{
                                                                 children: "ปิดโครงการแล้ว"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 276,
+                                                                lineNumber: 293,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 263,
+                                                        lineNumber: 280,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                lineNumber: 223,
+                                                lineNumber: 240,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                        lineNumber: 206,
+                                        lineNumber: 223,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, req.id, true, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 194,
+                                lineNumber: 211,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                        lineNumber: 192,
+                        lineNumber: 209,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     filteredRequests.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -793,26 +812,26 @@ const ExpenseReport = ()=>{
                                 className: "mb-4 opacity-50"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 294,
+                                lineNumber: 311,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 children: "ไม่พบรายการที่ต้องรายงานผล"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 295,
+                                lineNumber: 312,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                        lineNumber: 293,
+                        lineNumber: 310,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                lineNumber: 191,
+                lineNumber: 208,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Modal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Modal"], {
@@ -830,7 +849,7 @@ const ExpenseReport = ()=>{
                                     children: returnAmount >= 0 ? 'คืนเงินงบประมาณ' : 'เกินงบประมาณ (Over Budget)'
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 308,
+                                    lineNumber: 325,
                                     columnNumber: 29
                                 }, void 0),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -842,13 +861,13 @@ const ExpenseReport = ()=>{
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 311,
+                                    lineNumber: 328,
                                     columnNumber: 29
                                 }, void 0)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 307,
+                            lineNumber: 324,
                             columnNumber: 25
                         }, void 0),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -860,37 +879,51 @@ const ExpenseReport = ()=>{
                                     children: "ยกเลิก"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 316,
+                                    lineNumber: 333,
                                     columnNumber: 29
                                 }, void 0),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                     onClick: handleSubmit,
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
-                                            size: 18,
-                                            className: "mr-2"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 318,
-                                            columnNumber: 33
-                                        }, void 0),
-                                        " ยืนยันปิดโครงการ"
-                                    ]
-                                }, void 0, true, {
+                                    disabled: isUploading,
+                                    className: `flex items-center gap-2 ${isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary-600 hover:bg-primary-700'} text-white`,
+                                    children: isUploading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "animate-spin rounded-full h-4 w-4 border-2 border-white/20 border-t-white"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                lineNumber: 341,
+                                                columnNumber: 41
+                                            }, void 0),
+                                            "กำลังบันทึก..."
+                                        ]
+                                    }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
+                                                size: 18
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                lineNumber: 346,
+                                                columnNumber: 41
+                                            }, void 0),
+                                            " ยืนยันปิดโครงการ"
+                                        ]
+                                    }, void 0, true)
+                                }, void 0, false, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 317,
+                                    lineNumber: 334,
                                     columnNumber: 29
                                 }, void 0)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 315,
+                            lineNumber: 332,
                             columnNumber: 25
                         }, void 0)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                    lineNumber: 306,
+                    lineNumber: 323,
                     columnNumber: 21
                 }, void 0),
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -906,7 +939,7 @@ const ExpenseReport = ()=>{
                                             children: "โครงการ"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 327,
+                                            lineNumber: 357,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -914,13 +947,13 @@ const ExpenseReport = ()=>{
                                             children: selectedRequest?.project
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 328,
+                                            lineNumber: 358,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 326,
+                                    lineNumber: 356,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -931,7 +964,7 @@ const ExpenseReport = ()=>{
                                             children: "งบประมาณอนุมัติ"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 331,
+                                            lineNumber: 361,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -942,19 +975,19 @@ const ExpenseReport = ()=>{
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 332,
+                                            lineNumber: 362,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 330,
+                                    lineNumber: 360,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 325,
+                            lineNumber: 355,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -971,7 +1004,7 @@ const ExpenseReport = ()=>{
                                                     children: "รายการ"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 340,
+                                                    lineNumber: 370,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -979,7 +1012,7 @@ const ExpenseReport = ()=>{
                                                     children: "จำนวน"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 341,
+                                                    lineNumber: 371,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -987,7 +1020,7 @@ const ExpenseReport = ()=>{
                                                     children: "งบประมาณ (บาท)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 342,
+                                                    lineNumber: 372,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -995,18 +1028,18 @@ const ExpenseReport = ()=>{
                                                     children: "ใช้จ่ายจริง (บาท)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 343,
+                                                    lineNumber: 373,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 339,
+                                            lineNumber: 369,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                        lineNumber: 338,
+                                        lineNumber: 368,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1030,12 +1063,12 @@ const ExpenseReport = ()=>{
                                                                 className: "h-9 text-sm"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 352,
+                                                                lineNumber: 382,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)) : item.description
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                            lineNumber: 350,
+                                                            lineNumber: 380,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1056,7 +1089,7 @@ const ExpenseReport = ()=>{
                                                                         className: "h-9 w-16 text-sm text-center"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                        lineNumber: 368,
+                                                                        lineNumber: 398,
                                                                         columnNumber: 53
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1064,18 +1097,18 @@ const ExpenseReport = ()=>{
                                                                         children: item.unit || 'หน่วย'
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                        lineNumber: 377,
+                                                                        lineNumber: 407,
                                                                         columnNumber: 53
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 367,
+                                                                lineNumber: 397,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)) : `${item.quantity} ${item.unit}`
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                            lineNumber: 365,
+                                                            lineNumber: 395,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1086,7 +1119,7 @@ const ExpenseReport = ()=>{
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                            lineNumber: 383,
+                                                            lineNumber: 413,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1102,7 +1135,7 @@ const ExpenseReport = ()=>{
                                                                         placeholder: "0.00"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                        lineNumber: 386,
+                                                                        lineNumber: 416,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     (item.total === 0 || item.id.startsWith('temp-')) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1112,29 +1145,29 @@ const ExpenseReport = ()=>{
                                                                             size: 16
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                            lineNumber: 398,
+                                                                            lineNumber: 428,
                                                                             columnNumber: 57
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                        lineNumber: 394,
+                                                                        lineNumber: 424,
                                                                         columnNumber: 53
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                                lineNumber: 385,
+                                                                lineNumber: 415,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                            lineNumber: 384,
+                                                            lineNumber: 414,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, item.id, true, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 349,
+                                                    lineNumber: 379,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
@@ -1162,34 +1195,34 @@ const ExpenseReport = ()=>{
                                                         children: "+ เพิ่มรายการพิเศษ (Extra Item)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 407,
+                                                        lineNumber: 437,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 406,
+                                                    lineNumber: 436,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                lineNumber: 405,
+                                                lineNumber: 435,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                        lineNumber: 346,
+                                        lineNumber: 376,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 337,
+                                lineNumber: 367,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 336,
+                            lineNumber: 366,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1203,7 +1236,7 @@ const ExpenseReport = ()=>{
                                             children: "รวมใช้จ่ายจริง"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 436,
+                                            lineNumber: 466,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1214,13 +1247,13 @@ const ExpenseReport = ()=>{
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 437,
+                                            lineNumber: 467,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 435,
+                                    lineNumber: 465,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1231,7 +1264,7 @@ const ExpenseReport = ()=>{
                                             children: "เงินคงเหลือส่งคืน"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 440,
+                                            lineNumber: 470,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1242,30 +1275,199 @@ const ExpenseReport = ()=>{
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 441,
+                                            lineNumber: 471,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 439,
+                                    lineNumber: 469,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 434,
+                            lineNumber: 464,
+                            columnNumber: 21
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "border-t border-gray-100 pt-6 mt-6",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
+                                    className: "text-sm font-bold text-gray-700 mb-4 flex items-center gap-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"], {
+                                            size: 16,
+                                            className: "text-primary-500"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 478,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        "ใบเสร็จหรือเอกสารแนบเพิ่มเติม ( receipts/attachments )"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                    lineNumber: 477,
+                                    columnNumber: 25
+                                }, ("TURBOPACK compile-time value", void 0)),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "bg-gray-50 rounded-xl border border-gray-200 border-dashed p-4",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            type: "file",
+                                            multiple: true,
+                                            id: "expense-file-upload",
+                                            className: "hidden",
+                                            onChange: (e)=>{
+                                                if (e.target.files) {
+                                                    setSelectedFiles(Array.from(e.target.files));
+                                                }
+                                            }
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 483,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            htmlFor: "expense-file-upload",
+                                            className: "cursor-pointer flex flex-col items-center justify-center space-y-1 text-gray-400 hover:text-primary-600 transition-colors py-4",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                                    size: 24,
+                                                    className: "mb-1"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                    lineNumber: 495,
+                                                    columnNumber: 33
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-xs font-semibold",
+                                                    children: "คลิกเพื่อเพิ่มไฟล์ใบเสร็จ"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                    lineNumber: 496,
+                                                    columnNumber: 33
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-[10px]",
+                                                    children: "PDF, PNG, JPG (สูงสุด 10MB)"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                    lineNumber: 497,
+                                                    columnNumber: 33
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 494,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        selectedFiles.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "mt-4 space-y-2",
+                                            children: selectedFiles.map((file, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center justify-between text-xs bg-white p-2 rounded-lg border border-gray-100 shadow-sm",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "truncate max-w-[80%] font-medium text-gray-600",
+                                                            children: file.name
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                            lineNumber: 504,
+                                                            columnNumber: 45
+                                                        }, ("TURBOPACK compile-time value", void 0)),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                            onClick: ()=>setSelectedFiles((prev)=>prev.filter((_, i)=>i !== idx)),
+                                                            className: "text-red-400 hover:text-red-600",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                                                size: 14
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                                lineNumber: 509,
+                                                                columnNumber: 49
+                                                            }, ("TURBOPACK compile-time value", void 0))
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                            lineNumber: 505,
+                                                            columnNumber: 45
+                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                    ]
+                                                }, idx, true, {
+                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                    lineNumber: 503,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0)))
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 501,
+                                            columnNumber: 33
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        selectedRequest?.attachments && selectedRequest.attachments.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "mt-4 pt-4 border-t border-gray-100",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-2",
+                                                    children: "ไฟล์เดิมที่แนบทมา:"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                    lineNumber: 518,
+                                                    columnNumber: 37
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex flex-wrap gap-2",
+                                                    children: selectedRequest.attachments.map((url, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                            href: url,
+                                                            target: "_blank",
+                                                            rel: "noopener noreferrer",
+                                                            className: "text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded border border-blue-100 flex items-center gap-1 hover:bg-blue-100",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"], {
+                                                                    size: 10
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                                    lineNumber: 528,
+                                                                    columnNumber: 49
+                                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                                "ไฟล์ที่ ",
+                                                                idx + 1
+                                                            ]
+                                                        }, idx, true, {
+                                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                            lineNumber: 521,
+                                                            columnNumber: 45
+                                                        }, ("TURBOPACK compile-time value", void 0)))
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                    lineNumber: 519,
+                                                    columnNumber: 37
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 517,
+                                            columnNumber: 33
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                    lineNumber: 482,
+                                    columnNumber: 25
+                                }, ("TURBOPACK compile-time value", void 0))
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                            lineNumber: 476,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                    lineNumber: 324,
+                    lineNumber: 354,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                lineNumber: 301,
+                lineNumber: 318,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Modal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Modal"], {
@@ -1287,19 +1489,19 @@ const ExpenseReport = ()=>{
                                         className: "mr-2"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                        lineNumber: 460,
+                                        lineNumber: 553,
                                         columnNumber: 33
                                     }, void 0),
                                     " ส่งกลับแก้ไข"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 455,
+                                lineNumber: 548,
                                 columnNumber: 29
                             }, void 0)
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 454,
+                            lineNumber: 547,
                             columnNumber: 25
                         }, void 0),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1311,7 +1513,7 @@ const ExpenseReport = ()=>{
                                     children: "ยกเลิก"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 464,
+                                    lineNumber: 557,
                                     columnNumber: 29
                                 }, void 0),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1323,26 +1525,26 @@ const ExpenseReport = ()=>{
                                             className: "mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 466,
+                                            lineNumber: 559,
                                             columnNumber: 33
                                         }, void 0),
                                         " ยืนยันตรวจสอบและปิดโครงการ"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 465,
+                                    lineNumber: 558,
                                     columnNumber: 29
                                 }, void 0)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 463,
+                            lineNumber: 556,
                             columnNumber: 25
                         }, void 0)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                    lineNumber: 453,
+                    lineNumber: 546,
                     columnNumber: 21
                 }, void 0),
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1358,7 +1560,7 @@ const ExpenseReport = ()=>{
                                             children: "โครงการที่ตรวจสอบ"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 475,
+                                            lineNumber: 568,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1366,13 +1568,13 @@ const ExpenseReport = ()=>{
                                             children: selectedRequest?.project
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 476,
+                                            lineNumber: 569,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 474,
+                                    lineNumber: 567,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1383,7 +1585,7 @@ const ExpenseReport = ()=>{
                                             children: "ผู้ขอเบิก"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 479,
+                                            lineNumber: 572,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1391,19 +1593,19 @@ const ExpenseReport = ()=>{
                                             children: selectedRequest?.requester
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 480,
+                                            lineNumber: 573,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                    lineNumber: 478,
+                                    lineNumber: 571,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 473,
+                            lineNumber: 566,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1420,7 +1622,7 @@ const ExpenseReport = ()=>{
                                                     children: "รายการ"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 488,
+                                                    lineNumber: 581,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1428,7 +1630,7 @@ const ExpenseReport = ()=>{
                                                     children: "จำนวน"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 489,
+                                                    lineNumber: 582,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1436,7 +1638,7 @@ const ExpenseReport = ()=>{
                                                     children: "งบประมาณ (บาท)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 490,
+                                                    lineNumber: 583,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -1444,18 +1646,18 @@ const ExpenseReport = ()=>{
                                                     children: "ใช้จ่ายจริง (บาท)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                    lineNumber: 491,
+                                                    lineNumber: 584,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                            lineNumber: 487,
+                                            lineNumber: 580,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                        lineNumber: 486,
+                                        lineNumber: 579,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1468,7 +1670,7 @@ const ExpenseReport = ()=>{
                                                         children: item.description
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 497,
+                                                        lineNumber: 590,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1480,7 +1682,7 @@ const ExpenseReport = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 498,
+                                                        lineNumber: 591,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1491,7 +1693,7 @@ const ExpenseReport = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 499,
+                                                        lineNumber: 592,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1502,18 +1704,18 @@ const ExpenseReport = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 500,
+                                                        lineNumber: 593,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, item.id || index, true, {
                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                lineNumber: 496,
+                                                lineNumber: 589,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                        lineNumber: 494,
+                                        lineNumber: 587,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tfoot", {
@@ -1527,7 +1729,7 @@ const ExpenseReport = ()=>{
                                                         children: "รวมทั้งหมด"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 508,
+                                                        lineNumber: 601,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1538,7 +1740,7 @@ const ExpenseReport = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 509,
+                                                        lineNumber: 602,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1549,13 +1751,13 @@ const ExpenseReport = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 510,
+                                                        lineNumber: 603,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                lineNumber: 507,
+                                                lineNumber: 600,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
@@ -1566,7 +1768,7 @@ const ExpenseReport = ()=>{
                                                         children: "เงินคงเหลือคืนงบประมาณ"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 515,
+                                                        lineNumber: 608,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1577,47 +1779,169 @@ const ExpenseReport = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                        lineNumber: 516,
+                                                        lineNumber: 609,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                                lineNumber: 514,
+                                                lineNumber: 607,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                        lineNumber: 506,
+                                        lineNumber: 599,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                                lineNumber: 485,
+                                lineNumber: 578,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                            lineNumber: 484,
+                            lineNumber: 577,
+                            columnNumber: 21
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "bg-gray-50 p-4 rounded-xl border border-gray-100 flex flex-col gap-3",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex justify-between items-center text-sm",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-gray-500 font-medium tracking-tight uppercase text-[11px]",
+                                            children: "เอกสารแนบทั้งหมด ( All Attachments )"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 618,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-[10px] font-bold",
+                                            children: [
+                                                selectedRequest?.attachments?.length || 0,
+                                                " ไฟล์"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 619,
+                                            columnNumber: 29
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                    lineNumber: 617,
+                                    columnNumber: 25
+                                }, ("TURBOPACK compile-time value", void 0)),
+                                selectedRequest?.attachments && selectedRequest.attachments.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "grid grid-cols-1 md:grid-cols-2 gap-2",
+                                    children: selectedRequest.attachments.map((url, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                            href: url,
+                                            target: "_blank",
+                                            rel: "noopener noreferrer",
+                                            className: "flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-400 hover:shadow-sm transition-all group",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"], {
+                                                        size: 20
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                        lineNumber: 635,
+                                                        columnNumber: 45
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                    lineNumber: 634,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex flex-col min-w-0",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-xs font-bold text-gray-700 truncate",
+                                                            children: [
+                                                                "เอกสารแนบที่ ",
+                                                                idx + 1
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                            lineNumber: 638,
+                                                            columnNumber: 45
+                                                        }, ("TURBOPACK compile-time value", void 0)),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-[10px] text-gray-400 truncate",
+                                                            children: "คลิกเพื่อดูไฟล์"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                            lineNumber: 639,
+                                                            columnNumber: 45
+                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                                    lineNumber: 637,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, idx, true, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 627,
+                                            columnNumber: 37
+                                        }, ("TURBOPACK compile-time value", void 0)))
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                    lineNumber: 625,
+                                    columnNumber: 29
+                                }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-center py-6 border-2 border-dashed border-gray-200 rounded-lg",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"], {
+                                            size: 24,
+                                            className: "mx-auto text-gray-300 mb-1"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 646,
+                                            columnNumber: 33
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-xs text-gray-400",
+                                            children: "ไม่มีเอกสารแนบ"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                            lineNumber: 647,
+                                            columnNumber: 33
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                                    lineNumber: 645,
+                                    columnNumber: 29
+                                }, ("TURBOPACK compile-time value", void 0))
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/features/ExpenseReport.tsx",
+                            lineNumber: 616,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                    lineNumber: 472,
+                    lineNumber: 565,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/features/ExpenseReport.tsx",
-                lineNumber: 448,
+                lineNumber: 541,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/features/ExpenseReport.tsx",
-        lineNumber: 147,
+        lineNumber: 164,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };

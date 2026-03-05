@@ -1,15 +1,17 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect, useMemo, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { BudgetRequest, Category, BudgetContextType, SubActivity, SystemSettings, Department, Expense, User, BudgetPlan, BudgetLog, Permission } from '../types';
+import { BudgetRequest, Category, BudgetContextType, SubActivity, SystemSettings, Department, Expense, User, BudgetPlan, BudgetLog, Permission, Notification, ActivityLog, ApprovalLog } from '../types';
 import {
   authService,
   userService,
   systemService,
   masterDataService,
   budgetService,
-  expenseService
+  expenseService,
+  notificationService,
+  activityLogService
 } from '../services/api';
 import { createClient } from '../lib/supabase/client';
 
@@ -21,20 +23,68 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   // --- Client State (Session) ---
   const [user, setUser] = useState<User | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('dcc_user');
-    if (saved) setUser(JSON.parse(saved));
+    const savedSidebar = localStorage.getItem('dcc_sidebar_collapsed');
+    if (savedSidebar) {
+      setIsSidebarCollapsed(savedSidebar === 'true');
+    }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT') {
-        setUser(null);
-        localStorage.removeItem('dcc_user');
-        localStorage.removeItem('dcc_token');
-        queryClient.clear();
+    const checkSession = async () => {
+      const saved = localStorage.getItem('dcc_user');
+      if (saved) {
+        try {
+          const parsedUser = JSON.parse(saved);
+
+          // Verify actual role in DB via API to bypass RLS
+          try {
+            const res = await fetch(`/api/profile?id=${parsedUser.id}&email=${parsedUser.email || ''}`);
+            if (res.ok) {
+              const result = await res.json();
+              if (result.profile) {
+                const dbUser = result.profile;
+                console.log("DB User on load:", dbUser.role);
+                setUser({ ...parsedUser, ...dbUser });
+                localStorage.setItem('dcc_user', JSON.stringify({ ...parsedUser, ...dbUser }));
+              } else {
+                console.log("Profile not found in DB via API");
+                setUser(parsedUser);
+              }
+            } else {
+              console.log("Local User on load API fallback:", parsedUser.role);
+              setUser(parsedUser);
+            }
+          } catch (err) {
+            console.error("API fetch error:", err);
+            setUser(parsedUser);
+          }
+        } catch (e) { console.error(e) }
       }
-    });
-    return () => subscription.unsubscribe();
+
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_OUT') {
+          setUser(null);
+          localStorage.removeItem('dcc_user');
+          localStorage.removeItem('dcc_token');
+          queryClient.clear();
+        } else if (event === 'SIGNED_IN' && session?.user) {
+          try {
+            const res = await fetch(`/api/profile?id=${session.user.id}&email=${session.user.email || ''}`);
+            if (res.ok) {
+              const result = await res.json();
+              if (result.profile) {
+                const mergedUser = { ...session.user, ...result.profile };
+                setUser(mergedUser as User);
+                localStorage.setItem('dcc_user', JSON.stringify(mergedUser));
+              }
+            }
+          } catch (e) { console.error("API fetch error on auth change", e); }
+        }
+      });
+      return () => subscription.unsubscribe();
+    };
+    checkSession();
   }, [queryClient, supabase.auth]);
 
   // Theme Management
@@ -62,23 +112,83 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(prev => {
+      const next = !prev;
+      localStorage.setItem('dcc_sidebar_collapsed', String(next));
+      return next;
+    });
+  };
+
 
   // --- Server State (Queries) ---
-  const { data: requests = [] } = useQuery({ queryKey: ['requests'], queryFn: budgetService.getRequests, enabled: !!user });
-  const { data: categories = [] } = useQuery({ queryKey: ['categories'], queryFn: masterDataService.getCategories, enabled: !!user });
+  // staleTime: 5 min — prevents refetch on every tab focus / mount
+  const STALE = 5 * 60 * 1000;
 
+  const { data: requests = [] } = useQuery({ queryKey: ['requests'], queryFn: budgetService.getRequests, enabled: !!user, staleTime: STALE });
+  const { data: categories = [] } = useQuery({ queryKey: ['categories'], queryFn: masterDataService.getCategories, enabled: !!user, staleTime: STALE });
+  const { data: subActivities = [] } = useQuery({ queryKey: ['subActivities'], queryFn: masterDataService.getSubActivities, enabled: !!user, staleTime: STALE });
+  const { data: departments = [] } = useQuery({ queryKey: ['departments'], queryFn: systemService.getDepartments, enabled: !!user, staleTime: STALE });
+  const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: userService.getAll, enabled: !!user, staleTime: STALE });
+  const { data: budgetPlans = [] } = useQuery({ queryKey: ['budgetPlans'], queryFn: () => budgetService.getPlans(), enabled: !!user, staleTime: STALE });
+  const { data: expenses = [] } = useQuery({ queryKey: ['expenses'], queryFn: () => expenseService.getAll(), enabled: !!user, staleTime: STALE });
+  const { data: budgetLogs = [] } = useQuery({ queryKey: ['budgetLogs'], queryFn: () => budgetService.getLogs(), enabled: !!user, staleTime: STALE });
+  const { data: notifications = [] } = useQuery({ queryKey: ['notifications', user?.id], queryFn: () => notificationService.getAll(user!.id), enabled: !!user, staleTime: STALE });
+  const { data: activityLogs = [] } = useQuery({ queryKey: ['activityLogs'], queryFn: activityLogService.getAll, enabled: !!user && user.role === 'admin', staleTime: STALE });
+
+  // Real-time Notifications Subscription
   useEffect(() => {
-    console.log("[BudgetContext] User:", user);
-    console.log("[BudgetContext] Requests:", requests);
-    console.log("[BudgetContext] Categories:", categories);
-  }, [user, requests, categories]);
+    if (!user) return;
 
-  const { data: subActivities = [] } = useQuery({ queryKey: ['subActivities'], queryFn: masterDataService.getSubActivities, enabled: !!user });
-  const { data: departments = [] } = useQuery({ queryKey: ['departments'], queryFn: systemService.getDepartments, enabled: !!user });
-  const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: userService.getAll, enabled: !!user });
-  const { data: budgetPlans = [] } = useQuery({ queryKey: ['budgetPlans'], queryFn: () => budgetService.getPlans(), enabled: !!user });
-  const { data: expenses = [] } = useQuery({ queryKey: ['expenses'], queryFn: () => expenseService.getAll(), enabled: !!user });
-  const { data: budgetLogs = [] } = useQuery({ queryKey: ['budgetLogs'], queryFn: () => budgetService.getLogs(), enabled: !!user });
+    const channel = supabase
+      .channel('realtime_notifications')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'Notification',
+          filter: `userId=eq.${user.id}`
+        },
+        (payload) => {
+          console.log('New notification received:', payload);
+          queryClient.invalidateQueries({ queryKey: ['notifications', user.id] });
+
+          // Optional: Browser notification or toast
+          if (typeof window !== 'undefined' && window.Notification && window.Notification.permission === 'granted') {
+            new window.Notification(payload.new.title, { body: payload.new.message });
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, supabase, queryClient]);
+
+  const logActivityMutation = useMutation({
+    mutationFn: (log: Omit<ActivityLog, 'id' | 'createdAt' | 'user'>) => activityLogService.log(log),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['activityLogs'] });
+    }
+  });
+
+  const logActivity = async (action: string, details: string, entityId?: string, entityType?: string) => {
+    if (!user) return;
+    try {
+      await logActivityMutation.mutateAsync({
+        userId: user.id,
+        action,
+        details,
+        entityId,
+        entityType,
+        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined
+      });
+    } catch (error) {
+      console.error('Failed to log activity:', error);
+    }
+  };
 
   const { data: settings = {
     orgName: 'DCC Company Ltd.',
@@ -89,6 +199,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     queryKey: ['settings'],
     queryFn: systemService.getSettings,
     enabled: !!user,
+    staleTime: STALE,
     initialData: {
       orgName: 'DCC Company Ltd.',
       fiscalYear: 2569,
@@ -100,7 +211,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const hasPermission = (permission: Permission): boolean => {
     if (!user) return false;
-    if (user.role === 'admin') return true;
+    if (user.role?.toLowerCase() === 'admin') return true;
 
     const rolePermissions = settings.permissions?.[user.role] || [];
     return rolePermissions.includes(permission);
@@ -115,6 +226,15 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       setUser(response.user);
       localStorage.setItem('dcc_user', JSON.stringify(response.user));
       localStorage.setItem('dcc_token', response.token);
+
+      // Log login activity
+      activityLogService.log({
+        userId: response.user.id,
+        action: 'LOGIN',
+        details: 'เข้าสู่ระบบด้วยชื่อผู้ใช้งาน',
+        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined
+      }).catch(err => console.error('Failed to log login:', err));
+
       return true;
     } catch (error) {
       console.error("Login Error in Context:", error);
@@ -167,38 +287,59 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   // Admin User Management
   const addUserMutation = useMutation({
     mutationFn: userService.create,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      logActivity('CREATE_USER', `สร้างผู้ใช้งานใหม่: ${data.name} (@${data.username})`, data.id, 'User');
+    }
   });
 
   const updateUserMutation = useMutation({
     mutationFn: ({ id, data }: { id: string, data: Partial<User> }) => userService.update(id, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      logActivity('UPDATE_USER', `แก้ไขข้อมูลผู้ใช้งาน: ${data.name} (@${data.username})`, data.id, 'User');
+    }
   });
 
   const deleteUserMutation = useMutation({
     mutationFn: userService.delete,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      logActivity('DELETE_USER', `ลบผู้ใช้งาน (ID: ${id})`, id, 'User');
+    }
   });
 
   // Settings & Departments
   const updateSettingsMutation = useMutation({
     mutationFn: systemService.updateSettings,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['settings'] })
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['settings'] });
+      logActivity('UPDATE_SETTINGS', `แก้ไขการตั้งค่าระบบ: ปีงบประมาณ ${variables.fiscalYear}`, 'system', 'Settings');
+    }
   });
 
   const addDepartmentMutation = useMutation({
     mutationFn: systemService.createDepartment,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['departments'] })
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['departments'] });
+      logActivity('CREATE_DEPARTMENT', `เพิ่มแผนกใหม่: ${data.name}`, data.id, 'Department');
+    }
   });
 
   const updateDepartmentMutation = useMutation({
     mutationFn: systemService.updateDepartment,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['departments'] })
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['departments'] });
+      logActivity('UPDATE_DEPARTMENT', `แก้ไขข้อมูลแผนก: ${data.name}`, data.id, 'Department');
+    }
   });
 
   const deleteDepartmentMutation = useMutation({
     mutationFn: systemService.deleteDepartment,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['departments'] })
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ['departments'] });
+      logActivity('DELETE_DEPARTMENT', `ลบแผนก (ID: ${id})`, id, 'Department');
+    }
   });
 
   // Master Data
@@ -209,12 +350,18 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const updateCategoryMutation = useMutation({
     mutationFn: masterDataService.updateCategory,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] }) // Expense/Budget updates affect this too
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      logActivity('UPDATE_CATEGORY', `แก้ไขข้อมูลหมวดหมู่: ${data.name}`, data.id, 'Category');
+    }
   });
 
   const deleteCategoryMutation = useMutation({
     mutationFn: masterDataService.deleteCategory,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['categories'] })
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      logActivity('DELETE_CATEGORY', `ลบหมวดหมู่ (ID: ${id})`, id, 'Category');
+    }
   });
 
   const addSubActivityMutation = useMutation({
@@ -253,30 +400,102 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const approveRequestMutation = useMutation({
     mutationFn: ({ id, approverId }: { id: string, approverId: string }) => budgetService.approveRequest(id, approverId),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['requests'] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+
+      if (data.requesterId) {
+        sendNotification(
+          data.requesterId,
+          'คำขอโครงการได้รับอนุมัติ ✅',
+          `โครงการ "${data.project}" ได้รับการอนุมัติแล้ว`,
+          'success',
+          `/budget?id=${data.id}`
+        );
+      }
+
+      logActivity(
+        'APPROVE_REQUEST',
+        `อนุมัติโครงการ: ${data.project} (งบประมาณ: ${data.amount.toLocaleString()} บาท)`,
+        data.id,
+        'BudgetRequest'
+      );
     }
   });
 
   const rejectRequestMutation = useMutation({
     mutationFn: ({ id, approverId, reason }: { id: string, approverId: string, reason: string }) => budgetService.rejectRequest(id, approverId, reason),
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['requests'] });
+
+      if (data.requesterId) {
+        sendNotification(
+          data.requesterId,
+          'คำขอโครงการถูกปฏิเสธ ❌',
+          `โครงการ "${data.project}" ถูกปฏิเสธ: ${variables.reason}`,
+          'error',
+          `/budget?id=${data.id}`
+        );
+      }
+
+      logActivity(
+        'REJECT_REQUEST',
+        `ปฏิเสธโครงการ: ${data.project} (เหตุผล: ${variables.reason})`,
+        data.id,
+        'BudgetRequest'
+      );
     }
   });
 
   const submitExpenseReportMutation = useMutation({
     mutationFn: ({ id, data }: { id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number } }) => budgetService.submitExpenseReport(id, data),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['requests'] });
+
+      // Notify approvers/finance
+      const admins = users.filter(u => u.role === 'admin' || u.role === 'approver' || u.role === 'finance');
+      admins.forEach(admin => {
+        if (admin.id !== user?.id) {
+          sendNotification(
+            admin.id,
+            'รายงานผลการใช้จ่ายใหม่ 📑',
+            `มีการส่งรายงานผลสำหรับโครงการ "${data.project}" รอการตรวจสอบ`,
+            'primary',
+            `/budget?id=${data.id}`
+          );
+        }
+      });
+
+      logActivity(
+        'SUBMIT_EXPENSE',
+        `ส่งรายงานผลการใช้จ่ายโครงการ: ${data.project} (จำนวนเงิน: ${data.actualAmount?.toLocaleString()} บาท)`,
+        data.id,
+        'BudgetRequest'
+      );
     }
   });
 
   const rejectExpenseReportMutation = useMutation({
     mutationFn: ({ id, reason }: { id: string, reason: string }) => budgetService.rejectExpenseReport(id, reason),
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['requests'] });
+
+      if (data.requesterId) {
+        sendNotification(
+          data.requesterId,
+          'รายงานผลการใช้จ่ายถูกส่งคืน ⚠️',
+          `รายงานผลสำหรับโครงการ "${data.project}" ถูกส่งคืนให้แก้ไข: ${variables.reason}`,
+          'warning',
+          `/budget?id=${data.id}`
+        );
+      }
+
+      logActivity(
+        'REJECT_EXPENSE',
+        `ส่งคืนรายงานผลการใช้จ่ายโครงการ: ${data.project} (เหตุผล: ${variables.reason})`,
+        data.id,
+        'BudgetRequest'
+      );
     }
   });
 
@@ -290,9 +509,10 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   // ... (deleteRequestMutation)
 
-  const submitExpenseReport = async (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => { await submitExpenseReportMutation.mutateAsync({ id, data }); };
+  const submitExpenseReport = async (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number, attachments?: string[] }) => { await submitExpenseReportMutation.mutateAsync({ id, data }); };
   const rejectExpenseReport = async (id: string, reason: string) => { await rejectExpenseReportMutation.mutateAsync({ id, reason }); };
   const completeRequest = async (id: string) => { await completeRequestMutation.mutateAsync({ id }); };
+  const uploadAttachment = async (file: File) => { return await budgetService.uploadAttachment(file); };
 
   const deleteRequestMutation = useMutation({
     mutationFn: budgetService.deleteRequest,
@@ -337,36 +557,25 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['budgetPlans'] })
   });
 
-  // --- Derived State (Stats) ---
-  const getDashboardStats = () => {
+  // --- Derived State (Stats) — memoized so it only recomputes when source data changes ---
+  const dashboardStats = useMemo(() => {
     const currentYearCategories = categories.filter(cat => cat.year === settings.fiscalYear);
     const validCategoryNames = new Set(currentYearCategories.map(c => c.name));
     const totalBudget = currentYearCategories.reduce((sum, cat) => sum + cat.allocated, 0);
-
     const currentYearRequests = requests.filter(req => validCategoryNames.has(req.category));
-
     const totalUsed = currentYearCategories.reduce((sum, cat) => sum + (cat.used || 0), 0);
-
     const totalPending = currentYearRequests
       .filter(req => req.status === 'pending')
       .reduce((sum, req) => sum + req.amount, 0);
-
     const totalActual = currentYearRequests
       .filter(req => req.status === 'completed')
       .reduce((sum, req) => sum + (req.actualAmount || 0), 0);
-
     const totalRemaining = totalBudget - totalUsed;
     const usagePercentage = totalBudget > 0 ? (totalUsed / totalBudget) * 100 : 0;
+    return { totalBudget, totalUsed, totalActual, totalPending, totalRemaining, usagePercentage };
+  }, [categories, requests, settings.fiscalYear]);
 
-    return {
-      totalBudget,
-      totalUsed,
-      totalActual, // New field
-      totalPending,
-      totalRemaining,
-      usagePercentage
-    };
-  };
+  const getDashboardStats = useCallback(() => dashboardStats, [dashboardStats]);
 
   // Helper Wrappers (to match old Context API)
   const updateUserProfile = async (data: Partial<User>) => { await updateUserProfileMutation.mutateAsync(data); };
@@ -374,6 +583,31 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const addUser = async (data: Partial<User>) => { await addUserMutation.mutateAsync(data); };
   const updateUser = async (id: string, data: Partial<User>) => { await updateUserMutation.mutateAsync({ id, data }); };
   const deleteUser = async (id: string) => { await deleteUserMutation.mutateAsync(id); };
+
+  const markNotificationAsReadMutation = useMutation({
+    mutationFn: notificationService.markAsRead,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications', user?.id] })
+  });
+
+  const markAllNotificationsAsReadMutation = useMutation({
+    mutationFn: (userId: string) => notificationService.markAllAsRead(userId),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications', user?.id] })
+  });
+
+  const deleteNotificationMutation = useMutation({
+    mutationFn: notificationService.delete,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications', user?.id] })
+  });
+
+  const markNotificationAsRead = async (id: string) => { await markNotificationAsReadMutation.mutateAsync(id); };
+  const markAllNotificationsAsRead = async () => { if (user) await markAllNotificationsAsReadMutation.mutateAsync(user.id); };
+  const deleteNotification = async (id: string) => { await deleteNotificationMutation.mutateAsync(id); };
+
+  const sendNotification = async (userId: string, title: string, message: string, type: any = 'info', link?: string) => {
+    await notificationService.create({ userId, title, message, type, link });
+    // Note: We don't necessarily need to invalidate our own queries if we are sending to someone else,
+    // but the recipient will get it via real-time.
+  };
 
   const updateSettings = async (s: SystemSettings) => { await updateSettingsMutation.mutateAsync(s); };
   const addDepartment = async (d: Department) => { await addDepartmentMutation.mutateAsync(d); };
@@ -411,6 +645,14 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     return budgetService.getLogs(categoryId);
   };
 
+  const getApprovalLogs = async (requestId: string) => {
+    return await budgetService.getApprovalLogs(requestId);
+  };
+
+  const getAllApprovalLogs = async () => {
+    return await budgetService.getAllApprovalLogs();
+  };
+
   return (
     <BudgetContext.Provider value={{
       requests,
@@ -439,6 +681,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       completeRequest,
       revertComplete,
       deleteRequest,
+      uploadAttachment,
       addCategory,
       updateCategory,
       deleteCategory,
@@ -466,7 +709,18 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         if (data.settings) queryClient.setQueryData(['settings'], data.settings);
         alert('Data restored to Cache');
       },
-      changeTheme
+      changeTheme,
+      notifications,
+      markNotificationAsRead,
+      markAllNotificationsAsRead,
+      deleteNotification,
+      sendNotification,
+      activityLogs,
+      logActivity,
+      getApprovalLogs,
+      getAllApprovalLogs,
+      isSidebarCollapsed,
+      toggleSidebar
     }}>
       {children}
     </BudgetContext.Provider >

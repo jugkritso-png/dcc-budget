@@ -9,59 +9,64 @@ import {
     Expense,
     User,
     BudgetPlan,
-    BudgetLog
+    BudgetLog,
+    Notification,
+    ActivityLog,
+    ApprovalLog
 } from '../types';
 
 export const authService = {
     login: async (credentials: { username: string; password: string }) => {
         const cleanUsername = credentials.username.trim();
-        const cleanPassword = credentials.password; // Do not trim password
+        const cleanPassword = credentials.password;
         let email = cleanUsername.includes('@') ? cleanUsername : '';
 
-        console.log('[Login] 1. Username input:', `"${cleanUsername}"`);
-
         if (!email) {
-            console.log('[Login] 2. Resolving email via RPC for:', cleanUsername);
             const { data: resolvedEmail, error: rpcError } = await supabase.rpc('get_user_email', { p_username: cleanUsername });
-            console.log('[Login] 3. RPC Result:', resolvedEmail, 'RPC Error:', rpcError);
-
             if (!rpcError && resolvedEmail) {
                 email = resolvedEmail;
             } else {
-                email = `${cleanUsername}@wu.ac.th`; // Fallback
+                email = `${cleanUsername}@wu.ac.th`;
             }
         }
-
-        console.log('[Login] 4. Sign-in email:', `"${email}"`);
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
             password: cleanPassword,
         });
 
-        if (error) {
-            console.error('[Login] 5. Supabase Auth Error:', error.message, 'Code:', error.status);
-            throw new Error(error.message);
-        }
-
-        console.log('[Login] 6. Success! User ID:', data.user?.id);
-
-        console.log('[Login] Sign-in successful for user:', data.user?.email);
+        if (error) throw new Error(error.message);
 
         // Fetch user profile
-        const { data: profile, error: profileError } = await supabase
-            .from('User')
-            .select('*')
-            .eq('id', data.user.id)
-            .maybeSingle();
-
-        if (profileError) {
-            console.error('[Login] Profile fetch error:', profileError.message, profileError.code);
+        // Fetch user profile via our API route to bypass RLS
+        let profile = null;
+        try {
+            const res = await fetch(`/api/profile?id=${data.user.id}&email=${data.user.email || ''}`);
+            if (res.ok) {
+                const result = await res.json();
+                if (result.profile) {
+                    profile = result.profile;
+                    console.log("LOGIN -> DB profile fetch success:", profile.role);
+                }
+            } else {
+                console.error("LOGIN -> Error fetching profile via API:", await res.text());
+            }
+        } catch (e) {
+            console.error("LOGIN -> Failed to fetch profile via API:", e);
         }
-        console.log('[Login] Profile result:', profile);
+
+        const userObj = profile || {
+            id: data.user.id,
+            email: data.user.email,
+            role: 'user', // Default fallback
+            username: credentials.username,
+            name: credentials.username,
+            position: '',
+            department: ''
+        };
 
         return {
-            user: (profile || { id: data.user.id, email: data.user.email, role: 'user', username: credentials.username, name: credentials.username, position: '', department: '' }) as User,
+            user: userObj as User,
             token: data.session.access_token
         };
     },
@@ -140,17 +145,17 @@ export const systemService = {
         } as SystemSettings;
     },
     updateSettings: async (settings: SystemSettings) => {
-        const upsert = async (key: string, value: string) => {
-            const { error } = await supabase.from('SystemSetting').upsert({ key, value });
-            if (error) throw new Error(error.message);
-        };
-        await upsert('ORG_NAME', settings.orgName);
-        await upsert('FISCAL_YEAR', settings.fiscalYear.toString());
-        await upsert('OVER_BUDGET_ALERT', String(settings.overBudgetAlert));
-        await upsert('FISCAL_YEAR_CUTOFF', settings.fiscalYearCutoff);
-        if (settings.permissions) {
-            await upsert('PERMISSIONS', JSON.stringify(settings.permissions));
-        }
+        const upsert = (key: string, value: string) =>
+            supabase.from('SystemSetting').upsert({ key, value }).then(({ error }) => { if (error) throw new Error(error.message); });
+
+        // Run all upserts in parallel instead of sequentially
+        await Promise.all([
+            upsert('ORG_NAME', settings.orgName),
+            upsert('FISCAL_YEAR', settings.fiscalYear.toString()),
+            upsert('OVER_BUDGET_ALERT', String(settings.overBudgetAlert)),
+            upsert('FISCAL_YEAR_CUTOFF', settings.fiscalYearCutoff),
+            ...(settings.permissions ? [upsert('PERMISSIONS', JSON.stringify(settings.permissions))] : []),
+        ]);
         return { success: true };
     },
 
@@ -229,18 +234,47 @@ export const masterDataService = {
 };
 
 export const budgetService = {
+    uploadAttachment: async (file: File) => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { data, error } = await supabase.storage
+            .from('attachments')
+            .upload(filePath, file);
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        const { data: publicUrlData } = supabase.storage
+            .from('attachments')
+            .getPublicUrl(filePath);
+
+        return publicUrlData.publicUrl;
+    },
     getRequests: async () => {
         const { data, error } = await supabase.from('BudgetRequest').select('*, expenseItems:BudgetRequestItem(*)').order('createdAt', { ascending: false });
         if (error) throw new Error(error.message);
         return data as BudgetRequest[];
     },
     createRequest: async (req: BudgetRequest) => {
-        const { expenseItems, ...rest } = req;
-        const { data, error } = await supabase.from('BudgetRequest').insert(rest).select().single();
+        const { expenseItems, id, documentNumber, ...rest } = req;
+
+        // Map documentNumber to approvalRef if approvalRef is not provided
+        const payloadToInsert = {
+            ...rest,
+            approvalRef: rest.approvalRef || documentNumber
+        };
+
+        const { data, error } = await supabase.from('BudgetRequest').insert(payloadToInsert).select().single();
         if (error) throw new Error(error.message);
 
         if (expenseItems && expenseItems.length > 0) {
-            const items = expenseItems.map((item: any) => ({ ...item, requestId: data.id }));
+            const items = expenseItems.map(({ id: itemId, ...itemRest }: any) => ({
+                ...itemRest,
+                requestId: data.id
+            }));
             const { error: itemError } = await supabase.from('BudgetRequestItem').insert(items);
             if (itemError) console.error("Error inserting items:", itemError);
         }
@@ -252,34 +286,110 @@ export const budgetService = {
         return data as BudgetRequest;
     },
     approveRequest: async (id: string, approverId: string) => {
-        const { data, error } = await supabase.from('BudgetRequest').update({ status: 'approved', approverId, approvedAt: new Date().toISOString() }).eq('id', id).select().single();
+        // 1. Get current request to know the step
+        const { data: currentReq } = await supabase.from('BudgetRequest').select('*').eq('id', id).single();
+        if (!currentReq) throw new Error('Request not found');
+
+        const step = currentReq.currentStep || 'manager';
+        let nextStep = step;
+        let nextStatus = 'pending';
+
+        if (step === 'manager') {
+            nextStep = 'finance';
+        } else if (step === 'finance') {
+            nextStep = 'director';
+        } else if (step === 'director') {
+            nextStatus = 'approved';
+        }
+
+        // 2. Update status and step
+        const updateData: any = {
+            currentStep: nextStep,
+            status: nextStatus,
+            approverId,
+            updatedAt: new Date().toISOString()
+        };
+
+        if (nextStatus === 'approved') {
+            updateData.approvedAt = new Date().toISOString();
+        }
+
+        const { data, error } = await supabase.from('BudgetRequest').update(updateData).eq('id', id).select().single();
         if (error) throw new Error(error.message);
 
-        // Note: For full accuracy with category `used` field, an RPC or Edge function is strongly recommended. 
-        // We will just do a basic client-side update as a fallback to keep the app working.
-        const req = data as BudgetRequest;
-        const { data: categoryData } = await supabase.from('Category').select('*').eq('name', req.category).maybeSingle();
-        if (categoryData) {
-            await supabase.from('Category').update({ used: (categoryData.used || 0) + req.amount }).eq('id', categoryData.id);
+        // 3. Log the approval
+        await supabase.from('ApprovalLog').insert({
+            requestId: id,
+            approverId,
+            action: 'approve',
+            stage: step
+        });
+
+        // 4. Update category budget ONLY on final approval
+        if (nextStatus === 'approved') {
+            const req = data as BudgetRequest;
+            const { data: categoryData } = await supabase.from('Category').select('*').eq('name', req.category).maybeSingle();
+            if (categoryData) {
+                await supabase.from('Category').update({ used: (categoryData.used || 0) + req.amount }).eq('id', categoryData.id);
+            }
         }
 
         return data as BudgetRequest;
     },
     rejectRequest: async (id: string, approverId: string, reason: string) => {
-        const { data, error } = await supabase.from('BudgetRequest').update({ status: 'rejected', approverId, rejectionReason: reason }).eq('id', id).select().single();
+        // 1. Get current request to know the step
+        const { data: currentReq } = await supabase.from('BudgetRequest').select('currentStep').eq('id', id).single();
+        const step = currentReq?.currentStep || 'manager';
+
+        const { data, error } = await supabase.from('BudgetRequest').update({
+            status: 'rejected',
+            approverId,
+            rejectionReason: reason,
+            updatedAt: new Date().toISOString()
+        }).eq('id', id).select().single();
         if (error) throw new Error(error.message);
+
+        // 2. Log the rejection
+        await supabase.from('ApprovalLog').insert({
+            requestId: id,
+            approverId,
+            action: 'reject',
+            stage: step,
+            comment: reason
+        });
+
         return data as BudgetRequest;
+    },
+    getApprovalLogs: async (requestId: string) => {
+        const { data, error } = await supabase
+            .from('ApprovalLog')
+            .select('*, user:User(name, role, avatar)')
+            .eq('requestId', requestId)
+            .order('createdAt', { ascending: true });
+
+        if (error) throw new Error(error.message);
+        return data as ApprovalLog[];
+    },
+    getAllApprovalLogs: async () => {
+        const { data, error } = await supabase
+            .from('ApprovalLog')
+            .select('*, user:User(name, role, avatar)')
+            .order('createdAt', { ascending: true });
+
+        if (error) throw new Error(error.message);
+        return data as ApprovalLog[];
     },
     completeRequest: async (id: string) => {
         const { data, error } = await supabase.from('BudgetRequest').update({ status: 'completed' }).eq('id', id).select().single();
         if (error) throw new Error(error.message);
         return data as BudgetRequest;
     },
-    submitExpenseReport: async (id: string, submitData: { expenseItems: any[], actualTotal: number, returnAmount: number }) => {
+    submitExpenseReport: async (id: string, submitData: { expenseItems: any[], actualTotal: number, returnAmount: number, attachments?: string[] }) => {
         const { error } = await supabase.from('BudgetRequest').update({
             status: 'waiting_verification',
             actualAmount: submitData.actualTotal,
-            returnAmount: submitData.returnAmount
+            returnAmount: submitData.returnAmount,
+            attachments: submitData.attachments
         }).eq('id', id);
 
         if (error) throw new Error(error.message);
@@ -397,4 +507,80 @@ export const expenseService = {
         if (error) throw new Error(error.message);
         return { success: true };
     },
+};
+
+export const notificationService = {
+    getAll: async (userId: string) => {
+        const { data, error } = await supabase
+            .from('Notification')
+            .select('*')
+            .eq('userId', userId)
+            .order('createdAt', { ascending: false });
+        if (error) throw new Error(error.message);
+        return data as Notification[];
+    },
+    markAsRead: async (id: string) => {
+        const { data, error } = await supabase
+            .from('Notification')
+            .update({ isRead: true })
+            .eq('id', id)
+            .select()
+            .single();
+        if (error) throw new Error(error.message);
+        return data as Notification;
+    },
+    markAllAsRead: async (userId: string) => {
+        const { error } = await supabase
+            .from('Notification')
+            .update({ isRead: true })
+            .eq('userId', userId)
+            .eq('isRead', false);
+        if (error) throw new Error(error.message);
+        return { success: true };
+    },
+    create: async (notification: Omit<Notification, 'id' | 'createdAt' | 'isRead'>) => {
+        const { data, error } = await supabase
+            .from('Notification')
+            .insert(notification)
+            .select()
+            .single();
+        if (error) throw new Error(error.message);
+        return data as Notification;
+    },
+    delete: async (id: string) => {
+        const { error } = await supabase
+            .from('Notification')
+            .delete()
+            .eq('id', id);
+        if (error) throw new Error(error.message);
+        return { success: true };
+    }
+};
+
+export const activityLogService = {
+    getAll: async () => {
+        const { data, error } = await supabase
+            .from('ActivityLog')
+            .select(`
+                *,
+                user:User (
+                    name,
+                    role,
+                    avatar,
+                    username
+                )
+            `)
+            .order('createdAt', { ascending: false });
+        if (error) throw new Error(error.message);
+        return data as unknown as ActivityLog[];
+    },
+    log: async (log: Omit<ActivityLog, 'id' | 'createdAt' | 'user'>) => {
+        const { data, error } = await supabase
+            .from('ActivityLog')
+            .insert(log)
+            .select()
+            .single();
+        if (error) throw new Error(error.message);
+        return data as ActivityLog;
+    }
 };

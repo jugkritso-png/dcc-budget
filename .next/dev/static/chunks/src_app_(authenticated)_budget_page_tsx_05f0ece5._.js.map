@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/walailakuniversity/Documents/APP/bugget/dcc-budget/src/app/%28authenticated%29/budget/page.tsx"],"sourcesContent":["\n'use client'\n\nimport BudgetCategoriesManager from '@/components/features/BudgetCategoriesManager'\n\nexport default function BudgetPage() {\n    return (\n        <div className=\"space-y-8 animate-in fade-in duration-500\">\n            <BudgetCategoriesManager />\n        </div>\n    )\n}\n"],"names":[],"mappings":";;;;;;;;;;AACA;;;AAIe,SAAS;IACpB,qBACI,6LAAC;QAAI,WAAU;kBACX,cAAA,6LAAC;;;;;;;;;;AAGb;KANwB"}}]
+}

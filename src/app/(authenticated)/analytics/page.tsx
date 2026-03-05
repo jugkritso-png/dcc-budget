@@ -2,7 +2,7 @@
 'use client'
 
 import React from 'react'
-import AnalyticsDashboard from '@/components/features/AnalyticsDashboard'
+import AnalyticsDashboard from '@/components/features/analytics/AnalyticsDashboard'
 
 export default function AnalyticsPage() {
     return (

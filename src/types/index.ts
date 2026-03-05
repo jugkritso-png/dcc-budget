@@ -64,6 +64,11 @@ export interface BudgetRequest {
   actualAmount?: number;
   returnAmount?: number;
   completedAt?: string;
+
+  // New features
+  attachments?: string[]; // URLs or paths to uploaded files
+  requesterId?: string; // ID of the user who created the request
+  currentStep?: 'manager' | 'finance' | 'director';
 }
 
 export interface Category {
@@ -170,11 +175,12 @@ export type BudgetContextType = {
   updateRequestStatus: (id: string, status: BudgetRequest['status']) => Promise<void>;
   approveRequest: (id: string, approverId: string) => Promise<void>;
   rejectRequest: (id: string, approverId: string, reason: string) => Promise<void>;
-  submitExpenseReport: (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => Promise<void>;
+  submitExpenseReport: (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number, attachments?: string[] }) => Promise<void>;
   completeRequest: (id: string) => Promise<void>;
   rejectExpenseReport: (id: string, reason: string) => Promise<void>;
   revertComplete: (id: string) => Promise<void>;
   deleteRequest: (id: string) => Promise<void>;
+  uploadAttachment: (file: File) => Promise<string>;
   addCategory: (category: Category) => Promise<void>;
   updateCategory: (category: Category) => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
@@ -203,6 +209,19 @@ export type BudgetContextType = {
   saveBudgetPlan: (plan: Omit<BudgetPlan, 'id' | 'updatedAt'>) => Promise<void>;
   restoreData: (data: any) => void;
   changeTheme: (theme: string) => Promise<void>;
+  notifications: Notification[];
+  markNotificationAsRead: (id: string) => Promise<void>;
+  markAllNotificationsAsRead: () => Promise<void>;
+  deleteNotification: (id: string) => Promise<void>;
+  sendNotification: (userId: string, title: string, message: string, type?: Notification['type'], link?: string) => Promise<void>;
+
+  // Audit Logs
+  activityLogs: ActivityLog[];
+  logActivity: (action: string, details: string, entityId?: string, entityType?: string) => Promise<void>;
+  getApprovalLogs: (requestId: string) => Promise<ApprovalLog[]>;
+  getAllApprovalLogs: () => Promise<ApprovalLog[]>;
+  isSidebarCollapsed: boolean;
+  toggleSidebar: () => void;
 };
 
 
@@ -223,4 +242,48 @@ export interface BudgetLog {
   reason: string;
   user?: string;
   createdAt: string; // ISO string for frontend
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  title: string;
+  message: string;
+  isRead: boolean;
+  link?: string;
+  type?: 'primary' | 'success' | 'warning' | 'error' | 'info';
+  createdAt: string;
+}
+
+export interface ActivityLog {
+  id: string;
+  userId: string | null;
+  action: string;
+  entityId?: string;
+  entityType?: string;
+  details: string;
+  ipAddress?: string;
+  userAgent?: string;
+  createdAt: string;
+  // Included in API response
+  user?: {
+    name: string;
+    role: string;
+    avatar: string | null;
+    username: string;
+  };
+}
+export interface ApprovalLog {
+  id: string;
+  requestId: string;
+  approverId: string;
+  action: 'approve' | 'reject';
+  stage: 'manager' | 'finance' | 'director';
+  comment?: string;
+  createdAt: string;
+  user?: {
+    name: string;
+    role: string;
+    avatar: string | null;
+  };
 }

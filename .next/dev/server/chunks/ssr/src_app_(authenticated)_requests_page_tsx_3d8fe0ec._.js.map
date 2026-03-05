@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/walailakuniversity/Documents/APP/bugget/dcc-budget/src/app/%28authenticated%29/requests/page.tsx"],"sourcesContent":["'use client'\n\nimport React from 'react'\nimport BudgetRequestList from '@/components/features/BudgetRequestList'\n\nexport default function RequestsPage() {\n    return (\n        <div className=\"space-y-8 animate-in fade-in duration-500\">\n            <div className=\"flex flex-col md:flex-row md:items-center justify-between gap-4\">\n                <div>\n                    <h1 className=\"text-3xl font-bold text-gray-900 tracking-tight\">รายการคำขอทั้งหมด</h1>\n                    <p className=\"text-gray-500 mt-1\">ติดตามสถานะและดำเนินการอนุมัติคำขอใช้งบประมาณ</p>\n                </div>\n            </div>\n            <BudgetRequestList />\n        </div>\n    )\n}\n"],"names":[],"mappings":";;;;;;;;;;AAAA;;;AAKe,SAAS;IACpB,qBACI,8OAAC;QAAI,WAAU;;0BACX,8OAAC;gBAAI,WAAU;0BACX,cAAA,8OAAC;;sCACG,8OAAC;4BAAG,WAAU;sCAAkD;;;;;;sCAChE,8OAAC;4BAAE,WAAU;sCAAqB;;;;;;;;;;;;;;;;;0BAG1C,8OAAC;;;;;;;;;;;AAGb"}}]
+}
