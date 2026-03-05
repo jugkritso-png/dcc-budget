@@ -394,7 +394,7 @@ const ApprovalModal = ({ isOpen, onClose, request })=>{
         currentStep
     ]);
     const category = categories.find((c)=>c.name === request.category);
-    const isOverBudget = category && category.used + request.amount > category.allocated;
+    const isOverBudget = category && (category.used || 0) + request.amount > category.allocated;
     const handleApprove = async ()=>{
         if (!user) return;
         setIsSubmitting(true);

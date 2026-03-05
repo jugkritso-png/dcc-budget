@@ -40,7 +40,7 @@ const ExpenseReport: React.FC = () => {
     const [viewMode, setViewMode] = useState<'active' | 'history' | 'verify'>('active');
 
     const filteredRequests = useMemo(() => {
-        return requests.filter(req => {
+        return (requests as BudgetRequest[]).filter((req: BudgetRequest) => {
             // 1. Filter by Status
             if (viewMode === 'active' && req.status !== 'approved') return false;
             if (viewMode === 'history' && req.status !== 'completed') return false;
@@ -99,7 +99,7 @@ const ExpenseReport: React.FC = () => {
     const handleOpenReport = (request: BudgetRequest) => {
         setSelectedRequest(request);
         // Initialize actual amounts with 0 if undefined
-        const items = request.expenseItems?.map(item => ({
+        const items = request.expenseItems?.map((item: ExpenseLineItem) => ({
             ...item,
             actualAmount: item.actualAmount ?? 0
         })) || [];
@@ -111,8 +111,8 @@ const ExpenseReport: React.FC = () => {
 
     const handleExpenseChange = (id: string, value: string) => {
         const numValue = parseFloat(value) || 0;
-        setExpenseData(prev =>
-            prev.map(item => item.id === id ? { ...item, actualAmount: numValue } : item)
+        setExpenseData((prev: ExpenseLineItem[]) =>
+            prev.map((item: ExpenseLineItem) => item.id === id ? { ...item, actualAmount: numValue } : item)
         );
     };
 
@@ -120,7 +120,7 @@ const ExpenseReport: React.FC = () => {
         // Use the original approved request amount as the budget baseline
         // This ensures that even if items are removed/added, the Total Budget remains the approved amount.
         const totalBudget = selectedRequest?.amount || 0;
-        const totalActual = expenseData.reduce((sum, item) => sum + (item.actualAmount || 0), 0);
+        const totalActual = expenseData.reduce((sum: number, item: ExpenseLineItem) => sum + (item.actualAmount || 0), 0);
         const returnAmount = totalBudget - totalActual;
         return { totalBudget, totalActual, returnAmount };
     };
@@ -207,7 +207,7 @@ const ExpenseReport: React.FC = () => {
             {/* Grid of Requests */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <AnimatePresence mode="popLayout">
-                    {filteredRequests.map((req, index) => (
+                    {(filteredRequests as BudgetRequest[]).map((req: BudgetRequest, index: number) => (
                         <motion.div
                             key={req.id}
                             initial={{ opacity: 0, y: 20 }}
@@ -375,7 +375,7 @@ const ExpenseReport: React.FC = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-100">
 
-                                {expenseData.map((item, index) => (
+                                {expenseData.map((item: ExpenseLineItem) => (
                                     <tr key={item.id} className="hover:bg-gray-50/50">
                                         <td className="p-3 font-medium text-gray-700">
                                             {item.total === 0 || item.id.startsWith('temp-') ? (
@@ -585,7 +585,7 @@ const ExpenseReport: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {selectedRequest?.expenseItems?.map((item, index) => (
+                                {selectedRequest?.expenseItems?.map((item: ExpenseLineItem, index: number) => (
                                     <tr key={item.id || index} className="hover:bg-gray-50/50">
                                         <td className="p-3 font-medium text-gray-700">{item.description}</td>
                                         <td className="p-3 text-gray-500">{item.quantity} {item.unit}</td>

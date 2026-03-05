@@ -2,12 +2,13 @@
   "/(authenticated)/analytics/page": "/analytics",
   "/(authenticated)/budget/page": "/budget",
   "/(authenticated)/dashboard/page": "/dashboard",
-  "/(authenticated)/management/page": "/management",
   "/(authenticated)/report/page": "/report",
   "/(authenticated)/request/page": "/request",
+  "/(authenticated)/requests/page": "/requests",
   "/(authenticated)/settings/page": "/settings",
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
+  "/api/profile/route": "/api/profile",
   "/login/page": "/login",
   "/page": "/"
 }

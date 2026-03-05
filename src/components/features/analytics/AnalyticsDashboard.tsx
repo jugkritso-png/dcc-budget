@@ -7,6 +7,7 @@ import { Percent, Wallet, FileText, Calculator, Download, Database, Layers } fro
 import { generateBudgetReport } from '@/utils/reportService';
 import { Button } from '@/components/ui/Button';
 import { useChartDimensions } from '@/hooks/useChartDimensions';
+import { BudgetRequest, Category } from '@/types';
 
 const AnalyticsDashboard: React.FC = () => {
     const { requests, categories, settings, getAllApprovalLogs } = useBudget();
@@ -18,13 +19,13 @@ const AnalyticsDashboard: React.FC = () => {
     const monthlyDataMap = new Map<string, { planned: number, actual: number }>();
 
     // Initialize
-    const totalAllocated = categories.reduce((sum, cat) => sum + cat.allocated, 0);
+    const totalAllocated = categories.reduce((sum: number, cat: Category) => sum + cat.allocated, 0);
     const avgMonthlyPlan = totalAllocated / 12;
 
     months.forEach(m => monthlyDataMap.set(m, { planned: avgMonthlyPlan, actual: 0 }));
 
     // Populate Actual from Completed Requests (Actual Spent)
-    requests.filter(r => r.status === 'completed').forEach(req => {
+    requests.filter((r: BudgetRequest) => r.status === 'completed').forEach((req: BudgetRequest) => {
         const date = new Date(req.date);
         const monthIndex = date.getMonth(); // 0-11 (Jan-Dec)
 
@@ -48,10 +49,10 @@ const AnalyticsDashboard: React.FC = () => {
 
     // 2. Category Breakdown
     const categoryData = categories
-        .filter(c => c.used > 0)
-        .sort((a, b) => b.used - a.used)
+        .filter((c: Category) => c.used > 0)
+        .sort((a: Category, b: Category) => b.used - a.used)
         .slice(0, 6)
-        .map(c => ({
+        .map((c: Category) => ({
             name: c.name,
             amount: c.used,
             totalAllocated: c.allocated,
@@ -62,18 +63,18 @@ const AnalyticsDashboard: React.FC = () => {
         }));
 
     // 3. KPI Stats
-    const totalUsed = categories.reduce((sum, cat) => sum + cat.used, 0);
+    const totalUsed = categories.reduce((sum: number, cat: Category) => sum + cat.used, 0);
     const utilizationRate = totalAllocated > 0 ? (totalUsed / totalAllocated) * 100 : 0;
     const totalRemaining = totalAllocated - totalUsed;
 
     // 4. SAP Specifics: Internal vs External
-    const internalBudget = categories.filter(c => c.fund === 'I').reduce((sum, c) => sum + c.allocated, 0);
-    const externalBudget = categories.filter(c => c.fund === 'E').reduce((sum, c) => sum + c.allocated, 0);
-    const internalUsed = categories.filter(c => c.fund === 'I').reduce((sum, c) => sum + c.used, 0);
-    const externalUsed = categories.filter(c => c.fund === 'E').reduce((sum, c) => sum + c.used, 0);
+    const internalBudget = categories.filter((c: Category) => c.fund === 'I').reduce((sum: number, c: Category) => sum + c.allocated, 0);
+    const externalBudget = categories.filter((c: Category) => c.fund === 'E').reduce((sum: number, c: Category) => sum + c.allocated, 0);
+    const internalUsed = categories.filter((c: Category) => c.fund === 'I').reduce((sum: number, c: Category) => sum + c.used, 0);
+    const externalUsed = categories.filter((c: Category) => c.fund === 'E').reduce((sum: number, c: Category) => sum + c.used, 0);
 
     // Avg per approved request
-    const approvedRequests = requests.filter(r => r.status === 'approved');
+    const approvedRequests = requests.filter((r: BudgetRequest) => r.status === 'approved');
     const avgPerRequest = approvedRequests.length > 0 ? totalUsed / approvedRequests.length : 0;
 
     const engMonths = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
@@ -98,7 +99,7 @@ const AnalyticsDashboard: React.FC = () => {
                 utilizationRate
             },
             monthlyData: reportMonthly,
-            categoryData: categories.map(c => ({
+            categoryData: categories.map((c: Category) => ({
                 name: c.name,
                 amount: c.used,
                 totalAllocated: c.allocated,
@@ -107,9 +108,9 @@ const AnalyticsDashboard: React.FC = () => {
                 functionalArea: c.functionalArea,
                 commitmentItem: c.commitmentItem
             })),
-            requests: requests.map(r => ({
+            requests: requests.map((r: BudgetRequest) => ({
                 ...r,
-                categoryData: categories.find(c => c.name === r.category)
+                categoryData: categories.find((c: Category) => c.name === r.category)
             })),
             approvalLogs: allLogs
         });

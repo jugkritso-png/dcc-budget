@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useBudget } from '@/context/BudgetContext';
 import { FileText, Save, CheckCircle2, AlertCircle, Calculator, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { SubActivity, BudgetRequest, ExpenseLineItem, Page } from '@/types';
+import { SubActivity, BudgetRequest, ExpenseLineItem, Page, Category } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
@@ -36,7 +36,7 @@ const CreateRequest: React.FC = () => {
 
     useEffect(() => {
         const usage: Record<string, number> = {};
-        formData.expenseItems.forEach(item => {
+        formData.expenseItems.forEach((item: ExpenseLineItem) => {
             if (item.category) {
                 usage[item.category] = (usage[item.category] || 0) + item.total;
             }
@@ -58,26 +58,26 @@ const CreateRequest: React.FC = () => {
             unit: 'รายการ',
             total: 0
         };
-        setFormData(prev => ({
+        setFormData((prev: any) => ({
             ...prev,
             expenseItems: [...(prev.expenseItems || []), newItem]
         }));
     };
 
     const removeExpenseItem = (id: string) => {
-        setFormData(prev => ({
+        setFormData((prev: any) => ({
             ...prev,
-            expenseItems: prev.expenseItems.filter(item => item.id !== id)
+            expenseItems: prev.expenseItems.filter((item: ExpenseLineItem) => item.id !== id)
         }));
     };
 
     const updateExpenseItem = (id: string, field: keyof ExpenseLineItem, value: any) => {
-        setFormData(prev => {
-            const updatedItems = prev.expenseItems.map(item => {
+        setFormData((prev: any) => {
+            const updatedItems = prev.expenseItems.map((item: ExpenseLineItem) => {
                 if (item.id === id) {
                     const updated = { ...item, [field]: value };
                     if (field === 'quantity' || field === 'unitPrice') {
-                        updated.total = updated.quantity * updated.unitPrice;
+                        updated.total = (updated.quantity || 0) * (updated.unitPrice || 0);
                     }
                     return updated;
                 }
@@ -88,7 +88,7 @@ const CreateRequest: React.FC = () => {
     };
 
     const calculateExpenseTotal = () => {
-        return (formData.expenseItems || []).reduce((sum, item) => sum + item.total, 0);
+        return (formData.expenseItems || []).reduce((sum: number, item: ExpenseLineItem) => sum + item.total, 0);
     };
 
     // Auto-update amount when expense items change
@@ -96,17 +96,17 @@ const CreateRequest: React.FC = () => {
         if (formData.expenseItems && formData.expenseItems.length > 0) {
             const total = calculateExpenseTotal();
             if (total !== formData.amount) {
-                setFormData(prev => ({ ...prev, amount: total }));
+                setFormData((prev: any) => ({ ...prev, amount: total }));
             }
         }
     }, [formData.expenseItems]);
 
     useEffect(() => {
         if (formData.category) {
-            const category = categories.find(c => c.name === formData.category);
+            const category = categories.find((c: Category) => c.name === formData.category);
             setSelectedCategoryData(category || null);
             if (category) {
-                setAvailableSubActivities(subActivities.filter(s => s.categoryId === category.id));
+                setAvailableSubActivities(subActivities.filter((s: SubActivity) => s.categoryId === category.id));
             } else {
                 setAvailableSubActivities([]);
             }
@@ -236,13 +236,13 @@ const CreateRequest: React.FC = () => {
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">หมวดงบประมาณ <span className="text-red-500">*</span></label>
                                 <Select
-                                    options={categories.map(c => ({
+                                    options={categories.map((c: Category) => ({
                                         value: c.name,
                                         label: c.name,
                                         color: c.color // Pass the color class
                                     }))}
                                     value={formData.category || ''}
-                                    onChange={(value) => {
+                                    onChange={(value: string | null) => {
                                         setFormData({ ...formData, category: value || '', activity: '' });
                                     }}
                                     placeholder="เลือกหมวดงบประมาณ"
@@ -261,8 +261,8 @@ const CreateRequest: React.FC = () => {
                                     <Select
                                         className="h-12 rounded-xl bg-white border-gray-200"
                                         value={formData.activity || ''}
-                                        onChange={(value) => {
-                                            const selectedSub = availableSubActivities.find(s => s.name === value);
+                                        onChange={(value: string | null) => {
+                                            const selectedSub = availableSubActivities.find((s: SubActivity) => s.name === value);
                                             setFormData({
                                                 ...formData,
                                                 activity: value || '',
@@ -362,9 +362,9 @@ const CreateRequest: React.FC = () => {
                                                         onChange={e => updateExpenseItem(item.id, 'category', e.target.value)}
                                                     >
                                                         <option value="">เลือกหมวดงบประมาณ</option>
-                                                        {categories.map(c => (
+                                                        {categories.map((c: Category) => (
                                                             <option key={c.id} value={c.name}>
-                                                                {c.name} (คงเหลือ: ฿{(c.allocated - c.used - (categoryUsage[c.name] || 0) + (c.name === item.category ? item.total : 0)).toLocaleString()})
+                                                                {c.name} (คงเหลือ: ฿{(c.allocated - (c.used || 0) - (categoryUsage[c.name] || 0) + (c.name === item.category ? item.total : 0)).toLocaleString()})
                                                             </option>
                                                         ))}
                                                     </select>

@@ -3661,7 +3661,7 @@ const BudgetCategoriesManager = ()=>{
         const pending = requests.filter((r)=>r.category === cat.name && r.status === 'pending').reduce((sum, r)=>sum + r.amount, 0);
         return {
             ...cat,
-            used: cat.used,
+            used: cat.used || 0,
             reserved,
             pending
         };
@@ -3669,7 +3669,7 @@ const BudgetCategoriesManager = ()=>{
     const currentYearCategories = categoriesWithUsage.filter((cat)=>cat.year === selectedYear);
     const filteredCategories = currentYearCategories.filter((cat)=>cat.name.toLowerCase().includes(searchQuery.toLowerCase()) || cat.code.includes(searchQuery));
     const totalAllocated = currentYearCategories.reduce((sum, cat)=>sum + cat.allocated, 0);
-    const totalUsed = currentYearCategories.reduce((sum, cat)=>sum + cat.used, 0);
+    const totalUsed = currentYearCategories.reduce((sum, cat)=>sum + (cat.used || 0), 0);
     const totalRemaining = totalAllocated - totalUsed;
     const handleOpenAdd = ()=>{
         setEditingCategory(null);
@@ -3718,8 +3718,8 @@ const BudgetCategoriesManager = ()=>{
     // Auto-generate category code logic for Modal
     const getAutoCode = ()=>{
         const existingCodes = categories.map((c)=>c.code).filter((code)=>code.startsWith('DCC-')).map((code)=>parseInt(code.replace('DCC-', ''))).filter((num)=>!isNaN(num));
-        const nextNumber = existingCodes.length > 0 ? Math.max(...existingCodes) + 1 : 1;
-        return `DCC-${String(nextNumber).padStart(3, '0')}`;
+        const nextNumber = existingCodes.length > 0 ? Math.max(...existingCodes) : 0;
+        return `DCC-${String(nextNumber + 1).padStart(3, '0')}`;
     };
     // Effects for fetching details
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({

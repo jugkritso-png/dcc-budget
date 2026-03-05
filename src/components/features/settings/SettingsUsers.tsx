@@ -24,7 +24,7 @@ const SettingsUsers: React.FC = () => {
         position: ''
     });
 
-    const filteredUsers = users.filter(u =>
+    const filteredUsers = (users as any[]).filter((u: any) =>
         u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (u.username?.toLowerCase().includes(searchQuery.toLowerCase()) || false)
@@ -176,7 +176,7 @@ const SettingsUsers: React.FC = () => {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                             <AnimatePresence>
-                                {filteredUsers.map((user, index) => (
+                                {filteredUsers.map((user: any, index: number) => (
                                     <motion.div
                                         key={user.id}
                                         initial={{ opacity: 0, y: 20 }}
@@ -336,10 +336,10 @@ const SettingsUsers: React.FC = () => {
                                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">หน่วยงาน</label>
                                 <Select
                                     value={userForm.section}
-                                    onChange={(value) => setUserForm({ ...userForm, section: value })}
+                                    onChange={(value: string | null) => setUserForm({ ...userForm, section: value || '' })}
                                     options={[
                                         { value: '', label: '-- เลือกหน่วยงาน --' },
-                                        ...departments.map(d => ({ value: d.name, label: d.name }))
+                                        ...(departments || []).map((d: any) => ({ value: d.name, label: d.name }))
                                     ]}
                                 />
                             </motion.div>
@@ -361,7 +361,7 @@ const SettingsUsers: React.FC = () => {
                             <div className="relative">
                                 <Select
                                     value={userForm.role}
-                                    onChange={(value) => setUserForm({ ...userForm, role: value })}
+                                    onChange={(value: string | null) => setUserForm({ ...userForm, role: value || 'user' })}
                                     options={[
                                         { value: 'user', label: 'User (ผู้ใช้งานทั่วไป)' },
                                         { value: 'admin', label: 'Administrator (ผู้ดูแลระบบ)' },

@@ -47,6 +47,12 @@
       "namedRegex": "^/analytics(?:/)?$"
     },
     {
+      "page": "/api/profile",
+      "regex": "^/api/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/profile(?:/)?$"
+    },
+    {
       "page": "/budget",
       "regex": "^/budget(?:/)?$",
       "routeKeys": {},
@@ -65,12 +71,6 @@
       "namedRegex": "^/login(?:/)?$"
     },
     {
-      "page": "/management",
-      "regex": "^/management(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/management(?:/)?$"
-    },
-    {
       "page": "/report",
       "regex": "^/report(?:/)?$",
       "routeKeys": {},
@@ -81,6 +81,12 @@
       "regex": "^/request(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/request(?:/)?$"
+    },
+    {
+      "page": "/requests",
+      "regex": "^/requests(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/requests(?:/)?$"
     },
     {
       "page": "/settings",

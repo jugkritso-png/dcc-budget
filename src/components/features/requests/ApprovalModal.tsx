@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Check, AlertTriangle, Calendar, User, FileText, Clock, Shield, ArrowRight } from 'lucide-react';
-import { BudgetRequest, ApprovalLog } from '@/types';
+import { BudgetRequest, ApprovalLog, Category } from '@/types';
 import { useBudget } from '@/context/BudgetContext';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
@@ -58,8 +58,8 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ isOpen, onClose, r
         }
     }, [user, currentStep]);
 
-    const category = categories.find(c => c.name === request.category);
-    const isOverBudget = category && (category.used + request.amount > category.allocated);
+    const category = categories.find((c: Category) => c.name === request.category);
+    const isOverBudget = category && ((category.used || 0) + request.amount > category.allocated);
 
     const handleApprove = async () => {
         if (!user) return;
@@ -234,13 +234,13 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ isOpen, onClose, r
                                 <React.Fragment key={step.id}>
                                     <div className="flex flex-col items-center flex-1">
                                         <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold mb-1
-                                            ${logs.some(l => l.stage === step.id && l.action === 'approve') || request.status === 'approved'
+                                            ${logs.some((l: ApprovalLog) => l.stage === step.id && l.action === 'approve') || request.status === 'approved'
                                                 ? 'bg-green-500 text-white'
                                                 : currentStep === step.id && request.status !== 'rejected'
                                                     ? 'bg-primary-500 text-white animate-pulse'
                                                     : 'bg-gray-200 text-gray-400'
                                             }`}>
-                                            {logs.some(l => l.stage === step.id && l.action === 'approve') || request.status === 'approved' ? idx + 1 : idx + 1}
+                                            {logs.some((l: ApprovalLog) => l.stage === step.id && l.action === 'approve') || request.status === 'approved' ? idx + 1 : idx + 1}
                                         </div>
                                         <span className={`text-[10px] font-bold ${currentStep === step.id ? 'text-primary-600' : 'text-gray-400'}`}>{step.label}</span>
                                     </div>
@@ -254,7 +254,7 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({ isOpen, onClose, r
                             {isLoadingLogs ? (
                                 <div className="text-center py-4 text-gray-400 text-xs italic">กำลังโหลดประวัติ...</div>
                             ) : logs.length > 0 ? (
-                                logs.map((log) => (
+                                logs.map((log: ApprovalLog) => (
                                     <div key={log.id} className="flex gap-3">
                                         <div className="shrink-0 mt-1">
                                             <div className={`w-2 h-2 rounded-full ${log.action === 'approve' ? 'bg-green-500' : 'bg-red-500'}`} />

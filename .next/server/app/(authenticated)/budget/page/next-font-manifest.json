@@ -2,6 +2,7 @@
   "pages": {},
   "app": {
     "[project]/src/app/(authenticated)/budget/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
       "static/media/e3e987fa09b297d7-s.p.8d44acf3.woff2",
       "static/media/5dbc2a3dd809cc2f-s.p.b36542eb.woff2",
       "static/media/9365da5f5b0d24c4-s.p.e6e61de0.woff2",

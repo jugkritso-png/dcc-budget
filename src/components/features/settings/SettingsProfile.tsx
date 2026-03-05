@@ -276,10 +276,10 @@ const SettingsProfile: React.FC = () => {
                                         </div>
                                         <Select
                                             value={profileForm.department}
-                                            onChange={(value) => setProfileForm({ ...profileForm, department: value })}
+                                            onChange={(value: string | null) => setProfileForm({ ...profileForm, department: value || '' })}
                                             options={[
                                                 { value: '', label: '-- เลือกแผนก --' },
-                                                ...(departments || []).map(d => ({ value: d.name, label: d.name }))
+                                                ...(departments || []).map((d: any) => ({ value: d.name, label: d.name }))
                                             ]}
                                             className="pl-12 bg-gray-50/50 focus:bg-white focus:ring-[#00A1E4] transition-all rounded-xl"
                                         />
@@ -400,7 +400,7 @@ const SettingsProfile: React.FC = () => {
                                         <input
                                             type="checkbox"
                                             checked={securityForm.twoFactor}
-                                            onChange={e => setSecurityForm({ ...securityForm, twoFactor: e.target.checked })}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSecurityForm({ ...securityForm, twoFactor: e.target.checked })}
                                             className="toggle toggle-primary h-5 w-9 rounded-full bg-gray-200 cursor-pointer appearance-none checked:bg-green-500 transition-colors relative before:content-[''] before:absolute before:left-[2px] before:top-[2px] before:w-4 before:h-4 before:bg-white before:rounded-full before:transition-transform before:checked:translate-x-4 shadow-inner"
                                         />
                                     </div>

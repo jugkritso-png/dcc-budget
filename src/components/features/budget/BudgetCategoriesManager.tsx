@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useBudget } from '@/context/BudgetContext';
-import { Category, BudgetLog, Expense } from '@/types';
+import { Category, BudgetLog, Expense, BudgetRequest } from '@/types';
 
 import ManagementHeader from '@/components/features/budget/ManagementHeader';
 import CategoryList from '@/components/features/budget/CategoryList';
@@ -34,28 +34,28 @@ const BudgetCategoriesManager: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
   // Calculate used amounts dynamically based on requests in context
-  const categoriesWithUsage = categories.map(cat => {
+  const categoriesWithUsage = categories.map((cat: Category) => {
     // Encumbered/Reserved from Approved Requests
-    const reserved = requests
-      .filter(r => r.category === cat.name && r.status === 'approved')
-      .reduce((sum, r) => sum + r.amount, 0);
+    const reserved = (requests as BudgetRequest[])
+      .filter((r: BudgetRequest) => r.category === cat.name && r.status === 'approved')
+      .reduce((sum: number, r: BudgetRequest) => sum + r.amount, 0);
 
-    const pending = requests
-      .filter(r => r.category === cat.name && r.status === 'pending')
-      .reduce((sum, r) => sum + r.amount, 0);
+    const pending = (requests as BudgetRequest[])
+      .filter((r: BudgetRequest) => r.category === cat.name && r.status === 'pending')
+      .reduce((sum: number, r: BudgetRequest) => sum + r.amount, 0);
 
-    return { ...cat, used: cat.used, reserved, pending };
+    return { ...cat, used: cat.used || 0, reserved, pending };
   });
 
-  const currentYearCategories = categoriesWithUsage.filter(cat => cat.year === selectedYear);
+  const currentYearCategories = categoriesWithUsage.filter((cat: any) => cat.year === selectedYear);
 
-  const filteredCategories = currentYearCategories.filter(cat =>
+  const filteredCategories = currentYearCategories.filter((cat: any) =>
     cat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     cat.code.includes(searchQuery)
   );
 
-  const totalAllocated = currentYearCategories.reduce((sum, cat) => sum + cat.allocated, 0);
-  const totalUsed = currentYearCategories.reduce((sum, cat) => sum + cat.used, 0);
+  const totalAllocated = currentYearCategories.reduce((sum: number, cat: any) => sum + cat.allocated, 0);
+  const totalUsed = currentYearCategories.reduce((sum: number, cat: any) => sum + (cat.used || 0), 0);
   const totalRemaining = totalAllocated - totalUsed;
 
   const handleOpenAdd = () => {
@@ -111,12 +111,12 @@ const BudgetCategoriesManager: React.FC = () => {
   // Auto-generate category code logic for Modal
   const getAutoCode = () => {
     const existingCodes = categories
-      .map(c => c.code)
-      .filter(code => code.startsWith('DCC-'))
-      .map(code => parseInt(code.replace('DCC-', '')))
-      .filter(num => !isNaN(num));
-    const nextNumber = existingCodes.length > 0 ? Math.max(...existingCodes) + 1 : 1;
-    return `DCC-${String(nextNumber).padStart(3, '0')}`;
+      .map((c: Category) => c.code)
+      .filter((code: string) => code.startsWith('DCC-'))
+      .map((code: string) => parseInt(code.replace('DCC-', '')))
+      .filter((num: number) => !isNaN(num));
+    const nextNumber = existingCodes.length > 0 ? Math.max(...existingCodes) : 0;
+    return `DCC-${String(nextNumber + 1).padStart(3, '0')}`;
   };
 
   // Effects for fetching details
@@ -180,14 +180,14 @@ const BudgetCategoriesManager: React.FC = () => {
         expenses={expenses}
         activeDetailTab={activeDetailTab}
         setActiveDetailTab={setActiveDetailTab}
-        onAdjustBudget={async (amount, type, reason) => {
+        onAdjustBudget={async (amount: number, type: 'ADD' | 'TRANSFER_IN' | 'TRANSFER_OUT' | 'REDUCE', reason: string) => {
           if (viewingCategory) {
             await adjustBudget(viewingCategory.id, amount, type, reason);
             toast.success('ปรับปรุงงบประมาณสำเร็จ!');
             if (activeDetailTab === 'history') getBudgetLogs(viewingCategory.id).then(setBudgetLogs);
           }
         }}
-        onAddSubActivity={async (name, allocated) => {
+        onAddSubActivity={async (name: string, allocated: string) => {
           if (viewingCategory) {
             try {
               await addSubActivity({
@@ -204,7 +204,7 @@ const BudgetCategoriesManager: React.FC = () => {
           }
         }}
         onDeleteSubActivity={deleteSubActivity}
-        onAddExpense={async (expenseData) => {
+        onAddExpense={async (expenseData: any) => {
           if (viewingCategory) {
             await addExpense({
               categoryId: viewingCategory.id,
@@ -217,7 +217,7 @@ const BudgetCategoriesManager: React.FC = () => {
             getExpenses(viewingCategory.id).then(setExpenses);
           }
         }}
-        onDeleteExpense={async (id) => {
+        onDeleteExpense={async (id: string) => {
           if (viewingCategory) {
             await deleteExpense(id); // Assuming this exists in context or needs implementation
             toast.success('ลบรายจ่ายสำเร็จ');

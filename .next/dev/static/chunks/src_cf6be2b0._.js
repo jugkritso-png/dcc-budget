@@ -481,7 +481,7 @@ const CreateRequest = ()=>{
                         [field]: value
                     };
                     if (field === 'quantity' || field === 'unitPrice') {
-                        updated.total = updated.quantity * updated.unitPrice;
+                        updated.total = (updated.quantity || 0) * (updated.unitPrice || 0);
                     }
                     return updated;
                 }
@@ -1287,7 +1287,7 @@ const CreateRequest = ()=>{
                                                                                             children: [
                                                                                                 c.name,
                                                                                                 " (คงเหลือ: ฿",
-                                                                                                (c.allocated - c.used - (categoryUsage[c.name] || 0) + (c.name === item.category ? item.total : 0)).toLocaleString(),
+                                                                                                (c.allocated - (c.used || 0) - (categoryUsage[c.name] || 0) + (c.name === item.category ? item.total : 0)).toLocaleString(),
                                                                                                 ")"
                                                                                             ]
                                                                                         }, c.id, true, {

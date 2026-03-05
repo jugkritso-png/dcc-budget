@@ -1562,7 +1562,7 @@ const SettingsProfile = ()=>{
                                                                         value: profileForm.department,
                                                                         onChange: (value)=>setProfileForm({
                                                                                 ...profileForm,
-                                                                                department: value
+                                                                                department: value || ''
                                                                             }),
                                                                         options: [
                                                                             {
@@ -4203,14 +4203,14 @@ const SettingsUsers = ()=>{
                                                 value: userForm.section,
                                                 onChange: (value)=>setUserForm({
                                                         ...userForm,
-                                                        section: value
+                                                        section: value || ''
                                                     }),
                                                 options: [
                                                     {
                                                         value: '',
                                                         label: '-- เลือกหน่วยงาน --'
                                                     },
-                                                    ...departments.map((d)=>({
+                                                    ...(departments || []).map((d)=>({
                                                             value: d.name,
                                                             label: d.name
                                                         }))
@@ -4301,7 +4301,7 @@ const SettingsUsers = ()=>{
                                             value: userForm.role,
                                             onChange: (value)=>setUserForm({
                                                     ...userForm,
-                                                    role: value
+                                                    role: value || 'user'
                                                 }),
                                             options: [
                                                 {

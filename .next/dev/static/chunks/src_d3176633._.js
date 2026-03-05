@@ -670,19 +670,19 @@ const AnalyticsDashboard = ()=>{
                             className: "mr-2"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                            lineNumber: 123,
+                            lineNumber: 124,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         "Export Report (PDF)"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                    lineNumber: 122,
+                    lineNumber: 123,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                lineNumber: 121,
+                lineNumber: 122,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -701,17 +701,17 @@ const AnalyticsDashboard = ()=>{
                                         className: "text-primary-600"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 132,
+                                        lineNumber: 133,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                    lineNumber: 131,
+                                    lineNumber: 132,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 130,
+                                lineNumber: 131,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -724,7 +724,7 @@ const AnalyticsDashboard = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 136,
+                                        lineNumber: 137,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -732,19 +732,19 @@ const AnalyticsDashboard = ()=>{
                                         children: "เบิกจ่ายรวม"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 137,
+                                        lineNumber: 138,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 135,
+                                lineNumber: 136,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 129,
+                        lineNumber: 130,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -760,17 +760,17 @@ const AnalyticsDashboard = ()=>{
                                         className: "text-orange-600"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 144,
+                                        lineNumber: 145,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                    lineNumber: 143,
+                                    lineNumber: 144,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 142,
+                                lineNumber: 143,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -783,7 +783,7 @@ const AnalyticsDashboard = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 148,
+                                        lineNumber: 149,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -791,19 +791,19 @@ const AnalyticsDashboard = ()=>{
                                         children: "เฉลี่ยต่อโครงการ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 149,
+                                        lineNumber: 150,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 147,
+                                lineNumber: 148,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 141,
+                        lineNumber: 142,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -820,12 +820,12 @@ const AnalyticsDashboard = ()=>{
                                             className: "text-indigo-600"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                            lineNumber: 156,
+                                            lineNumber: 157,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 155,
+                                        lineNumber: 156,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     internalBudget > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -836,13 +836,13 @@ const AnalyticsDashboard = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 158,
+                                        lineNumber: 159,
                                         columnNumber: 48
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 154,
+                                lineNumber: 155,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -856,7 +856,7 @@ const AnalyticsDashboard = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 161,
+                                        lineNumber: 162,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -864,19 +864,19 @@ const AnalyticsDashboard = ()=>{
                                         children: "งบภายใน (Internal)"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 162,
+                                        lineNumber: 163,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 160,
+                                lineNumber: 161,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 153,
+                        lineNumber: 154,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -893,12 +893,12 @@ const AnalyticsDashboard = ()=>{
                                             className: "text-amber-600"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                            lineNumber: 169,
+                                            lineNumber: 170,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 168,
+                                        lineNumber: 169,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     externalBudget > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -909,13 +909,13 @@ const AnalyticsDashboard = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 171,
+                                        lineNumber: 172,
                                         columnNumber: 48
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 167,
+                                lineNumber: 168,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -929,7 +929,7 @@ const AnalyticsDashboard = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 174,
+                                        lineNumber: 175,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -937,19 +937,19 @@ const AnalyticsDashboard = ()=>{
                                         children: "งบภายนอก (External)"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 175,
+                                        lineNumber: 176,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 173,
+                                lineNumber: 174,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 166,
+                        lineNumber: 167,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -965,17 +965,17 @@ const AnalyticsDashboard = ()=>{
                                         className: "text-emerald-600"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 182,
+                                        lineNumber: 183,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                    lineNumber: 181,
+                                    lineNumber: 182,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 180,
+                                lineNumber: 181,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -988,7 +988,7 @@ const AnalyticsDashboard = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 186,
+                                        lineNumber: 187,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -996,19 +996,19 @@ const AnalyticsDashboard = ()=>{
                                         children: "งบประมาณคงเหลือ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 187,
+                                        lineNumber: 188,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 185,
+                                lineNumber: 186,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 179,
+                        lineNumber: 180,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1024,17 +1024,17 @@ const AnalyticsDashboard = ()=>{
                                         className: "text-blue-600"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 194,
+                                        lineNumber: 195,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                    lineNumber: 193,
+                                    lineNumber: 194,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 192,
+                                lineNumber: 193,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1044,7 +1044,7 @@ const AnalyticsDashboard = ()=>{
                                         children: approvedRequests.length
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 198,
+                                        lineNumber: 199,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1052,25 +1052,25 @@ const AnalyticsDashboard = ()=>{
                                         children: "โครงการอนุมัติ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 199,
+                                        lineNumber: 200,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 197,
+                                lineNumber: 198,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 191,
+                        lineNumber: 192,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                lineNumber: 128,
+                lineNumber: 129,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1087,7 +1087,7 @@ const AnalyticsDashboard = ()=>{
                                         children: "เปรียบเทียบแผน vs ผลจริง"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 208,
+                                        lineNumber: 209,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1095,13 +1095,13 @@ const AnalyticsDashboard = ()=>{
                                         children: "แสดงการเปรียบเทียบงบเฉลี่ยรายเดือนกับการใช้จริง"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 209,
+                                        lineNumber: 210,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 207,
+                                lineNumber: 208,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1131,7 +1131,7 @@ const AnalyticsDashboard = ()=>{
                                                 stroke: "#F3F4F6"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 219,
+                                                lineNumber: 220,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["XAxis"], {
@@ -1146,7 +1146,7 @@ const AnalyticsDashboard = ()=>{
                                                 dy: 10
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 220,
+                                                lineNumber: 221,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["YAxis"], {
@@ -1158,7 +1158,7 @@ const AnalyticsDashboard = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 221,
+                                                lineNumber: 222,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
@@ -1178,7 +1178,7 @@ const AnalyticsDashboard = ()=>{
                                                 formatter: (value)=>`฿${(value || 0).toLocaleString()}`
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 222,
+                                                lineNumber: 223,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Legend$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Legend"], {
@@ -1188,7 +1188,7 @@ const AnalyticsDashboard = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 228,
+                                                lineNumber: 229,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Bar"], {
@@ -1204,7 +1204,7 @@ const AnalyticsDashboard = ()=>{
                                                 barSize: 20
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 229,
+                                                lineNumber: 230,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Bar"], {
@@ -1220,29 +1220,29 @@ const AnalyticsDashboard = ()=>{
                                                 barSize: 20
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 230,
+                                                lineNumber: 231,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 214,
+                                        lineNumber: 215,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                    lineNumber: 213,
+                                    lineNumber: 214,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 211,
+                                lineNumber: 212,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 206,
+                        lineNumber: 207,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1256,7 +1256,7 @@ const AnalyticsDashboard = ()=>{
                                         children: "แนวโน้มการใช้จ่ายสะสม"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 240,
+                                        lineNumber: 241,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1264,13 +1264,13 @@ const AnalyticsDashboard = ()=>{
                                         children: "กราฟแสดงยอดการใช้จ่ายสะสมตลอดปีงบประมาณ"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 241,
+                                        lineNumber: 242,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 239,
+                                lineNumber: 240,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1307,7 +1307,7 @@ const AnalyticsDashboard = ()=>{
                                                             stopOpacity: 0.2
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                            lineNumber: 249,
+                                                            lineNumber: 250,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("stop", {
@@ -1316,18 +1316,18 @@ const AnalyticsDashboard = ()=>{
                                                             stopOpacity: 0
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                            lineNumber: 250,
+                                                            lineNumber: 251,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                    lineNumber: 248,
+                                                    lineNumber: 249,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 247,
+                                                lineNumber: 248,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["XAxis"], {
@@ -1342,7 +1342,7 @@ const AnalyticsDashboard = ()=>{
                                                 dy: 10
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 253,
+                                                lineNumber: 254,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["YAxis"], {
@@ -1354,7 +1354,7 @@ const AnalyticsDashboard = ()=>{
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 254,
+                                                lineNumber: 255,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CartesianGrid"], {
@@ -1363,7 +1363,7 @@ const AnalyticsDashboard = ()=>{
                                                 stroke: "#F3F4F6"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 255,
+                                                lineNumber: 256,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
@@ -1381,7 +1381,7 @@ const AnalyticsDashboard = ()=>{
                                                 formatter: (value)=>`฿${(value || 0).toLocaleString()}`
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 256,
+                                                lineNumber: 257,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Area$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Area"], {
@@ -1393,35 +1393,35 @@ const AnalyticsDashboard = ()=>{
                                                 fill: "url(#colorActual)"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 261,
+                                                lineNumber: 262,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 246,
+                                        lineNumber: 247,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                    lineNumber: 245,
+                                    lineNumber: 246,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 243,
+                                lineNumber: 244,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 238,
+                        lineNumber: 239,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                lineNumber: 204,
+                lineNumber: 205,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1434,12 +1434,12 @@ const AnalyticsDashboard = ()=>{
                             children: "สัดส่วนหมวดหมู่ที่มีการเบิกจ่ายสูงสุด"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                            lineNumber: 272,
+                            lineNumber: 273,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 271,
+                        lineNumber: 272,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1461,7 +1461,7 @@ const AnalyticsDashboard = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 280,
+                                                        lineNumber: 281,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
@@ -1469,13 +1469,13 @@ const AnalyticsDashboard = ()=>{
                                                         children: cat.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 281,
+                                                        lineNumber: 282,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 279,
+                                                lineNumber: 280,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1489,7 +1489,7 @@ const AnalyticsDashboard = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 284,
+                                                        lineNumber: 285,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1500,19 +1500,19 @@ const AnalyticsDashboard = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 285,
+                                                        lineNumber: 286,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 283,
+                                                lineNumber: 284,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 278,
+                                        lineNumber: 279,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1524,12 +1524,12 @@ const AnalyticsDashboard = ()=>{
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                            lineNumber: 290,
+                                            lineNumber: 291,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 289,
+                                        lineNumber: 290,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1542,7 +1542,7 @@ const AnalyticsDashboard = ()=>{
                                                         children: "Cost Center"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 299,
+                                                        lineNumber: 300,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1550,13 +1550,13 @@ const AnalyticsDashboard = ()=>{
                                                         children: cat.costCenter || '-'
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 300,
+                                                        lineNumber: 301,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 298,
+                                                lineNumber: 299,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1566,7 +1566,7 @@ const AnalyticsDashboard = ()=>{
                                                         children: "Fund Source"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 303,
+                                                        lineNumber: 304,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1576,7 +1576,7 @@ const AnalyticsDashboard = ()=>{
                                                                 className: `w-1.5 h-1.5 rounded-full ${cat.fund === 'I' ? 'bg-blue-500' : 'bg-orange-500'}`
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                                lineNumber: 305,
+                                                                lineNumber: 306,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1584,19 +1584,19 @@ const AnalyticsDashboard = ()=>{
                                                                 children: cat.fund === 'I' ? 'Internal' : 'External'
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                                lineNumber: 306,
+                                                                lineNumber: 307,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 304,
+                                                        lineNumber: 305,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 302,
+                                                lineNumber: 303,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1607,7 +1607,7 @@ const AnalyticsDashboard = ()=>{
                                                         children: "Functional Area"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 310,
+                                                        lineNumber: 311,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1615,49 +1615,49 @@ const AnalyticsDashboard = ()=>{
                                                         children: cat.functionalArea || '-'
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                        lineNumber: 311,
+                                                        lineNumber: 312,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                                lineNumber: 309,
+                                                lineNumber: 310,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                        lineNumber: 297,
+                                        lineNumber: 298,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, idx, true, {
                                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                                lineNumber: 277,
+                                lineNumber: 278,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "col-span-2 text-center text-gray-400 py-8",
                             children: "ไม่มีข้อมูลการเบิกจ่าย"
                         }, void 0, false, {
                             fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                            lineNumber: 316,
+                            lineNumber: 317,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                        lineNumber: 275,
+                        lineNumber: 276,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-                lineNumber: 270,
+                lineNumber: 271,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/features/analytics/AnalyticsDashboard.tsx",
-        lineNumber: 119,
+        lineNumber: 120,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
