@@ -22,6 +22,7 @@ export interface User {
   theme?: 'light' | 'dark' | 'system' | 'blue' | 'green' | 'purple' | 'orange' | 'red';
   language?: 'th' | 'en';
   role: 'admin' | 'user' | 'finance' | 'manager' | 'approver';
+  username?: string;
 }
 
 export interface ExpenseLineItem {
@@ -156,6 +157,7 @@ export type BudgetContextType = {
   departments: Department[];
   user: User | null;
   users: User[]; // List of all users
+  hasPermission: (permission: Permission) => boolean;
   login: (username: string, password: string) => Promise<boolean>;
   loginWithGoogle: (token: string) => Promise<boolean>;
   logout: () => void;
@@ -165,12 +167,14 @@ export type BudgetContextType = {
   deleteUser: (id: string) => Promise<void>;
   changePassword: (current: string, newPass: string) => Promise<void>;
   addRequest: (request: BudgetRequest) => Promise<void>;
+  updateRequestStatus: (id: string, status: BudgetRequest['status']) => Promise<void>;
   approveRequest: (id: string, approverId: string) => Promise<void>;
   rejectRequest: (id: string, approverId: string, reason: string) => Promise<void>;
   submitExpenseReport: (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number }) => Promise<void>;
   completeRequest: (id: string) => Promise<void>;
   rejectExpenseReport: (id: string, reason: string) => Promise<void>;
   revertComplete: (id: string) => Promise<void>;
+  deleteRequest: (id: string) => Promise<void>;
   addCategory: (category: Category) => Promise<void>;
   updateCategory: (category: Category) => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
@@ -189,14 +193,18 @@ export type BudgetContextType = {
     usagePercentage: number;
   };
   adjustBudget: (categoryId: string, amount: number, type: 'ADD' | 'TRANSFER_IN' | 'TRANSFER_OUT' | 'REDUCE', reason: string) => Promise<void>;
+  budgetLogs: BudgetLog[];
   getBudgetLogs: (categoryId: string) => Promise<BudgetLog[]>;
   addExpense: (expense: Omit<Expense, 'id' | 'createdAt'>) => Promise<void>;
+  expenses: Expense[];
   getExpenses: (categoryId: string) => Promise<Expense[]>;
   deleteExpense: (id: string) => Promise<void>;
   budgetPlans: BudgetPlan[];
   saveBudgetPlan: (plan: Omit<BudgetPlan, 'id' | 'updatedAt'>) => Promise<void>;
+  restoreData: (data: any) => void;
   changeTheme: (theme: string) => Promise<void>;
 };
+
 
 export interface BudgetPlan {
   id: string;

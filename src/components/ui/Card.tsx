@@ -1,6 +1,5 @@
 import React from "react";
 import { cn } from "../../lib/utils";
-import { motion } from "framer-motion";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     interactive?: boolean;
@@ -8,22 +7,18 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     ({ className, interactive, children, ...props }, ref) => {
-        const Component = interactive ? motion.div : "div";
-        const motionProps = interactive ? { whileHover: { y: -2, boxShadow: "0 10px 40px -10px rgba(0,0,0,0.12)" } } : {};
-
         return (
-            <Component
+            <div
                 ref={ref}
                 className={cn(
-                    "bg-white/60 backdrop-blur-xl rounded-3xl border border-white/80 ring-1 ring-black/5 shadow-lg shadow-gray-200/10 overflow-hidden",
-                    interactive && "cursor-pointer transition-shadow",
+                    "bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden",
+                    interactive && "cursor-pointer hover:shadow-md transition-shadow",
                     className
                 )}
-                {...(motionProps as any)}
                 {...props}
             >
                 {children}
-            </Component>
+            </div>
         );
     }
 );

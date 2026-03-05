@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(authenticated)/layout,_N_T_/(authenticated)/report/layout,_N_T_/(authenticated)/report/page,_N_T_/report"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KGF1dGhlbnRpY2F0ZWQp/report/__PAGE__",
+    "/!KGF1dGhlbnRpY2F0ZWQp/report",
+    "/!KGF1dGhlbnRpY2F0ZWQp",
+    "/_index",
+    "/_head"
+  ]
+}

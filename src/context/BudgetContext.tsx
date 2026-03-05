@@ -1,3 +1,5 @@
+'use client'
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { BudgetRequest, Category, BudgetContextType, SubActivity, SystemSettings, Department, Expense, User, BudgetPlan, BudgetLog, Permission } from '../types';
@@ -9,17 +11,31 @@ import {
   budgetService,
   expenseService
 } from '../services/api';
+import { createClient } from '../lib/supabase/client';
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 
 export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = useQueryClient();
+  const supabase = createClient();
 
   // --- Client State (Session) ---
-  const [user, setUser] = useState<User | null>(() => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
     const saved = localStorage.getItem('dcc_user');
-    return saved ? JSON.parse(saved) : null;
-  });
+    if (saved) setUser(JSON.parse(saved));
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
+        localStorage.removeItem('dcc_user');
+        localStorage.removeItem('dcc_token');
+        queryClient.clear();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [queryClient, supabase.auth]);
 
   // Theme Management
   useEffect(() => {
@@ -61,6 +77,8 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const { data: departments = [] } = useQuery({ queryKey: ['departments'], queryFn: systemService.getDepartments, enabled: !!user });
   const { data: users = [] } = useQuery({ queryKey: ['users'], queryFn: userService.getAll, enabled: !!user });
   const { data: budgetPlans = [] } = useQuery({ queryKey: ['budgetPlans'], queryFn: () => budgetService.getPlans(), enabled: !!user });
+  const { data: expenses = [] } = useQuery({ queryKey: ['expenses'], queryFn: () => expenseService.getAll(), enabled: !!user });
+  const { data: budgetLogs = [] } = useQuery({ queryKey: ['budgetLogs'], queryFn: () => budgetService.getLogs(), enabled: !!user });
 
   const { data: settings = {
     orgName: 'DCC Company Ltd.',
@@ -117,11 +135,15 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
     localStorage.removeItem('dcc_user');
     localStorage.removeItem('dcc_token');
     queryClient.clear(); // Clear cache on logout
+
+    // Immediate redirect to login with a full reload to ensure clear state
+    window.location.href = '/login';
   };
 
   const updateUserProfileMutation = useMutation({
@@ -430,8 +452,10 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       getDashboardStats,
       adjustBudget,
       getBudgetLogs,
-      addExpense,
       getExpenses,
+      budgetLogs,
+      addExpense,
+      expenses,
       deleteExpense,
       budgetPlans,
       saveBudgetPlan,

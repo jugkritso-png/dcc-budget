@@ -1,0 +1,3 @@
+{
+  "/(authenticated)/analytics/page": "app/(authenticated)/analytics/page.js"
+}
