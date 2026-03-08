@@ -167,14 +167,9 @@ export interface Expense {
   createdAt?: string;
 }
 
-export type BudgetContextType = {
-  requests: BudgetRequest[];
-  categories: Category[];
-  subActivities: SubActivity[];
-  settings: SystemSettings;
-  departments: Department[];
+export type AuthContextType = {
   user: User | null;
-  users: User[]; // List of all users
+  users: User[];
   hasPermission: (permission: Permission) => boolean;
   login: (username: string, password: string) => Promise<boolean>;
   loginWithGoogle: (token: string) => Promise<boolean>;
@@ -184,13 +179,33 @@ export type BudgetContextType = {
   updateUser: (id: string, user: Partial<User>) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
   changePassword: (current: string, newPass: string) => Promise<void>;
+};
+
+export type UIContextType = {
+  isSidebarCollapsed: boolean;
+  toggleSidebar: () => void;
+  changeTheme: (theme: string) => Promise<void>;
+};
+
+export type BudgetContextType = {
+  isLoading: boolean;
+  requests: BudgetRequest[];
+  categories: Category[];
+  subActivities: SubActivity[];
+  settings: SystemSettings;
+  hasPermission: (permission: Permission) => boolean;
+  departments: Department[];
   addRequest: (request: BudgetRequest) => Promise<void>;
   updateRequestStatus: (
     id: string,
     status: BudgetRequest["status"],
   ) => Promise<void>;
   updateRequest: (id: string, updates: Partial<BudgetRequest>) => Promise<void>;
-  approveRequest: (id: string, approverId: string, comment?: string) => Promise<void>;
+  approveRequest: (
+    id: string,
+    approverId: string,
+    comment?: string,
+  ) => Promise<void>;
   rejectRequest: (
     id: string,
     approverId: string,
@@ -242,7 +257,6 @@ export type BudgetContextType = {
   budgetPlans: BudgetPlan[];
   saveBudgetPlan: (plan: Omit<BudgetPlan, "id" | "updatedAt">) => Promise<void>;
   restoreData: (data: any) => void;
-  changeTheme: (theme: string) => Promise<void>;
   notifications: Notification[];
   markNotificationAsRead: (id: string) => Promise<void>;
   markAllNotificationsAsRead: () => Promise<void>;
@@ -265,8 +279,6 @@ export type BudgetContextType = {
   ) => Promise<void>;
   getApprovalLogs: (requestId: string) => Promise<ApprovalLog[]>;
   getAllApprovalLogs: () => Promise<ApprovalLog[]>;
-  isSidebarCollapsed: boolean;
-  toggleSidebar: () => void;
 };
 
 export interface BudgetPlan {

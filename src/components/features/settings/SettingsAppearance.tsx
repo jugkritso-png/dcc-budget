@@ -1,5 +1,6 @@
 import React from "react";
-import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
+import { useUI } from "@/context/UIContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Palette, Check } from "lucide-react";
 
@@ -12,7 +13,8 @@ const themes = [
 ];
 
 const SettingsAppearance: React.FC = () => {
-  const { user, changeTheme } = useBudget();
+  const { user } = useAuth();
+  const { changeTheme } = useUI();
   const currentTheme = user?.theme || "blue";
 
   const handleThemeChange = (themeId: string) => {

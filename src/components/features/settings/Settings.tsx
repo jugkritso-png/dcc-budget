@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import SettingsGeneral from "@/components/features/settings/SettingsGeneral";
 import SettingsProfile from "@/components/features/settings/SettingsProfile";
 import SettingsPolicies from "@/components/features/settings/SettingsPolicies";
@@ -28,7 +29,7 @@ import { Card } from "@/components/ui/Card";
 import SettingsPermissions from "@/components/features/settings/SettingsPermissions";
 
 const Settings: React.FC = () => {
-  const { user } = useBudget();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState(
     user?.role === "user" ? "profile" : "profile",
   ); // Default to profile for safety, can be smarter if needed

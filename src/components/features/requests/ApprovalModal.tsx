@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { BudgetRequest, ApprovalLog, Category } from "@/types";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 
@@ -25,8 +26,9 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({
   onClose,
   request,
 }) => {
-  const { approveRequest, rejectRequest, user, categories, getApprovalLogs } =
+  const { approveRequest, rejectRequest, categories, getApprovalLogs } =
     useBudget();
+  const { user } = useAuth();
   const [action, setAction] = useState<"view" | "reject">("view");
   const [comment, setComment] = useState("");
   const [rejectionReason, setRejectionReason] = useState("");

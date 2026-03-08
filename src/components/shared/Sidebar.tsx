@@ -15,10 +15,13 @@ import {
   Menu,
 } from "lucide-react";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
+import { useUI } from "@/context/UIContext";
 
 export function Sidebar() {
-  const { settings, logout, hasPermission, isSidebarCollapsed, toggleSidebar } =
-    useBudget();
+  const { settings, hasPermission } = useBudget();
+  const { logout } = useAuth();
+  const { isSidebarCollapsed, toggleSidebar } = useUI();
   const pathname = usePathname();
 
   const navItems = [

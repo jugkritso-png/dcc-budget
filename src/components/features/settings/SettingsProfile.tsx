@@ -16,18 +16,36 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChangePasswordSchema, type ChangePasswordInput } from "@/lib/validations/auth";
+
 const SettingsProfile: React.FC = () => {
-  const { user, updateUserProfile, departments, changePassword } = useBudget();
-  const [securityForm, setSecurityForm] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-    twoFactor: false,
+  const { user, updateUserProfile, changePassword } = useAuth();
+  const { departments } = useBudget();
+  
+  // React Hook Form for Security
+  const {
+    register: registerSecurity,
+    handleSubmit: handleSecuritySubmit,
+    reset: resetSecurity,
+    formState: { errors: securityErrors, isSubmitting: isSecuritySubmitting },
+    watch: watchSecurity,
+  } = useForm<ChangePasswordInput>({
+    resolver: zodResolver(ChangePasswordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
   });
+
+  const [twoFactor, setTwoFactor] = useState(false);
   const [profileForm, setProfileForm] = useState({
     name: "",
     englishName: "",
@@ -47,7 +65,7 @@ const SettingsProfile: React.FC = () => {
     if (user) {
       setProfileForm({
         name: user.name || "",
-        englishName: user.englishName || "", // Now connected to backend
+        englishName: user.englishName || "",
         employeeId: user.employeeId || "",
         position: user.position || "",
         department: user.department || "",
@@ -57,7 +75,7 @@ const SettingsProfile: React.FC = () => {
         language: (user.language as string) || "th",
         bio: user.bio || "",
         avatar: user.avatar || "",
-        startDate: user.startDate || "", // Now connected to backend
+        startDate: user.startDate || "",
       });
     }
   }, [user]);
@@ -65,7 +83,6 @@ const SettingsProfile: React.FC = () => {
   const handleProfileSave = async () => {
     try {
       await updateUserProfile(profileForm as any);
-      // In a real app, we would save englishName and startDate here
       toast.success("บันทึกข้อมูลโปรไฟล์เรียบร้อยแล้ว");
     } catch (error: any) {
       console.error(error);
@@ -87,33 +104,34 @@ const SettingsProfile: React.FC = () => {
     }
   };
 
-  const handleSecuritySave = async () => {
-    if (!securityForm.currentPassword || !securityForm.newPassword) {
-      toast.error("กรุณากรอกรหัสผ่านปัจจุบันและรหัสผ่านใหม่");
-      return;
-    }
-    if (securityForm.newPassword !== securityForm.confirmPassword) {
-      toast.error("รหัสผ่านใหม่ไม่ตรงกัน");
-      return;
-    }
+  const onSecuritySubmit = async (data: ChangePasswordInput) => {
     try {
       await changePassword(
-        securityForm.currentPassword,
-        securityForm.newPassword,
+        data.currentPassword,
+        data.newPassword,
       );
       toast.success("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว");
-      setSecurityForm({
-        ...securityForm,
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
+      resetSecurity();
     } catch (error: any) {
       toast.error(
         error.message || "รหัสผ่านปัจจุบันไม่ถูกต้อง หรือเกิดข้อผิดพลาด",
       );
     }
   };
+
+  const newPassword = watchSecurity("newPassword");
+  const getPasswordStrength = (pass: string) => {
+    if (!pass) return 0;
+    let strength = 0;
+    if (pass.length >= 8) strength += 25;
+    if (/[A-Z]/.test(pass)) strength += 25;
+    if (/[a-z]/.test(pass)) strength += 25;
+    if (/[0-9]/.test(pass) || /[^A-Za-z0-9]/.test(pass)) strength += 25;
+    return strength;
+  };
+  const strength = getPasswordStrength(newPassword);
+  const strengthColor = strength <= 25 ? "bg-red-500" : strength <= 50 ? "bg-orange-500" : strength <= 75 ? "bg-yellow-500" : "bg-emerald-500";
+  const strengthText = strength <= 25 ? "อ่อนมาก" : strength <= 50 ? "พอใช้" : strength <= 75 ? "ดี" : "ยอดเยี่ยม";
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 p-6 md:p-8">
@@ -286,7 +304,7 @@ const SettingsProfile: React.FC = () => {
                   <Input
                     type="text"
                     value={profileForm.name}
-                    onChange={(e) =>
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setProfileForm({ ...profileForm, name: e.target.value })
                     }
                     icon={User}
@@ -301,7 +319,7 @@ const SettingsProfile: React.FC = () => {
                   <Input
                     type="text"
                     value={profileForm.englishName}
-                    onChange={(e) =>
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setProfileForm({
                         ...profileForm,
                         englishName: e.target.value,
@@ -331,7 +349,7 @@ const SettingsProfile: React.FC = () => {
                   <Input
                     type="text"
                     value={profileForm.position}
-                    onChange={(e) =>
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setProfileForm({
                         ...profileForm,
                         position: e.target.value,
@@ -387,7 +405,7 @@ const SettingsProfile: React.FC = () => {
                   <Input
                     type="text"
                     value={profileForm.startDate}
-                    onChange={(e) =>
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setProfileForm({
                         ...profileForm,
                         startDate: e.target.value,
@@ -430,7 +448,7 @@ const SettingsProfile: React.FC = () => {
                   <Input
                     type="tel"
                     value={profileForm.phone}
-                    onChange={(e) =>
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setProfileForm({ ...profileForm, phone: e.target.value })
                     }
                     icon={Phone}
@@ -450,11 +468,12 @@ const SettingsProfile: React.FC = () => {
                   ความปลอดภัย (Security)
                 </h3>
                 <Button
-                  onClick={handleSecuritySave}
+                  onClick={handleSecuritySubmit(onSecuritySubmit)}
                   size="sm"
+                  disabled={isSecuritySubmitting}
                   className="bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border-none shadow-none rounded-xl px-4 font-bold"
                 >
-                  เปลี่ยนรหัสผ่าน
+                  {isSecuritySubmitting ? "กำลังบันทึก..." : "เปลี่ยนรหัสผ่าน"}
                 </Button>
               </div>
 
@@ -465,17 +484,13 @@ const SettingsProfile: React.FC = () => {
                   </label>
                   <Input
                     type="password"
-                    value={securityForm.currentPassword}
-                    onChange={(e) =>
-                      setSecurityForm({
-                        ...securityForm,
-                        currentPassword: e.target.value,
-                      })
-                    }
+                    {...registerSecurity("currentPassword")}
+                    error={!!securityErrors.currentPassword}
                     icon={Lock}
                     placeholder="ระบุรหัสผ่านเดิมเพื่อยืนยัน"
                     className="bg-gray-50/50 focus:bg-white transition-all"
                   />
+                  {securityErrors.currentPassword && <p className="text-[10px] font-bold text-red-500">{securityErrors.currentPassword.message}</p>}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
@@ -484,17 +499,27 @@ const SettingsProfile: React.FC = () => {
                     </label>
                     <Input
                       type="password"
-                      value={securityForm.newPassword}
-                      onChange={(e) =>
-                        setSecurityForm({
-                          ...securityForm,
-                          newPassword: e.target.value,
-                        })
-                      }
+                      {...registerSecurity("newPassword")}
+                      error={!!securityErrors.newPassword}
                       icon={Lock}
                       placeholder="กำหนดรหัสผ่านใหม่"
                       className="bg-gray-50/50 focus:bg-white transition-all"
                     />
+                    {newPassword && (
+                      <div className="mt-2 space-y-1.5">
+                        <div className="flex justify-between items-center text-[10px] font-bold">
+                          <span className="text-gray-400 uppercase tracking-widest">ความยาก: {strengthText}</span>
+                          <span className="text-gray-400">{strength}%</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full transition-all duration-500 ${strengthColor}`}
+                            style={{ width: `${strength}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {securityErrors.newPassword && <p className="text-[10px] font-bold text-red-500 mt-1">{securityErrors.newPassword.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700">
@@ -502,17 +527,13 @@ const SettingsProfile: React.FC = () => {
                     </label>
                     <Input
                       type="password"
-                      value={securityForm.confirmPassword}
-                      onChange={(e) =>
-                        setSecurityForm({
-                          ...securityForm,
-                          confirmPassword: e.target.value,
-                        })
-                      }
+                      {...registerSecurity("confirmPassword")}
+                      error={!!securityErrors.confirmPassword}
                       icon={Lock}
                       placeholder="พิมพ์รหัสผ่านใหม่อีกครั้ง"
                       className="bg-gray-50/50 focus:bg-white transition-all"
                     />
+                    {securityErrors.confirmPassword && <p className="text-[10px] font-bold text-red-500 mt-1">{securityErrors.confirmPassword.message}</p>}
                   </div>
                 </div>
 
@@ -528,13 +549,8 @@ const SettingsProfile: React.FC = () => {
                     </div>
                     <input
                       type="checkbox"
-                      checked={securityForm.twoFactor}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setSecurityForm({
-                          ...securityForm,
-                          twoFactor: e.target.checked,
-                        })
-                      }
+                      checked={twoFactor}
+                      onChange={(e) => setTwoFactor(e.target.checked)}
                       className="toggle toggle-primary h-5 w-9 rounded-full bg-gray-200 cursor-pointer appearance-none checked:bg-green-500 transition-colors relative before:content-[''] before:absolute before:left-[2px] before:top-[2px] before:w-4 before:h-4 before:bg-white before:rounded-full before:transition-transform before:checked:translate-x-4 shadow-inner"
                     />
                   </div>

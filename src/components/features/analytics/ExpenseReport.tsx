@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText,
@@ -25,13 +26,14 @@ import toast from "react-hot-toast";
 const ExpenseReport: React.FC = () => {
   const {
     requests,
-    user,
     submitExpenseReport,
     completeRequest,
     revertComplete,
     rejectExpenseReport,
     uploadAttachment,
+    isLoading
   } = useBudget();
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<BudgetRequest | null>(
     null,
@@ -50,6 +52,8 @@ const ExpenseReport: React.FC = () => {
   const [viewMode, setViewMode] = useState<"active" | "history" | "verify">(
     "active",
   );
+
+  if (isLoading) return <div className="p-8 text-center text-gray-400">Loading reports...</div>;
 
   const filteredRequests = useMemo(() => {
     return (requests as BudgetRequest[]).filter((req: BudgetRequest) => {

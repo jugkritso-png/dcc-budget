@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Page } from "../../types";
 import { useBudget } from "../../context/BudgetContext";
+import { useAuth } from "../../context/AuthContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface LayoutProps {
@@ -31,7 +32,8 @@ const Layout: React.FC<LayoutProps> = ({
   currentPage,
   onNavigate,
 }) => {
-  const { settings, user, logout, hasPermission } = useBudget();
+  const { settings, hasPermission } = useBudget();
+  const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
 

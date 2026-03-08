@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Download } from "lucide-react";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 
 const SettingsBackup: React.FC = () => {
-  const { settings, departments, users, user, requests, categories } =
-    useBudget();
+  const { settings, departments, requests, categories } = useBudget();
+  const { users, user } = useAuth();
   const [lastBackup, setLastBackup] = useState<string | null>(
     "2025-01-20 09:30:00",
   );

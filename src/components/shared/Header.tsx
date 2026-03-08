@@ -3,6 +3,8 @@
 import React from "react";
 import { Bell, Menu } from "lucide-react";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
+import { useUI } from "@/context/UIContext";
 import { usePathname } from "next/navigation";
 import { NotificationDropdown } from "./NotificationDropdown";
 
@@ -17,7 +19,8 @@ const PAGE_TITLES: Record<string, string> = {
 };
 
 export function Header() {
-  const { user, toggleSidebar } = useBudget();
+  const { user } = useAuth();
+  const { toggleSidebar } = useUI();
   const pathname = usePathname();
 
   const pageTitle =

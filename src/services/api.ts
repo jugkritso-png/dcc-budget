@@ -42,28 +42,19 @@ export const authService = {
 
     if (error) throw new Error(error.message);
 
-    // Fetch user profile
-    // Fetch user profile via our API route to bypass RLS
-    let profile = null;
-    try {
-      const res = await fetch(
-        `/api/profile?id=${data.user.id}&email=${data.user.email || ""}`,
-      );
-      if (res.ok) {
-        const result = await res.json();
-        if (result.profile) {
-          profile = result.profile;
-          console.log("LOGIN -> DB profile fetch success:", profile.role);
-        }
-      } else {
-        console.error(
-          "LOGIN -> Error fetching profile via API:",
-          await res.text(),
-        );
-      }
-    } catch (e) {
-      console.error("LOGIN -> Failed to fetch profile via API:", e);
+    // Fetch user profile securely with SDK (RLS applies)
+    const { data: profileData, error: profileError } = await getSupabase()
+      .from("User")
+      .select("*")
+      .eq("id", data.user.id)
+      .maybeSingle();
+
+    if (profileError) {
+      console.error("LOGIN -> Error fetching profile via SDK:", profileError.message);
     }
+    
+    const profile = profileData || null;
+    if (profile) console.log("LOGIN -> DB profile fetch success:", profile.role);
 
     const userObj = profile || {
       id: data.user.id,

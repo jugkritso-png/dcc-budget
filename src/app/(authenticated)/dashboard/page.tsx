@@ -1,13 +1,18 @@
 "use client";
 
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
+import DashboardSkeleton from "@/components/shared/skeletons/DashboardSkeleton";
 import { StatCard } from "@/components/shared/StatCard";
 import { Wallet, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import AnalyticsDashboard from "@/components/features/analytics/AnalyticsDashboard";
 
 export default function DashboardPage() {
-  const { getDashboardStats, user } = useBudget();
+  const { getDashboardStats, isLoading } = useBudget();
+  const { user } = useAuth();
   const stats = getDashboardStats();
+
+  if (isLoading) return <DashboardSkeleton />;
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">

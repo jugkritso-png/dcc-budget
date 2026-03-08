@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { Card } from "@/components/ui/Card";
+import ListSkeleton from "@/components/shared/skeletons/ListSkeleton";
 import { Button } from "@/components/ui/Button";
 import {
   Search,
@@ -23,10 +25,20 @@ import {
 import { BudgetRequest } from "@/types";
 import { ApprovalModal } from "@/components/features/requests/ApprovalModal";
 import { EditRequestModal } from "@/components/features/requests/EditRequestModal";
+import { motion } from "framer-motion";
+// @ts-ignore
+import { List as _List } from "react-window";
+const List = _List as unknown as React.FC<any>;
+// @ts-ignore
+import { AutoSizer as _AutoSizer, AutoSizerProps } from "react-virtualized-auto-sizer";
+
+const AutoSizer = _AutoSizer as unknown as React.FC<any>;
 
 const BudgetRequestList: React.FC = () => {
-  const { requests, categories } = useBudget();
+  const { requests, categories, isLoading } = useBudget();
   const [searchQuery, setSearchQuery] = useState("");
+
+  if (isLoading) return <ListSkeleton items={5} />;
   const [statusFilter, setStatusFilter] = useState<
     "all" | "pending" | "approved" | "rejected"
   >("all");
@@ -39,7 +51,8 @@ const BudgetRequestList: React.FC = () => {
   );
   const [isManagementMode, setIsManagementMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const { user, deleteRequest } = useBudget();
+  const { deleteRequest } = useBudget();
+  const { user } = useAuth();
 
   const toggleSelectAll = () => {
     if (selectedIds.size === filteredRequests.length) {
@@ -215,131 +228,170 @@ const BudgetRequestList: React.FC = () => {
       </Card>
 
       {/* Request List */}
-      <div className="space-y-3">
+      <div className="h-[calc(100vh-240px)] min-h-[500px]">
         {filteredRequests.length > 0 ? (
-          filteredRequests.map((req) => (
-            <div
-              key={req.id}
-              className={`group bg-white hover:bg-white border-transparent hover:border-primary-200/50 rounded-[32px] p-6 transition-all cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1 relative overflow-hidden ${selectedIds.has(req.id) ? "ring-2 ring-primary-500/50 bg-primary-50/10" : ""}`}
-              onClick={() => setSelectedRequest(req)}
-            >
-              {isManagementMode && (
-                <div 
-                  className="absolute top-4 right-14 z-10 p-2 rounded-xl bg-white/80 backdrop-blur shadow-sm hover:bg-white transition-all opacity-0 group-hover:opacity-100"
-                  onClick={(e) => toggleSelect(req.id, e)}
-                >
-                  {selectedIds.has(req.id) ? (
-                    <CheckSquare size={18} className="text-primary-500" />
-                  ) : (
-                    <Square size={18} className="text-gray-300" />
-                  )}
-                </div>
-              )}
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                {/* 1. Project Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span
-                      className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border ${getStatusBadgeClass(req.status)}`}
-                    >
-                      {getStatusLabel(req.status, req.currentStep)}
-                    </span>
-                    <span className="text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">
-                      {req.category}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-primary-700 transition-colors truncate">
-                    {req.project}
-                  </h3>
-                  <div className="flex items-center gap-3 mt-1 text-[11px] text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <FileText size={12} className="text-gray-400" />
-                      {req.documentNumber || "ไม่มีเลขที่"}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar size={12} className="text-gray-400" />
-                      {new Date(req.date).toLocaleDateString("th-TH")}
-                    </span>
-                  </div>
-                </div>
+          <AutoSizer>
+            {({ height, width }: { height: number; width: number }) => (
+              <List
+                height={height}
+                itemCount={filteredRequests.length}
+                itemSize={140}
+                width={width}
+                itemData={filteredRequests}
+              >
+                {({ index, style }: { index: number; style: React.CSSProperties }) => {
+                  const req = filteredRequests[index];
+                  return (
+                    <div style={{ ...style, paddingBottom: "12px" }}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className={`group h-full flex flex-col justify-center bg-white hover:bg-white border-transparent hover:border-primary-200/50 rounded-[32px] p-6 transition-all cursor-pointer shadow-sm hover:shadow-xl relative overflow-hidden ${selectedIds.has(req.id) ? "ring-2 ring-primary-500/50 bg-primary-50/10" : ""}`}
+                        onClick={() => setSelectedRequest(req)}
+                      >
+                        {isManagementMode && (
+                          <div 
+                            className="absolute top-4 right-14 z-10 p-2 rounded-xl bg-white/80 backdrop-blur shadow-sm hover:bg-white transition-all opacity-0 group-hover:opacity-100"
+                            onClick={(e) => toggleSelect(req.id, e)}
+                          >
+                            {selectedIds.has(req.id) ? (
+                              <CheckSquare size={18} className="text-primary-500" />
+                            ) : (
+                              <Square size={18} className="text-gray-300" />
+                            )}
+                          </div>
+                        )}
+                        <div className="absolute top-0 left-0 w-1.5 h-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                          {/* 1. Project Info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span
+                                className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border ${getStatusBadgeClass(req.status)}`}
+                              >
+                                {getStatusLabel(req.status, req.currentStep)}
+                              </span>
+                              <span className="text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">
+                                {req.category}
+                              </span>
+                            </div>
+                            <h3 className="text-sm font-bold text-gray-900 group-hover:text-primary-700 transition-colors truncate">
+                              {req.project}
+                            </h3>
+                            <div className="flex items-center gap-3 mt-1 text-[11px] text-gray-500">
+                              <span className="flex items-center gap-1">
+                                <FileText size={12} className="text-gray-400" />
+                                {req.documentNumber || "ไม่มีเลขที่"}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Calendar size={12} className="text-gray-400" />
+                                {new Date(req.date).toLocaleDateString("th-TH")}
+                              </span>
+                            </div>
+                          </div>
 
-                <div className="hidden xl:flex items-center gap-4 flex-1 justify-center border-l border-r border-gray-50 px-8">
-                  <div className="flex items-center gap-2 w-full max-w-[200px]">
-                    {[
-                      { id: "manager", label: "หน่วยงาน" },
-                      { id: "finance", label: "การเงิน" },
-                      { id: "director", label: "ผอ." },
-                    ].map((step, idx) => {
-                      const steps = ["manager", "finance", "director"];
-                      const currentIdx = steps.indexOf(req.currentStep || "manager");
-                      const isDone = idx < currentIdx || req.status === "approved";
-                      const isCurrent = idx === currentIdx && req.status === "pending";
-                      const isRejected = req.status === "rejected" && idx === currentIdx;
+                          <div className="hidden xl:flex items-center gap-4 flex-1 justify-center border-l border-r border-gray-50 px-8">
+                            <div className="flex items-center gap-2 w-full max-w-[200px]">
+                              {[
+                                { id: "manager", label: "หน่วยงาน" },
+                                { id: "finance", label: "การเงิน" },
+                                { id: "director", label: "ผอ." },
+                              ].map((step, idx) => {
+                                const steps = ["manager", "finance", "director"];
+                                const currentIdx = steps.indexOf(req.currentStep || "manager");
+                                const isDone = idx < currentIdx || req.status === "approved";
+                                const isCurrent = idx === currentIdx && req.status === "pending";
+                                const isRejected = req.status === "rejected" && idx === currentIdx;
 
-                      return (
-                        <div key={step.id} className="flex-1 flex flex-col items-center gap-1.5">
-                          <div
-                            className={`h-2 w-full rounded-full transition-all duration-500
-                              ${isDone ? "bg-emerald-400" : isRejected ? "bg-red-400" : isCurrent ? "bg-primary-500 shadow-[0_0_12px_rgba(0,163,228,0.5)]" : "bg-gray-100"}`}
-                          />
-                          <span className={`text-[9px] font-black uppercase tracking-tighter ${isCurrent ? "text-primary-600" : "text-gray-400"}`}>
-                            {step.label}
-                          </span>
+                                return (
+                                  <div key={step.id} className="flex-1 flex flex-col items-center gap-1.5">
+                                    <div
+                                      className={`h-2 w-full rounded-full transition-all duration-500
+                                        ${isDone ? "bg-emerald-400" : isRejected ? "bg-red-400" : isCurrent ? "bg-primary-500 shadow-[0_0_12px_rgba(0,163,228,0.5)]" : "bg-gray-100"}`}
+                                    />
+                                    <span className={`text-[9px] font-black uppercase tracking-tighter ${isCurrent ? "text-primary-600" : "text-gray-400"}`}>
+                                      {step.label}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* 3. Financial Info */}
+                          <div className="flex items-center justify-between lg:justify-end gap-6 min-w-[140px]">
+                            <div className="text-right">
+                              <p className="text-xs font-bold text-gray-400 uppercase leading-none mb-1">งบประมาณ</p>
+                              <p className="text-lg font-black text-gray-900 leading-none">
+                                ฿{req.amount.toLocaleString()}
+                              </p>
+                            </div>
+                            
+                            {isManagementMode ? (
+                              <div className="flex items-center gap-1">
+                                <button 
+                                  className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-primary-50 hover:text-primary-600 transition-all duration-300"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setEditingRequest(req);
+                                  }}
+                                >
+                                  <Edit3 size={18} />
+                                </button>
+                                <button 
+                                  className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all duration-300"
+                                  onClick={(e) => handleDelete(req.id, e)}
+                                >
+                                  <Trash2 size={18} />
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="p-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-primary-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-primary-500/20 transition-all duration-300">
+                                <ChevronRight size={20} />
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* 3. Financial Info */}
-                  <div className="flex items-center justify-between lg:justify-end gap-6 min-w-[140px]">
-                  <div className="text-right">
-                    <p className="text-xs font-bold text-gray-400 uppercase leading-none mb-1">งบประมาณ</p>
-                    <p className="text-lg font-black text-gray-900 leading-none">
-                      ฿{req.amount.toLocaleString()}
-                    </p>
-                  </div>
-                  
-                  {isManagementMode ? (
-                    <div className="flex items-center gap-1">
-                      <button 
-                        className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-primary-50 hover:text-primary-600 transition-all duration-300"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEditingRequest(req);
-                        }}
-                      >
-                        <Edit3 size={18} />
-                      </button>
-                      <button 
-                        className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all duration-300"
-                        onClick={(e) => handleDelete(req.id, e)}
-                      >
-                        <Trash2 size={18} />
-                      </button>
+                      </motion.div>
                     </div>
-                  ) : (
-                    <div className="p-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-primary-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-primary-500/20 transition-all duration-300">
-                      <ChevronRight size={20} />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))
+                  );
+                }}
+              </List>
+            )}
+          </AutoSizer>
         ) : (
-          <Card className="p-12 text-center rounded-[32px] border-dashed border-2 border-gray-100 bg-gray-50/30">
-            <div className="mx-auto w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4">
-              <Search className="text-gray-300" size={32} />
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">
-              ไม่พบคำขอที่ตรงกับเงื่อนไข
-            </h3>
-            <p className="text-sm text-gray-400">
-              ลองเปลี่ยนเงื่อนไขการค้นหาหรือกลุ่มข้อมูล
-            </p>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="py-20 px-6 h-full flex items-center justify-center"
+          >
+            <Card className="max-w-md w-full p-12 text-center rounded-[40px] border-none shadow-[0_32px_64px_-12px_rgba(0,0,0,0.08)] bg-white relative overflow-hidden group">
+              <div className="absolute -right-8 -top-8 w-32 h-32 bg-primary-50 rounded-full blur-3xl opacity-50 group-hover:scale-110 transition-transform duration-700" />
+              <div className="relative z-10">
+                <div className="mx-auto w-24 h-24 bg-gradient-to-br from-gray-50 to-gray-100 rounded-[32px] flex items-center justify-center shadow-inner mb-8 transform group-hover:rotate-6 transition-transform duration-500">
+                  <Search className="text-gray-300" size={40} />
+                </div>
+                <h3 className="text-xl font-black text-gray-900 mb-3 tracking-tight">
+                  ไม่พบข้อมูลที่กำลังมองหา
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed mb-8">
+                  เราไม่พบคลิปข้อมูลตามเงื่อนไขที่คุณระบุ<br/>กรุณาลองเปลี่ยนคำค้นหาหรือหมวดหมู่ใหม่อีกครั้ง
+                </p>
+                <Button 
+                  variant="outline" 
+                  className="rounded-full px-8 border-gray-200 text-gray-500 hover:bg-gray-50 font-bold"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setStatusFilter("all");
+                    setCategoryFilter("all");
+                  }}
+                >
+                  ล้างการกรองทั้งหมด
+                </Button>
+              </div>
+            </Card>
+          </motion.div>
         )}
       </div>
 

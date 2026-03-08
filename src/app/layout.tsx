@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 import { Providers } from "@/components/shared/Providers";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 
 export default function RootLayout({
   children,
@@ -33,7 +34,9 @@ export default function RootLayout({
       className={`${inter.variable} ${prompt.variable}`}
     >
       <body className="antialiased text-gray-900">
-        <Providers>{children}</Providers>
+        <ErrorBoundary>
+          <Providers>{children}</Providers>
+        </ErrorBoundary>
       </body>
     </html>
   );

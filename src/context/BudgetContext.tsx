@@ -37,6 +37,7 @@ import {
   activityLogService,
 } from "../services/api";
 import { createClient } from "../lib/supabase/client";
+import { useAuth } from "./AuthContext";
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 
@@ -46,186 +47,118 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
   const queryClient = useQueryClient();
   const supabase = createClient();
 
-  // --- Client State (Session) ---
-  const [user, setUser] = useState<User | null>(null);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
-
-  useEffect(() => {
-    const savedSidebar = localStorage.getItem("dcc_sidebar_collapsed");
-    if (savedSidebar) {
-      setIsSidebarCollapsed(savedSidebar === "true");
-    }
-
-    const checkSession = async () => {
-      if (typeof window === "undefined") return;
-
-      const saved = localStorage.getItem("dcc_user");
-      if (saved) {
-        try {
-          const parsedUser = JSON.parse(saved);
-
-          // Verify actual role in DB via API to bypass RLS
-          try {
-            const res = await fetch(
-              `/api/profile?id=${parsedUser.id}&email=${parsedUser.email || ""}`,
-            );
-            if (res.ok) {
-              const result = await res.json();
-              if (result.profile) {
-                const dbUser = result.profile;
-                console.log("DB User on load:", dbUser.role);
-                setUser({ ...parsedUser, ...dbUser });
-                localStorage.setItem(
-                  "dcc_user",
-                  JSON.stringify({ ...parsedUser, ...dbUser }),
-                );
-              } else {
-                console.log("Profile not found in DB via API");
-                setUser(parsedUser);
-              }
-            } else {
-              console.log("Local User on load API fallback:", parsedUser.role);
-              setUser(parsedUser);
-            }
-          } catch (err) {
-            console.error("API fetch error:", err);
-            setUser(parsedUser);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      }
-
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange(
-        async (event: string, session: any) => {
-          if (event === "SIGNED_OUT") {
-            setUser(null);
-            localStorage.removeItem("dcc_user");
-            localStorage.removeItem("dcc_token");
-            queryClient.clear();
-          } else if (event === "SIGNED_IN" && session?.user) {
-            try {
-              const res = await fetch(
-                `/api/profile?id=${session.user.id}&email=${session.user.email || ""}`,
-              );
-              if (res.ok) {
-                const result = await res.json();
-                if (result.profile) {
-                  const mergedUser = { ...session.user, ...result.profile };
-                  setUser(mergedUser as User);
-                  localStorage.setItem("dcc_user", JSON.stringify(mergedUser));
-                }
-              }
-            } catch (e) {
-              console.error("API fetch error on auth change", e);
-            }
-          }
-        },
-      );
-      return () => subscription.unsubscribe();
-    };
-    checkSession();
-  }, [queryClient, supabase.auth]);
-
-  // Theme Management
-  useEffect(() => {
-    if (user?.theme) {
-      document.documentElement.setAttribute("data-theme", user.theme);
-    } else {
-      document.documentElement.setAttribute("data-theme", "blue"); // Default
-    }
-  }, [user?.theme]);
-
-  const changeTheme = async (newTheme: string) => {
-    if (user) {
-      const updatedUser = { ...user, theme: newTheme as any };
-      setUser(updatedUser);
-      localStorage.setItem("dcc_user", JSON.stringify(updatedUser));
-      document.documentElement.setAttribute("data-theme", newTheme);
-
-      // Persist to backend
-      try {
-        await userService.update(user.id, { theme: newTheme as any });
-      } catch (err) {
-        console.error("Failed to persist theme", err);
-      }
-    }
-  };
-
-  const toggleSidebar = () => {
-    setIsSidebarCollapsed((prev) => {
-      const next = !prev;
-      localStorage.setItem("dcc_sidebar_collapsed", String(next));
-      return next;
-    });
-  };
-
   // --- Server State (Queries) ---
+  const { user } = useAuth();
   // staleTime: 5 min — prevents refetch on every tab focus / mount
   const STALE = 5 * 60 * 1000;
 
-  const { data: requests = [] } = useQuery({
+  const requestsQuery = useQuery({
     queryKey: ["requests"],
     queryFn: budgetService.getRequests,
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: categories = [] } = useQuery({
+  const requests = requestsQuery.data || [];
+
+  const categoriesQuery = useQuery({
     queryKey: ["categories"],
     queryFn: masterDataService.getCategories,
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: subActivities = [] } = useQuery({
+  const categories = categoriesQuery.data || [];
+
+  const subActivitiesQuery = useQuery({
     queryKey: ["subActivities"],
     queryFn: masterDataService.getSubActivities,
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: departments = [] } = useQuery({
+  const subActivities = subActivitiesQuery.data || [];
+
+  const departmentsQuery = useQuery({
     queryKey: ["departments"],
     queryFn: systemService.getDepartments,
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: users = [] } = useQuery({
+  const departments = departmentsQuery.data || [];
+
+  const usersQuery = useQuery({
     queryKey: ["users"],
     queryFn: userService.getAll,
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: budgetPlans = [] } = useQuery({
+  const users = usersQuery.data || [];
+
+  const budgetPlansQuery = useQuery({
     queryKey: ["budgetPlans"],
     queryFn: () => budgetService.getPlans(),
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: expenses = [] } = useQuery({
+  const budgetPlans = budgetPlansQuery.data || [];
+
+  const expensesQuery = useQuery({
     queryKey: ["expenses"],
     queryFn: () => expenseService.getAll(),
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: budgetLogs = [] } = useQuery({
+  const expenses = expensesQuery.data || [];
+
+  const budgetLogsQuery = useQuery({
     queryKey: ["budgetLogs"],
     queryFn: () => budgetService.getLogs(),
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: notifications = [] } = useQuery({
+  const budgetLogs = budgetLogsQuery.data || [];
+
+  const notificationsQuery = useQuery({
     queryKey: ["notifications", user?.id],
     queryFn: () => notificationService.getAll(user!.id),
     enabled: !!user,
     staleTime: STALE,
   });
-  const { data: activityLogs = [] } = useQuery({
+  const notifications = notificationsQuery.data || [];
+
+  const activityLogsQuery = useQuery({
     queryKey: ["activityLogs"],
     queryFn: activityLogService.getAll,
     enabled: !!user && user.role === "admin",
     staleTime: STALE,
   });
+  const activityLogs = activityLogsQuery.data || [];
+
+  const settingsQuery = useQuery({
+    queryKey: ["settings"],
+    queryFn: systemService.getSettings,
+    enabled: !!user,
+    staleTime: STALE,
+    initialData: {
+      orgName: "DCC Company Ltd.",
+      fiscalYear: 2569,
+      overBudgetAlert: false,
+      fiscalYearCutoff: "2026-09-30",
+      permissions: {},
+    },
+  });
+  const settings = settingsQuery.data || {
+    orgName: "DCC Company Ltd.",
+    fiscalYear: 2569,
+    overBudgetAlert: false,
+    fiscalYearCutoff: "2026-09-30",
+    permissions: {},
+  };
+
+  const isLoading =
+    requestsQuery.isLoading ||
+    categoriesQuery.isLoading ||
+    subActivitiesQuery.isLoading ||
+    departmentsQuery.isLoading ||
+    settingsQuery.isLoading;
 
   // Real-time Notifications Subscription
   useEffect(() => {
@@ -298,26 +231,6 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const {
-    data: settings = {
-      orgName: "DCC Company Ltd.",
-      fiscalYear: 2569,
-      overBudgetAlert: false,
-      fiscalYearCutoff: "2026-09-30",
-    } as SystemSettings,
-  } = useQuery({
-    queryKey: ["settings"],
-    queryFn: systemService.getSettings,
-    enabled: !!user,
-    staleTime: STALE,
-    initialData: {
-      orgName: "DCC Company Ltd.",
-      fiscalYear: 2569,
-      overBudgetAlert: false,
-      fiscalYearCutoff: "2026-09-30",
-      permissions: {},
-    },
-  });
 
   const hasPermission = (permission: Permission): boolean => {
     if (!user) return false;
@@ -329,124 +242,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
 
   // --- Mutations (Actions) ---
 
-  // User Actions
-  const login = async (
-    username: string,
-    password: string,
-  ): Promise<boolean> => {
-    try {
-      const response = await authService.login({ username, password });
-      setUser(response.user);
-      localStorage.setItem("dcc_user", JSON.stringify(response.user));
-      localStorage.setItem("dcc_token", response.token);
-
-      // Log login activity
-      activityLogService
-        .log({
-          userId: response.user.id,
-          action: "LOGIN",
-          details: "เข้าสู่ระบบด้วยชื่อผู้ใช้งาน",
-          userAgent:
-            typeof window !== "undefined"
-              ? window.navigator.userAgent
-              : undefined,
-        })
-        .catch((err: any) => console.error("Failed to log login:", err));
-
-      return true;
-    } catch (error) {
-      console.error("Login Error in Context:", error);
-      throw error; // Forward the error to the component so we can see the message
-    }
-  };
-
-  const loginWithGoogle = async (token: string): Promise<boolean> => {
-    try {
-      const response = await authService.loginWithGoogle(token);
-      setUser(response.user);
-      localStorage.setItem("dcc_user", JSON.stringify(response.user));
-      localStorage.setItem("dcc_token", response.token);
-      return true;
-    } catch (error) {
-      console.error("Google Login error:", error);
-      return false;
-    }
-  };
-
-  const logout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    localStorage.removeItem("dcc_user");
-    localStorage.removeItem("dcc_token");
-    queryClient.clear(); // Clear cache on logout
-
-    // Immediate redirect to login with a full reload to ensure clear state
-    window.location.href = "/login";
-  };
-
-  const updateUserProfileMutation = useMutation({
-    mutationFn: (updatedData: Partial<User>) => {
-      if (!user) throw new Error("No user");
-      return authService.updateProfile(user.id, updatedData);
-    },
-    onSuccess: (updatedUser) => {
-      setUser(updatedUser);
-      localStorage.setItem("dcc_user", JSON.stringify(updatedUser));
-    },
-  });
-
-  const changePasswordMutation = useMutation({
-    mutationFn: ({
-      current,
-      newPass,
-    }: {
-      current: string;
-      newPass: string;
-    }) => {
-      if (!user) throw new Error("No user");
-      return authService.changePassword({
-        userId: user.id,
-        currentPassword: current,
-        newPassword: newPass,
-      });
-    },
-  });
-
-  // Admin User Management
-  const addUserMutation = useMutation({
-    mutationFn: userService.create,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      logActivity(
-        "CREATE_USER",
-        `สร้างผู้ใช้งานใหม่: ${data.name} (@${data.username})`,
-        data.id,
-        "User",
-      );
-    },
-  });
-
-  const updateUserMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<User> }) =>
-      userService.update(id, data),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      logActivity(
-        "UPDATE_USER",
-        `แก้ไขข้อมูลผู้ใช้งาน: ${data.name} (@${data.username})`,
-        data.id,
-        "User",
-      );
-    },
-  });
-
-  const deleteUserMutation = useMutation({
-    mutationFn: userService.delete,
-    onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      logActivity("DELETE_USER", `ลบผู้ใช้งาน (ID: ${id})`, id, "User");
-    },
-  });
+  // (Mutations for Auth moved to AuthContext)
 
   // Settings & Departments
   const updateSettingsMutation = useMutation({
@@ -561,7 +357,23 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
       id: string;
       status: BudgetRequest["status"];
     }) => budgetService.updateRequestStatus(id, status),
-    onSuccess: () => {
+    onMutate: async ({ id, status }) => {
+      await queryClient.cancelQueries({ queryKey: ["requests"] });
+      const previousRequests = queryClient.getQueryData<BudgetRequest[]>(["requests"]);
+      if (previousRequests) {
+        queryClient.setQueryData<BudgetRequest[]>(
+          ["requests"],
+          previousRequests.map((req) => req.id === id ? { ...req, status } : req)
+        );
+      }
+      return { previousRequests };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousRequests) {
+        queryClient.setQueryData(["requests"], context.previousRequests);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["requests"] });
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
@@ -583,10 +395,25 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
   const approveRequestMutation = useMutation({
     mutationFn: ({ id, approverId, comment }: { id: string; approverId: string; comment?: string }) =>
       budgetService.approveRequest(id, approverId, comment),
+    onMutate: async ({ id }) => {
+      await queryClient.cancelQueries({ queryKey: ["requests"] });
+      const previousRequests = queryClient.getQueryData<BudgetRequest[]>(["requests"]);
+      if (previousRequests) {
+        queryClient.setQueryData<BudgetRequest[]>(
+          ["requests"],
+          // Optimistically show as approved or advanced (status won't strictly be 'approved' in some steps, 
+          // but visually it gives instant feedback. The exact step resolves onSettled).
+          previousRequests.map((req) => req.id === id ? { ...req, status: "approved" } : req)
+        );
+      }
+      return { previousRequests };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousRequests) {
+        queryClient.setQueryData(["requests"], context.previousRequests);
+      }
+    },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["requests"] });
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-
       if (data.requesterId) {
         sendNotification(
           data.requesterId,
@@ -604,6 +431,10 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
         "BudgetRequest",
       );
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["requests"] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
   });
 
   const rejectRequestMutation = useMutation({
@@ -616,9 +447,23 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
       approverId: string;
       reason: string;
     }) => budgetService.rejectRequest(id, approverId, reason),
+    onMutate: async ({ id }) => {
+      await queryClient.cancelQueries({ queryKey: ["requests"] });
+      const previousRequests = queryClient.getQueryData<BudgetRequest[]>(["requests"]);
+      if (previousRequests) {
+        queryClient.setQueryData<BudgetRequest[]>(
+          ["requests"],
+          previousRequests.map((req) => req.id === id ? { ...req, status: "rejected" } : req)
+        );
+      }
+      return { previousRequests };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousRequests) {
+        queryClient.setQueryData(["requests"], context.previousRequests);
+      }
+    },
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["requests"] });
-
       if (data.requesterId) {
         sendNotification(
           data.requesterId,
@@ -635,6 +480,9 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
         data.id,
         "BudgetRequest",
       );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["requests"] });
     },
   });
 
@@ -825,22 +673,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
 
   const getDashboardStats = useCallback(() => dashboardStats, [dashboardStats]);
 
-  // Helper Wrappers (to match old Context API)
-  const updateUserProfile = async (data: Partial<User>) => {
-    await updateUserProfileMutation.mutateAsync(data);
-  };
-  const changePassword = async (current: string, newPass: string) => {
-    await changePasswordMutation.mutateAsync({ current, newPass });
-  };
-  const addUser = async (data: Partial<User>) => {
-    await addUserMutation.mutateAsync(data);
-  };
-  const updateUser = async (id: string, data: Partial<User>) => {
-    await updateUserMutation.mutateAsync({ id, data });
-  };
-  const deleteUser = async (id: string) => {
-    await deleteUserMutation.mutateAsync(id);
-  };
+  // ... (Other mutations)
 
   const markNotificationAsReadMutation = useMutation({
     mutationFn: notificationService.markAsRead,
@@ -986,23 +819,16 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
   return (
     <BudgetContext.Provider
       value={{
+        isLoading,
         requests,
         categories,
         subActivities,
         settings,
         hasPermission,
         departments,
-        user,
-        users,
-        login,
-        loginWithGoogle,
-        logout,
-        updateUserProfile,
-        updateUser,
-        addUser,
-        deleteUser,
-        changePassword,
-        addRequest,
+        addRequest: async (r: BudgetRequest) => {
+          await addRequestMutation.mutateAsync(r);
+        },
         updateRequestStatus,
         updateRequest,
         approveRequest,
@@ -1035,16 +861,13 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
         budgetPlans,
         saveBudgetPlan,
         restoreData: (data: any) => {
-          // Naive restore: just set cache
           if (data.requests)
             queryClient.setQueryData(["requests"], data.requests);
           if (data.categories)
             queryClient.setQueryData(["categories"], data.categories);
           if (data.settings)
             queryClient.setQueryData(["settings"], data.settings);
-          alert("Data restored to Cache");
         },
-        changeTheme,
         notifications,
         markNotificationAsRead,
         markAllNotificationsAsRead,
@@ -1054,8 +877,6 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
         logActivity,
         getApprovalLogs,
         getAllApprovalLogs,
-        isSidebarCollapsed,
-        toggleSidebar,
       }}
     >
       {children}

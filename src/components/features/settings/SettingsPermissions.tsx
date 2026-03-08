@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Save, Shield, Check, X, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Permission } from "@/types";
 
@@ -72,7 +73,8 @@ const PERMISSIONS: { id: Permission; label: string; description: string }[] = [
 ];
 
 const SettingsPermissions: React.FC = () => {
-  const { settings, updateSettings, user } = useBudget();
+  const { settings, updateSettings } = useBudget();
+  const { user } = useAuth();
   const [permissions, setPermissions] = useState<Record<string, Permission[]>>(
     {},
   );

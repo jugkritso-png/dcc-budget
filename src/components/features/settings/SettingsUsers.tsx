@@ -18,13 +18,15 @@ import {
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Modal } from "@/components/ui/Modal";
 
 const SettingsUsers: React.FC = () => {
-  const { users, addUser, updateUser, deleteUser, departments } = useBudget();
+  const { users, addUser, updateUser, deleteUser } = useAuth();
+  const { departments } = useBudget();
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -373,7 +375,7 @@ const SettingsUsers: React.FC = () => {
                 type="text"
                 placeholder="ระบุชื่อผู้ใช้งาน"
                 value={userForm.username}
-                onChange={(e) =>
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setUserForm({ ...userForm, username: e.target.value })
                 }
                 disabled={!!editingUser}
@@ -403,7 +405,7 @@ const SettingsUsers: React.FC = () => {
                   editingUser ? "••••••••" : "กำหนดรหัสผ่านเข้าใช้งาน"
                 }
                 value={userForm.password}
-                onChange={(e) =>
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setUserForm({ ...userForm, password: e.target.value })
                 }
                 icon={Lock}
@@ -423,7 +425,7 @@ const SettingsUsers: React.FC = () => {
                 type="text"
                 placeholder="เช่น สมชาย ใจดี"
                 value={userForm.name}
-                onChange={(e) =>
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setUserForm({ ...userForm, name: e.target.value })
                 }
                 icon={BadgeCheck}
@@ -443,7 +445,7 @@ const SettingsUsers: React.FC = () => {
                 type="email"
                 placeholder="example@dcc.ac.th"
                 value={userForm.email}
-                onChange={(e) =>
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setUserForm({ ...userForm, email: e.target.value })
                 }
                 icon={Mail}
@@ -486,7 +488,7 @@ const SettingsUsers: React.FC = () => {
                   type="text"
                   placeholder="ระบุตำแหน่ง"
                   value={userForm.position || ""}
-                  onChange={(e) =>
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setUserForm({ ...userForm, position: e.target.value })
                   }
                   icon={Briefcase}

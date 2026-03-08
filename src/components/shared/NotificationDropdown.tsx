@@ -13,6 +13,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { Notification } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 import { th } from "date-fns/locale";

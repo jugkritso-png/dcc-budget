@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
+import { useUI } from "@/context/UIContext";
+import DashboardSkeleton from "@/components/shared/skeletons/DashboardSkeleton";
 import { Card } from "@/components/ui/Card";
 import {
   BarChart,
@@ -28,110 +31,119 @@ import { useChartDimensions } from "@/hooks/useChartDimensions";
 import { BudgetRequest, Category } from "@/types";
 
 const AnalyticsDashboard: React.FC = () => {
-  const { requests, categories, settings, getAllApprovalLogs } = useBudget();
+  const { requests, categories, settings, getAllApprovalLogs, isLoading } = useBudget();
+  const { user } = useAuth();
+  const { changeTheme } = useUI();
   const { ref: barRef, dimensions: barDim } = useChartDimensions();
   const { ref: areaRef, dimensions: areaDim } = useChartDimensions();
 
+  if (isLoading) return <DashboardSkeleton />;
+
   // 1. Calculate Monthly Spending (Actual) vs Planned (Avg)
-  const months = [
-    "ต.ค.",
-    "พ.ย.",
-    "ธ.ค.",
-    "ม.ค.",
-    "ก.พ.",
-    "มี.ค.",
-    "เม.ย.",
-    "พ.ค.",
-    "มิ.ย.",
-    "ก.ค.",
-    "ส.ค.",
-    "ก.ย.",
-  ];
-  const monthlyDataMap = new Map<string, { planned: number; actual: number }>();
+  const chartData = useMemo(() => {
+    const months = [
+      "ต.ค.", "พ.ย.", "ธ.ค.", "ม.ค.", "ก.พ.", "มี.ค.",
+      "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.",
+    ];
+    const monthlyDataMap = new Map<string, { planned: number; actual: number }>();
 
-  // Initialize
-  const totalAllocated = categories.reduce(
-    (sum: number, cat: Category) => sum + cat.allocated,
-    0,
-  );
-  const avgMonthlyPlan = totalAllocated / 12;
+    const totalAllocated = categories.reduce(
+      (sum: number, cat: Category) => sum + cat.allocated,
+      0,
+    );
+    const avgMonthlyPlan = totalAllocated / 12;
 
-  months.forEach((m) =>
-    monthlyDataMap.set(m, { planned: avgMonthlyPlan, actual: 0 }),
-  );
+    months.forEach((m) =>
+      monthlyDataMap.set(m, { planned: avgMonthlyPlan, actual: 0 }),
+    );
 
-  // Populate Actual from Completed Requests (Actual Spent)
-  requests
-    .filter((r: BudgetRequest) => r.status === "completed")
-    .forEach((req: BudgetRequest) => {
-      const date = new Date(req.date);
-      const monthIndex = date.getMonth(); // 0-11 (Jan-Dec)
+    requests
+      .filter((r: BudgetRequest) => r.status === "completed")
+      .forEach((req: BudgetRequest) => {
+        const date = new Date(req.date);
+        const monthIndex = date.getMonth(); 
 
-      // Map to Fiscal Year Index (Oct=0, ..., Sept=11)
-      let fiscalIndex = monthIndex - 9;
-      if (fiscalIndex < 0) fiscalIndex += 12;
+        let fiscalIndex = monthIndex - 9;
+        if (fiscalIndex < 0) fiscalIndex += 12;
 
-      if (fiscalIndex >= 0 && fiscalIndex < 12) {
-        const mName = months[fiscalIndex];
-        const current = monthlyDataMap.get(mName)!;
-        // Use actualAmount instead of amount (allocated)
-        monthlyDataMap.set(mName, {
-          ...current,
-          actual: current.actual + (req.actualAmount || 0),
-        });
-      }
-    });
+        if (fiscalIndex >= 0 && fiscalIndex < 12) {
+          const mName = months[fiscalIndex];
+          const current = monthlyDataMap.get(mName)!;
+          monthlyDataMap.set(mName, {
+            ...current,
+            actual: current.actual + (req.actualAmount || 0),
+          });
+        }
+      });
 
-  const chartData = Array.from(monthlyDataMap.entries()).map(([name, val]) => ({
-    name,
-    planned: Math.round(val.planned),
-    actual: val.actual,
-  }));
+    return Array.from(monthlyDataMap.entries()).map(([name, val]) => ({
+      name,
+      planned: Math.round(val.planned),
+      actual: val.actual,
+    }));
+  }, [requests, categories]);
 
   // 2. Category Breakdown
-  const categoryData = categories
-    .filter((c: Category) => c.used > 0)
-    .sort((a: Category, b: Category) => b.used - a.used)
-    .slice(0, 6)
-    .map((c: Category) => ({
-      name: c.name,
-      amount: c.used,
-      totalAllocated: c.allocated,
-      code: c.code,
-      costCenter: c.costCenter,
-      fund: c.fund,
-      functionalArea: c.functionalArea,
-    }));
+  const categoryData = useMemo(() => {
+    return categories
+      .filter((c: Category) => c.used > 0)
+      .sort((a: Category, b: Category) => b.used - a.used)
+      .slice(0, 6)
+      .map((c: Category) => ({
+        name: c.name,
+        amount: c.used,
+        totalAllocated: c.allocated,
+        code: c.code,
+        costCenter: c.costCenter,
+        fund: c.fund,
+        functionalArea: c.functionalArea,
+      }));
+  }, [categories]);
 
   // 3. KPI Stats
-  const totalUsed = categories.reduce(
-    (sum: number, cat: Category) => sum + cat.used,
-    0,
-  );
-  const utilizationRate =
-    totalAllocated > 0 ? (totalUsed / totalAllocated) * 100 : 0;
-  const totalRemaining = totalAllocated - totalUsed;
+  const stats = useMemo(() => {
+    const totalAllocated = categories.reduce(
+      (sum: number, cat: Category) => sum + cat.allocated,
+      0,
+    );
+    const totalUsed = categories.reduce(
+      (sum: number, cat: Category) => sum + cat.used,
+      0,
+    );
+    const utilizationRate = totalAllocated > 0 ? (totalUsed / totalAllocated) * 100 : 0;
+    const totalRemaining = totalAllocated - totalUsed;
 
-  // 4. SAP Specifics: Internal vs External
-  const internalBudget = categories
-    .filter((c: Category) => c.fund === "I")
-    .reduce((sum: number, c: Category) => sum + c.allocated, 0);
-  const externalBudget = categories
-    .filter((c: Category) => c.fund === "E")
-    .reduce((sum: number, c: Category) => sum + c.allocated, 0);
-  const internalUsed = categories
-    .filter((c: Category) => c.fund === "I")
-    .reduce((sum: number, c: Category) => sum + c.used, 0);
-  const externalUsed = categories
-    .filter((c: Category) => c.fund === "E")
-    .reduce((sum: number, c: Category) => sum + c.used, 0);
+    const internalBudget = categories
+      .filter((c: Category) => c.fund === "I")
+      .reduce((sum: number, c: Category) => sum + c.allocated, 0);
+    const externalBudget = categories
+      .filter((c: Category) => c.fund === "E")
+      .reduce((sum: number, c: Category) => sum + c.allocated, 0);
+    const internalUsed = categories
+      .filter((c: Category) => c.fund === "I")
+      .reduce((sum: number, c: Category) => sum + c.used, 0);
+    const externalUsed = categories
+      .filter((c: Category) => c.fund === "E")
+      .reduce((sum: number, c: Category) => sum + c.used, 0);
 
-  // Avg per approved request
-  const approvedRequests = requests.filter(
-    (r: BudgetRequest) => r.status === "approved",
-  );
-  const avgPerRequest =
-    approvedRequests.length > 0 ? totalUsed / approvedRequests.length : 0;
+    const approvedRequests = requests.filter(
+      (r: BudgetRequest) => r.status === "approved",
+    );
+    const avgPerRequest = approvedRequests.length > 0 ? totalUsed / approvedRequests.length : 0;
+
+    return {
+      totalAllocated,
+      totalUsed,
+      utilizationRate,
+      totalRemaining,
+      internalBudget,
+      externalBudget,
+      internalUsed,
+      externalUsed,
+      approvedRequestsCount: approvedRequests.length,
+      avgPerRequest,
+    };
+  }, [requests, categories]);
 
   const engMonths = [
     "Oct",
@@ -162,10 +174,10 @@ const AnalyticsDashboard: React.FC = () => {
       orgName: settings.orgName,
       fiscalYear: settings.fiscalYear,
       stats: {
-        totalBudget: totalAllocated,
-        totalUsed,
-        totalRemaining,
-        utilizationRate,
+        totalBudget: stats.totalAllocated,
+        totalUsed: stats.totalUsed,
+        totalRemaining: stats.totalRemaining,
+        utilizationRate: stats.utilizationRate,
       },
       monthlyData: reportMonthly,
       categoryData: categories.map((c: Category) => ({
@@ -210,7 +222,7 @@ const AnalyticsDashboard: React.FC = () => {
           </div>
           <div>
             <p className="text-[26px] font-black text-gray-900 tracking-tight leading-none">
-              {utilizationRate.toFixed(1)}%
+              {stats.utilizationRate.toFixed(1)}%
             </p>
             <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest mt-2">
               เบิกจ่ายรวม
@@ -230,9 +242,9 @@ const AnalyticsDashboard: React.FC = () => {
           <div>
             <p className="text-[26px] font-black text-gray-900 tracking-tight leading-none">
               ฿
-              {avgPerRequest > 1000000
-                ? (avgPerRequest / 1000000).toFixed(1) + "M"
-                : (avgPerRequest / 1000).toFixed(0) + "K"}
+              {stats.avgPerRequest > 1000000
+                ? (stats.avgPerRequest / 1000000).toFixed(1) + "M"
+                : (stats.avgPerRequest / 1000).toFixed(0) + "K"}
             </p>
             <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest mt-2">
               เฉลี่ยต่อโครงการ
@@ -248,15 +260,15 @@ const AnalyticsDashboard: React.FC = () => {
             <div className="p-1.5 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
               <Database size={18} className="text-indigo-600" />
             </div>
-            {internalBudget > 0 && (
+            {stats.internalBudget > 0 && (
               <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">
-                {((internalUsed / internalBudget) * 100).toFixed(0)}%
+                {((stats.internalUsed / stats.internalBudget) * 100).toFixed(0)}%
               </span>
             )}
           </div>
           <div>
             <p className="text-[22px] font-bold text-gray-900 tracking-tight leading-none">
-              ฿{(internalBudget / 1000000).toFixed(1)}M
+              ฿{(stats.internalBudget / 1000000).toFixed(1)}M
             </p>
             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">
               งบภายใน (Internal)
@@ -272,15 +284,15 @@ const AnalyticsDashboard: React.FC = () => {
             <div className="p-1.5 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors">
               <Layers size={18} className="text-amber-600" />
             </div>
-            {externalBudget > 0 && (
+            {stats.externalBudget > 0 && (
               <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">
-                {((externalUsed / externalBudget) * 100).toFixed(0)}%
+                {((stats.externalUsed / stats.externalBudget) * 100).toFixed(0)}%
               </span>
             )}
           </div>
           <div>
             <p className="text-[22px] font-bold text-gray-900 tracking-tight leading-none">
-              ฿{(externalBudget / 1000000).toFixed(1)}M
+              ฿{(stats.externalBudget / 1000000).toFixed(1)}M
             </p>
             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">
               งบภายนอก (External)
@@ -300,9 +312,9 @@ const AnalyticsDashboard: React.FC = () => {
           <div>
             <p className="text-[26px] font-black text-emerald-600 tracking-tight leading-none">
               ฿
-              {totalRemaining > 1000000
-                ? (totalRemaining / 1000000).toFixed(1) + "M"
-                : (totalRemaining / 1000).toFixed(0) + "K"}
+              {stats.totalRemaining > 1000000
+                ? (stats.totalRemaining / 1000000).toFixed(1) + "M"
+                : (stats.totalRemaining / 1000).toFixed(0) + "K"}
             </p>
             <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest mt-2">
               งบประมาณคงเหลือ
@@ -321,7 +333,7 @@ const AnalyticsDashboard: React.FC = () => {
           </div>
           <div>
             <p className="text-[22px] font-extrabold text-gray-900 tracking-tight leading-none">
-              {approvedRequests.length}
+              {stats.approvedRequestsCount}
             </p>
             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">
               โครงการอนุมัติ

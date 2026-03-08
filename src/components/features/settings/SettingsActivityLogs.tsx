@@ -2,10 +2,12 @@ import React from "react";
 import { Clock, User as UserIcon, Activity, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
 const SettingsActivityLogs: React.FC = () => {
-  const { activityLogs, user } = useBudget();
+  const { activityLogs } = useBudget();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [loading, setLoading] = React.useState(false);
 

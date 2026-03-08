@@ -3,13 +3,14 @@
 import { Sidebar } from "@/components/shared/Sidebar";
 import { Header } from "@/components/shared/Header";
 import { useBudget } from "@/context/BudgetContext";
+import { useUI } from "@/context/UIContext";
 
 export default function AuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isSidebarCollapsed } = useBudget();
+  const { isSidebarCollapsed } = useUI();
 
   return (
     <div

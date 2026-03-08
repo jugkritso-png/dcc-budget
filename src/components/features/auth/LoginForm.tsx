@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useBudget } from "@/context/BudgetContext";
+import { useAuth } from "@/context/AuthContext";
 import {
   User,
   Lock,
@@ -16,7 +16,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const { login, loginWithGoogle } = useBudget();
+  const { login, loginWithGoogle } = useAuth();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
