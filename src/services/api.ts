@@ -15,6 +15,7 @@ import {
   ActivityLog,
   ApprovalLog,
 } from "../types";
+import { generateId } from "../lib/utils";
 
 export const authService = {
   login: async (credentials: { username: string; password: string }) => {
@@ -135,7 +136,7 @@ export const userService = {
   create: async (user: Partial<User>) => {
     const { data, error } = await getSupabase()
       .from("User")
-      .insert(user)
+      .insert({ ...user, updatedAt: new Date().toISOString() })
       .select()
       .single();
     if (error) throw new Error(error.message);
@@ -210,7 +211,7 @@ export const systemService = {
   createDepartment: async (dept: Department) => {
     const { data, error } = await getSupabase()
       .from("Department")
-      .insert(dept)
+      .insert({ ...dept, updatedAt: new Date().toISOString() })
       .select()
       .single();
     if (error) throw new Error(error.message);
@@ -245,7 +246,7 @@ export const masterDataService = {
   createCategory: async (cat: Category) => {
     const { data, error } = await getSupabase()
       .from("Category")
-      .insert(cat)
+      .insert({ ...cat, updatedAt: new Date().toISOString() })
       .select()
       .single();
     if (error) throw new Error(error.message);
@@ -262,10 +263,21 @@ export const masterDataService = {
     return data as Category;
   },
   deleteCategory: async (id: string) => {
-    const { error } = await getSupabase()
-      .from("Category")
-      .delete()
-      .eq("id", id);
+    const supabase = getSupabase();
+    // 1. Delete associated budget plans via sub-activities
+    const { data: subs } = await supabase.from("SubActivity").select("id").eq("categoryId", id);
+    if (subs && subs.length > 0) {
+      const subIds = subs.map((s: { id: string }) => s.id);
+      await supabase.from("BudgetPlan").delete().in("subActivityId", subIds);
+    }
+
+    // 2. Cascade delete dependent items
+    await supabase.from("SubActivity").delete().eq("categoryId", id);
+    await supabase.from("BudgetLog").delete().eq("categoryId", id);
+    await supabase.from("Expense").delete().eq("categoryId", id);
+
+    // 3. Delete the category itself
+    const { error } = await supabase.from("Category").delete().eq("id", id);
     if (error) throw new Error(error.message);
     return { success: true };
   },
@@ -288,16 +300,18 @@ export const masterDataService = {
   createSubActivity: async (sub: SubActivity) => {
     const { data, error } = await getSupabase()
       .from("SubActivity")
-      .insert(sub)
+      .insert({ ...sub, updatedAt: new Date().toISOString() })
       .select()
       .single();
     if (error) throw new Error(error.message);
     return data as SubActivity;
   },
   updateSubActivity: async (sub: SubActivity) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { children, childrenList, used, ...subData } = sub as any;
     const { data, error } = await getSupabase()
       .from("SubActivity")
-      .update(sub)
+      .update({ ...subData, updatedAt: new Date().toISOString() })
       .eq("id", sub.id)
       .select()
       .single();
@@ -305,10 +319,15 @@ export const masterDataService = {
     return data as SubActivity;
   },
   deleteSubActivity: async (id: string) => {
-    const { error } = await getSupabase()
-      .from("SubActivity")
-      .delete()
-      .eq("id", id);
+    const supabase = getSupabase();
+    // 1. Delete associated budget plans
+    await supabase.from("BudgetPlan").delete().eq("subActivityId", id);
+
+    // 2. Delete any children sub-activities
+    await supabase.from("SubActivity").delete().eq("parentId", id);
+
+    // 3. Delete the sub-activity itself
+    const { error } = await supabase.from("SubActivity").delete().eq("id", id);
     if (error) throw new Error(error.message);
     return { success: true };
   },
@@ -346,14 +365,19 @@ export const budgetService = {
     const { expenseItems, id, documentNumber, ...rest } = req;
 
     // Map documentNumber to approvalRef if approvalRef is not provided
-    const payloadToInsert = {
+    const payloadToInsert: any = {
       ...rest,
+      id: id || generateId(),
       approvalRef: rest.approvalRef || documentNumber,
     };
 
+    if (!payloadToInsert.subActivityId) {
+      payloadToInsert.subActivityId = null;
+    }
+
     const { data, error } = await getSupabase()
       .from("BudgetRequest")
-      .insert(payloadToInsert)
+      .insert({ ...payloadToInsert, updatedAt: new Date().toISOString() })
       .select()
       .single();
     if (error) throw new Error(error.message);
@@ -362,6 +386,7 @@ export const budgetService = {
       const items = expenseItems.map(({ id: itemId, ...itemRest }: any) => ({
         ...itemRest,
         requestId: data.id,
+        updatedAt: new Date().toISOString(),
       }));
       const { error: itemError } = await getSupabase()
         .from("BudgetRequestItem")
@@ -618,7 +643,7 @@ export const budgetService = {
     } else {
       const { data, error } = await getSupabase()
         .from("BudgetPlan")
-        .insert(plan)
+        .insert({ ...plan, updatedAt: new Date().toISOString() })
         .select()
         .single();
       if (error) throw new Error(error.message);
@@ -683,7 +708,7 @@ export const expenseService = {
   create: async (expense: Omit<Expense, "id" | "createdAt">) => {
     const { data, error } = await getSupabase()
       .from("Expense")
-      .insert(expense)
+      .insert({ ...expense, updatedAt: new Date().toISOString() })
       .select()
       .single();
     if (error) throw new Error(error.message);

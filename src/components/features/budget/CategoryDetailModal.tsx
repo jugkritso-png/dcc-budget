@@ -18,6 +18,7 @@ import {
 } from "@/types";
 import Swal from "sweetalert2";
 import { useBudget } from "@/context/BudgetContext"; // Added import
+import { generateId } from "@/lib/utils";
 
 interface CategoryDetailModalProps {
   viewingCategory: Category | null;
@@ -80,6 +81,8 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false); // For adding root sub-activity
 
+  const { updateSubActivity, addSubActivity: addSubActivityContext } = useBudget();
+
   if (!viewingCategory) return null;
 
   // Derived Data
@@ -117,6 +120,22 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
 
   const handleAddSub = () => {
     if (!subActivityForm.name || !subActivityForm.allocated) return;
+    const amount = parseFloat(subActivityForm.allocated);
+    if (amount > remainingToAllocate) {
+      Swal.fire({
+        icon: "warning",
+        title: "งบประมาณไม่เพียงพอ",
+        text: `คุณสามารถจัดสรรได้อีกไม่เกิน ฿${remainingToAllocate.toLocaleString()}`,
+        confirmButtonColor: "#3B82F6",
+      });
+      // Log the failed allocation attempt
+      onAdjustBudget(
+        0, // 0 amount because it failed, but we strictly want the log
+        "REDUCE",
+        `[ระบบปฏิเสธ] พยายามเพิ่มกิจกรรมย่อย "${subActivityForm.name}" จำนวน ฿${amount.toLocaleString()} แต่ยอดจัดสรรคงเหลือไม่พอ (เหลือ ฿${remainingToAllocate.toLocaleString()})`
+      );
+      return;
+    }
     onAddSubActivity(subActivityForm.name, subActivityForm.allocated);
     setSubActivityForm({ name: "", allocated: "" });
   };
@@ -168,26 +187,30 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
     return roots;
   };
 
-  const { updateSubActivity } = useBudget();
-  // We also use onAddSubActivity (from props) and onDeleteSubActivity (from props) coverage.
-  // Ideally onAddSubActivity should also support parentId.
-  // The prop onAddSubActivity currently is: (name: string, allocated: string) => void.
-  // It needs to support parentId.
-  // We will cast it or wrap it.
-  // Actually, looking at props: onAddSubActivity: (name: string, allocated: string) => void;
-  // We need to change the prop type too if we want to support parentId via prop.
-  // OR we use the context directly for add as well?
-  // Let's use context for everything related to SubActivity to be safe and consistent with the new hierarchy.
-
-  // BUT, I can't easily change the props interface without changing the parent.
-  // Let's stick to using context for the new functionality (update, add child).
-  // The 'onAddSubActivity' prop is likely wrapping 'addSubActivity' from context anyway in the parent.
-  // Let's use `useBudget` here for direct access.
-
-  const { addSubActivity: addSubActivityContext } = useBudget();
-
   const handleUpdateSub = async (sub: SubActivity) => {
+    // Find the original allocation to calculate difference
+    const originalSub = currentSubActivities.find((s) => s.id === sub.id);
+    const originalAllocation = originalSub ? originalSub.allocated : 0;
+    const difference = sub.allocated - originalAllocation;
+
+    if (difference > remainingToAllocate) {
+      Swal.fire({
+        icon: "warning",
+        title: "งบประมาณไม่เพียงพอ",
+        text: `คุณสามารถเพิ่มงบได้อีกไม่เกิน ฿${remainingToAllocate.toLocaleString()}`,
+        confirmButtonColor: "#3B82F6",
+      });
+      // Log the failed update attempt
+      onAdjustBudget(
+        0,
+        "REDUCE",
+        `[ระบบปฏิเสธ] พยายามเพิ่มงบกิจกรรมย่อย "${sub.name}" อีก ฿${difference.toLocaleString()} แต่ยอดจัดสรรคงเหลือไม่พอ (เหลือ ฿${remainingToAllocate.toLocaleString()})`
+      );
+      return false;
+    }
+
     await updateSubActivity(sub);
+    return true;
   };
 
   const handleAddChild = async (
@@ -195,9 +218,25 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
     allocated: string,
     parentId: string,
   ) => {
+    const amount = parseFloat(allocated);
+    if (amount > remainingToAllocate) {
+      Swal.fire({
+        icon: "warning",
+        title: "งบประมาณไม่เพียงพอ",
+        text: `คุณสามารถจัดสรรได้อีกไม่เกิน ฿${remainingToAllocate.toLocaleString()}`,
+        confirmButtonColor: "#3B82F6",
+      });
+      // Log the failed child allocation attempt
+      onAdjustBudget(
+        0,
+        "REDUCE",
+        `[ระบบปฏิเสธ] พยายามเพิ่มกิจกรรมย่อยระดับล่าง "${name}" จำนวน ฿${amount.toLocaleString()} แต่ยอดจัดสรรคงเหลือไม่พอ (เหลือ ฿${remainingToAllocate.toLocaleString()})`
+      );
+      return false;
+    }
     try {
       await addSubActivityContext({
-        id: crypto.randomUUID(),
+        id: generateId(),
         categoryId: viewingCategory.id,
         name,
         allocated: parseFloat(allocated),

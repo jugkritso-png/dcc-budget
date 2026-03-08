@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useBudget } from "@/context/BudgetContext";
 import { Category, BudgetLog, Expense, BudgetRequest } from "@/types";
+import { generateId } from "@/lib/utils";
 
 import ManagementHeader from "@/components/features/budget/ManagementHeader";
 import CategoryList from "@/components/features/budget/CategoryList";
@@ -110,7 +111,7 @@ const BudgetCategoriesManager: React.FC = () => {
     }
 
     const categoryData: Category = {
-      id: editingCategory ? editingCategory.id : crypto.randomUUID(),
+      id: editingCategory ? editingCategory.id : generateId(),
       name: formData.name,
       code: formData.code,
       segment: formData.segment,
@@ -226,7 +227,7 @@ const BudgetCategoriesManager: React.FC = () => {
           if (viewingCategory) {
             try {
               await addSubActivity({
-                id: crypto.randomUUID(),
+                id: generateId(),
                 categoryId: viewingCategory.id,
                 name,
                 allocated: parseFloat(allocated),
