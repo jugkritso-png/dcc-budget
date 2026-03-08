@@ -378,6 +378,7 @@ export const budgetService = {
         ...itemRest,
         id: itemId || generateId(),
         requestId: data.id,
+        category: itemRest.category || req.category || "",
         updatedAt: new Date().toISOString(),
       }));
       const { error: itemError } = await getSupabase()

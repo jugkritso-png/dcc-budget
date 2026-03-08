@@ -343,7 +343,7 @@ const CreateRequest: React.FC = () => {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <h4 className="text-sm font-bold text-gray-700">รายการประมาณการค่าใช้จ่าย</h4>
-              <Button type="button" variant="outline" size="sm" onClick={() => append({ id: `temp-${Math.random()}`, description: "", quantity: 1, unit: "รายการ", unitPrice: 0, total: 0 })} className="gap-1.5 rounded-full border-gray-200">
+              <Button type="button" variant="outline" size="sm" onClick={() => append({ id: `temp-${Math.random()}`, description: "", quantity: 1, unit: "รายการ", unitPrice: 0, total: 0, category: selectedCategory || "" })} className="gap-1.5 rounded-full border-gray-200">
                 <Plus size={14} /> เพิ่มรายการ
               </Button>
             </div>
