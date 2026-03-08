@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 // We explicitly type the edge runtime or nodejs if needed, but default is fine.
-// export const runtime = 'edge'; 
+export const runtime = 'edge';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
