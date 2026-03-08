@@ -7,21 +7,21 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', 'Prompt', 'sans-serif'],
+                sans: ['Prompt', 'Inter', 'sans-serif'],
             },
             colors: {
                 gray: {
-                    50: '#F8FAFC',
-                    100: '#F1F5F9',
-                    200: '#E2E8F0',
-                    300: '#CBD5E1',
-                    400: '#94A3B8',
-                    500: '#64748B',
-                    600: '#475569',
-                    700: '#334155',
-                    800: '#1E293B',
-                    900: '#0F172A',
-                    950: '#020617',
+                    50: '#F5F8FA',
+                    100: '#EAEFF4',
+                    200: '#D0DCE7',
+                    300: '#AABCCA',
+                    400: '#8099B0',
+                    500: '#607991',
+                    600: '#4C6176',
+                    700: '#3E4F60',
+                    800: '#344250',
+                    900: '#2E3842',
+                    950: '#1a202c', // Added darker shade for contrast
                 },
                 primary: {
                     50: 'var(--color-primary-50)',
@@ -37,16 +37,16 @@ export default {
                     950: 'var(--color-primary-950)',
                 },
                 secondary: {
-                    50: '#F8FAFC',
-                    100: '#F1F5F9',
-                    200: '#E2E8F0',
-                    300: '#CBD5E1',
-                    400: '#94A3B8',
-                    500: '#64748B',
-                    600: '#475569',
-                    700: '#334155',
-                    800: '#1E293B',
-                    900: '#0F172A',
+                    50: '#F5F8FA',
+                    100: '#EAEFF4',
+                    200: '#D0DCE7',
+                    300: '#AABCCA',
+                    400: '#8099B0',
+                    500: '#607991',
+                    600: '#4C6176',
+                    700: '#3E4F60',
+                    800: '#344250',
+                    900: '#2E3842',
                 },
                 accent: {
                     500: '#00C4CC', // Teal accent

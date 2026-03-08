@@ -376,13 +376,17 @@ export const budgetService = {
     if (expenseItems && expenseItems.length > 0) {
       const items = expenseItems.map(({ id: itemId, ...itemRest }: any) => ({
         ...itemRest,
+        id: itemId || generateId(),
         requestId: data.id,
         updatedAt: new Date().toISOString(),
       }));
       const { error: itemError } = await getSupabase()
         .from("BudgetRequestItem")
         .insert(items);
-      if (itemError) console.error("Error inserting items:", itemError);
+      if (itemError) {
+        console.error("Error inserting items:", itemError);
+        throw new Error(`Error inserting items: ${itemError.message}`);
+      }
     }
     return { ...data, expenseItems } as BudgetRequest;
   },
