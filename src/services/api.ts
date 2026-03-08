@@ -405,7 +405,7 @@ export const budgetService = {
     if (error) throw new Error(error.message);
     return data as BudgetRequest;
   },
-  approveRequest: async (id: string, approverId: string) => {
+  approveRequest: async (id: string, approverId: string, comment?: string) => {
     // 1. Get current request to know the step
     const { data: currentReq } = await getSupabase()
       .from("BudgetRequest")
@@ -452,6 +452,7 @@ export const budgetService = {
       approverId,
       action: "approve",
       stage: step,
+      comment, // Log the opinion if provided
     });
 
     // 4. Update category budget ONLY on final approval

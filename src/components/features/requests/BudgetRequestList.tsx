@@ -124,93 +124,85 @@ const BudgetRequestList: React.FC = () => {
       </Card>
 
       {/* Request List */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {filteredRequests.length > 0 ? (
           filteredRequests.map((req) => (
-            <Card
+            <div
               key={req.id}
-              interactive
-              className="p-5 rounded-[24px] border-gray-100/60 hover:border-primary-200 group transition-all"
+              className="group bg-white hover:bg-gray-50/50 border border-gray-100 hover:border-primary-100 rounded-2xl p-4 transition-all cursor-pointer shadow-sm hover:shadow-md"
               onClick={() => setSelectedRequest(req)}
             >
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex gap-4 items-start">
-                  <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-primary-50 transition-colors shrink-0">
-                    <FileText
-                      className="text-gray-400 group-hover:text-primary-600"
-                      size={24}
-                    />
+              <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                {/* 1. Project Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span
+                      className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border ${getStatusBadgeClass(req.status)}`}
+                    >
+                      {getStatusLabel(req.status, req.currentStep)}
+                    </span>
+                    <span className="text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">
+                      {req.category}
+                    </span>
                   </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getStatusBadgeClass(req.status)}`}
-                      >
-                        {getStatusLabel(req.status, req.currentStep)}
-                      </span>
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter bg-gray-50 px-2.5 py-0.5 rounded-full border border-gray-100">
-                        {req.category}
-                      </span>
-                    </div>
-                    <h3 className="font-bold text-gray-900 group-hover:text-primary-700 transition-colors line-clamp-1">
-                      {req.project}
-                    </h3>
-                    <p className="text-xs text-gray-500 line-clamp-1">
-                      {req.activity}
-                    </p>
+                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-primary-700 transition-colors truncate">
+                    {req.project}
+                  </h3>
+                  <div className="flex items-center gap-3 mt-1 text-[11px] text-gray-500">
+                    <span className="flex items-center gap-1">
+                      <FileText size={12} className="text-gray-400" />
+                      {req.documentNumber || "ไม่มีเลขที่"}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Calendar size={12} className="text-gray-400" />
+                      {new Date(req.date).toLocaleDateString("th-TH")}
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between md:justify-end gap-8 pl-14 md:pl-0">
-                  <div className="text-right">
-                    <p className="text-lg font-extrabold text-gray-900">
-                      ฿{req.amount.toLocaleString()}
-                    </p>
-                    <div className="flex items-center gap-1.5 justify-end text-[10px] text-gray-400 font-medium">
-                      <Calendar size={12} />
-                      {new Date(req.date).toLocaleDateString("th-TH", {
-                        day: "numeric",
-                        month: "short",
-                        year: "2-digit",
-                      })}
-                    </div>
-                  </div>
-                  <div className="p-2 rounded-full bg-gray-50 group-hover:bg-primary-500 group-hover:text-white transition-all hidden md:flex">
-                    <ChevronRight size={20} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Approval Path Indicator */}
-              {req.status === "pending" && (
-                <div className="mt-4 pt-4 border-t border-dashed border-gray-100 flex items-center gap-4">
-                  <div className="flex -space-x-1.5">
-                    {["manager", "finance", "director"].map((step, idx) => {
+                {/* 2. Approval Status Visual */}
+                <div className="hidden xl:flex items-center gap-3 flex-1 justify-center border-l border-r border-gray-50 px-6">
+                  <div className="flex items-center gap-1.5 w-full max-w-[180px]">
+                    {[
+                      { id: "manager", label: "หน่วยงาน" },
+                      { id: "finance", label: "การเงิน" },
+                      { id: "director", label: "ผอ." },
+                    ].map((step, idx) => {
                       const steps = ["manager", "finance", "director"];
-                      const currentIdx = steps.indexOf(
-                        req.currentStep || "manager",
-                      );
-                      const isDone = idx < currentIdx;
-                      const isCurrent = idx === currentIdx;
+                      const currentIdx = steps.indexOf(req.currentStep || "manager");
+                      const isDone = idx < currentIdx || req.status === "approved";
+                      const isCurrent = idx === currentIdx && req.status === "pending";
+                      const isRejected = req.status === "rejected" && idx === currentIdx;
 
                       return (
-                        <div
-                          key={step}
-                          title={step.charAt(0).toUpperCase() + step.slice(1)}
-                          className={`w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-bold
-                                                        ${isDone ? "bg-emerald-500 text-white" : isCurrent ? "bg-amber-500 text-white animate-pulse" : "bg-gray-200 text-gray-400"}`}
-                        >
-                          {isDone ? <CheckCircle2 size={10} /> : idx + 1}
+                        <div key={step.id} className="flex-1 flex flex-col items-center gap-1">
+                          <div
+                            className={`h-1.5 w-full rounded-full transition-all 
+                              ${isDone ? "bg-emerald-500" : isRejected ? "bg-red-500" : isCurrent ? "bg-primary-500 animate-pulse" : "bg-gray-100"}`}
+                          />
+                          <span className={`text-[8px] font-bold uppercase ${isCurrent ? "text-primary-600" : "text-gray-400"}`}>
+                            {step.label}
+                          </span>
                         </div>
                       );
                     })}
                   </div>
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                    ความก้าวหน้าการตรวจสอบ
-                  </p>
                 </div>
-              )}
-            </Card>
+
+                {/* 3. Financial Info */}
+                <div className="flex items-center justify-between lg:justify-end gap-6 min-w-[140px]">
+                  <div className="text-right">
+                    <p className="text-xs font-bold text-gray-400 uppercase leading-none mb-1">งบประมาณ</p>
+                    <p className="text-lg font-black text-gray-900 leading-none">
+                      ฿{req.amount.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-gray-50 group-hover:bg-primary-600 group-hover:text-white transition-all">
+                    <ChevronRight size={18} />
+                  </div>
+                </div>
+              </div>
+            </div>
           ))
         ) : (
           <Card className="p-12 text-center rounded-[32px] border-dashed border-2 border-gray-100 bg-gray-50/30">

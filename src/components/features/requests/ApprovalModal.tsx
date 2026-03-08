@@ -28,6 +28,7 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({
   const { approveRequest, rejectRequest, user, categories, getApprovalLogs } =
     useBudget();
   const [action, setAction] = useState<"view" | "reject">("view");
+  const [comment, setComment] = useState("");
   const [rejectionReason, setRejectionReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [logs, setLogs] = React.useState<ApprovalLog[]>([]);
@@ -47,8 +48,10 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({
         }
       };
       fetchLogs();
+      setLogs([]);
     } else {
       setAction("view");
+      setComment("");
       setRejectionReason("");
     }
   }, [isOpen, request.id]);
@@ -82,7 +85,7 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({
     if (!user) return;
     setIsSubmitting(true);
     try {
-      await approveRequest(request.id, user.id);
+      await approveRequest(request.id, user.id, comment);
       onClose();
     } catch (error) {
       alert("Failed to approve request");
@@ -110,25 +113,42 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({
   // effectively this component is conditionally rendered in parent so it remounts.
 
   const footerContent = (
-    <div className="flex flex-col w-full gap-3">
+    <div className="flex flex-col w-full gap-4">
       {!canApprove && action === "view" && (
-        <div className="w-full p-3 bg-amber-50 border border-amber-100 rounded-xl text-amber-700 text-xs font-medium mb-1 flex items-center gap-2">
-          <Shield size={14} />
-          ขณะนี้อยู่ในขั้นตอน "
-          {currentStep === "manager"
-            ? "หัวหน้าหน่วยงาน"
-            : currentStep === "finance"
-              ? "ฝ่ายการเงิน"
-              : "ผู้อำนวยการ"}
-          " (คุณไม่มีสิทธิ์อนุมัติในขั้นตอนนี้)
+        <div className="w-full p-3 bg-amber-50/50 border border-amber-100 rounded-xl text-amber-700 text-[11px] font-bold flex items-center gap-2">
+          <Shield size={14} className="text-amber-500" />
+          <span>
+            ขณะนี้อยู่ในขั้นตอน "
+            {currentStep === "manager"
+              ? "หัวหน้าหน่วยงาน"
+              : currentStep === "finance"
+                ? "ฝ่ายการเงิน"
+                : "ผู้อำนวยการ"}
+            " (คุณไม่มีสิทธิ์อนุมัติในขั้นตอนนี้)
+          </span>
         </div>
       )}
+
+      {action === "view" && canApprove && (
+        <div className="space-y-2 px-1">
+          <label className="text-[11px] font-bold text-gray-400 border-l-2 border-primary-500 pl-2 uppercase tracking-wider flex items-center gap-1.5">
+            ความเห็น / ข้อเสนอแนะ (Opinion)
+          </label>
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            className="w-full p-3 rounded-xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 outline-none text-sm text-gray-700 placeholder-gray-300 min-h-[80px] transition-all resize-none"
+            placeholder="โปรดสรุปความเห็นสั้นๆ เพื่อประกอบการพิจารณา..."
+          />
+        </div>
+      )}
+
       <div className="flex gap-3 w-full">
         {action === "view" ? (
           <>
             <Button
-              variant="danger"
-              className="flex-1 bg-white border-gray-200 text-red-600 hover:bg-red-50 hover:border-red-100 hover:text-red-700 shadow-sm"
+              variant="secondary"
+              className="flex-1 text-red-500 hover:text-red-700 hover:bg-red-50"
               onClick={() => setAction("reject")}
               disabled={isSubmitting || !canApprove}
             >
@@ -136,11 +156,11 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({
             </Button>
             <Button
               variant="primary"
-              className="flex-[2] shadow-lg shadow-primary-500/20"
+              className="flex-[2] shadow-lg shadow-primary-500/10 active:scale-[0.98] transition-transform"
               onClick={handleApprove}
               disabled={isSubmitting || !canApprove}
             >
-              {isSubmitting ? "กำลังประมวลผล..." : "อนุมัติคำขอ"}
+              {isSubmitting ? "กำลังบันทึก..." : "เห็นชอบตามเสนอ"}
             </Button>
           </>
         ) : (
@@ -151,11 +171,11 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({
               onClick={() => setAction("view")}
               disabled={isSubmitting}
             >
-              ยกเลิก
+              ย้อนกลับ
             </Button>
             <Button
               variant="danger"
-              className="flex-[2] bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/20"
+              className="flex-[2] shadow-lg shadow-red-500/10 active:scale-[0.98] transition-transform"
               onClick={handleReject}
               disabled={isSubmitting}
             >
@@ -346,9 +366,12 @@ export const ApprovalModal: React.FC<ApprovalModalProps> = ({
                             : "ผู้อำนวยการ"}
                       </p>
                       {log.comment && (
-                        <p className="text-xs text-red-600 mt-1 bg-red-50 p-2 rounded-lg border border-red-100">
+                        <div className={`mt-2 p-2.5 rounded-xl border text-xs leading-relaxed ${log.action === "approve" ? "bg-emerald-50/50 border-emerald-100 text-emerald-800" : "bg-red-50/50 border-red-100 text-red-800"}`}>
+                          <p className="font-bold text-[10px] uppercase mb-1 opacity-60">
+                            {log.action === "approve" ? "บันทึกความเห็น:" : "เหตุผลที่ไม่ผ่าน:"}
+                          </p>
                           {log.comment}
-                        </p>
+                        </div>
                       )}
                     </div>
                   </div>
