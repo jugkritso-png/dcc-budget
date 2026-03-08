@@ -24,19 +24,18 @@
 }
 
 :root {
-    /* ── Primary Blue Palette (matches dcc-budget.vercel.app) ── */
-    /* ── Primary Blue Palette (Krungthai Cerulean #00A3E4) ── */
-    --color-primary-50: #E0F5FF;
-    --color-primary-100: #B3E0FF;
-    --color-primary-200: #80C9FF;
-    --color-primary-300: #4DB3FF;
-    --color-primary-400: #1AA0FF;
-    --color-primary-500: #00A3E4; /* Official Krungthai Cerulean */
-    --color-primary-600: #0088CC; /* Brand Primary Focus */
-    --color-primary-700: #006EB3; /* Hover state */
-    --color-primary-800: #005599; /* Active / Gradient end */
-    --color-primary-900: #003D70;
-    --color-primary-950: #002440;
+    /* ── Primary Blue Palette (Professional Enterprise Blue) ── */
+    --color-primary-50: #EFF6FF;
+    --color-primary-100: #DBEAFE;
+    --color-primary-200: #BFDBFE;
+    --color-primary-300: #93C5FD;
+    --color-primary-400: #60A5FA;
+    --color-primary-500: #2563EB; /* Premium Standard Blue */
+    --color-primary-600: #1D4ED8; 
+    --color-primary-700: #1E40AF; 
+    --color-primary-800: #1E3A8A; 
+    --color-primary-900: #1E3A8A;
+    --color-primary-950: #172554;
 
     /* ── Surface & Neutrals ── */
     --surface-page: #F6F9FC;
@@ -53,12 +52,12 @@
     --border-subtle: #F0F3F6;
 
     /* ── Text ── */
-    --text-primary: #111827;
-    /* gray-900 */
-    --text-secondary: #4B5563;
-    /* gray-600 */
-    --text-tertiary: #9CA3AF;
-    /* gray-400 */
+    --text-primary: #0F172A;
+    /* slate-900 */
+    --text-secondary: #475569;
+    /* slate-600 */
+    --text-tertiary: #94A3B8;
+    /* slate-400 */
     --text-inverse: #FFFFFF;
 
     /* ── Semantic ── */
@@ -69,22 +68,22 @@
     --accent-green: #10B981;
     --accent-green-light: #ECFDF5;
 
-    /* ── Radius — Krungthai NEXT Soft Corners ── */
-    --radius-sm: 8px;
-    --radius-md: 16px;
+    /* ── Radius — Professional Web App ── */
+    --radius-sm: 6px;
+    --radius-md: 12px;
     /* inputs, small buttons */
-    --radius-lg: 24px;
+    --radius-lg: 16px;
     /* standard cards */
-    --radius-xl: 32px;
+    --radius-xl: 20px;
     /* large cards, hero sections */
     --radius-full: 9999px;
 
     /* ── Shadows ── */
-    --shadow-xs: 0 2px 4px rgba(0, 0, 0, 0.02);
-    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
-    --shadow-btn: 0 10px 15px -3px rgba(0, 102, 179, 0.20);
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.06);
+    --shadow-btn: 0 4px 12px rgba(37, 99, 235, 0.25);
 
     /* ── Transitions ── */
     --transition-fast: 150ms ease;
@@ -140,17 +139,17 @@ body {
     }
 
     h1 {
-        @apply text-3xl font-black tracking-tighter;
+        @apply text-3xl font-extrabold tracking-tight;
         color: var(--color-primary-900);
     }
 
     h2 {
-        @apply text-2xl font-black tracking-tighter;
+        @apply text-2xl font-bold tracking-tight;
         color: var(--color-primary-900);
     }
 
     h3 {
-        @apply text-xl font-extrabold tracking-tight;
+        @apply text-xl font-semibold tracking-tight;
         color: var(--color-primary-800);
     }
 
@@ -224,16 +223,16 @@ body {
         box-shadow: var(--shadow-md);
     }
 
-    /* --- Primary blue button (Krungthai Gradient) --- */
+    /* --- Primary blue button (Professional Gradient) --- */
     .btn-primary {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 12px;
         width: 100%;
-        padding: 16px 28px;
-        border-radius: var(--radius-lg);
-        background: linear-gradient(135deg, #00A3E4 0%, #0077C8 100%);
+        padding: 14px 28px;
+        border-radius: var(--radius-md);
+        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
         color: var(--text-inverse);
         font-size: 16px;
         font-weight: 700;
@@ -241,12 +240,12 @@ body {
         border: none;
         cursor: pointer;
         transition: all var(--transition-normal);
-        box-shadow: 0 8px 16px -4px rgba(0, 163, 228, 0.3);
+        box-shadow: 0 4px 10px -2px rgba(37, 99, 235, 0.3);
     }
 
     .btn-primary:hover:not(:disabled) {
-        box-shadow: 0 12px 24px -4px rgba(0, 163, 228, 0.4);
-        transform: translateY(-2px);
+        box-shadow: 0 6px 16px -2px rgba(37, 99, 235, 0.4);
+        transform: translateY(-1px);
     }
 
     .btn-primary:active:not(:disabled) {
@@ -284,7 +283,7 @@ body {
     /* --- Input (matches ref: #F5F8FA bg, #D0DCE7 border, 12px radius, 14px padding) --- */
     .dcc-input {
         width: 100%;
-        padding: 14px 16px;
+        padding: 12px 16px;
         border: 1px solid var(--border-input);
         border-radius: var(--radius-md);
         background: var(--surface-input);
@@ -303,7 +302,7 @@ body {
 
     .dcc-input:focus {
         border-color: var(--color-primary-500);
-        box-shadow: 0 0 0 4px rgba(0, 102, 179, 0.10);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         background: #FFFFFF;
     }
 
