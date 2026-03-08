@@ -21,8 +21,10 @@ import {
   CheckSquare,
   Square,
   MoreVertical,
+  Download,
 } from "lucide-react";
 import { BudgetRequest } from "@/types";
+import { generateBudgetPDF, generateBudgetExcel } from "@/lib/export";
 import { ApprovalModal } from "@/components/features/requests/ApprovalModal";
 import { EditRequestModal } from "@/components/features/requests/EditRequestModal";
 import { motion } from "framer-motion";
@@ -165,6 +167,15 @@ const BudgetRequestList: React.FC = () => {
               <option value="approved">อนุมัติแล้ว</option>
               <option value="rejected">ปฏิเสธ</option>
             </select>
+
+            <button
+              onClick={() => generateBudgetExcel(filteredRequests)}
+              className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border-none rounded-xl text-sm font-bold transition-all whitespace-nowrap"
+              title="Export to Excel"
+            >
+              <Download size={16} />
+              <span className="hidden md:inline">Export Excel</span>
+            </button>
 
             <select
               className="px-4 py-2 bg-gray-50 border-none rounded-xl text-sm font-semibold text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none min-w-[160px]"
@@ -331,6 +342,16 @@ const BudgetRequestList: React.FC = () => {
                             {isManagementMode ? (
                               <div className="flex items-center gap-1">
                                 <button 
+                                  className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-300"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    generateBudgetPDF(req);
+                                  }}
+                                  title="Download PDF"
+                                >
+                                  <Download size={18} />
+                                </button>
+                                <button 
                                   className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-primary-50 hover:text-primary-600 transition-all duration-300"
                                   onClick={(e) => {
                                     e.stopPropagation();
@@ -347,8 +368,20 @@ const BudgetRequestList: React.FC = () => {
                                 </button>
                               </div>
                             ) : (
-                              <div className="p-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-primary-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-primary-500/20 transition-all duration-300">
-                                <ChevronRight size={20} />
+                              <div className="flex items-center gap-2">
+                                <button 
+                                  className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-300"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    generateBudgetPDF(req);
+                                  }}
+                                  title="Download PDF"
+                                >
+                                  <Download size={18} />
+                                </button>
+                                <div className="p-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-primary-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-primary-500/20 transition-all duration-300">
+                                  <ChevronRight size={20} />
+                                </div>
                               </div>
                             )}
                           </div>

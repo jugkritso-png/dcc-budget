@@ -26,6 +26,7 @@ import {
   Layers,
 } from "lucide-react";
 import { generateBudgetReport } from "@/utils/reportService";
+import { generateBudgetExcel } from "@/lib/export";
 import { Button } from "@/components/ui/Button";
 import { useChartDimensions } from "@/hooks/useChartDimensions";
 import { BudgetRequest, Category } from "@/types";
@@ -201,13 +202,22 @@ const AnalyticsDashboard: React.FC = () => {
     <div className="space-y-6">
       {/* Header Actions */}
       <div className="flex justify-end">
-        <Button
-          onClick={handleExport}
-          className="bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-sm hover:shadow-md transition-all rounded-[14px] font-semibold"
-        >
-          <Download size={18} className="mr-2" />
-          Export Report (PDF)
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => generateBudgetExcel(requests)}
+            className="bg-emerald-50 text-emerald-600 border border-emerald-100 hover:bg-emerald-100 shadow-sm hover:shadow-md transition-all rounded-[14px] font-semibold"
+          >
+            <Download size={18} className="mr-2" />
+            Export Data (Excel)
+          </Button>
+          <Button
+            onClick={handleExport}
+            className="bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-sm hover:shadow-md transition-all rounded-[14px] font-semibold"
+          >
+            <Download size={18} className="mr-2" />
+            Export Report (PDF)
+          </Button>
+        </div>
       </div>
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
