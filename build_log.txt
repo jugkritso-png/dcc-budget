@@ -1,0 +1,45 @@
+
+> dcc-budget-manager@0.0.0 build
+> next build --debug
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 4.1s
+  Running TypeScript ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/12) ...
+  Generating static pages using 9 workers (3/12) 
+  Generating static pages using 9 workers (6/12) 
+  Generating static pages using 9 workers (9/12) 
+✓ Generating static pages using 9 workers (12/12) in 266.7ms
+  Finalizing page optimization ...
+
+
+Redirects
+┌ source: /:path+/
+├ destination: /:path+
+└ permanent: true
+
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /analytics
+├ ƒ /api/profile
+├ ○ /budget
+├ ○ /dashboard
+├ ○ /login
+├ ○ /report
+├ ○ /request
+├ ○ /requests
+└ ○ /settings
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

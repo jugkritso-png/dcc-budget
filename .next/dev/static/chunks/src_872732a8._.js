@@ -11,6 +11,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$createBrowserClient$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@supabase/ssr/dist/module/createBrowserClient.js [app-client] (ecmascript)");
 ;
 function createClient() {
+    // SSR guard
+    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+    ;
     return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$createBrowserClient$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createBrowserClient"])(("TURBOPACK compile-time value", "https://lflhxsxubxymxpnxeqts.supabase.co"), ("TURBOPACK compile-time value", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxmbGh4c3h1Ynh5bXhwbnhlcXRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NzgwMDUsImV4cCI6MjA4NzA1NDAwNX0.XDfGg6X9B5dBSAsytA4VUHQ53gvBi81n5kXKbgm-m2g"));
 }
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
@@ -40,14 +43,15 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/supabase/client.ts [app-client] (ecmascript)");
 ;
-const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createClient"])();
+// Deferred initialization to be SSR-safe
+const getSupabase = ()=>(0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createClient"])();
 const authService = {
     login: async (credentials)=>{
         const cleanUsername = credentials.username.trim();
         const cleanPassword = credentials.password;
         let email = cleanUsername.includes('@') ? cleanUsername : '';
         if (!email) {
-            const { data: resolvedEmail, error: rpcError } = await supabase.rpc('get_user_email', {
+            const { data: resolvedEmail, error: rpcError } = await getSupabase().rpc('get_user_email', {
                 p_username: cleanUsername
             });
             if (!rpcError && resolvedEmail) {
@@ -56,7 +60,7 @@ const authService = {
                 email = `${cleanUsername}@wu.ac.th`;
             }
         }
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await getSupabase().auth.signInWithPassword({
             email: email,
             password: cleanPassword
         });
@@ -93,12 +97,12 @@ const authService = {
         };
     },
     loginWithGoogle: async (token)=>{
-        const { data, error } = await supabase.auth.signInWithIdToken({
+        const { data, error } = await getSupabase().auth.signInWithIdToken({
             provider: 'google',
             token: token
         });
         if (error) throw new Error(error.message);
-        const { data: profile } = await supabase.from('User').select('*').eq('id', data.user.id).maybeSingle();
+        const { data: profile } = await getSupabase().from('User').select('*').eq('id', data.user.id).maybeSingle();
         return {
             user: profile || {
                 id: data.user.id,
@@ -109,12 +113,12 @@ const authService = {
         };
     },
     updateProfile: async (id, updateData)=>{
-        const { data, error } = await supabase.from('User').update(updateData).eq('id', id).select().single();
+        const { data, error } = await getSupabase().from('User').update(updateData).eq('id', id).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     changePassword: async (data)=>{
-        const { error } = await supabase.auth.updateUser({
+        const { error } = await getSupabase().auth.updateUser({
             password: data.newPassword
         });
         if (error) throw new Error(error.message);
@@ -125,24 +129,24 @@ const authService = {
 };
 const userService = {
     getAll: async ()=>{
-        const { data, error } = await supabase.from('User').select('*').order('createdAt', {
+        const { data, error } = await getSupabase().from('User').select('*').order('createdAt', {
             ascending: false
         });
         if (error) throw new Error(error.message);
         return data;
     },
     create: async (user)=>{
-        const { data, error } = await supabase.from('User').insert(user).select().single();
+        const { data, error } = await getSupabase().from('User').insert(user).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     update: async (id, user)=>{
-        const { data, error } = await supabase.from('User').update(user).eq('id', id).select().single();
+        const { data, error } = await getSupabase().from('User').update(user).eq('id', id).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     delete: async (id)=>{
-        const { error } = await supabase.from('User').delete().eq('id', id);
+        const { error } = await getSupabase().from('User').delete().eq('id', id);
         if (error) throw new Error(error.message);
         return {
             success: true
@@ -151,7 +155,7 @@ const userService = {
 };
 const systemService = {
     getSettings: async ()=>{
-        const { data, error } = await supabase.from('SystemSetting').select('*');
+        const { data, error } = await getSupabase().from('SystemSetting').select('*');
         if (error) throw new Error(error.message);
         const settingsObj = (data || []).reduce((acc, curr)=>{
             acc[curr.key] = curr.value;
@@ -166,7 +170,7 @@ const systemService = {
         };
     },
     updateSettings: async (settings)=>{
-        const upsert = (key, value)=>supabase.from('SystemSetting').upsert({
+        const upsert = (key, value)=>getSupabase().from('SystemSetting').upsert({
                 key,
                 value
             }).then(({ error })=>{
@@ -187,22 +191,22 @@ const systemService = {
         };
     },
     getDepartments: async ()=>{
-        const { data, error } = await supabase.from('Department').select('*');
+        const { data, error } = await getSupabase().from('Department').select('*');
         if (error) throw new Error(error.message);
         return data;
     },
     createDepartment: async (dept)=>{
-        const { data, error } = await supabase.from('Department').insert(dept).select().single();
+        const { data, error } = await getSupabase().from('Department').insert(dept).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     updateDepartment: async (dept)=>{
-        const { data, error } = await supabase.from('Department').update(dept).eq('id', dept.id).select().single();
+        const { data, error } = await getSupabase().from('Department').update(dept).eq('id', dept.id).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     deleteDepartment: async (id)=>{
-        const { error } = await supabase.from('Department').delete().eq('id', id);
+        const { error } = await getSupabase().from('Department').delete().eq('id', id);
         if (error) throw new Error(error.message);
         return {
             success: true
@@ -211,29 +215,29 @@ const systemService = {
 };
 const masterDataService = {
     getCategories: async ()=>{
-        const { data, error } = await supabase.from('Category').select('*');
+        const { data, error } = await getSupabase().from('Category').select('*');
         if (error) throw new Error(error.message);
         return data;
     },
     createCategory: async (cat)=>{
-        const { data, error } = await supabase.from('Category').insert(cat).select().single();
+        const { data, error } = await getSupabase().from('Category').insert(cat).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     updateCategory: async (cat)=>{
-        const { data, error } = await supabase.from('Category').update(cat).eq('id', cat.id).select().single();
+        const { data, error } = await getSupabase().from('Category').update(cat).eq('id', cat.id).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     deleteCategory: async (id)=>{
-        const { error } = await supabase.from('Category').delete().eq('id', id);
+        const { error } = await getSupabase().from('Category').delete().eq('id', id);
         if (error) throw new Error(error.message);
         return {
             success: true
         };
     },
     getSubActivities: async ()=>{
-        const { data, error } = await supabase.from('SubActivity').select('*');
+        const { data, error } = await getSupabase().from('SubActivity').select('*');
         if (error) throw new Error(error.message);
         const subs = data || [];
         const buildHierarchy = (parentId)=>{
@@ -245,17 +249,17 @@ const masterDataService = {
         return buildHierarchy(null);
     },
     createSubActivity: async (sub)=>{
-        const { data, error } = await supabase.from('SubActivity').insert(sub).select().single();
+        const { data, error } = await getSupabase().from('SubActivity').insert(sub).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     updateSubActivity: async (sub)=>{
-        const { data, error } = await supabase.from('SubActivity').update(sub).eq('id', sub.id).select().single();
+        const { data, error } = await getSupabase().from('SubActivity').update(sub).eq('id', sub.id).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     deleteSubActivity: async (id)=>{
-        const { error } = await supabase.from('SubActivity').delete().eq('id', id);
+        const { error } = await getSupabase().from('SubActivity').delete().eq('id', id);
         if (error) throw new Error(error.message);
         return {
             success: true
@@ -267,15 +271,15 @@ const budgetService = {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
         const filePath = `${fileName}`;
-        const { data, error } = await supabase.storage.from('attachments').upload(filePath, file);
+        const { data, error } = await getSupabase().storage.from('attachments').upload(filePath, file);
         if (error) {
             throw new Error(error.message);
         }
-        const { data: publicUrlData } = supabase.storage.from('attachments').getPublicUrl(filePath);
+        const { data: publicUrlData } = getSupabase().storage.from('attachments').getPublicUrl(filePath);
         return publicUrlData.publicUrl;
     },
     getRequests: async ()=>{
-        const { data, error } = await supabase.from('BudgetRequest').select('*, expenseItems:BudgetRequestItem(*)').order('createdAt', {
+        const { data, error } = await getSupabase().from('BudgetRequest').select('*, expenseItems:BudgetRequestItem(*)').order('createdAt', {
             ascending: false
         });
         if (error) throw new Error(error.message);
@@ -288,14 +292,14 @@ const budgetService = {
             ...rest,
             approvalRef: rest.approvalRef || documentNumber
         };
-        const { data, error } = await supabase.from('BudgetRequest').insert(payloadToInsert).select().single();
+        const { data, error } = await getSupabase().from('BudgetRequest').insert(payloadToInsert).select().single();
         if (error) throw new Error(error.message);
         if (expenseItems && expenseItems.length > 0) {
             const items = expenseItems.map(({ id: itemId, ...itemRest })=>({
                     ...itemRest,
                     requestId: data.id
                 }));
-            const { error: itemError } = await supabase.from('BudgetRequestItem').insert(items);
+            const { error: itemError } = await getSupabase().from('BudgetRequestItem').insert(items);
             if (itemError) console.error("Error inserting items:", itemError);
         }
         return {
@@ -304,7 +308,7 @@ const budgetService = {
         };
     },
     updateRequestStatus: async (id, status)=>{
-        const { data, error } = await supabase.from('BudgetRequest').update({
+        const { data, error } = await getSupabase().from('BudgetRequest').update({
             status
         }).eq('id', id).select().single();
         if (error) throw new Error(error.message);
@@ -312,7 +316,7 @@ const budgetService = {
     },
     approveRequest: async (id, approverId)=>{
         // 1. Get current request to know the step
-        const { data: currentReq } = await supabase.from('BudgetRequest').select('*').eq('id', id).single();
+        const { data: currentReq } = await getSupabase().from('BudgetRequest').select('*').eq('id', id).single();
         if (!currentReq) throw new Error('Request not found');
         const step = currentReq.currentStep || 'manager';
         let nextStep = step;
@@ -334,10 +338,10 @@ const budgetService = {
         if (nextStatus === 'approved') {
             updateData.approvedAt = new Date().toISOString();
         }
-        const { data, error } = await supabase.from('BudgetRequest').update(updateData).eq('id', id).select().single();
+        const { data, error } = await getSupabase().from('BudgetRequest').update(updateData).eq('id', id).select().single();
         if (error) throw new Error(error.message);
         // 3. Log the approval
-        await supabase.from('ApprovalLog').insert({
+        await getSupabase().from('ApprovalLog').insert({
             requestId: id,
             approverId,
             action: 'approve',
@@ -346,9 +350,9 @@ const budgetService = {
         // 4. Update category budget ONLY on final approval
         if (nextStatus === 'approved') {
             const req = data;
-            const { data: categoryData } = await supabase.from('Category').select('*').eq('name', req.category).maybeSingle();
+            const { data: categoryData } = await getSupabase().from('Category').select('*').eq('name', req.category).maybeSingle();
             if (categoryData) {
-                await supabase.from('Category').update({
+                await getSupabase().from('Category').update({
                     used: (categoryData.used || 0) + req.amount
                 }).eq('id', categoryData.id);
             }
@@ -357,9 +361,9 @@ const budgetService = {
     },
     rejectRequest: async (id, approverId, reason)=>{
         // 1. Get current request to know the step
-        const { data: currentReq } = await supabase.from('BudgetRequest').select('currentStep').eq('id', id).single();
+        const { data: currentReq } = await getSupabase().from('BudgetRequest').select('currentStep').eq('id', id).single();
         const step = currentReq?.currentStep || 'manager';
-        const { data, error } = await supabase.from('BudgetRequest').update({
+        const { data, error } = await getSupabase().from('BudgetRequest').update({
             status: 'rejected',
             approverId,
             rejectionReason: reason,
@@ -367,7 +371,7 @@ const budgetService = {
         }).eq('id', id).select().single();
         if (error) throw new Error(error.message);
         // 2. Log the rejection
-        await supabase.from('ApprovalLog').insert({
+        await getSupabase().from('ApprovalLog').insert({
             requestId: id,
             approverId,
             action: 'reject',
@@ -377,28 +381,28 @@ const budgetService = {
         return data;
     },
     getApprovalLogs: async (requestId)=>{
-        const { data, error } = await supabase.from('ApprovalLog').select('*, user:User(name, role, avatar)').eq('requestId', requestId).order('createdAt', {
+        const { data, error } = await getSupabase().from('ApprovalLog').select('*, user:User(name, role, avatar)').eq('requestId', requestId).order('createdAt', {
             ascending: true
         });
         if (error) throw new Error(error.message);
         return data;
     },
     getAllApprovalLogs: async ()=>{
-        const { data, error } = await supabase.from('ApprovalLog').select('*, user:User(name, role, avatar)').order('createdAt', {
+        const { data, error } = await getSupabase().from('ApprovalLog').select('*, user:User(name, role, avatar)').order('createdAt', {
             ascending: true
         });
         if (error) throw new Error(error.message);
         return data;
     },
     completeRequest: async (id)=>{
-        const { data, error } = await supabase.from('BudgetRequest').update({
+        const { data, error } = await getSupabase().from('BudgetRequest').update({
             status: 'completed'
         }).eq('id', id).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     submitExpenseReport: async (id, submitData)=>{
-        const { error } = await supabase.from('BudgetRequest').update({
+        const { error } = await getSupabase().from('BudgetRequest').update({
             status: 'waiting_verification',
             actualAmount: submitData.actualTotal,
             returnAmount: submitData.returnAmount,
@@ -408,11 +412,11 @@ const budgetService = {
         if (submitData.expenseItems && submitData.expenseItems.length > 0) {
             for (const item of submitData.expenseItems){
                 if (item.id && !item.id.startsWith('temp-')) {
-                    await supabase.from('BudgetRequestItem').update({
+                    await getSupabase().from('BudgetRequestItem').update({
                         actualAmount: item.actualAmount
                     }).eq('id', item.id);
                 } else {
-                    await supabase.from('BudgetRequestItem').insert({
+                    await getSupabase().from('BudgetRequestItem').insert({
                         requestId: id,
                         category: item.category || 'other',
                         description: item.description,
@@ -425,11 +429,11 @@ const budgetService = {
                 }
             }
         }
-        const { data: updatedReq } = await supabase.from('BudgetRequest').select('*, expenseItems:BudgetRequestItem(*)').eq('id', id).single();
+        const { data: updatedReq } = await getSupabase().from('BudgetRequest').select('*, expenseItems:BudgetRequestItem(*)').eq('id', id).single();
         return updatedReq;
     },
     rejectExpenseReport: async (id, reason)=>{
-        const { data, error } = await supabase.from('BudgetRequest').update({
+        const { data, error } = await getSupabase().from('BudgetRequest').update({
             status: 'approved',
             rejectionReason: reason
         }).eq('id', id).select().single();
@@ -437,7 +441,7 @@ const budgetService = {
         return data;
     },
     revertComplete: async (id)=>{
-        const { data, error } = await supabase.from('BudgetRequest').update({
+        const { data, error } = await getSupabase().from('BudgetRequest').update({
             status: 'waiting_verification',
             completedAt: null
         }).eq('id', id).select().single();
@@ -445,35 +449,35 @@ const budgetService = {
         return data;
     },
     deleteRequest: async (id)=>{
-        const { error } = await supabase.from('BudgetRequest').delete().eq('id', id);
+        const { error } = await getSupabase().from('BudgetRequest').delete().eq('id', id);
         if (error) throw new Error(error.message);
         return {
             success: true
         };
     },
     getPlans: async (year)=>{
-        let query = supabase.from('BudgetPlan').select('*');
+        let query = getSupabase().from('BudgetPlan').select('*');
         if (year) query = query.eq('year', year);
         const { data, error } = await query;
         if (error) throw new Error(error.message);
         return data;
     },
     savePlan: async (plan)=>{
-        const { data: existing } = await supabase.from('BudgetPlan').select('id').eq('subActivityId', plan.subActivityId).eq('year', plan.year).eq('month', plan.month).maybeSingle();
+        const { data: existing } = await getSupabase().from('BudgetPlan').select('id').eq('subActivityId', plan.subActivityId).eq('year', plan.year).eq('month', plan.month).maybeSingle();
         if (existing) {
-            const { data, error } = await supabase.from('BudgetPlan').update({
+            const { data, error } = await getSupabase().from('BudgetPlan').update({
                 amount: plan.amount
             }).eq('id', existing.id).select().single();
             if (error) throw new Error(error.message);
             return data;
         } else {
-            const { data, error } = await supabase.from('BudgetPlan').insert(plan).select().single();
+            const { data, error } = await getSupabase().from('BudgetPlan').insert(plan).select().single();
             if (error) throw new Error(error.message);
             return data;
         }
     },
     adjustBudget: async (categoryId, adjustData)=>{
-        const { data: category } = await supabase.from('Category').select('allocated').eq('id', categoryId).maybeSingle();
+        const { data: category } = await getSupabase().from('Category').select('allocated').eq('id', categoryId).maybeSingle();
         if (!category) throw new Error('Category not found');
         let newAllocated = category.allocated;
         const adjustAmount = adjustData.amount;
@@ -482,11 +486,11 @@ const budgetService = {
         } else if (adjustData.type === 'REDUCE' || adjustData.type === 'TRANSFER_OUT') {
             newAllocated -= adjustAmount;
         }
-        const { data: updatedCategory, error } = await supabase.from('Category').update({
+        const { data: updatedCategory, error } = await getSupabase().from('Category').update({
             allocated: newAllocated
         }).eq('id', categoryId).select().single();
         if (error) throw new Error(error.message);
-        await supabase.from('BudgetLog').insert({
+        await getSupabase().from('BudgetLog').insert({
             categoryId,
             amount: adjustAmount,
             type: adjustData.type,
@@ -496,7 +500,7 @@ const budgetService = {
         return updatedCategory;
     },
     getLogs: async (categoryId)=>{
-        let query = supabase.from('BudgetLog').select('*').order('createdAt', {
+        let query = getSupabase().from('BudgetLog').select('*').order('createdAt', {
             ascending: false
         });
         if (categoryId) query = query.eq('categoryId', categoryId);
@@ -507,12 +511,12 @@ const budgetService = {
 };
 const expenseService = {
     create: async (expense)=>{
-        const { data, error } = await supabase.from('Expense').insert(expense).select().single();
+        const { data, error } = await getSupabase().from('Expense').insert(expense).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     getAll: async (categoryId)=>{
-        let query = supabase.from('Expense').select('*').order('date', {
+        let query = getSupabase().from('Expense').select('*').order('date', {
             ascending: false
         });
         if (categoryId) query = query.eq('categoryId', categoryId);
@@ -521,7 +525,7 @@ const expenseService = {
         return data;
     },
     delete: async (id)=>{
-        const { error } = await supabase.from('Expense').delete().eq('id', id);
+        const { error } = await getSupabase().from('Expense').delete().eq('id', id);
         if (error) throw new Error(error.message);
         return {
             success: true
@@ -530,21 +534,21 @@ const expenseService = {
 };
 const notificationService = {
     getAll: async (userId)=>{
-        const { data, error } = await supabase.from('Notification').select('*').eq('userId', userId).order('createdAt', {
+        const { data, error } = await getSupabase().from('Notification').select('*').eq('userId', userId).order('createdAt', {
             ascending: false
         });
         if (error) throw new Error(error.message);
         return data;
     },
     markAsRead: async (id)=>{
-        const { data, error } = await supabase.from('Notification').update({
+        const { data, error } = await getSupabase().from('Notification').update({
             isRead: true
         }).eq('id', id).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     markAllAsRead: async (userId)=>{
-        const { error } = await supabase.from('Notification').update({
+        const { error } = await getSupabase().from('Notification').update({
             isRead: true
         }).eq('userId', userId).eq('isRead', false);
         if (error) throw new Error(error.message);
@@ -553,12 +557,12 @@ const notificationService = {
         };
     },
     create: async (notification)=>{
-        const { data, error } = await supabase.from('Notification').insert(notification).select().single();
+        const { data, error } = await getSupabase().from('Notification').insert(notification).select().single();
         if (error) throw new Error(error.message);
         return data;
     },
     delete: async (id)=>{
-        const { error } = await supabase.from('Notification').delete().eq('id', id);
+        const { error } = await getSupabase().from('Notification').delete().eq('id', id);
         if (error) throw new Error(error.message);
         return {
             success: true
@@ -567,7 +571,7 @@ const notificationService = {
 };
 const activityLogService = {
     getAll: async ()=>{
-        const { data, error } = await supabase.from('ActivityLog').select(`
+        const { data, error } = await getSupabase().from('ActivityLog').select(`
                 *,
                 user:User (
                     name,
@@ -582,7 +586,7 @@ const activityLogService = {
         return data;
     },
     log: async (log)=>{
-        const { data, error } = await supabase.from('ActivityLog').insert(log).select().single();
+        const { data, error } = await getSupabase().from('ActivityLog').insert(log).select().single();
         if (error) throw new Error(error.message);
         return data;
     }
@@ -630,6 +634,8 @@ const BudgetProvider = ({ children })=>{
             }
             const checkSession = {
                 "BudgetProvider.useEffect.checkSession": async ()=>{
+                    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+                    ;
                     const saved = localStorage.getItem('dcc_user');
                     if (saved) {
                         try {
@@ -1695,7 +1701,7 @@ const BudgetProvider = ({ children })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/src/context/BudgetContext.tsx",
-        lineNumber: 657,
+        lineNumber: 659,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

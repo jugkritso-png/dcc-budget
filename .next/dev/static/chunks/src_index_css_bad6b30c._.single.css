@@ -203,6 +203,8 @@
     --text-3xl--line-height: calc(2.25 / 1.875);
     --text-4xl: 2.25rem;
     --text-4xl--line-height: calc(2.5 / 2.25);
+    --text-9xl: 8rem;
+    --text-9xl--line-height: 1;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
@@ -3745,6 +3747,11 @@
     line-height: var(--tw-leading, var(--text-4xl--line-height));
   }
 
+  .text-9xl {
+    font-size: var(--text-9xl);
+    line-height: var(--tw-leading, var(--text-9xl--line-height));
+  }
+
   .text-base {
     font-size: var(--text-base);
     line-height: var(--tw-leading, var(--text-base--line-height));
@@ -5248,6 +5255,12 @@
   }
 
   @media (hover: hover) {
+    .hover\:bg-blue-500:hover {
+      background-color: var(--color-blue-500);
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:bg-blue-700:hover {
       background-color: var(--color-blue-700);
     }
@@ -5778,6 +5791,24 @@
   .focus\:outline-none:focus {
     --tw-outline-style: none;
     outline-style: none;
+  }
+
+  .focus-visible\:outline:focus-visible {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
+  }
+
+  .focus-visible\:outline-2:focus-visible {
+    outline-style: var(--tw-outline-style);
+    outline-width: 2px;
+  }
+
+  .focus-visible\:outline-offset-2:focus-visible {
+    outline-offset: 2px;
+  }
+
+  .focus-visible\:outline-blue-600:focus-visible {
+    outline-color: var(--color-blue-600);
   }
 
   .active\:scale-95:active {
