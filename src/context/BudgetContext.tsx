@@ -566,6 +566,19 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
   });
+  const updateRequestMutation = useMutation({
+    mutationFn: ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: Partial<BudgetRequest>;
+    }) => budgetService.updateRequest(id, updates),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["requests"] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
 
   const approveRequestMutation = useMutation({
     mutationFn: ({ id, approverId, comment }: { id: string; approverId: string; comment?: string }) =>
@@ -911,6 +924,9 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
   ) => {
     await updateRequestStatusMutation.mutateAsync({ id, status });
   };
+  const updateRequest = async (id: string, updates: Partial<BudgetRequest>) => {
+    await updateRequestMutation.mutateAsync({ id, updates });
+  };
   const approveRequest = async (id: string, approverId: string, comment?: string) => {
     await approveRequestMutation.mutateAsync({ id, approverId, comment });
   };
@@ -988,6 +1004,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
         changePassword,
         addRequest,
         updateRequestStatus,
+        updateRequest,
         approveRequest,
         rejectRequest,
 

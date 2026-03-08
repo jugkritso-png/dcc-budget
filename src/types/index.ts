@@ -189,6 +189,7 @@ export type BudgetContextType = {
     id: string,
     status: BudgetRequest["status"],
   ) => Promise<void>;
+  updateRequest: (id: string, updates: Partial<BudgetRequest>) => Promise<void>;
   approveRequest: (id: string, approverId: string, comment?: string) => Promise<void>;
   rejectRequest: (
     id: string,

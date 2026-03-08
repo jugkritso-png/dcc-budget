@@ -25,26 +25,22 @@
 
 :root {
     /* ── Primary Blue Palette (matches dcc-budget.vercel.app) ── */
-    --color-primary-50: #E6F0FB;
-    --color-primary-100: #C0D9F5;
-    --color-primary-200: #91BFEE;
-    --color-primary-300: #5EA3E6;
-    --color-primary-400: #2E88DF;
-    --color-primary-500: #0066B3;
-    /* Brand Primary */
-    --color-primary-600: #0059A0;
-    /* Hover */
-    --color-primary-700: #004A8A;
-    /* Active / gradient end */
-    --color-primary-800: #005191;
-    /* Dark gradient */
-    --color-primary-900: #003870;
-    --color-primary-950: #001F40;
+    /* ── Primary Blue Palette (Krungthai Cerulean #00A3E4) ── */
+    --color-primary-50: #E0F5FF;
+    --color-primary-100: #B3E0FF;
+    --color-primary-200: #80C9FF;
+    --color-primary-300: #4DB3FF;
+    --color-primary-400: #1AA0FF;
+    --color-primary-500: #00A3E4; /* Official Krungthai Cerulean */
+    --color-primary-600: #0088CC; /* Brand Primary Focus */
+    --color-primary-700: #006EB3; /* Hover state */
+    --color-primary-800: #005599; /* Active / Gradient end */
+    --color-primary-900: #003D70;
+    --color-primary-950: #002440;
 
     /* ── Surface & Neutrals ── */
-    --surface-page: #F0F4F8;
-    /* Soft bluish-gray background */
-    /* body bg: rgb(240,244,248) */
+    --surface-page: #F6F9FC;
+    /* body bg: Krungthai NEXT cleaner surface */
     --surface-card: #FFFFFF;
     --surface-input: #F5F8FA;
     /* input bg: rgb(245,248,250) */
@@ -73,13 +69,14 @@
     --accent-green: #10B981;
     --accent-green-light: #ECFDF5;
 
-    /* ── Radius — matches ref site (rounded-xl = 12px) ── */
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    /* inputs, cards inner */
-    --radius-lg: 16px;
-    /* cards */
-    --radius-xl: 20px;
+    /* ── Radius — Krungthai NEXT Soft Corners ── */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    /* inputs, small buttons */
+    --radius-lg: 24px;
+    /* standard cards */
+    --radius-xl: 32px;
+    /* large cards, hero sections */
     --radius-full: 9999px;
 
     /* ── Shadows ── */
@@ -129,11 +126,12 @@ body {
         @apply antialiased min-h-screen;
         background-color: var(--surface-page);
         color: var(--text-primary);
-        /* Inter for EN, Prompt for TH — matches reference site exactly */
-        font-family: 'Inter', var(--font-prompt), 'Prompt', 'Noto Sans Thai', sans-serif;
+        /* Krungthai NEXT Typography: Inter for numbers/EN, Prompt for TH */
+        font-family: 'Inter', 'Prompt', 'Noto Sans Thai', sans-serif;
         font-size: 16px;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        letter-spacing: -0.01em;
     }
 
     ::selection {
@@ -142,15 +140,18 @@ body {
     }
 
     h1 {
-        @apply text-3xl font-bold tracking-tight;
+        @apply text-3xl font-black tracking-tighter;
+        color: var(--color-primary-900);
     }
 
     h2 {
-        @apply text-2xl font-bold tracking-tight;
+        @apply text-2xl font-black tracking-tighter;
+        color: var(--color-primary-900);
     }
 
     h3 {
-        @apply text-xl font-semibold;
+        @apply text-xl font-extrabold tracking-tight;
+        color: var(--color-primary-800);
     }
 
     h4 {
@@ -162,7 +163,7 @@ body {
     }
 
     h6 {
-        @apply text-xs font-semibold uppercase tracking-widest;
+        @apply text-[10px] font-black uppercase tracking-[0.15em];
         color: var(--text-tertiary);
     }
 
@@ -223,31 +224,29 @@ body {
         box-shadow: var(--shadow-md);
     }
 
-    /* --- Primary blue button (matches reference site) --- */
+    /* --- Primary blue button (Krungthai Gradient) --- */
     .btn-primary {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 12px;
         width: 100%;
-        padding: 14px 24px;
-        border-radius: var(--radius-md);
-        /* 12px - matches ref */
-        background: linear-gradient(to right, #0066B3, #005191);
+        padding: 16px 28px;
+        border-radius: var(--radius-lg);
+        background: linear-gradient(135deg, #00A3E4 0%, #0077C8 100%);
         color: var(--text-inverse);
         font-size: 16px;
         font-weight: 700;
-        letter-spacing: 0.01em;
+        letter-spacing: 0.02em;
         border: none;
         cursor: pointer;
-        transition: opacity var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
-        box-shadow: var(--shadow-btn);
+        transition: all var(--transition-normal);
+        box-shadow: 0 8px 16px -4px rgba(0, 163, 228, 0.3);
     }
 
     .btn-primary:hover:not(:disabled) {
-        opacity: 0.92;
-        box-shadow: 0 12px 20px -3px rgba(0, 102, 179, 0.40);
-        transform: translateY(-1px);
+        box-shadow: 0 12px 24px -4px rgba(0, 163, 228, 0.4);
+        transform: translateY(-2px);
     }
 
     .btn-primary:active:not(:disabled) {

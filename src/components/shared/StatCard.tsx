@@ -14,7 +14,7 @@ interface StatCardProps {
 const TYPE_STYLES: Record<string, { iconBg: string; iconColor: string }> = {
   primary: {
     iconBg: "var(--color-primary-50)",
-    iconColor: "var(--color-primary-600)",
+    iconColor: "var(--color-primary-500)",
   },
   success: { iconBg: "var(--accent-green-light)", iconColor: "#059669" },
   warning: { iconBg: "var(--accent-amber-light)", iconColor: "#B45309" },
@@ -37,12 +37,12 @@ export const StatCard: React.FC<StatCardProps> = ({
     typeof value === "number" ? value.toLocaleString() : value;
 
   return (
-    <div className="p-6 transition-all duration-300 bg-white border border-gray-100 rounded-[20px] shadow-sm hover:shadow-md hover:-translate-y-1">
+    <div className="p-8 transition-all duration-500 bg-white border border-gray-100/50 rounded-[32px] shadow-sm hover:shadow-2xl hover:shadow-primary-500/10 hover:-translate-y-1 group">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <p className="text-[14px] font-bold text-gray-500">{title}</p>
+        <p className="text-[12px] font-black text-gray-400 uppercase tracking-widest leading-none mt-1">{title}</p>
         <div
-          className="w-12 h-12 rounded-[16px] flex items-center justify-center flex-shrink-0"
+          className="w-14 h-14 rounded-[20px] flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 duration-500"
           style={{ background: styles.iconBg }}
         >
           <Icon
@@ -61,8 +61,8 @@ export const StatCard: React.FC<StatCardProps> = ({
           </span>
         )}
         <span
-          className="text-[32px] font-extrabold tracking-tight text-gray-900 leading-none"
-          style={{ fontFamily: "Inter, sans-serif" }}
+          className="text-[36px] font-black tracking-tighter text-gray-900 leading-none"
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {displayValue}
         </span>

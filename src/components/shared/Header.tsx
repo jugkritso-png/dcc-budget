@@ -52,13 +52,12 @@ export function Header() {
         >
           <Menu className="w-6 h-6" />
         </button>
-        <div className="hidden lg:block">
-          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">
+        <div className="hidden lg:block ml-4">
+          <h2 className="text-[28px] font-black tracking-tighter text-[#003D70] leading-none">
             {pageTitle}
           </h2>
-          <p className="text-[13px] text-gray-500 font-medium mt-0.5">
-            ยินดีต้อนรับกลับมา,{" "}
-            <span className="text-primary-600 font-semibold">{user?.name}</span>
+          <p className="text-[11px] text-gray-400 font-black mt-2 uppercase tracking-[0.15em]">
+            Welcome back, <span className="text-primary-500">{user?.name}</span>
           </p>
         </div>
       </div>
@@ -72,8 +71,8 @@ export function Header() {
         <div className="w-px h-8 bg-gray-200 mx-2" />
 
         {/* User */}
-        <button className="flex items-center gap-3 hover:bg-gray-50 p-1.5 pr-4 rounded-full transition-all border border-transparent hover:border-gray-200">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-600 to-primary-800 text-white text-sm font-bold flex items-center justify-center shadow-md border-2 border-white overflow-hidden">
+        <button className="flex items-center gap-3 hover:bg-white p-2 pr-5 rounded-[20px] transition-all border border-transparent hover:border-gray-100 hover:shadow-xl hover:shadow-gray-200/50 group">
+          <div className="w-12 h-12 rounded-[18px] bg-gradient-to-br from-primary-400 to-primary-600 text-white text-base font-black flex items-center justify-center shadow-lg shadow-primary-500/20 border-2 border-white overflow-hidden transition-transform group-hover:scale-105">
             {avatarContent()}
           </div>
           <div className="text-left hidden sm:block">

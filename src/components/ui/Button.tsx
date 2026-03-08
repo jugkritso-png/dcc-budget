@@ -41,16 +41,16 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const variants = {
       primary:
-        "bg-primary-600 text-white hover:bg-primary-700 shadow-sm border-transparent",
+        "bg-primary-500 text-white hover:bg-primary-600 shadow-md shadow-primary-200/50 border-transparent",
       secondary:
-        "bg-gray-100 text-gray-900 hover:bg-gray-200 border-transparent",
-      outline: "bg-white text-gray-700 border-gray-300 hover:bg-gray-50",
+        "bg-primary-50 text-primary-600 hover:bg-primary-100 border-transparent",
+      outline: "bg-white text-gray-700 border-gray-200 hover:border-primary-500 hover:text-primary-600",
       ghost:
         "bg-transparent text-gray-700 hover:bg-gray-100 border-transparent",
       danger:
-        "bg-red-600 text-white hover:bg-red-700 shadow-sm border-transparent",
+        "bg-red-500 text-white hover:bg-red-600 shadow-sm border-transparent",
       gradient:
-        "bg-gradient-to-r from-primary-600 to-primary-500 text-white hover:from-primary-700 hover:to-primary-600 shadow-lg hover:shadow-primary-200 border-transparent",
+        "bg-gradient-to-br from-[#00A3E4] to-[#0077C8] text-white shadow-xl shadow-primary-500/20 hover:shadow-primary-500/30 border-none",
     };
 
     const sizes = {
@@ -64,7 +64,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         whileTap={{ scale: 0.95 }}
         className={cn(
-          "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none border",
+          "inline-flex items-center justify-center rounded-2xl font-bold transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-500/10 disabled:opacity-50 disabled:pointer-events-none border",
           variants[variant],
           sizes[size],
           className,

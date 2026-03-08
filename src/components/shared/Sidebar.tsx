@@ -50,10 +50,10 @@ export function Sidebar() {
       <div className="relative h-20 flex items-center px-5 border-b border-transparent">
         <div className="flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center shadow-lg shadow-primary-500/20"
-            style={{ background: "linear-gradient(135deg, #0066B3, #005191)" }}
+            className="w-12 h-12 rounded-[18px] flex-shrink-0 flex items-center justify-center shadow-xl shadow-primary-500/30"
+            style={{ background: "linear-gradient(135deg, #00A3E4, #0077C8)" }}
           >
-            <Wallet className="w-5 h-5 text-white" strokeWidth={2.5} />
+            <Wallet className="w-6 h-6 text-white" strokeWidth={2.5} />
           </div>
           <AnimatePresence mode="wait">
             {!isSidebarCollapsed && (
@@ -64,13 +64,13 @@ export function Sidebar() {
                 className="overflow-hidden whitespace-nowrap"
               >
                 <p
-                  className="text-[14px] font-bold leading-tight"
-                  style={{ color: "var(--text-primary)" }}
+                  className="text-[15px] font-black leading-tight tracking-tight"
+                  style={{ color: "#003D70" }}
                 >
                   {settings?.orgName || "DCC Budget"}
                 </p>
                 <p
-                  className="text-[10px] font-medium tracking-wider uppercase opacity-60"
+                  className="text-[10px] font-black tracking-[0.1em] uppercase opacity-50"
                   style={{ color: "var(--text-tertiary)" }}
                 >
                   Budget Manager
@@ -105,10 +105,10 @@ export function Sidebar() {
         className={`px-6 mb-2 mt-6 h-4 transition-opacity duration-200 ${isSidebarCollapsed ? "opacity-0" : "opacity-100"}`}
       >
         <p
-          className="text-[10px] font-bold tracking-[0.1em] uppercase whitespace-nowrap"
+          className="text-[10px] font-black tracking-[0.2em] uppercase whitespace-nowrap"
           style={{ color: "var(--text-tertiary)" }}
         >
-          {isSidebarCollapsed ? "" : "เมนูหลัก"}
+          {isSidebarCollapsed ? "" : "Main Navigation"}
         </p>
       </div>
 
@@ -123,10 +123,10 @@ export function Sidebar() {
               key={item.id}
               href={item.id}
               title={isSidebarCollapsed ? item.label : ""}
-              className={`flex items-center h-12 rounded-xl transition-all duration-200 group relative ${
+              className={`flex items-center h-14 rounded-2xl transition-all duration-300 group relative ${
                 isActive
-                  ? "bg-gradient-to-br from-[#0066B3] to-[#005191] text-white shadow-[0_4px_12px_rgba(0,102,179,0.2)]"
-                  : "text-gray-500 hover:bg-gray-100/80 hover:text-primary-700"
+                  ? "bg-gradient-to-br from-[#00A3E4] to-[#0077C8] text-white shadow-lg shadow-primary-600/30"
+                  : "text-gray-500 hover:bg-primary-50/50 hover:text-primary-700 font-medium"
               }`}
               style={{ padding: isSidebarCollapsed ? "0 14px" : "0 14px" }}
             >
@@ -144,7 +144,7 @@ export function Sidebar() {
                     initial={{ opacity: 0, x: -5 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -5 }}
-                    className="text-[14px] font-semibold whitespace-nowrap"
+                    className="text-[14px] font-bold whitespace-nowrap"
                   >
                     {item.label}
                   </motion.span>

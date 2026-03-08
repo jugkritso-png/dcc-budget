@@ -13,9 +13,16 @@ import {
   Eye,
   FileText,
   Calendar,
+  Settings2,
+  Trash2,
+  Edit3,
+  CheckSquare,
+  Square,
+  MoreVertical,
 } from "lucide-react";
 import { BudgetRequest } from "@/types";
 import { ApprovalModal } from "@/components/features/requests/ApprovalModal";
+import { EditRequestModal } from "@/components/features/requests/EditRequestModal";
 
 const BudgetRequestList: React.FC = () => {
   const { requests, categories } = useBudget();
@@ -27,6 +34,45 @@ const BudgetRequestList: React.FC = () => {
   const [selectedRequest, setSelectedRequest] = useState<BudgetRequest | null>(
     null,
   );
+  const [editingRequest, setEditingRequest] = useState<BudgetRequest | null>(
+    null,
+  );
+  const [isManagementMode, setIsManagementMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const { user, deleteRequest } = useBudget();
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredRequests.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredRequests.map((r) => r.id)));
+    }
+  };
+
+  const toggleSelect = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const next = new Set(selectedIds);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSelectedIds(next);
+  };
+
+  const handleDelete = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm("คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้? การลบจะทำอย่างถาวร")) {
+      await deleteRequest(id);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบ ${selectedIds.size} รายการที่เลือก?`)) {
+      const ids = Array.from(selectedIds);
+      for (const id of ids) {
+        await deleteRequest(id);
+      }
+      setSelectedIds(new Set());
+    }
+  };
 
   // Filter Logic
   const filteredRequests = requests
@@ -66,11 +112,11 @@ const BudgetRequestList: React.FC = () => {
   const getStatusBadgeClass = (status: string) => {
     switch (status) {
       case "approved":
-        return "bg-emerald-50 text-emerald-700 border-emerald-100";
+        return "bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm shadow-emerald-500/10";
       case "pending":
-        return "bg-amber-50 text-amber-700 border-amber-100";
+        return "bg-primary-50 text-primary-600 border-primary-100 shadow-sm shadow-primary-500/10";
       case "rejected":
-        return "bg-red-50 text-red-700 border-red-100";
+        return "bg-red-50 text-red-600 border-red-100 shadow-sm shadow-red-500/10";
       default:
         return "bg-gray-50 text-gray-700 border-gray-100";
     }
@@ -79,7 +125,7 @@ const BudgetRequestList: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Filters Bar */}
-      <Card className="p-4 rounded-[20px] shadow-sm border-gray-100">
+      <Card className="p-4 rounded-[32px] shadow-sm border-gray-100 bg-white/80 backdrop-blur-xl sticky top-0 z-20">
         <div className="flex flex-col md:flex-row gap-4 items-center">
           <div className="relative flex-1 w-full">
             <Search
@@ -112,15 +158,60 @@ const BudgetRequestList: React.FC = () => {
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
-              <option value="all">ทุกหมวดหมู่</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.name}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
+                <option value="all">ทุกหมวดหมู่</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.name}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+          <div className="flex items-center gap-2 border-l border-gray-100 pl-4 ml-2">
+            <span className="text-xs font-bold text-gray-400 uppercase">Management</span>
+            <button
+              onClick={() => setIsManagementMode(!isManagementMode)}
+              className={`relative w-11 h-6 rounded-full transition-colors duration-200 outline-none ${isManagementMode ? "bg-primary-500" : "bg-gray-200"}`}
+            >
+              <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-200 ${isManagementMode ? "translate-x-5" : ""}`} />
+            </button>
           </div>
         </div>
+
+        {isManagementMode && filteredRequests.length > 0 && (
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-50">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleSelectAll}
+                className="flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-primary-600 transition-colors"
+              >
+                {selectedIds.size === filteredRequests.length ? (
+                  <CheckSquare size={16} className="text-primary-500" />
+                ) : (
+                  <Square size={16} />
+                )}
+                เลือกทั้งหมด ({selectedIds.size})
+              </button>
+            </div>
+            
+            {selectedIds.size > 0 && (
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  className="h-8 text-[11px] font-bold text-red-600 hover:bg-red-50"
+                  onClick={handleBulkDelete}
+                >
+                  <Trash2 size={14} className="mr-1.5" />
+                  ลบที่เลือก
+                </Button>
+                <Button variant="secondary" className="h-8 text-[11px] font-bold">
+                  <CheckCircle2 size={14} className="mr-1.5" />
+                  อนุมัติ ({selectedIds.size})
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
       </Card>
 
       {/* Request List */}
@@ -129,9 +220,22 @@ const BudgetRequestList: React.FC = () => {
           filteredRequests.map((req) => (
             <div
               key={req.id}
-              className="group bg-white hover:bg-gray-50/50 border border-gray-100 hover:border-primary-100 rounded-2xl p-4 transition-all cursor-pointer shadow-sm hover:shadow-md"
+              className={`group bg-white hover:bg-white border-transparent hover:border-primary-200/50 rounded-[32px] p-6 transition-all cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1 relative overflow-hidden ${selectedIds.has(req.id) ? "ring-2 ring-primary-500/50 bg-primary-50/10" : ""}`}
               onClick={() => setSelectedRequest(req)}
             >
+              {isManagementMode && (
+                <div 
+                  className="absolute top-4 right-14 z-10 p-2 rounded-xl bg-white/80 backdrop-blur shadow-sm hover:bg-white transition-all opacity-0 group-hover:opacity-100"
+                  onClick={(e) => toggleSelect(req.id, e)}
+                >
+                  {selectedIds.has(req.id) ? (
+                    <CheckSquare size={18} className="text-primary-500" />
+                  ) : (
+                    <Square size={18} className="text-gray-300" />
+                  )}
+                </div>
+              )}
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="flex flex-col lg:flex-row lg:items-center gap-4">
                 {/* 1. Project Info */}
                 <div className="flex-1 min-w-0">
@@ -160,9 +264,8 @@ const BudgetRequestList: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 2. Approval Status Visual */}
-                <div className="hidden xl:flex items-center gap-3 flex-1 justify-center border-l border-r border-gray-50 px-6">
-                  <div className="flex items-center gap-1.5 w-full max-w-[180px]">
+                <div className="hidden xl:flex items-center gap-4 flex-1 justify-center border-l border-r border-gray-50 px-8">
+                  <div className="flex items-center gap-2 w-full max-w-[200px]">
                     {[
                       { id: "manager", label: "หน่วยงาน" },
                       { id: "finance", label: "การเงิน" },
@@ -175,12 +278,12 @@ const BudgetRequestList: React.FC = () => {
                       const isRejected = req.status === "rejected" && idx === currentIdx;
 
                       return (
-                        <div key={step.id} className="flex-1 flex flex-col items-center gap-1">
+                        <div key={step.id} className="flex-1 flex flex-col items-center gap-1.5">
                           <div
-                            className={`h-1.5 w-full rounded-full transition-all 
-                              ${isDone ? "bg-emerald-500" : isRejected ? "bg-red-500" : isCurrent ? "bg-primary-500 animate-pulse" : "bg-gray-100"}`}
+                            className={`h-2 w-full rounded-full transition-all duration-500
+                              ${isDone ? "bg-emerald-400" : isRejected ? "bg-red-400" : isCurrent ? "bg-primary-500 shadow-[0_0_12px_rgba(0,163,228,0.5)]" : "bg-gray-100"}`}
                           />
-                          <span className={`text-[8px] font-bold uppercase ${isCurrent ? "text-primary-600" : "text-gray-400"}`}>
+                          <span className={`text-[9px] font-black uppercase tracking-tighter ${isCurrent ? "text-primary-600" : "text-gray-400"}`}>
                             {step.label}
                           </span>
                         </div>
@@ -190,16 +293,37 @@ const BudgetRequestList: React.FC = () => {
                 </div>
 
                 {/* 3. Financial Info */}
-                <div className="flex items-center justify-between lg:justify-end gap-6 min-w-[140px]">
+                  <div className="flex items-center justify-between lg:justify-end gap-6 min-w-[140px]">
                   <div className="text-right">
                     <p className="text-xs font-bold text-gray-400 uppercase leading-none mb-1">งบประมาณ</p>
                     <p className="text-lg font-black text-gray-900 leading-none">
                       ฿{req.amount.toLocaleString()}
                     </p>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-gray-50 group-hover:bg-primary-600 group-hover:text-white transition-all">
-                    <ChevronRight size={18} />
-                  </div>
+                  
+                  {isManagementMode ? (
+                    <div className="flex items-center gap-1">
+                      <button 
+                        className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-primary-50 hover:text-primary-600 transition-all duration-300"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingRequest(req);
+                        }}
+                      >
+                        <Edit3 size={18} />
+                      </button>
+                      <button 
+                        className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all duration-300"
+                        onClick={(e) => handleDelete(req.id, e)}
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="p-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-primary-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-primary-500/20 transition-all duration-300">
+                      <ChevronRight size={20} />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -218,6 +342,15 @@ const BudgetRequestList: React.FC = () => {
           </Card>
         )}
       </div>
+
+      {/* Edit Request Modal */}
+      {editingRequest && (
+        <EditRequestModal
+          request={editingRequest}
+          isOpen={!!editingRequest}
+          onClose={() => setEditingRequest(null)}
+        />
+      )}
 
       {/* Approval Modal */}
       {selectedRequest && (

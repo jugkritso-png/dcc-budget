@@ -201,18 +201,18 @@ const AnalyticsDashboard: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
         <Card
           interactive
-          className="p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60"
+          className="p-6 group flex flex-col justify-between rounded-[28px] shadow-sm hover:shadow-xl hover:shadow-primary-100/30 border-gray-100/60"
         >
-          <div className="flex justify-between items-start mb-2">
-            <div className="p-1.5 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
-              <Percent size={18} className="text-primary-600" />
+          <div className="flex justify-between items-start mb-3">
+            <div className="p-2 bg-primary-50 rounded-xl group-hover:bg-primary-100 transition-colors">
+              <Percent size={20} className="text-primary-600" />
             </div>
           </div>
           <div>
-            <p className="text-[22px] font-extrabold text-gray-900 tracking-tight leading-none">
+            <p className="text-[26px] font-black text-gray-900 tracking-tight leading-none">
               {utilizationRate.toFixed(1)}%
             </p>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">
+            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest mt-2">
               เบิกจ่ายรวม
             </p>
           </div>
@@ -220,21 +220,21 @@ const AnalyticsDashboard: React.FC = () => {
 
         <Card
           interactive
-          className="p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60"
+          className="p-6 group flex flex-col justify-between rounded-[28px] shadow-sm hover:shadow-xl hover:shadow-orange-100/30 border-gray-100/60"
         >
-          <div className="flex justify-between items-start mb-2">
-            <div className="p-1.5 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition-colors">
-              <Calculator size={18} className="text-orange-600" />
+          <div className="flex justify-between items-start mb-3">
+            <div className="p-2 bg-orange-50 rounded-xl group-hover:bg-orange-100 transition-colors">
+              <Calculator size={20} className="text-orange-600" />
             </div>
           </div>
           <div>
-            <p className="text-[22px] font-extrabold text-gray-900 tracking-tight leading-none">
+            <p className="text-[26px] font-black text-gray-900 tracking-tight leading-none">
               ฿
               {avgPerRequest > 1000000
                 ? (avgPerRequest / 1000000).toFixed(1) + "M"
                 : (avgPerRequest / 1000).toFixed(0) + "K"}
             </p>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">
+            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest mt-2">
               เฉลี่ยต่อโครงการ
             </p>
           </div>
@@ -290,21 +290,21 @@ const AnalyticsDashboard: React.FC = () => {
 
         <Card
           interactive
-          className="p-5 group flex flex-col justify-between rounded-[20px] shadow-sm hover:shadow-md border-gray-100/60"
+          className="p-6 group flex flex-col justify-between rounded-[28px] shadow-sm hover:shadow-xl hover:shadow-emerald-100/30 border-gray-100/60"
         >
-          <div className="flex justify-between items-start mb-2">
-            <div className="p-1.5 bg-emerald-50 rounded-lg group-hover:bg-emerald-100 transition-colors">
-              <Wallet size={18} className="text-emerald-600" />
+          <div className="flex justify-between items-start mb-3">
+            <div className="p-2 bg-emerald-50 rounded-xl group-hover:bg-emerald-100 transition-colors">
+              <Wallet size={20} className="text-emerald-600" />
             </div>
           </div>
           <div>
-            <p className="text-[22px] font-extrabold text-emerald-600 tracking-tight leading-none">
+            <p className="text-[26px] font-black text-emerald-600 tracking-tight leading-none">
               ฿
               {totalRemaining > 1000000
                 ? (totalRemaining / 1000000).toFixed(1) + "M"
                 : (totalRemaining / 1000).toFixed(0) + "K"}
             </p>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">
+            <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest mt-2">
               งบประมาณคงเหลือ
             </p>
           </div>
@@ -389,14 +389,14 @@ const AnalyticsDashboard: React.FC = () => {
                   <Bar
                     dataKey="planned"
                     name="แผน (Planned)"
-                    fill="var(--color-primary-300)"
+                    fill="#B3E0FF"
                     radius={[6, 6, 6, 6]}
                     barSize={20}
                   />
                   <Bar
                     dataKey="actual"
                     name="ผลจริง (Actual)"
-                    fill="var(--color-primary-600)"
+                    fill="#00A3E4"
                     radius={[6, 6, 6, 6]}
                     barSize={20}
                   />
@@ -482,7 +482,7 @@ const AnalyticsDashboard: React.FC = () => {
                   <Area
                     type="monotone"
                     dataKey="actual"
-                    stroke="var(--color-primary-800)"
+                    stroke="#00A3E4"
                     strokeWidth={4}
                     fillOpacity={1}
                     fill="url(#colorActual)"
