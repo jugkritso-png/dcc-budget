@@ -788,6 +788,22 @@ export const notificationService = {
     if (error) throw new Error(error.message);
     return { success: true };
   },
+  sendLineNotification: async (message: string) => {
+    try {
+      const response = await fetch('/api/notify/line', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+      if (!response.ok) {
+        console.warn('Line notification could not be sent (is token configured?)');
+      }
+    } catch (e) {
+      console.error('Failed to call Line notify route', e);
+    }
+  }
 };
 
 export const activityLogService = {

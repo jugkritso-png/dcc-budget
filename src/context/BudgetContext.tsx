@@ -343,9 +343,15 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
   // Requests
   const addRequestMutation = useMutation({
     mutationFn: budgetService.createRequest,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["requests"] });
       queryClient.invalidateQueries({ queryKey: ["categories"] }); // Used budget changes
+      
+      if (data) {
+        notificationService.sendLineNotification(
+          `🆕 คำขอโครงการใหม่!\nโครงการ: ${data.project}\nผู้ขอ: ${data.requesterId}\nงบประมาณ: ฿${data.amount.toLocaleString()}\nสถานะ: รอการพิจารณา`
+        );
+      }
     },
   });
 
@@ -424,6 +430,10 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
         );
       }
 
+      notificationService.sendLineNotification(
+        `✅ โครงการได้รับการอนุมัติ!\nโครงการ: ${data.project}\nผู้อนุมัติ: ${data.currentStep === 'director' ? 'ผู้อำนวยการ' : 'หัวหน้างาน'}\nงบประมาณ: ฿${data.amount.toLocaleString()}`
+      );
+
       logActivity(
         "APPROVE_REQUEST",
         `อนุมัติโครงการ: ${data.project} (งบประมาณ: ${data.amount.toLocaleString()} บาท)`,
@@ -473,6 +483,10 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({
           `/budget?id=${data.id}`,
         );
       }
+
+      notificationService.sendLineNotification(
+        `❌ โครงการถูกปฏิเสธ\nโครงการ: ${data.project}\nเหตุผล: ${variables.reason}`
+      );
 
       logActivity(
         "REJECT_REQUEST",
