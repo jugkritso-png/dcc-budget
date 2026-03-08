@@ -64,7 +64,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         } catch (e) { console.error(e) }
       }
 
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: string, session: any) => {
         if (event === 'SIGNED_OUT') {
           setUser(null);
           localStorage.removeItem('dcc_user');
@@ -152,7 +152,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           table: 'Notification',
           filter: `userId=eq.${user.id}`
         },
-        (payload) => {
+        (payload: any) => {
           console.log('New notification received:', payload);
           queryClient.invalidateQueries({ queryKey: ['notifications', user.id] });
 
@@ -235,7 +235,7 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         action: 'LOGIN',
         details: 'เข้าสู่ระบบด้วยชื่อผู้ใช้งาน',
         userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined
-      }).catch(err => console.error('Failed to log login:', err));
+      }).catch((err: any) => console.error('Failed to log login:', err));
 
       return true;
     } catch (error) {
