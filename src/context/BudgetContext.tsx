@@ -32,6 +32,8 @@ export const BudgetProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
 
     const checkSession = async () => {
+      if (typeof window === 'undefined') return;
+
       const saved = localStorage.getItem('dcc_user');
       if (saved) {
         try {
