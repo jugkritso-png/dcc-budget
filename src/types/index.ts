@@ -1,4 +1,3 @@
-
 export interface BudgetSummary {
   total: number;
   remaining: number;
@@ -19,9 +18,17 @@ export interface User {
   avatar?: string; // base64
   englishName?: string;
   startDate?: string;
-  theme?: 'light' | 'dark' | 'system' | 'blue' | 'green' | 'purple' | 'orange' | 'red';
-  language?: 'th' | 'en';
-  role: 'admin' | 'user' | 'finance' | 'manager' | 'approver';
+  theme?:
+    | "light"
+    | "dark"
+    | "system"
+    | "blue"
+    | "green"
+    | "purple"
+    | "orange"
+    | "red";
+  language?: "th" | "en";
+  role: "admin" | "user" | "finance" | "manager" | "approver";
   username?: string;
 }
 
@@ -44,14 +51,20 @@ export interface BudgetRequest {
   subActivityId?: string; // New field for strict linkage
   amount: number;
   date: string;
-  status: 'approved' | 'pending' | 'rejected' | 'draft' | 'completed' | 'waiting_verification';
+  status:
+    | "approved"
+    | "pending"
+    | "rejected"
+    | "draft"
+    | "completed"
+    | "waiting_verification";
   requester: string;
   notes?: string;
   // New fields from the request
   department?: string;
   documentNumber?: string; // หมายเลขหนังสือ
   approvalRef?: string; // เลขหนังสืออนุมัติ
-  urgency?: 'normal' | 'urgent' | 'critical';
+  urgency?: "normal" | "urgent" | "critical";
   startDate?: string;
   endDate?: string;
   reason?: string;
@@ -68,7 +81,7 @@ export interface BudgetRequest {
   // New features
   attachments?: string[]; // URLs or paths to uploaded files
   requesterId?: string; // ID of the user who created the request
-  currentStep?: 'manager' | 'finance' | 'director';
+  currentStep?: "manager" | "finance" | "director";
 }
 
 export interface Category {
@@ -84,7 +97,7 @@ export interface Category {
   // Walailak University Budget Codes
   businessPlace?: string; // รหัสสถานประกอบการ (1000 = มวล)
   businessArea?: string; // ประเภทธุรกิจ (1000 = ทั่วไป, อื่นๆ = วิสาหกิจ/หลักสูตรพิเศษ)
-  fund?: 'I' | 'E'; // แหล่งเงินทุน (I = Internal/ภายใน, E = External/ภายนอก)
+  fund?: "I" | "E"; // แหล่งเงินทุน (I = Internal/ภายใน, E = External/ภายนอก)
   fundCenter?: string; // หน่วยงานที่รับงบประมาณ
   costCenter?: string; // หน่วยงานที่ใช้งบประมาณจริง
   functionalArea?: string; // กิจกรรมย่อย
@@ -107,27 +120,27 @@ export interface ChartData {
 }
 
 export enum Page {
-  DASHBOARD = 'dashboard',
-  BUDGET = 'budget',
-  MANAGEMENT = 'management',
-  ANALYTICS = 'analytics',
-  SETTINGS = 'settings',
-  CREATE_REQUEST = 'create_request',
-  NOTIFICATIONS = 'notifications',
-  EXPENSE_REPORT = 'expense_report',
+  DASHBOARD = "dashboard",
+  BUDGET = "budget",
+  MANAGEMENT = "management",
+  ANALYTICS = "analytics",
+  SETTINGS = "settings",
+  CREATE_REQUEST = "create_request",
+  NOTIFICATIONS = "notifications",
+  EXPENSE_REPORT = "expense_report",
 }
 
 export type Permission =
-  | 'view_dashboard'
-  | 'view_budget'
-  | 'manage_budget'
-  | 'approve_budget'
-  | 'view_analytics'
-  | 'manage_users'
-  | 'manage_departments'
-  | 'manage_policies'
-  | 'manage_settings'
-  | 'view_activity_log';
+  | "view_dashboard"
+  | "view_budget"
+  | "manage_budget"
+  | "approve_budget"
+  | "view_analytics"
+  | "manage_users"
+  | "manage_departments"
+  | "manage_policies"
+  | "manage_settings"
+  | "view_activity_log";
 
 export interface SystemSettings {
   orgName: string;
@@ -172,10 +185,25 @@ export type BudgetContextType = {
   deleteUser: (id: string) => Promise<void>;
   changePassword: (current: string, newPass: string) => Promise<void>;
   addRequest: (request: BudgetRequest) => Promise<void>;
-  updateRequestStatus: (id: string, status: BudgetRequest['status']) => Promise<void>;
+  updateRequestStatus: (
+    id: string,
+    status: BudgetRequest["status"],
+  ) => Promise<void>;
   approveRequest: (id: string, approverId: string) => Promise<void>;
-  rejectRequest: (id: string, approverId: string, reason: string) => Promise<void>;
-  submitExpenseReport: (id: string, data: { expenseItems: any[], actualTotal: number, returnAmount: number, attachments?: string[] }) => Promise<void>;
+  rejectRequest: (
+    id: string,
+    approverId: string,
+    reason: string,
+  ) => Promise<void>;
+  submitExpenseReport: (
+    id: string,
+    data: {
+      expenseItems: any[];
+      actualTotal: number;
+      returnAmount: number;
+      attachments?: string[];
+    },
+  ) => Promise<void>;
   completeRequest: (id: string) => Promise<void>;
   rejectExpenseReport: (id: string, reason: string) => Promise<void>;
   revertComplete: (id: string) => Promise<void>;
@@ -198,32 +226,47 @@ export type BudgetContextType = {
     totalRemaining: number;
     usagePercentage: number;
   };
-  adjustBudget: (categoryId: string, amount: number, type: 'ADD' | 'TRANSFER_IN' | 'TRANSFER_OUT' | 'REDUCE', reason: string) => Promise<void>;
+  adjustBudget: (
+    categoryId: string,
+    amount: number,
+    type: "ADD" | "TRANSFER_IN" | "TRANSFER_OUT" | "REDUCE",
+    reason: string,
+  ) => Promise<void>;
   budgetLogs: BudgetLog[];
   getBudgetLogs: (categoryId: string) => Promise<BudgetLog[]>;
-  addExpense: (expense: Omit<Expense, 'id' | 'createdAt'>) => Promise<void>;
+  addExpense: (expense: Omit<Expense, "id" | "createdAt">) => Promise<void>;
   expenses: Expense[];
   getExpenses: (categoryId: string) => Promise<Expense[]>;
   deleteExpense: (id: string) => Promise<void>;
   budgetPlans: BudgetPlan[];
-  saveBudgetPlan: (plan: Omit<BudgetPlan, 'id' | 'updatedAt'>) => Promise<void>;
+  saveBudgetPlan: (plan: Omit<BudgetPlan, "id" | "updatedAt">) => Promise<void>;
   restoreData: (data: any) => void;
   changeTheme: (theme: string) => Promise<void>;
   notifications: Notification[];
   markNotificationAsRead: (id: string) => Promise<void>;
   markAllNotificationsAsRead: () => Promise<void>;
   deleteNotification: (id: string) => Promise<void>;
-  sendNotification: (userId: string, title: string, message: string, type?: Notification['type'], link?: string) => Promise<void>;
+  sendNotification: (
+    userId: string,
+    title: string,
+    message: string,
+    type?: Notification["type"],
+    link?: string,
+  ) => Promise<void>;
 
   // Audit Logs
   activityLogs: ActivityLog[];
-  logActivity: (action: string, details: string, entityId?: string, entityType?: string) => Promise<void>;
+  logActivity: (
+    action: string,
+    details: string,
+    entityId?: string,
+    entityType?: string,
+  ) => Promise<void>;
   getApprovalLogs: (requestId: string) => Promise<ApprovalLog[]>;
   getAllApprovalLogs: () => Promise<ApprovalLog[]>;
   isSidebarCollapsed: boolean;
   toggleSidebar: () => void;
 };
-
 
 export interface BudgetPlan {
   id: string;
@@ -238,7 +281,7 @@ export interface BudgetLog {
   id: string;
   categoryId: string;
   amount: number;
-  type: 'ADD' | 'TRANSFER_IN' | 'TRANSFER_OUT' | 'REDUCE';
+  type: "ADD" | "TRANSFER_IN" | "TRANSFER_OUT" | "REDUCE";
   reason: string;
   user?: string;
   createdAt: string; // ISO string for frontend
@@ -251,7 +294,7 @@ export interface Notification {
   message: string;
   isRead: boolean;
   link?: string;
-  type?: 'primary' | 'success' | 'warning' | 'error' | 'info';
+  type?: "primary" | "success" | "warning" | "error" | "info";
   createdAt: string;
 }
 
@@ -277,8 +320,8 @@ export interface ApprovalLog {
   id: string;
   requestId: string;
   approverId: string;
-  action: 'approve' | 'reject';
-  stage: 'manager' | 'finance' | 'director';
+  action: "approve" | "reject";
+  stage: "manager" | "finance" | "director";
   comment?: string;
   createdAt: string;
   user?: {
