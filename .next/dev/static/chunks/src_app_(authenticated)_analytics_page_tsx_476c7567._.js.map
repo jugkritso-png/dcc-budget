@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/walailakuniversity/Documents/APP/bugget/dcc-budget/src/app/%28authenticated%29/analytics/page.tsx"],"sourcesContent":["\n'use client'\n\nimport React from 'react'\nimport AnalyticsDashboard from '@/components/features/AnalyticsDashboard'\n\nexport default function AnalyticsPage() {\n    return (\n        <div className=\"space-y-6\">\n            <div className=\"flex flex-col gap-1\">\n                <h1 className=\"text-3xl font-bold text-gray-900 tracking-tight\">วิเคราะห์งบประมาณ</h1>\n                <p className=\"text-gray-500\">ติดตามและวิเคราะห์ข้อมูลการใช้งบประมาณในเชิงลึก</p>\n            </div>\n            <AnalyticsDashboard />\n        </div>\n    )\n}\n"],"names":[],"mappings":";;;;;;;;;;AACA;;;AAKe,SAAS;IACpB,qBACI,6LAAC;QAAI,WAAU;;0BACX,6LAAC;gBAAI,WAAU;;kCACX,6LAAC;wBAAG,WAAU;kCAAkD;;;;;;kCAChE,6LAAC;wBAAE,WAAU;kCAAgB;;;;;;;;;;;;0BAEjC,6LAAC;;;;;;;;;;;AAGb;KAVwB"}}]
-}
