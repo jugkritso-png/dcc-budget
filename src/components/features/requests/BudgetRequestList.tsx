@@ -37,10 +37,9 @@ import { AutoSizer as _AutoSizer, AutoSizerProps } from "react-virtualized-auto-
 const AutoSizer = _AutoSizer as unknown as React.FC<any>;
 
 const BudgetRequestList: React.FC = () => {
-  const { requests, categories, isLoading } = useBudget();
+  const { requests, categories, settings, isLoading } = useBudget();
+  const [selectedYear, setSelectedYear] = useState<number>(settings.fiscalYear);
   const [searchQuery, setSearchQuery] = useState("");
-
-  if (isLoading) return <ListSkeleton items={5} />;
   const [statusFilter, setStatusFilter] = useState<
     "all" | "pending" | "approved" | "rejected"
   >("all");
@@ -55,6 +54,8 @@ const BudgetRequestList: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const { deleteRequest } = useBudget();
   const { user } = useAuth();
+
+  if (isLoading) return <ListSkeleton items={5} />;
 
   const toggleSelectAll = () => {
     if (selectedIds.size === filteredRequests.length) {
@@ -92,19 +93,31 @@ const BudgetRequestList: React.FC = () => {
   // Filter Logic
   const filteredRequests = requests
     .filter((req) => {
+      // Safe date parsing
+      const dateStr = req.date || "";
+      const yearPart = dateStr.split("-")[0];
+      const parsedYear = parseInt(yearPart);
+      const reqYear = !isNaN(parsedYear) ? parsedYear + 543 : 0;
+
+      const matchesYear = selectedYear === 0 || reqYear === selectedYear;
+
       const matchesSearch =
-        req.project.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        req.activity.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        req.documentNumber?.toLowerCase().includes(searchQuery.toLowerCase());
+        (req.project?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
+        (req.activity?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
+        (req.documentNumber?.toLowerCase() || "").includes(searchQuery.toLowerCase());
 
       const matchesStatus =
         statusFilter === "all" || req.status === statusFilter;
       const matchesCategory =
         categoryFilter === "all" || req.category === categoryFilter;
 
-      return matchesSearch && matchesStatus && matchesCategory;
+      return matchesYear && matchesSearch && matchesStatus && matchesCategory;
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => {
+      const dateA = a.date ? new Date(a.date).getTime() : 0;
+      const dateB = b.date ? new Date(b.date).getTime() : 0;
+      return dateB - dateA;
+    });
 
   const getStatusLabel = (status: string, currentStep?: string) => {
     if (status === "approved") return "อนุมัติแล้ว";
@@ -142,7 +155,13 @@ const BudgetRequestList: React.FC = () => {
       {/* Filters Bar */}
       <Card className="p-4 rounded-[32px] shadow-sm border-gray-100 bg-white/80 backdrop-blur-xl sticky top-0 z-20">
         <div className="flex flex-col md:flex-row gap-4 items-center">
-          <div className="relative flex-1 w-full">
+          <div className="flex items-center gap-3">
+            <div className="text-sm font-bold text-gray-500 bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
+              พบ {filteredRequests.length} รายการ
+            </div>
+          </div>
+
+          <div className="relative w-full max-w-md">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               size={18}
@@ -166,6 +185,17 @@ const BudgetRequestList: React.FC = () => {
               <option value="pending">รออนุมัติ</option>
               <option value="approved">อนุมัติแล้ว</option>
               <option value="rejected">ปฏิเสธ</option>
+            </select>
+
+            <select
+              className="px-4 py-2 bg-gray-50 border-none rounded-xl text-sm font-semibold text-gray-600 focus:ring-2 focus:ring-primary-500 outline-none min-w-[140px]"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(Number(e.target.value))}
+            >
+              <option value={0}>ทุกปีงบประมาณ</option>
+              <option value={2570}>ปี 2570</option>
+              <option value={2569}>ปี 2569</option>
+              <option value={2568}>ปี 2568</option>
             </select>
 
             <button
@@ -239,28 +269,20 @@ const BudgetRequestList: React.FC = () => {
       </Card>
 
       {/* Request List */}
-      <div className="h-[calc(100vh-240px)] min-h-[500px]">
+      <div className="min-h-[500px]">
         {filteredRequests.length > 0 ? (
-          <AutoSizer>
-            {({ height, width }: { height: number; width: number }) => (
-              <List
-                height={height}
-                itemCount={filteredRequests.length}
-                itemSize={140}
-                width={width}
-                itemData={filteredRequests}
-              >
-                {({ index, style }: { index: number; style: React.CSSProperties }) => {
-                  const req = filteredRequests[index];
-                  return (
-                    <div style={{ ...style, paddingBottom: "12px" }}>
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className={`group h-full flex flex-col justify-center bg-white hover:bg-white border-transparent hover:border-primary-200/50 rounded-[32px] p-6 transition-all cursor-pointer shadow-sm hover:shadow-xl relative overflow-hidden ${selectedIds.has(req.id) ? "ring-2 ring-primary-500/50 bg-primary-50/10" : ""}`}
-                        onClick={() => setSelectedRequest(req)}
-                      >
+          // Use simple map for small list or if AutoSizer fails
+          <div className="space-y-4">
+            {filteredRequests.map((req, index) => {
+              return (
+                <div key={req.id} className="w-full">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                    className={`group flex flex-col justify-center bg-white border-transparent hover:border-primary-200/50 rounded-[32px] p-6 transition-all cursor-pointer shadow-sm hover:shadow-xl relative overflow-hidden ${selectedIds.has(req.id) ? "ring-2 ring-primary-500/50 bg-primary-50/10" : ""}`}
+                    onClick={() => setSelectedRequest(req)}
+                  >
                         {isManagementMode && (
                           <div 
                             className="absolute top-4 right-14 z-10 p-2 rounded-xl bg-white/80 backdrop-blur shadow-sm hover:bg-white transition-all opacity-0 group-hover:opacity-100"
@@ -386,13 +408,11 @@ const BudgetRequestList: React.FC = () => {
                             )}
                           </div>
                         </div>
-                      </motion.div>
-                    </div>
-                  );
-                }}
-              </List>
-            )}
-          </AutoSizer>
+                  </motion.div>
+                </div>
+              );
+            })}
+          </div>
         ) : (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -418,6 +438,7 @@ const BudgetRequestList: React.FC = () => {
                     setSearchQuery("");
                     setStatusFilter("all");
                     setCategoryFilter("all");
+                    setSelectedYear(settings.fiscalYear);
                   }}
                 >
                   ล้างการกรองทั้งหมด

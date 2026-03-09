@@ -522,13 +522,53 @@ export const budgetService = {
     return data as ApprovalLog[];
   },
   completeRequest: async (id: string) => {
+    // 1. Get current request to calculate refund
+    const { data: currentReq, error: fetchError } = await getSupabase()
+      .from("BudgetRequest")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (fetchError) throw new Error(fetchError.message);
+    const budgetRequest = currentReq as BudgetRequest;
+
+    if (budgetRequest.status === "completed") return budgetRequest;
+
+    // 2. Update status
     const { data, error } = await getSupabase()
       .from("BudgetRequest")
-      .update({ status: "completed" })
+      .update({ status: "completed", completedAt: new Date().toISOString() })
       .eq("id", id)
       .select()
       .single();
     if (error) throw new Error(error.message);
+
+    // 3. Update category budget (Refund unused amount)
+    const refundAmount = budgetRequest.returnAmount || 0;
+    if (refundAmount > 0) {
+      const year = parseInt(budgetRequest.date.split("-")[0]) + 543;
+      const { data: categoryData } = await getSupabase()
+        .from("Category")
+        .select("*")
+        .eq("name", budgetRequest.category)
+        .eq("year", year)
+        .maybeSingle();
+
+      if (categoryData) {
+        await getSupabase()
+          .from("Category")
+          .update({ used: (categoryData.used || 0) - refundAmount })
+          .eq("id", categoryData.id);
+
+        // 4. Log the refund
+        await getSupabase().from("BudgetLog").insert({
+          categoryId: categoryData.id,
+          amount: refundAmount,
+          type: "REFUND",
+          reason: `Refund from completed project: ${budgetRequest.project}`,
+        });
+      }
+    }
+
     return data as BudgetRequest;
   },
   submitExpenseReport: async (
@@ -594,6 +634,18 @@ export const budgetService = {
     return data as BudgetRequest;
   },
   revertComplete: async (id: string) => {
+    // 1. Get current request to reverse refund
+    const { data: currentReq, error: fetchError } = await getSupabase()
+      .from("BudgetRequest")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (fetchError) throw new Error(fetchError.message);
+    const budgetRequest = currentReq as BudgetRequest;
+
+    if (budgetRequest.status !== "completed") return budgetRequest;
+
+    // 2. Update status
     const { data, error } = await getSupabase()
       .from("BudgetRequest")
       .update({ status: "waiting_verification", completedAt: null })
@@ -601,6 +653,34 @@ export const budgetService = {
       .select()
       .single();
     if (error) throw new Error(error.message);
+
+    // 3. Revert category budget (Reverse the refund)
+    const refundAmount = budgetRequest.returnAmount || 0;
+    if (refundAmount > 0) {
+      const year = parseInt(budgetRequest.date.split("-")[0]) + 543;
+      const { data: categoryData } = await getSupabase()
+        .from("Category")
+        .select("*")
+        .eq("name", budgetRequest.category)
+        .eq("year", year)
+        .maybeSingle();
+
+      if (categoryData) {
+        await getSupabase()
+          .from("Category")
+          .update({ used: (categoryData.used || 0) + refundAmount })
+          .eq("id", categoryData.id);
+
+        // 4. Log the reverse refund
+        await getSupabase().from("BudgetLog").insert({
+          categoryId: categoryData.id,
+          amount: refundAmount,
+          type: "REVERT_REFUND",
+          reason: `Reverted refund for project: ${budgetRequest.project}`,
+        });
+      }
+    }
+
     return data as BudgetRequest;
   },
   updateRequest: async (id: string, updates: Partial<BudgetRequest>) => {

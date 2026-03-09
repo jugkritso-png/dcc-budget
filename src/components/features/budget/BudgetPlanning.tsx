@@ -4,8 +4,8 @@ import { useBudget } from "@/context/BudgetContext";
 import toast from "react-hot-toast";
 
 const BudgetPlanning: React.FC = () => {
-  const { subActivities, budgetPlans, saveBudgetPlan } = useBudget();
-  const [selectedYear, setSelectedYear] = useState(2569);
+  const { subActivities, budgetPlans, saveBudgetPlan, settings } = useBudget();
+  const [selectedYear, setSelectedYear] = useState(settings.fiscalYear);
 
   // Edit Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);

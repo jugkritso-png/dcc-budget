@@ -34,8 +34,9 @@ const BudgetCategoriesManager: React.FC = () => {
     addExpense,
     getExpenses,
     deleteExpense,
+    settings,
   } = useBudget();
-  const [selectedYear, setSelectedYear] = useState(2569);
+  const [selectedYear, setSelectedYear] = useState(settings.fiscalYear);
   const [searchQuery, setSearchQuery] = useState("");
 
   // Modals state
