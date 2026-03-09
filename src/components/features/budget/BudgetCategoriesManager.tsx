@@ -6,6 +6,7 @@ import { Category, BudgetLog, Expense, BudgetRequest } from "@/types";
 import { generateId } from "@/lib/utils";
 
 import ManagementHeader from "@/components/features/budget/ManagementHeader";
+import BudgetOverviewCharts from "@/components/features/budget/BudgetOverviewCharts";
 import CategoryList from "@/components/features/budget/CategoryList";
 import CategoryModal from "@/components/features/budget/CategoryModal";
 import CategoryDetailModal from "@/components/features/budget/CategoryDetailModal";
@@ -180,6 +181,8 @@ const BudgetCategoriesManager: React.FC = () => {
         categoriesCount={currentYearCategories.length}
         selectedYear={selectedYear}
       />
+
+      <BudgetOverviewCharts categories={currentYearCategories} />
 
       <CategoryList
         categories={filteredCategories}

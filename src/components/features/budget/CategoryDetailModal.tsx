@@ -10,6 +10,13 @@ import {
   Folder,
 } from "lucide-react";
 import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import {
   Category,
   BudgetRequest,
   BudgetLog,
@@ -351,48 +358,68 @@ const CategoryDetailModal: React.FC<CategoryDetailModalProps> = ({
           <div className="flex-1 overflow-y-auto p-0 bg-gray-50/50">
             {activeDetailTab === "requests" ? (
               <>
-                {/* Stats for Requests */}
-                <div className="px-6 py-4 grid grid-cols-3 gap-4 bg-white/40 border-b border-gray-100/50">
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <p className="text-xs text-blue-600 mb-1 font-medium">
-                      งบที่ได้รับจัดสรร
-                    </p>
-                    <p className="text-lg font-bold text-gray-900">
-                      ฿{viewingCategory.allocated.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-red-50 rounded-lg">
-                    <p className="text-xs text-red-600 mb-1 font-medium">
-                      ใช้ไปแล้ว (อนุมัติ)
-                    </p>
-                    <p className="text-lg font-bold text-gray-900">
-                      ฿
-                      {requests
-                        .filter(
-                          (r) =>
-                            r.category === viewingCategory.name &&
-                            r.status === "approved",
-                        )
-                        .reduce((acc, curr) => acc + curr.amount, 0)
-                        .toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-green-50 rounded-lg">
-                    <p className="text-xs text-green-600 mb-1 font-medium">
-                      คงเหลือ
-                    </p>
-                    <p className="text-lg font-bold text-gray-900">
-                      ฿
-                      {(
-                        viewingCategory.allocated -
-                        requests
-                          .filter(
-                            (r) =>
-                              r.category === viewingCategory.name &&
-                              r.status === "approved",
-                          )
+                {/* Stats for Requests with Chart */}
+                <div className="px-6 py-6 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-6 items-center">
+                  <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+                    <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-100/50">
+                      <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">งบที่ได้รับจัดสรร</p>
+                      <p className="text-xl font-black text-blue-900">฿{viewingCategory.allocated.toLocaleString()}</p>
+                    </div>
+                    <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100/50">
+                      <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1">ใช้ไปแล้ว (อนุมัติ)</p>
+                      <p className="text-xl font-black text-emerald-900">
+                        ฿{requests
+                          .filter(r => r.category === viewingCategory.name && r.status === "approved")
                           .reduce((acc, curr) => acc + curr.amount, 0)
-                      ).toLocaleString()}
+                          .toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="p-4 bg-gray-50/50 rounded-2xl border border-gray-100/50">
+                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">คงเหลือ</p>
+                      <p className="text-xl font-black text-gray-900">
+                        ฿{(viewingCategory.allocated - requests
+                          .filter(r => r.category === viewingCategory.name && r.status === "approved")
+                          .reduce((acc, curr) => acc + curr.amount, 0)
+                        ).toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="w-full md:w-32 h-32 flex flex-col items-center justify-center shrink-0">
+                    <div className="w-full h-24">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { 
+                                name: "ใช้ไป", 
+                                value: requests.filter(r => r.category === viewingCategory.name && r.status === "approved").reduce((acc, curr) => acc + curr.amount, 0) 
+                              },
+                              { 
+                                name: "คงเหลือ", 
+                                value: Math.max(0, viewingCategory.allocated - requests.filter(r => r.category === viewingCategory.name && r.status === "approved").reduce((acc, curr) => acc + curr.amount, 0)) 
+                              }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={25}
+                            outerRadius={35}
+                            paddingAngle={5}
+                            dataKey="value"
+                            stroke="none"
+                          >
+                            <Cell fill={viewingCategory.color.includes('emerald') ? '#10B981' : viewingCategory.color.includes('blue') ? '#3B82F6' : '#6366F1'} />
+                            <Cell fill="#F3F4F6" />
+                          </Pie>
+                          <Tooltip 
+                            formatter={(value: any) => `฿${value.toLocaleString()}`}
+                            contentStyle={{ borderRadius: '12px', fontSize: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <p className="text-[10px] font-bold text-gray-400 mt-1">
+                      {((requests.filter(r => r.category === viewingCategory.name && r.status === "approved").reduce((acc, curr) => acc + curr.amount, 0) / viewingCategory.allocated) * 100).toFixed(1)}% USED
                     </p>
                   </div>
                 </div>
