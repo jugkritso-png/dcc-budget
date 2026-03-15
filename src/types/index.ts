@@ -30,6 +30,7 @@ export interface User {
   language?: "th" | "en";
   role: "admin" | "user" | "finance" | "manager" | "approver";
   username?: string;
+  password?: string;
 }
 
 export interface ExpenseLineItem {
@@ -172,6 +173,7 @@ export type AuthContextType = {
   users: User[];
   hasPermission: (permission: Permission) => boolean;
   login: (username: string, password: string) => Promise<boolean>;
+  register: (data: { email: string; password: string; fullName: string }) => Promise<boolean>;
   loginWithGoogle: (token: string) => Promise<boolean>;
   logout: () => void;
   updateUserProfile: (user: Partial<User>) => Promise<void>;

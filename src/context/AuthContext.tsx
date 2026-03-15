@@ -101,6 +101,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return true;
   };
 
+  const register = async (data: { email: string; password: string; fullName: string }): Promise<boolean> => {
+    await authService.signUp(data);
+    return true;
+  };
+
   const logout = async () => {
     await supabase.auth.signOut();
     setUser(null);
@@ -161,6 +166,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         user,
         users,
         login,
+        register,
         loginWithGoogle,
         logout,
         updateUserProfile: async (data) => { await updateUserProfileMutation.mutateAsync(data); },

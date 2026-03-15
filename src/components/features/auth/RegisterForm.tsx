@@ -5,36 +5,45 @@ import { useAuth } from "@/context/AuthContext";
 import {
   User,
   Lock,
+  Mail,
   ArrowRight,
   Loader2,
   AlertCircle,
-  Eye,
-  EyeOff,
   ShieldCheck,
+  CheckCircle2,
 } from "lucide-react";
-import { GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function Login() {
-  const { login, loginWithGoogle } = useAuth();
+export default function RegisterForm() {
+  const { register } = useAuth();
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPass, setShowPass] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+
+    if (password !== confirmPassword) {
+      setError("รหัสผ่านไม่ตรงกัน");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const success = await login(username, password);
+      const success = await register({ email, password, fullName });
       if (success) {
-        router.push("/dashboard");
-      } else {
-        setError("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง");
+        setIsSuccess(true);
+        setTimeout(() => {
+          router.push("/login");
+        }, 3000);
       }
     } catch (err: any) {
       setError(`เกิดข้อผิดพลาด: ${err.message || "กรุณาลองใหม่อีกครั้ง"}`);
@@ -43,9 +52,26 @@ export default function Login() {
     }
   };
 
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center p-8" style={{ background: "var(--surface-page)" }}>
+        <div className="w-full max-w-[420px] text-center p-10 rounded-3xl bg-white shadow-xl border border-gray-100">
+          <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 className="w-10 h-10 text-green-500" />
+          </div>
+          <h2 className="text-2xl font-bold mb-3" style={{ color: "var(--text-primary)" }}>สมัครสมาชิกสำเร็จ!</h2>
+          <p className="text-sm mb-8" style={{ color: "var(--text-secondary)" }}>
+            ลงทะเบียนบัญชีของคุณเรียบร้อยแล้ว ระบบกำลังนำคุณไปที่หน้าเข้าสู่ระบบ...
+          </p>
+          <Loader2 className="w-6 h-6 animate-spin mx-auto text-blue-500" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen w-full flex">
-      {/* ── LEFT: Deep Blue Branding Panel ── */}
+      {/* ── LEFT: Deep Blue Branding Panel (Same as Login) ── */}
       <div
         className="hidden lg:flex lg:w-1/2 flex-col relative overflow-hidden"
         style={{
@@ -53,7 +79,6 @@ export default function Login() {
             "linear-gradient(135deg, #0A3A5C 0%, #0A4A80 30%, #0060A8 65%, #1A7AC8 100%)",
         }}
       >
-        {/* Subtle radial glow top-right */}
         <div
           className="absolute top-0 right-0 w-[60%] h-[60%] pointer-events-none"
           style={{
@@ -61,7 +86,6 @@ export default function Login() {
               "radial-gradient(ellipse 70% 60% at 80% 10%, rgba(100,180,255,0.10), transparent)",
           }}
         />
-        {/* Subtle radial glow bottom-left */}
         <div
           className="absolute bottom-0 left-0 w-[70%] h-[50%] pointer-events-none"
           style={{
@@ -70,9 +94,7 @@ export default function Login() {
           }}
         />
 
-        {/* Content — vertically centered */}
         <div className="relative z-10 flex flex-col h-full px-14 py-12 justify-center">
-          {/* Top badge */}
           <div className="mb-10 self-start">
             <span
               className="inline-flex items-center px-5 py-2 rounded-full text-[12px] font-semibold"
@@ -88,15 +110,13 @@ export default function Login() {
             </span>
           </div>
 
-          {/* Main title */}
           <div className="mb-8">
             <h1
               className="font-extrabold text-white tracking-tight"
               style={{ fontSize: "60px", lineHeight: 1.08 }}
             >
-              Smart Budget
+              Start Your
             </h1>
-            {/* "Management" — large watermark / semi-transparent text */}
             <div style={{ marginTop: "-2px" }}>
               <span
                 className="font-extrabold tracking-tight block"
@@ -110,25 +130,22 @@ export default function Login() {
                   backgroundClip: "text",
                 }}
               >
-                Management
+                Journey
               </span>
             </div>
           </div>
 
-          {/* Description */}
           <p
             className="mb-10 text-[15px] leading-relaxed max-w-sm"
             style={{ color: "rgba(255,255,255,0.55)" }}
           >
-            ยกระดับการบริหารงบประมาณด้วยความโปร่งใส รวดเร็ว และ แม่นยำ ด้วยระบบ
-            Digital Trust Platform ที่ทันสมัยที่สุด
+            เข้าร่วมเป็นส่วนหนึ่งของระบบบริหารงบประมาณอัจฉริยะ เพื่อความรวดเร็วและแม่นยำในการทำงาน
           </p>
 
-          {/* Feature pills */}
           <div className="flex gap-4">
             {[
-              { label: "100%", sub: "Data Security" },
-              { label: "Real-time", sub: "Budget Tracking" },
+              { label: "Join", sub: "Global Network" },
+              { label: "Access", sub: "Pro Features" },
             ].map((f) => (
               <div
                 key={f.label}
@@ -153,7 +170,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Bottom copyright */}
         <div className="relative z-10 px-14 pb-8">
           <p
             className="text-[10px] tracking-[0.14em] uppercase"
@@ -164,13 +180,12 @@ export default function Login() {
         </div>
       </div>
 
-      {/* ── RIGHT: Login Form ── */}
+      {/* ── RIGHT: Register Form ── */}
       <div
         className="flex-1 flex flex-col items-center justify-center px-8 py-10"
         style={{ background: "var(--surface-page)" }}
       >
         <div className="w-full max-w-[420px]">
-          {/* Shield icon */}
           <div className="mb-6">
             <div
               className="w-11 h-11 rounded-xl flex items-center justify-center"
@@ -183,20 +198,18 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Header */}
           <div className="mb-7">
             <h2
               className="text-2xl font-bold mb-1"
               style={{ color: "var(--text-primary)" }}
             >
-              ยินดีต้อนรับกลับมา!
+              สร้างบัญชีใหม่
             </h2>
             <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-              เข้าสู่ระบบเพื่อดำเนินการบริหารงบประมาณ
+              กรอกข้อมูลเพื่อเริ่มต้นใช้งานระบบ
             </p>
           </div>
 
-          {/* Error */}
           {error && (
             <div
               className="mb-5 flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm"
@@ -215,15 +228,13 @@ export default function Login() {
             </div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Username */}
             <div>
               <label
                 className="block text-sm font-semibold mb-2"
                 style={{ color: "var(--text-primary)" }}
               >
-                ชื่อผู้ใช้งาน
+                ชื่อ-นามสกุล
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -235,18 +246,43 @@ export default function Login() {
                 <input
                   type="text"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
                   className="dcc-input"
                   style={{ paddingLeft: "44px" }}
-                  placeholder="ระบุชื่อผู้ใช้งาน"
+                  placeholder="สถาพร ใจดี"
                   disabled={isLoading}
-                  autoComplete="username"
                 />
               </div>
             </div>
 
-            {/* Password */}
+            <div>
+              <label
+                className="block text-sm font-semibold mb-2"
+                style={{ color: "var(--text-primary)" }}
+              >
+                อีเมล
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Mail
+                    className="w-[18px] h-[18px]"
+                    style={{ color: "var(--text-tertiary)" }}
+                  />
+                </div>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="dcc-input"
+                  style={{ paddingLeft: "44px" }}
+                  placeholder="your@email.com"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+
             <div>
               <label
                 className="block text-sm font-semibold mb-2"
@@ -262,108 +298,69 @@ export default function Login() {
                   />
                 </div>
                 <input
-                  type={showPass ? "text" : "password"}
+                  type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="dcc-input"
-                  style={{ paddingLeft: "44px", paddingRight: "44px" }}
+                  style={{ paddingLeft: "44px" }}
                   placeholder="••••••••"
                   disabled={isLoading}
-                  autoComplete="current-password"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPass(!showPass)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center"
-                  style={{ color: "var(--text-tertiary)" }}
-                >
-                  {showPass ? (
-                    <EyeOff className="w-[18px] h-[18px]" />
-                  ) : (
-                    <Eye className="w-[18px] h-[18px]" />
-                  )}
-                </button>
               </div>
             </div>
 
-            {/* Divider */}
-            <div className="flex items-center gap-3 py-1">
-              <div
-                className="flex-1 h-px"
-                style={{ background: "var(--border-default)" }}
-              />
-              <span
-                className="text-[11px] font-medium tracking-widest uppercase"
-                style={{ color: "var(--text-tertiary)" }}
+            <div>
+              <label
+                className="block text-sm font-semibold mb-2"
+                style={{ color: "var(--text-primary)" }}
               >
-                OR CONTINUE WITH
-              </span>
-              <div
-                className="flex-1 h-px"
-                style={{ background: "var(--border-default)" }}
-              />
+                ยืนยันรหัสผ่าน
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Lock
+                    className="w-[18px] h-[18px]"
+                    style={{ color: "var(--text-tertiary)" }}
+                  />
+                </div>
+                <input
+                  type="password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="dcc-input"
+                  style={{ paddingLeft: "44px" }}
+                  placeholder="••••••••"
+                  disabled={isLoading}
+                />
+              </div>
             </div>
 
-            {/* Google Login */}
-            <div className="flex justify-center">
-              <GoogleLogin
-                onSuccess={async (credentialResponse) => {
-                  if (credentialResponse.credential) {
-                    setIsLoading(true);
-                    try {
-                      const success = await loginWithGoogle(
-                        credentialResponse.credential,
-                      );
-                      if (success) router.push("/dashboard");
-                    } catch {
-                      setError("Google Sign-In Error");
-                    } finally {
-                      setIsLoading(false);
-                    }
-                  }
-                }}
-                onError={() => setError("Google Sign-In Failed")}
-                shape="pill"
-                theme="outline"
-                size="large"
-                text="signin_with"
-              />
-            </div>
-
-            {/* Submit */}
             <button type="submit" disabled={isLoading} className="btn-primary">
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 <>
-                  เข้าสู่ระบบ <ArrowRight className="w-4 h-4" />
+                  สมัครสมาชิก <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Footer */}
-          <div className="mt-6 text-center space-y-2">
+          <div className="mt-6 text-center">
             <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>
-              ไม่มีบัญชีผู้ใช้งาน?{" "}
+              มีบัญชีผู้ใช้งานอยู่แล้ว?{" "}
               <Link
-                href="/register"
+                href="/login"
                 className="font-semibold cursor-pointer hover:underline"
                 style={{ color: "var(--color-primary-600)" }}
               >
-                สมัครสมาชิก
+                เข้าสู่ระบบ
               </Link>
-            </p>
-            <p
-              className="text-sm font-medium cursor-pointer hover:underline"
-              style={{ color: "var(--color-primary-600)" }}
-            >
-              ลืมรหัสผ่าน?
             </p>
           </div>
 
-          {/* Copyright */}
           <p
             className="mt-10 text-center text-[11px]"
             style={{ color: "var(--text-tertiary)" }}

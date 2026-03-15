@@ -95,6 +95,24 @@ export const authService = {
     };
   },
 
+  signUp: async (credentials: { email: string; password: string; fullName?: string; username?: string; role?: string; department?: string; position?: string }) => {
+    const { data, error } = await getSupabase().auth.signUp({
+      email: credentials.email,
+      password: credentials.password,
+      options: {
+        data: {
+          full_name: credentials.fullName,
+          username: credentials.username,
+          role: credentials.role,
+          department: credentials.department,
+          position: credentials.position,
+        },
+      },
+    });
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
   updateProfile: async (id: string, updateData: Partial<User>) => {
     const { data, error } = await getSupabase()
       .from("User")
@@ -125,13 +143,66 @@ export const userService = {
     return data as User[];
   },
   create: async (user: Partial<User>) => {
-    const { data, error } = await getSupabase()
-      .from("User")
-      .insert({ ...user, updatedAt: new Date().toISOString() })
-      .select()
-      .single();
+    // Admin creating a user: We use a separate client with persistSession: false
+    // so we don't log out the admin.
+    const { createBrowserClient } = await import("@supabase/ssr");
+    const tempSupabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false,
+        },
+      }
+    );
+
+    const cleanEmail = (user.email || "").trim();
+    if (!cleanEmail || !cleanEmail.includes("@")) {
+      throw new Error("รูปแบบอีเมลไม่ถูกต้อง");
+    }
+
+    const { data, error } = await tempSupabase.auth.signUp({
+      email: cleanEmail,
+      password: (user as any).password || "Welcome123!", // Should have password from form
+      options: {
+        data: {
+          full_name: user.name,
+          username: user.username,
+          role: user.role,
+          department: user.department,
+          position: user.position,
+        },
+      },
+    });
+
     if (error) throw new Error(error.message);
-    return data as User;
+    
+    // The profile is created by the trigger. We just need to return something
+    // compatible with the User type or fetch the newly created profile.
+    if (data.user) {
+      const { data: profile, error: profileError } = await getSupabase()
+        .from("User")
+        .select("*")
+        .eq("id", data.user.id)
+        .single();
+      
+      if (profileError) {
+        // Fallback if trigger hasn't finished or failed silently
+        return {
+          id: data.user.id,
+          name: user.name || "",
+          email: user.email!,
+          role: user.role || "user",
+          department: user.department || "",
+          username: user.username || "",
+        } as User;
+      }
+      return profile as User;
+    }
+    
+    throw new Error("Failed to create user account");
   },
   update: async (id: string, user: Partial<User>) => {
     const { data, error } = await getSupabase()

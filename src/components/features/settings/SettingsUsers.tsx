@@ -36,7 +36,7 @@ const SettingsUsers: React.FC = () => {
     name: "",
     email: "",
     role: "user",
-    section: "",
+    department: "",
     position: "",
   });
 
@@ -56,7 +56,7 @@ const SettingsUsers: React.FC = () => {
       name: "",
       email: "",
       role: "user",
-      section: "",
+      department: "",
       position: "",
     });
     setIsUserModalOpen(true);
@@ -70,7 +70,7 @@ const SettingsUsers: React.FC = () => {
       name: userToEdit.name,
       email: userToEdit.email,
       role: userToEdit.role,
-      section: userToEdit.department || "",
+      department: userToEdit.department || "",
       position: userToEdit.position || "",
     });
     setIsUserModalOpen(true);
@@ -112,7 +112,7 @@ const SettingsUsers: React.FC = () => {
           name: userForm.name,
           email: userForm.email.trim(),
           role: userForm.role,
-          department: userForm.section,
+          department: userForm.department,
           position: userForm.position,
         };
         if (userForm.password) {
@@ -143,7 +143,6 @@ const SettingsUsers: React.FC = () => {
           ...userForm,
           username: userForm.username.trim(),
           email: userForm.email.trim(),
-          department: userForm.section,
         } as any);
         setIsUserModalOpen(false);
         toast.success("เพิ่มผู้ใช้งานเรียบร้อยแล้ว");
@@ -463,9 +462,9 @@ const SettingsUsers: React.FC = () => {
                   หน่วยงาน
                 </label>
                 <Select
-                  value={userForm.section}
+                  value={userForm.department}
                   onChange={(value: string | null) =>
-                    setUserForm({ ...userForm, section: value || "" })
+                    setUserForm({ ...userForm, department: value || "" })
                   }
                   options={[
                     { value: "", label: "-- เลือกหน่วยงาน --" },
